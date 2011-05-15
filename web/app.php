@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 if(strpos(@$_SERVER['REMOTE_ADDR'], '192.168.0') === false && !in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
 	$kernel = new AppKernel('prod', false);
 }else{
+        umask(0000);
 	$kernel = new AppKernel('dev', true);
 }
 $kernel->loadClassCache();
