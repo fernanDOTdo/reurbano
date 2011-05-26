@@ -13,6 +13,7 @@ $loader->registerNamespaces(array(
     'Monolog'          => __DIR__.'/../vendor/monolog/src',
     'Assetic'          => __DIR__.'/../vendor/assetic/src',
     'Acme'             => __DIR__.'/../src',
+    'Mastop'           => __DIR__.'/../src',
 
     'Mandango\MandangoBundle' => __DIR__.'/../vendor/bundles',
     'Mandango\Mondator'       => __DIR__.'/../vendor/mondator/src',
