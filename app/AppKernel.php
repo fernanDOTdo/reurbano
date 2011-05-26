@@ -22,10 +22,12 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             new Mandango\MandangoBundle\MandangoBundle(),
+            new Mastop\SystemBundle\MastopSystemBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
+            $bundles[] = new Mastop\TesteBundle\MastopTesteBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\WebConfiguratorBundle\SymfonyWebConfiguratorBundle();
         }
@@ -41,7 +43,9 @@ class AppKernel extends Kernel
 
             DebugUniversalClassLoader::enable();
             ErrorHandler::register();
-            ExceptionHandler::register();
+            if ('cli' !== php_sapi_name()) {
+                ExceptionHandler::register();
+            }
         } else {
             ini_set('display_errors', 0);
         }

@@ -8,7 +8,7 @@ framework:
     router: { resource: "%kernel.root_dir%/config/routing.yml" }
     form: true
     csrf_protection: true
-    validation: true
+    validation: { enable_annotations: true }
     templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
     session:
         default_locale: %locale%
@@ -62,3 +62,7 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+    
+mastop_system:
+    themes: ['teste', 'ping-poing', 'mastop']
+    activeTheme: 'mastop'
