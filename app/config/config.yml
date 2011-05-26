@@ -62,7 +62,3 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
-    
-mastop_system:
-    themes: ['teste', 'ping-poing', 'mastop']
-    activeTheme: 'mastop'

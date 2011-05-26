@@ -1,7 +1,7 @@
-_teste:
-    resource: "@MastopTesteBundle/Controller/TesteController.php"
-    type: annotation
-    prefix:   /teste
+#_teste:
+#    resource: "@MastopTesteBundle/Controller/TesteController.php"
+#    type: annotation
+#    prefix:   /teste
 
 _welcome:
     pattern:  /
