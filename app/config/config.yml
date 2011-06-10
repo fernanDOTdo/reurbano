@@ -23,9 +23,25 @@ twig:
 # Assetic Configuration
 assetic:
     debug: %kernel.debug%
+    read_from:      %themes_dir%
+    write_to: %kernel.root_dir%/../web/themes
     use_controller: false
+#    assets:
+#        teste: css/text.css
+#        testejs: css/text.css
     filters:
         cssrewrite: ~
+        sass:
+            apply_to: "\.sass$"
+        yui_css:
+            jar: %kernel.root_dir%/java/yuicompressor-2.4.6.jar
+        yui_js:
+            jar: %kernel.root_dir%/java/yuicompressor-2.4.6.jar
+#    twig:
+#        functions:
+#            yui_css: { output: css/*.css }
+#    filters:
+#        cssrewrite: ~
         # closure:
         # jar: %kernel.root_dir%/java/compiler.jar
         # yui_css:
@@ -62,3 +78,7 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+
+mastop_system:
+    themes_dir: %themes_dir%
+    active_theme: "mastop"
