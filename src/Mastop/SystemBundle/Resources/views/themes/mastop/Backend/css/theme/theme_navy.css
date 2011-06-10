@@ -1,0 +1,138 @@
+/* Colours:
+	Top grad (light): #2b4356
+	Bottom grad (darker): #122b45
+	a link: #e96218
+	a hover: #fc7125
+	tab bg (dark): #112238
+ */
+
+
+a.logo, #login_box a#login_logo{
+	background: transparent url(../../images/adminica_logo_navy-trans.png) no-repeat;
+}
+	
+#login_box a#login_logo{
+	background-position: 0 -15px;
+}
+
+/* Coloured Header Gradients, eg. Sortable Boxes, Tab Boxes, Date-picker, etc. */
+
+body .grad_colour,
+.ui-widget-header,
+div.main_container #nav_top > ul > li.current > a,
+#nav_top ul li ul.dropdown li ul.slideout,
+.dataTables_wrapper .ui-corner-tl,
+#sidebar ul#accordion li ul.drawer,
+div.main_container .box h2.box_head,
+.slider .slide-up, .slider .slide-down,
+.slider-content .selected .title{
+
+background-color: #2b4356; /* old browsers */
+
+background: -moz-linear-gradient(top, #2b4356 0%, #122b45 99%); /* firefox */
+
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b4356), color-stop(99%,#122b45)); /* webkit */
+
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2b4356', endColorstr='#122b45',GradientType=0 ); /* ie */
+
+border:1px solid #122b45;
+	
+zoom:1;
+}
+
+
+
+
+/* Theme Button and some ON states */
+
+
+button, button.skin_colour{
+
+	background: #2b4356; /* old browsers */
+	
+	background: -moz-linear-gradient(top, #2b4356 0%, #122b45 99%); /* firefox */
+	
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b4356), color-stop(99%,#122b45)); /* webkit */
+	
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2b4356', endColorstr='#122b45',GradientType=0 ); /* ie */
+		
+	border: 1px solid #122b45;
+		
+	-moz-box-shadow:0px 1px 0px rgba(255,255,255,1),inset 0px 1px 0px rgba(255,255,255,0.2);
+	-webkit-box-shadow:0px 1px 0px rgba(255,255,255,1),	inset 0px 1px 0px rgba(255,255,255,0.2);
+	text-shadow:0px -1px 1px rgba(000,000,000,1),0px 1px 0px rgba(255,255,255,0.2)
+
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	
+	zoom:1;
+}
+
+button:hover, button.skin_colour:hover,
+div.main_container .gallery ul li a:hover{
+
+	background: #122b45; /* old browsers */
+	
+	background: -moz-linear-gradient(top, #122b45 0%, #2b4356 99%); /* firefox */
+	
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#122b45), color-stop(99%,#2b4356)); /* webkit */
+	
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#122b45', endColorstr='#2b4356',GradientType=0 ); /* ie */
+
+	zoom:1;	
+}
+
+
+
+/* Links, hovers, tabs*/
+
+div.main_container a, ul#side_links li a, #sidebar h3 a, #topbar h3 a
+{
+	color:#e96218;}
+div.main_container a:hover, ul#side_links li a:hover,
+#sidebar h3 a:hover, #topbar h3 a:hover,
+div.main_container .tabs ul.tab_header li a:hover,
+div.main_container .tabs ul.tab_sider li a:hover{
+	color:#fc7125;}
+	
+#sidebar form#search_side:hover{
+border-color:#fc7125;}
+
+
+div.main_container .tabs ul.tab_header li a,
+div.main_container .tabs ul.tab_sider li a {
+    background-color: #112238; /* Dark Navy */
+    
+}
+.dataTables_wrapper .ui-widget-header select,
+#sidebar ul#accordion li ul.drawer li a,
+.dataTables_wrapper .ui-widget-header input,
+#nav_top ul li ul.dropdown li ul.slideout li a,
+div.main_container #nav_top ul li.current:first-child a
+div.main_container #nav_top ul li.current a {
+	border-color: #112238;
+	}
+	
+
+	
+.dataTables_wrapper .dataTables_paginate span span.ui-state-disabled{
+	border-color:#112238;
+	background-color:#122b45;
+}
+
+div.main_container .datepicker .ui-state-active{
+		background-color:#fc7125 !important;
+}
+
+#nav_top ul li a:hover,
+#sidebar ul#accordion li a:hover,
+#nav_top ul li ul.dropdown li a.has_slide:hover{
+	color:#122b45;
+}
+
+#sidebar ul#accordion li a.ui-state-active{
+	color:#122b45;}
+	
+
+
