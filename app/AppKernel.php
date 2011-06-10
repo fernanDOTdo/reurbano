@@ -22,12 +22,12 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             new Mandango\MandangoBundle\MandangoBundle(),
-        //    new Mastop\SystemBundle\MastopSystemBundle(),
+            new Mastop\SystemBundle\MastopSystemBundle(),
+            new Acme\DemoBundle\AcmeDemoBundle(),
+            new Mastop\TesteBundle\MastopTesteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
-        //    $bundles[] = new Mastop\TesteBundle\MastopTesteBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\WebConfiguratorBundle\SymfonyWebConfiguratorBundle();
         }
