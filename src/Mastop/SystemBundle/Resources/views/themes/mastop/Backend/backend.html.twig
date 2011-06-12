@@ -22,8 +22,8 @@
 
 
 <!-- Create an icon and splash screen for iPhone and iPad -->
-<link rel="apple-touch-icon" href="/themes/mastop/admin/images/iOS_icon.png">
-<link rel="apple-touch-startup-image" href="/themes/mastop/admin/images/iOS_startup.png">
+<link rel="apple-touch-icon" href="{{ asset('themes/mastop/admin/images/iOS_icon.png') }}">
+<link rel="apple-touch-startup-image" href="{{ asset('themes/mastop/admin/images/iOS_startup.png') }}">
     
 
 {% stylesheets 'mastop/Backend/css/all.css' 'mastop/Backend/css/layout_fixed.css' 'mastop/Backend/css/header_top.css' 'mastop/Backend/css/mastop.css' filter='yui_css' output='themes/mastop/admin/css/pack.css' %}
@@ -52,13 +52,13 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 		
 <!-- Load Interface Plugins -->
-<script type="text/javascript" src="/themes/mastop/admin/js/uniform/jquery.uniform.js"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/uniform/jquery.uniform.js') }}"></script>
 
-<script type="text/javascript" src="/themes/mastop/admin/js/iPhone/jquery.iphoneui.js"></script>
-<script type="text/javascript" src="/themes/mastop/admin/js/uitotop/js/jquery.ui.totop.js"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/iPhone/jquery.iphoneui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/uitotop/js/jquery.ui.totop.js') }}"></script>
 
 <!-- This file configures the various jQuery plugins for Adminica. Contains links to help pages for each plugin. -->
-<script type="text/javascript" src="/themes/mastop/admin/js/adminica/adminica_ui.js"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_ui.js') }}"></script>
 
 
 {% block stylesheets %}{% endblock %}
@@ -71,21 +71,21 @@
 {# Topbar #}
 <div id="topbar" class="clearfix container_12">
 	
-	<a href="dashboard_sorter.php" class="logo grid_4"><span>Adminica</span></a>
+	<a href="{{ asset('dashboard_sorter.php') }}" class="logo grid_4"><span>Adminica</span></a>
 	<div id="search_bar" class="grid_5">
 	<form>
 		<input class="indent round_all" type="text" name="busca" value="" />
 		<div class="place_search">
 			<button class="button_colour round_all">
                                 <span></span>
-				<img src="/themes/mastop/admin/images/icons/small/white/magnifying_glass.png" width="24" height="24" alt="Magnifying Glass">
+				<img src="{{ asset('themes/mastop/admin/images/icons/small/white/magnifying_glass.png') }}" width="24" height="24" alt="Magnifying Glass">
 				<span>Busca</span>
 			</button>
 		</div>
 	</form>
         </div>
 	<div class="user_box round_all grid_3">
-		<img src="/themes/mastop/admin/images/profile.jpg" width="55" alt="Profile Pic" />
+		<img src="{{ asset('themes/mastop/admin/images/profile.jpg') }}" width="55" alt="Profile Pic" />
 		<h2>Administrator</h2>
 		<h3><a class="text_shadow" href="#">John Smith</a></h3>
 		<ul>
@@ -102,19 +102,19 @@
 {# Mensagens do Sistema #}
 {% if app.session.hasFlash('error') %}
 <div class="alert alert_red">
-    <img height="24" width="24" src="/themes/mastop/admin/images/icons/small/white/Alert.png" />
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/small/white/Alert.png') }}" />
     <strong>Erro: </strong> {{ app.session.flash('error')|raw }}
 </div>
 {% endif %}
 {% if app.session.hasFlash('ok') %}
 <div class="alert alert_green">
-    <img height="24" width="24" src="/themes/mastop/admin/images/icons/small/white/Finish%20Flag.png" />
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/small/white/Finish%20Flag.png') }}" />
     {{ app.session.flash('ok')|raw }}
 </div>
 {% endif %}
 {% if app.session.hasFlash('notice') %}
 <div class="alert alert_grey">
-    <img height="24" width="24" src="/themes/mastop/admin/images/icons/small/white/Speech%20Bubble%202.png" />
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/small/white/Speech%20Bubble%202.png') }}" />
     <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}
 </div>
 {% endif %}
@@ -123,27 +123,27 @@
 {# Navigation #}
 <div id="nav_top" class="clearfix round_top">
 	<ul class="clearfix round_all">
-		<li class="current"><a href="dashboard_sorter.php"><img src="/themes/mastop/admin/images/icons/small/white/laptop.png"/>Dashboard</a></li>
+		<li class="current"><a href="{{ asset('dashboard_sorter.php') }}"><img src="{{ asset('themes/mastop/admin/images/icons/small/white/laptop.png') }}"/>Dashboard</a></li>
 	
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/frames.png"/>Layout</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/frames.png') }}"/>Layout</a>
 			<ul class="dropdown">
 				<li><a href="layout.php">16 Grid - 960.gs</a></li>
 				<li><a href="text.php">Text & Typography</a></li>
 				<li><a class="has_slide" href="#">Layout Width</a>
 					<ul class="slideout">						
-						<li><a href="/themes/mastop/admin/css/theme/switcher1.php?style=../layout_fixed.css">Fixed</a></li>
-						<li><a href="/themes/mastop/admin/css/theme/switcher1.php?style=switcher.css">Fluid</a></li>
+						<li><a href="{{ asset('themes/mastop/admin/css/theme/switcher1.php?style=../layout_fixed.css') }}">Fixed</a></li>
+						<li><a href="{{ asset('themes/mastop/admin/css/theme/switcher1.php?style=switcher.css') }}">Fluid</a></li>
 					</ul>
 				</li>
 				<li><a class="has_slide" href="#">Layout Position</a>
 					<ul class="slideout">
-						<li><a href="/themes/mastop/admin/css/theme/switcher2.php?style=switcher.css">Side</a></li>
-						<li><a href="/themes/mastop/admin/css/theme/switcher2.php?style=../layout_top.css">Top</a></li>
+						<li><a href="{{ asset('themes/mastop/admin/css/theme/switcher2.php?style=switcher.css') }}">Side</a></li>
+						<li><a href="{{ asset('themes/mastop/admin/css/theme/switcher2.php?style=../layout_top.css') }}">Top</a></li>
 					</ul>
 				</li>
 			</ul>
 		</li>
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/coverflow.png"/>Boxes</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/coverflow.png') }}"/>Boxes</a>
 			<ul class="dropdown">
 				<li><a class="has_slide" href="#">Tab Boxes</a>
 					<ul class="slideout">
@@ -156,7 +156,7 @@
 				<li><a href="/themes/mastop/admin/code.php">Code View</a></li>
 			</ul>
 		</li>	
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/create_write.png"/>Forms</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/create_write.png') }}"/>Forms</a>
 			<ul class="dropdown">
 				<li><a href="forms.php">Input & Validation</a></li>
 				<li><a class="has_slide" href="#">Date</a>
@@ -177,27 +177,27 @@
 				<li><a href="editor.php">WYSIWYG Editor</a></li>
 			</ul>
 		</li>		
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/images.png"/>Gallery</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/images.png') }}"/>Gallery</a>
 			<ul class="dropdown">
 				<li><a href="gallery.php">Fancybox Gallery</a></li>
 				<li><a href="gallery_sortable.php">Sortable Gallery</a></li>
 			</ul>
 		</li>			
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/blocks_images.png"/>Tables</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/blocks_images.png') }}"/>Tables</a>
 			<ul class="dropdown dropdown_left">
 				<li><a href="tables.php">DataTables</a></li>
 				<li><a href="tables_static.php">Regular Tables</a></li>
 			</ul>			
 		</li>
-		<li><a href="#"><img src="/themes/mastop/admin/images/icons/small/grey/plane_suitcase.png"/>Organize</a>
+		<li><a href="#"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/plane_suitcase.png') }}"/>Organize</a>
 			<ul class="dropdown dropdown_left">
-				<li><a href="files.php"><img src="/themes/mastop/admin/images/icons/small/grey/folder.png"/>Files</a></li>
-				<li><a href="contacts.php"><img src="/themes/mastop/admin/images/icons/small/grey/users.png"/>Contacts</a></li>
+				<li><a href="files.php"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/folder.png') }}"/>Files</a></li>
+				<li><a href="contacts.php"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/users.png') }}"/>Contacts</a></li>
 			</ul>
 		</li>
-		<li><a href="calendar.php"><img src="/themes/mastop/admin/images/icons/small/grey/month_calendar.png"/>Calendar</a></li>
-		<li><a href="charts.php"><img src="/themes/mastop/admin/images/icons/small/grey/graph.png"/>Charts</a></li>
-		<li><a href="login.php"><img src="/themes/mastop/admin/images/icons/small/grey/locked_2.png"/>Login</a></li>
+		<li><a href="calendar.php"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/month_calendar.png') }}"/>Calendar</a></li>
+		<li><a href="charts.php"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/graph.png') }}"/>Charts</a></li>
+		<li><a href="login.php"><img src="{{ asset('themes/mastop/admin/images/icons/small/grey/locked_2.png') }}"/>Login</a></li>
 	</ul>	
 </div><!-- #nav_top -->
 {# /Navigation #}
