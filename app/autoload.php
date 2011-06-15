@@ -20,8 +20,9 @@ $loader->registerNamespaces(array(
     'Doctrine\\MongoDB'       => __DIR__.'/../vendor/doctrine-mongodb/lib',
     'Doctrine\\ODM\\MongoDB'  => __DIR__.'/../vendor/doctrine-mongodb-odm/lib',
 
-    'Model'                   => __DIR__.'/../src/',
-));
+    'Doctrine\\Common\\DataFixtures' => __DIR__.'/../vendor/doctrine-fixtures/lib',
+        
+    ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',
     'Twig_' => __DIR__.'/../vendor/twig/lib',

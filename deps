@@ -11,11 +11,10 @@ metadata / http://github.com/schmittjoh/metadata.git
 FrameworkExtraBundle /bundles/Sensio/Bundle http://github.com/sensio/SensioFrameworkExtraBundle.git
 SecurityExtraBundle /bundles/JMS http://github.com/schmittjoh/SecurityExtraBundle.git
 WebConfiguratorBundle /bundles/Symfony/Bundle http://github.com/symfony/WebConfiguratorBundle.git
-mandango / git://github.com/mandango/mandango.git
-mondator / git://github.com/mandango/mondator.git
-MandangoBundle /bundles/Mandango git://github.com/mandango/MandangoBundle.git
 doctrine-mongodb / git://github.com/doctrine/mongodb.git
 doctrine-mongodb-odm / git://github.com/doctrine/mongodb-odm.git
 DoctrineMongoDBBundle /bundles/Symfony/Bundle git://github.com/symfony/DoctrineMongoDBBundle.git
 DoctrineMigrationsBundle /bundles/Symfony/Bundle git://github.com/symfony/DoctrineMigrationsBundle.git
 doctrine-migrations / git://github.com/doctrine/migrations.git
+doctrine-fixtures   / http://github.com/doctrine/data-fixtures.git
+DoctrineFixturesBundle  /bundles/Symfony/Bundle http://github.com/symfony/DoctrineFixturesBundle.git
