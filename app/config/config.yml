@@ -14,7 +14,6 @@ framework:
         default_locale: %locale%
         lifetime: 3600
         auto_start: true
-    translator: { fallback: ptBR }
 
 # Twig Configuration
 twig:
@@ -61,18 +60,13 @@ assetic:
 #        auto_generate_proxy_classes: %kernel.debug%
 #        auto_mapping: true
 
-doctrine_mongodb:
+# Mandango
+mandango:
+    default_connection: local
     connections:
-        default:
-            server: %mongo_server%
-            options:
-                connect: true
-    default_database: %mongo_database%_%kernel.environment%
-    document_managers:
-        default:
-            mappings:
-                MastopUserBundle: ~
-            metadata_cache_driver: array # array, apc, xcache, memcache
+        local:
+            server:   %mongo_server%
+            database: %mongo_database%_%kernel.environment%
 
 # Swiftmailer Configuration
 swiftmailer:
