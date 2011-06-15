@@ -21,10 +21,12 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
-            new Mandango\MandangoBundle\MandangoBundle(),
             new Mastop\SystemBundle\MastopSystemBundle(),
+            new Mastop\UserBundle\MastopUserBundle(),
             new Acme\DemoBundle\AcmeDemoBundle(),
             new Mastop\TesteBundle\MastopTesteBundle(),
+            new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
+            new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
