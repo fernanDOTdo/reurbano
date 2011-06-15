@@ -1,12 +1,3 @@
-[submodule "vendor/mandango"]
-	path = vendor/mandango
-	url = git://github.com/mandango/mandango
-[submodule "vendor/mondator"]
-	path = vendor/mondator
-	url = git://github.com/mandango/mondator
-[submodule "vendor/bundles/Mandango/MandangoBundle"]
-	path = vendor/bundles/Mandango/MandangoBundle
-	url = git://github.com/mandango/MandangoBundle
 [submodule "vendor/symfony"]
 	path = vendor/symfony
 	url = git://github.com/symfony/symfony.git
@@ -46,3 +37,24 @@
 [submodule "vendor/metadata"]
 	path = vendor/metadata
 	url = http://github.com/schmittjoh/metadata.git
+[submodule "vendor/doctrine-mongodb"]
+	path = vendor/doctrine-mongodb
+	url = git://github.com/doctrine/mongodb.git
+[submodule "vendor/doctrine-mongodb-odm"]
+	path = vendor/doctrine-mongodb-odm
+	url = git://github.com/doctrine/mongodb-odm.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+	url = git://github.com/symfony/DoctrineMongoDBBundle.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle
+	url = git://github.com/symfony/DoctrineMigrationsBundle.git
+[submodule "vendor/doctrine-migrations"]
+	path = vendor/doctrine-migrations
+	url = git://github.com/doctrine/migrations.git
+[submodule "vendor/doctrine-fixtures"]
+	path = vendor/doctrine-fixtures
+	url = http://github.com/doctrine/data-fixtures.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle
+	url = http://github.com/symfony/DoctrineFixturesBundle.git
