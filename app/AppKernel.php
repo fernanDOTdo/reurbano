@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 
             new Mastop\SystemBundle\MastopSystemBundle(),
-            new Mastop\UserBundle\MastopUserBundle(),
+            #new Mastop\UserBundle\MastopUserBundle(),
             new Acme\DemoBundle\AcmeDemoBundle(),
             new Mastop\TesteBundle\MastopTesteBundle(),
             new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
