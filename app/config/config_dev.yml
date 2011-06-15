@@ -21,7 +21,3 @@ monolog:
 
 assetic:
     use_controller: true
-
-# Mandango
-mandango:
-    logging: true

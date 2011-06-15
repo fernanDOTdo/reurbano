@@ -19,3 +19,5 @@ doctrine-mongodb-odm / git://github.com/doctrine/mongodb-odm.git
 DoctrineMongoDBBundle /bundles/Symfony/Bundle git://github.com/symfony/DoctrineMongoDBBundle.git
 DoctrineMigrationsBundle /bundles/Symfony/Bundle git://github.com/symfony/DoctrineMigrationsBundle.git
 doctrine-migrations / git://github.com/doctrine/migrations.git
+doctrine-fixtures   / http://github.com/doctrine/data-fixtures.git
+DoctrineFixturesBundle  /bundles/Symfony/Bundle http://github.com/symfony/DoctrineFixturesBundle.git

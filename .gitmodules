@@ -46,3 +46,9 @@
 [submodule "vendor/metadata"]
 	path = vendor/metadata
 	url = http://github.com/schmittjoh/metadata.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle
+	url = http://github.com/symfony/DoctrineFixturesBundle.git
+[submodule "vendor/doctrine-fixtures"]
+	path = vendor/doctrine-fixtures
+	url = http://github.com/doctrine/data-fixtures.git
