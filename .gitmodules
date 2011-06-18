@@ -58,3 +58,6 @@
 [submodule "vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle"]
 	path = vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle
 	url = http://github.com/symfony/DoctrineFixturesBundle.git
+[submodule "vendor/bundles/Symfony/Bundle/AsseticBundle"]
+	path = vendor/bundles/Symfony/Bundle/AsseticBundle
+	url = http://github.com/symfony/AsseticBundle.git
