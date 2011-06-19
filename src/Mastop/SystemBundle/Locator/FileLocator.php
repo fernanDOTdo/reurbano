@@ -76,6 +76,7 @@ class FileLocator extends BaseFileLocator
 */
     public function locate($name, $dir = null, $first = true)
     {
+        $name = str_replace('\\', '/', $name);
         // atualiza o tema ativo se necessário.
         if($this->activeTheme !== $this->theme->getName()) {
             $this->setActiveTheme($this->theme->getName());
