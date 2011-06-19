@@ -21,7 +21,7 @@ class TesteController extends Controller {
         $ret = array();
         $ret['data'] = date("d/m/Y H:i:s");
         $form = $this->createFormBuilder(new Teste())
-            ->add('name', 'text', array('title'=>'class'))
+            ->add('name', 'text')
             ->add('price', 'money', array('currency' => 'BRL'))
             ->getForm();
         
