@@ -1,10 +1,8 @@
-_home:
-    pattern:  /
-    defaults: { _controller: MastopSystemBundle:Home:index }
-    
-_teste:
-    resource: "@MastopTesteBundle/Controller/TesteController.php"
-    type: annotation
+mastop_system:
+  resource: "@MastopSystemBundle/Resources/config/routing/routing.yml"
+
+mastop_teste:
+    resource: "@MastopTesteBundle/Resources/config/routing/teste.yml"
     prefix:   /teste
 
 #_welcome:
