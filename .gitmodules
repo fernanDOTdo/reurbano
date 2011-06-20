@@ -22,9 +22,6 @@
 [submodule "vendor/bundles/JMS/SecurityExtraBundle"]
 	path = vendor/bundles/JMS/SecurityExtraBundle
 	url = http://github.com/schmittjoh/SecurityExtraBundle.git
-[submodule "vendor/bundles/Symfony/Bundle/WebConfiguratorBundle"]
-	path = vendor/bundles/Symfony/Bundle/WebConfiguratorBundle
-	url = http://github.com/symfony/WebConfiguratorBundle.git
 [submodule "vendor/doctrine"]
 	path = vendor/doctrine
 	url = http://github.com/doctrine/doctrine2.git
@@ -61,3 +58,6 @@
 [submodule "vendor/bundles/Symfony/Bundle/AsseticBundle"]
 	path = vendor/bundles/Symfony/Bundle/AsseticBundle
 	url = http://github.com/symfony/AsseticBundle.git
+[submodule "vendor/bundles/Sensio/Bundle/DistributionBundle"]
+	path = vendor/bundles/Sensio/Bundle/DistributionBundle
+	url = http://github.com/sensio/SensioDistributionBundle.git
