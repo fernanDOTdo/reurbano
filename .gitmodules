@@ -61,3 +61,6 @@
 [submodule "vendor/bundles/Sensio/Bundle/DistributionBundle"]
 	path = vendor/bundles/Sensio/Bundle/DistributionBundle
 	url = http://github.com/sensio/SensioDistributionBundle.git
+[submodule "vendor/bundles/Mastop"]
+	path = vendor/bundles/Mastop
+	url = git@github.com:mastop/MastopBundles.git

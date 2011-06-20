@@ -69,3 +69,7 @@
 [DoctrineMongoDBBundle]
     git=http://github.com/symfony/DoctrineMongoDBBundle.git
     target=/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+
+[MastopBundles]
+    git=git@github.com:mastop/MastopBundles.git
+    target=/bundles/Mastop

@@ -1,3 +1,0 @@
-_home:
-    pattern:  /
-    defaults: { _controller: MastopSystemBundle:Frontend\Home:index }
