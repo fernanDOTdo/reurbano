@@ -15,7 +15,7 @@ $loader->registerNamespaces(array(
     'Assetic' => __DIR__.'/../vendor/assetic/src',
     'Metadata' => __DIR__.'/../vendor/metadata/src',
 
-    'Mastop'           => __DIR__.'/../src',
+    'Mastop'           => __DIR__.'/../vendor/bundles',
     
     'Doctrine\\MongoDB'       => __DIR__.'/../vendor/doctrine-mongodb/lib',
     'Doctrine\\ODM\\MongoDB'  => __DIR__.'/../vendor/doctrine-mongodb-odm/lib',

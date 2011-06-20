@@ -1,8 +1,0 @@
-_frontend:
-    resource: "@MastopTesteBundle/Controller/Frontend/TesteController.php"
-    type: annotation
-    prefix:   /
-_backend:
-    resource: "@MastopTesteBundle/Controller/Backend/TesteController.php"
-    type: annotation
-    prefix:   /admin
