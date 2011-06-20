@@ -5,7 +5,7 @@ VENDOR="$DIR/vendor"
 VERSION=`cat "$DIR/VERSION"`
 BUNDLES=$VENDOR/bundles
 
-echo "> Atualizando SubmÛdulos "
+echo "> Atualizando Subm√≥dulos "
 git submodule update --init
 
 # Update submodules
