@@ -64,3 +64,6 @@
 [submodule "vendor/bundles/Mastop"]
 	path = vendor/bundles/Mastop
 	url = git@github.com:mastop/MastopBundles.git
+[submodule "vendor/bundles/Sensio/Bundle/GeneratorBundle"]
+	path = vendor/bundles/Sensio/Bundle/GeneratorBundle
+	url = http://github.com/sensio/SensioGeneratorBundle.git
