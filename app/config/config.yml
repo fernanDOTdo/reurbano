@@ -1,0 +1,89 @@
+imports:
+    - { resource: parameters.ini }
+    - { resource: security.yml }
+
+framework:
+    secret: %secret%
+    charset: UTF-8
+    router: { resource: "%kernel.root_dir%/config/routing.yml" }
+    form: true
+    csrf_protection: true
+    validation: { enable_annotations: true }
+    templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
+    session:
+        default_locale: %locale%
+        auto_start: true
+    translator: { fallback: ptBR }
+
+# Twig Configuration
+twig:
+    debug: %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug: %kernel.debug%
+    read_from:      %themes_dir%
+    write_to: %kernel.root_dir%/../web/themes
+    use_controller: false
+#    assets:
+#        teste: css/text.css
+#        testejs: css/text.css
+    filters:
+        cssrewrite: ~
+        sass:
+            apply_to: "\.sass$"
+        yui_css:
+            jar: %kernel.root_dir%/java/yuicompressor-2.4.6.jar
+        yui_js:
+            jar: %kernel.root_dir%/java/yuicompressor-2.4.6.jar
+#    twig:
+#        functions:
+#            yui_css: { output: css/*.css }
+#    filters:
+#        cssrewrite: ~
+        # closure:
+        # jar: %kernel.root_dir%/java/compiler.jar
+        # yui_css:
+        # jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+
+# Doctrine Configuration
+#doctrine:
+#    dbal:
+#        driver:   %database_driver%
+#        host:     %database_host%
+#        dbname:   %database_name%
+#        user:     %database_user%
+#        password: %database_password%
+#
+#    orm:
+#        auto_generate_proxy_classes: %kernel.debug%
+#        auto_mapping: true
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: %mongo_server%
+            options:
+                connect: true
+    default_database: %mongo_database%_%kernel.environment%
+    document_managers:
+        default:
+            mappings:
+#                MastopUserBundle: ~
+            metadata_cache_driver: array # array, apc, xcache, memcache
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+
+jms_security_extra:
+    secure_controllers:  true
+    secure_all_services: false
+
+mastop_system:
+    themes_dir: %themes_dir%
+    active_theme: "mastop"

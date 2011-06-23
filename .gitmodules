@@ -1,0 +1,69 @@
+[submodule "vendor/symfony"]
+	path = vendor/symfony
+	url = git://github.com/symfony/symfony.git
+[submodule "vendor/assetic"]
+	path = vendor/assetic
+	url = http://github.com/kriswallsmith/assetic.git
+[submodule "vendor/swiftmailer"]
+	path = vendor/swiftmailer
+	url = http://github.com/swiftmailer/swiftmailer.git
+[submodule "vendor/twig"]
+	path = vendor/twig
+	url = http://github.com/fabpot/Twig.git
+[submodule "vendor/twig-extensions"]
+	path = vendor/twig-extensions
+	url = http://github.com/fabpot/Twig-extensions.git
+[submodule "vendor/monolog"]
+	path = vendor/monolog
+	url = http://github.com/Seldaek/monolog.git
+[submodule "vendor/bundles/Sensio/Bundle/FrameworkExtraBundle"]
+	path = vendor/bundles/Sensio/Bundle/FrameworkExtraBundle
+	url = http://github.com/sensio/SensioFrameworkExtraBundle.git
+[submodule "vendor/bundles/JMS/SecurityExtraBundle"]
+	path = vendor/bundles/JMS/SecurityExtraBundle
+	url = http://github.com/schmittjoh/SecurityExtraBundle.git
+[submodule "vendor/doctrine"]
+	path = vendor/doctrine
+	url = http://github.com/doctrine/doctrine2.git
+[submodule "vendor/doctrine-dbal"]
+	path = vendor/doctrine-dbal
+	url = http://github.com/doctrine/dbal.git
+[submodule "vendor/doctrine-common"]
+	path = vendor/doctrine-common
+	url = http://github.com/doctrine/common.git
+[submodule "vendor/metadata"]
+	path = vendor/metadata
+	url = http://github.com/schmittjoh/metadata.git
+[submodule "vendor/doctrine-mongodb"]
+	path = vendor/doctrine-mongodb
+	url = git://github.com/doctrine/mongodb.git
+[submodule "vendor/doctrine-mongodb-odm"]
+	path = vendor/doctrine-mongodb-odm
+	url = git://github.com/doctrine/mongodb-odm.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+	url = git://github.com/symfony/DoctrineMongoDBBundle.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle
+	url = git://github.com/symfony/DoctrineMigrationsBundle.git
+[submodule "vendor/doctrine-migrations"]
+	path = vendor/doctrine-migrations
+	url = git://github.com/doctrine/migrations.git
+[submodule "vendor/doctrine-fixtures"]
+	path = vendor/doctrine-fixtures
+	url = http://github.com/doctrine/data-fixtures.git
+[submodule "vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle"]
+	path = vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle
+	url = http://github.com/symfony/DoctrineFixturesBundle.git
+[submodule "vendor/bundles/Symfony/Bundle/AsseticBundle"]
+	path = vendor/bundles/Symfony/Bundle/AsseticBundle
+	url = http://github.com/symfony/AsseticBundle.git
+[submodule "vendor/bundles/Sensio/Bundle/DistributionBundle"]
+	path = vendor/bundles/Sensio/Bundle/DistributionBundle
+	url = http://github.com/sensio/SensioDistributionBundle.git
+[submodule "vendor/bundles/Mastop"]
+	path = vendor/bundles/Mastop
+	url = git@github.com:mastop/MastopBundles.git
+[submodule "vendor/bundles/Sensio/Bundle/GeneratorBundle"]
+	path = vendor/bundles/Sensio/Bundle/GeneratorBundle
+	url = http://github.com/sensio/SensioGeneratorBundle.git
