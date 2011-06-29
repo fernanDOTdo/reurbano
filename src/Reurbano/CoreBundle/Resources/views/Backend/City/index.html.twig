@@ -1,0 +1,18 @@
+{% extends '::backend.html.twig' %}
+        
+{% block title %}Listagem de Cidades{% endblock %}
+
+
+{% block content %}
+<h1>Admin Area!</h1>
+<ul>
+  {% for key in cidades|keys %}
+    <li>{{ key }}</li>
+  {% endfor %}
+</ul>
+{% for cidade in cidades %}
+    {{ cidade.getId() }} - {{ cidade.getName() }} - {{ cidade.isSpecial() }} - {{ cidade.getOrder() }} - <a href="{{ path('admin_core_city_edit', {'id': cidade.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_core_city_delete', {'id': cidade.getId()}) }}">{{"Deletar"|trans}}</a><br />
+  {% else %}
+    Nenhuma cidade encontrada!
+  {% endfor %} 
+{% endblock %}
