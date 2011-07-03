@@ -70,7 +70,7 @@ doctrine_mongodb:
     document_managers:
         default:
             mappings:
-#                MastopUserBundle: ~
+                MastopUserBundle: ~
             metadata_cache_driver: array # array, apc, xcache, memcache
 
 # Swiftmailer Configuration

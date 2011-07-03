@@ -17,3 +17,18 @@ _demo:
     resource: "@AcmeDemoBundle/Controller/DemoController.php"
     type:     annotation
     prefix:   /demo
+    
+user:
+   resource:  "@MastopUserBundle/Resources/config/routing.yml"
+   prefix:   /usuario
+   
+userBackend:
+   resource:  "@MastopUserBundle/Resources/config/routingBackend.yml"
+   prefix:   /admin/usuario
+   
+login:
+    resource: "@MastopUserBundle/Controller/Frontend/SecurityController.php"
+    type:     annotation
+    prefix:   /login
+login_check:
+    pattern:   /login_check
