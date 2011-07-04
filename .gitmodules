@@ -21,7 +21,7 @@
 	url = http://github.com/sensio/SensioFrameworkExtraBundle.git
 [submodule "vendor/bundles/JMS/SecurityExtraBundle"]
 	path = vendor/bundles/JMS/SecurityExtraBundle
-	url = http://github.com/schmittjoh/SecurityExtraBundle.git
+	url = http://github.com/schmittjoh/JMSSecurityExtraBundle.git
 [submodule "vendor/doctrine"]
 	path = vendor/doctrine
 	url = http://github.com/doctrine/doctrine2.git
