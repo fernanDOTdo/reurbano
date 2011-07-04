@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
 
 framework:
+    #esi:             ~
     secret: %secret%
     charset: UTF-8
     router: { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -69,9 +70,8 @@ doctrine_mongodb:
     default_database: %mongo_database%_%kernel.environment%
     document_managers:
         default:
-            mappings:
-#                MastopUserBundle: ~
-            metadata_cache_driver: array # array, apc, xcache, memcache
+            auto_mapping: true
+            metadata_cache_driver: apc # array, apc, xcache, memcache
 
 # Swiftmailer Configuration
 swiftmailer:
