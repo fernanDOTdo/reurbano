@@ -2,14 +2,14 @@
 
 namespace Reurbano\UserBundle\Document;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Mastop\SystemBundle\Document\BaseRepository;
 use Reurbano\UserBundle\Document\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserRepository extends DocumentRepository implements UserProviderInterface {
+class UserRepository extends BaseRepository implements UserProviderInterface {
 
     /**
      * Encontra o user com o username fornecido

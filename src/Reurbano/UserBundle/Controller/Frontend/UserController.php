@@ -2,7 +2,8 @@
 
 namespace Reurbano\UserBundle\Controller\Frontend;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Mastop\SystemBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,7 +15,7 @@ use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
 use Reurbano\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserController extends Controller {
+class UserController extends BaseController {
 
     /**
      * @Route("/script.js", name="user_user_script")
@@ -36,8 +37,7 @@ class UserController extends Controller {
             if ($this->get('request')->getMethod() == 'POST') {
                 $email = $this->get('request')->request->get('email');
                 if (!empty($email)) {
-                    $dm = $this->get('doctrine.odm.mongodb.document_manager');
-                    $result = $dm->createQueryBuilder('ReurbanoUserBundle:user')
+                    $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                             ->field('email')->equals($email)
                             ->getQuery()
                             ->execute();
@@ -70,7 +70,7 @@ class UserController extends Controller {
      * @Template()
      */
     public function ativarAction($actkey) {
-        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
+        $repository = $this->mongo('ReurbanoUserBundle:User');
         $trad = $this->get('translator');
         $usuario = $repository->findByActkey($actkey);
         if (!empty($usuario)) {
@@ -122,7 +122,7 @@ class UserController extends Controller {
         $trad = $this->get('translator');
         $form = $this->get('form.factory')->create(new ReenviarForm());
         $dadosPost = $this->get('request')->request->get($form->getName());
-        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $usuario = $repository->findByField('email', $dadosPost['email']);
         if (!empty($usuario)) {
             if ($usuario->getActkey() != '' && $usuario->getStatus() != 1 && $usuario->getMailOk() == false) {
@@ -148,7 +148,7 @@ class UserController extends Controller {
      */
     public function detalhesAction($username) {
         $trad = $this->get('translator');
-        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $itens = $repository->findByUsername($username);
         if (count($itens) > 0) {
             return $this->render('ReurbanoUserBundle:Frontend/User:user.html.twig', array(
@@ -169,16 +169,13 @@ class UserController extends Controller {
         $factory = $this->get('form.factory');
         $form = $factory->create(new UserForm());
         $dadosPost = $request->request->get($form->getName());
-
-        $dm = $this->get('doctrine.odm.mongodb.document_manager');
-        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
         $trad = $this->get('translator');
         $erro = array();
         $form->bindRequest($request);
         if ($form->isValid()) {
             if (isset($dadosPost['id'])) {
                 //validar se o username inserido não existe ou se é o dele mesmo
-                $result = $dm->createQueryBuilder('ReurbanoUserBundle:user')
+                $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                         ->field('username')->equals($dadosPost['username'])
                         ->field('id')->notEqual($dadosPost['id'])
                         ->getQuery()
@@ -269,9 +266,8 @@ class UserController extends Controller {
                 $user->setMoneyFree(0);
                 $user->setMoneyBlock(0);
                 $user->setNewsletters($dadosPost['email'] == 1 ? true : false);
-                $dm = $this->get('doctrine.odm.mongodb.document_manager');
-                $dm->persist($user);
-                $dm->flush();
+                $this->dm()->persist($user);
+                $this->dm()->flush();
                 //envio de email para confirmar user
                 $this->emailActKey($dadosPost['email'], $dadosPost['name'], $actkey);
                 // /envio de email para confirmar user
@@ -292,7 +288,7 @@ class UserController extends Controller {
     public function editarAction($username) {
         $factory = $this->get('form.factory');
         $trad = $this->get('translator');
-        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
+        $repository = $this->mongo('ReurbanoUserBundle:User');
         $query = $repository->findByUsername($username);
         $form = $factory->create(new UserForm(), $query);
         if (count($query) > 0) {
