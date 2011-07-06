@@ -1,11 +1,11 @@
 services:
     mastop.user:
-        class: Mastop\UserBundle\Security\DocumentUserProvider
-        arguments: [@doctrine.odm.mongodb.security.user.document_manager, Mastop\UserBundle\Document\User]
+        class: Reurbano\UserBundle\Security\DocumentUserProvider
+        arguments: [@doctrine.odm.mongodb.security.user.document_manager, Reurbano\UserBundle\Document\User]
 
 security:
     encoders:
-        Mastop\UserBundle\Document\User: sha512
+        Reurbano\UserBundle\Document\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:

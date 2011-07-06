@@ -19,15 +19,15 @@ _demo:
     prefix:   /demo
     
 user:
-   resource:  "@MastopUserBundle/Resources/config/routing.yml"
+   resource:  "@ReurbanoUserBundle/Resources/config/routing.yml"
    prefix:   /usuario
    
 userBackend:
-   resource:  "@MastopUserBundle/Resources/config/routingBackend.yml"
+   resource:  "@ReurbanoUserBundle/Resources/config/routingBackend.yml"
    prefix:   /admin/usuario
    
 login:
-    resource: "@MastopUserBundle/Controller/Frontend/SecurityController.php"
+    resource: "@ReurbanoUserBundle/Controller/Frontend/SecurityController.php"
     type:     annotation
     prefix:   /login
 login_check:
