@@ -129,7 +129,7 @@ class UserController extends Controller {
                 $this->emailActKey($usuario->getEmail(), $usuario->getName(), $usuario->getActkey());
                 $msg = $trad->trans('user.user.reenviar.frontend.emailOk%email%', array("%email%" => $dadosPost['email']));
                 $this->get('session')->setFlash('ok', $msg);
-            }else{
+            } else {
                 $msg = $trad->trans('user.user.reenviar.frontend.userAtived%email%', array("%email%" => $dadosPost['email']));
                 $this->get('session')->setFlash('ok', $msg);
             }
@@ -154,18 +154,14 @@ class UserController extends Controller {
             return $this->render('ReurbanoUserBundle:Frontend/User:user.html.twig', array(
                 'usuario' => $itens));
         } else {
-            $msg = $trad->trans('user.user.frontend.view.erro404%username%', array("%username%" => $username));
+            $msg = $trad->trans('user.user.view.frontend.erro404%username%', array("%username%" => $username));
             $this->get('session')->setFlash('error', $msg);
-            return array('usuarios' => false);
+            return $this->redirect($this->generateUrl('_home'));
         }
-       
-
-        return $this->render('ReurbanoUserBundle:Frontend/User:index.html.twig', array(
-            'usuarios' => ''));
     }
 
     /**
-     * @Route("/usuario/salvar", name="user_user_salvar")
+     * @Route("/salvar", name="user_user_salvar")
      * @Template()
      */
     public function salvarAction() {
@@ -252,7 +248,7 @@ class UserController extends Controller {
                 }
                 $user = new user();
                 $user->setName($dadosPost['name']);
-                $user->setUsername(str_replace(".","",str_replace("@","",$dadosPost['email'])));
+                $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
                 $user->setActkey($actkey = uniqid());
                 $user->setMailOk(false);
                 $user->setStatus(0);
@@ -290,23 +286,25 @@ class UserController extends Controller {
     }
 
     /**
-     * @Route("/usuario/editar/{id}", name="_editar_user")
+     * @Route("/editar/{username}", name="user_user_editar")
      * @Template()
      */
-    public function editarAction($id) {
+    public function editarAction($username) {
         $factory = $this->get('form.factory');
-        $rep = $this->get('doctrine.odm.mongodb.document_manager');
-        //$query = $rep->getRepository('ReurbanoUserBundle:user')->findOneById($id);
-        $query = $rep->find('ReurbanoUserBundle:User', $id);
-        /* print_r($query);
-          exit(); */
+        $trad = $this->get('translator');
+        $repository = $this->get('doctrine.odm.mongodb.document_manager')->getRepository('ReurbanoUserBundle:User');
+        $query = $repository->findByUsername($username);
         $form = $factory->create(new UserForm(), $query);
-
-//print_r($form->getData());
-        return $this->render('ReurbanoUserBundle:Backend/User:editar.html.twig', array(
-            'form' => $form->createView(),
-            'id' => $id, 'nome' => $query->getName()
-        ));
+        if (count($query) > 0) {
+            return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
+                'form' => $form->createView(),
+                'id' => $username, 'nome' => $query->getName()
+            ));
+        } else {
+            $msg = $trad->trans('user.user.view.frontend.erro404%username%', array("%username%" => $username));
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('_home'));
+        }
     }
 
     /**

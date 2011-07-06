@@ -21,7 +21,7 @@ _404: Nenhum registro encontrado
 _NOTAJAX: A polícia vai te pegar!!!
 _CREATE: Criar minha conta
 _NEVER: Nunca
-
+_ERRO404%username%: Não existe o usuário %username%
 
 #Globais em formulários
 Password: "Senha "
@@ -73,7 +73,6 @@ user:
           userAtived%email%: O usuário %email% já está ativo em nosso site, se não conseguir fazer login tente recuperar a senha.
       view:
         frontend:
-          erro404%username%: Não existe o usuário %username%
           det%username%: Detalhes do usuário %username%
           name%name%: <b>Nome: </b> %name%
           email%email%: <b>Email: </b> %email%
