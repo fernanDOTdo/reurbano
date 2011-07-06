@@ -1,0 +1,16 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+        <h1>{% trans %}user.user.novo.frontend.new{% endtrans %}</h1>
+        <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+            <input type="submit" name='salvar' value='{% trans%}_CREATE{% endtrans %}' />
+            <input type="button" name='voltar' value='{% trans%}_CANCEL{% endtrans %}' onclick="history.go(-1)" />
+        </form>
+{% endblock content %}  
+{% block javascripts %}
+        <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
+        {% javascripts output='qualquer/coisa.js' 
+                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}

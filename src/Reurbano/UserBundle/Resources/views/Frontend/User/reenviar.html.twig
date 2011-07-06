@@ -1,0 +1,10 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+        <h1>{% trans %}user.user.reenviar.frontend.title{% endtrans %}</h1>
+        <form action="{{ path('user_user_reenviarOk') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+            <input type="submit" name='reenviar' value='{% trans%}user.user.reenviar.frontend.reenviar{% endtrans %}' />
+            <input type="button" name='voltar' value='{% trans%}_CANCEL{% endtrans %}' onclick="history.go(-1)" />
+        </form>
+        <div class='info_box info'>{% trans %}user.user.reenviar.frontend.warning{% endtrans %}</div>
+{% endblock content %}  

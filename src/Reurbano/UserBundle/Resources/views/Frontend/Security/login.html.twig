@@ -1,0 +1,21 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+{% if error %}
+<div>{{ error.message }}</div>
+{% endif %}
+
+<form action="{{ path("login_check") }}" method="post">
+    <label for="username">Email:</label>
+    <input type="text" id="umail" name="_umail" value="{{ last_username }}" />
+    <br />
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="_password" />
+    <br />
+    <input type="checkbox" id="remember_me" name="_remember_me" checked />
+    <label for="remember_me">{% trans %}Remember{% endtrans %}</label>
+    <br />
+    <input type="submit" name="login" value="Login!"/>
+</form>
+<a href="{{ path('_user_forget') }}" title="Troque sua senha">Esqueci minha senha</a>
+
+{% endblock content %}  

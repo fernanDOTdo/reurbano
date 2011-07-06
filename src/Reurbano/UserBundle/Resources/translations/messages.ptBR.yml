@@ -1,0 +1,83 @@
+# globais
+_YES: Sim
+_NO: Não
+_SEND: Enviar
+_SAVE: Salvar
+_BACK: Voltar
+_CANCEL: Cancelar
+_NAME: Nome
+_LOGIN: Login
+_EMAIL: Email
+_STATUS: Status
+_ACTIVED: Ativo
+_CREATED: Criado
+_ACTIONS: Ações
+_EDIT: Editar
+_DELETE: Deletar
+_NEW: Novo
+_UNACTIVED: Desativado
+_UNDEFINED: Não definido
+_404: Nenhum registro encontrado
+_NOTAJAX: A polícia vai te pegar!!!
+_CREATE: Criar minha conta
+_NEVER: Nunca
+
+
+#Globais em formulários
+Password: "Senha "
+Password2: "Repita a senha "
+Login: Entrar
+Remember: Lembrar neste computador
+
+#locais
+UserForm: 
+  UserExists%name%: "Já existe o usuário %name%. Utilize outro"
+  PassDiff: "A senha digitada não confere com a confirmação"
+  EmailExists%email%: "O endereço de email %email% já foi utilizado. Utilize outro"
+  UserRemoved%name%: O usuário %name% foi removido com sucesso.
+  UserInserted%name%: Usuário %name% cadastrado com sucesso.
+  UserEdited%name%: Usuário %name% alterado com sucesso.
+
+
+user:
+   user:
+      novo:
+        frontend:
+          new: Novo usuário
+          name: Seu nome
+          cpf: CPF
+          username: Usuário
+          email: Email
+          agree: Eu li e aceito os Termos e Condições de uso do Reurbano
+          newsletter: Sim, eu quero receber notícias do Reurbano
+          emailexists: O email digitado já existe, favor inserir outro
+          new%name%confirm%email%: Olá %name%, seu cadastro foi efetuado, favor conferir seu email para habilitar sua conta. Foi enviado um email para %email%
+          email%name%confirm%linkAct%: Olá %name%, agora falta pouco para você ativar seu cadastro.<br />Basta clicar no link <a href="%linkAct%">%linkAct%</a>
+          emailConfirmTitle: Confirmação de cadastro no site
+          valid:
+            captcha: Não foi possível cadastrar seu usuário, sistema automatizado de inserção detectado.
+            pass: A senha digitada não confere com a confirmação da senha.
+            email%email%: O email %email% já foi utilizado por outro usuário.
+      ativar:
+        frontend:
+          actkey404: Nenhum usuário encontrado com a chave de ativação fornecida.
+          actkeyok%email%: O %email% foi confirmado como um usuário. Agora você pode fazer login em nosso site.
+      reenviar:
+        frontend:
+          email: Email cadastrado
+          title: Reenvio de código de ativação por email
+          reenviar: Enviar novamente!
+          warning: <b>Importante</b><br />Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email.
+          email404%email%: E email %email% não está cadastrado em nosso sistema
+          emailOk%email%: Foi enviado um email para %email% com o código de ativação de sua conta.
+          userAtived%email%: O usuário %email% já está ativo em nosso site, se não conseguir fazer login tente recuperar a senha.
+      view:
+        frontend:
+          erro404%username%: Não existe o usuário %username%
+          det%username%: Detalhes do usuário %username%
+          name%name%: <b>Nome: </b> %name%
+          email%email%: <b>Email: </b> %email%
+          created%created%: <b>Data de cadastro: </b> %created%
+          login%login%: <b>Último login: </b> %login%
+          loginNever: <b>Último login: </b> Nunca
+          

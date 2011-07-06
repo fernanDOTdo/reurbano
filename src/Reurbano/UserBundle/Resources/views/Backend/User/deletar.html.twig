@@ -1,0 +1,9 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+
+
+<h1>{% trans with {'%name%' : nome } %}user.user.editarNovo.confirmDel%name%{% endtrans %}</h1>
+<a href="{{ url('_deletarOk_user',{'id': id}) }}">{% trans %}_SIM{% endtrans %}</a> | 
+<a href="{{ url('_user') }}">{% trans %}_NAO{% endtrans %}</a> 
+
+{% endblock content %}  
