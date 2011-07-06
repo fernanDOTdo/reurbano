@@ -1,10 +1,10 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
-        <h1>{{ "user.user.novo.frontend.new"|trans }}</h1>
+        <h1>{{ "Novo usuário"|trans }}</h1>
         <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "_CREATE"|trans }}' />
-            <input type="button" name='voltar' value='{{ "_CANCEL"|trans }}' onclick="history.go(-1)" />
+            <input type="submit" name='salvar' value='{{ "Criar minha conta"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Cancelar"|trans }}' onclick="history.go(-1)" />
         </form>
 {% endblock content %}  
 {% block javascripts %}

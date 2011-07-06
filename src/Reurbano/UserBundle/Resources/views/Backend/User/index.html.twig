@@ -1,15 +1,15 @@
-{% extends '::frontend.html.twig' %}
+{% extends '::backend.html.twig' %}
 {% block content %}
-<h1>{% trans %}user.user.editarNovo.list{% endtrans %}</h1>
+<h1>{{ "Listagem de Usuários"|trans }}</h1>
         <table width="100%" border="1" cellpadding="2" cellspacing="0">
-            <tr><th><b>{% trans %}_NOME{% endtrans %}</b></th><th><b>{% trans %}_LOGIN{% endtrans %}</b></th><th><b>{% trans %}_EMAIL{% endtrans %}</b></th><th><b>{% trans %}_STATUS{% endtrans %}</b></th><th><b>{% trans %}_CRIADO{% endtrans %}</b></th><th><b>{% trans %}_ACOES{% endtrans %}</b></th></tr>
+            <tr><th><b>{{ "Nome"|trans }}</b></th><th><b>{{ "Login"|trans }}</b></th><th><b>{{ "Email"|trans }}</b></th><th><b>{{ "Status"|trans }}</b></th><th><b>{{ "Criado"|trans }}</b></th><th><b>{{ "Ações"|trans }}</b></th></tr>
         {% if (usuarios) %}
         {% for user in usuarios %}
-             <tr><td>{{user.nome}}</td><td>{{user.uname}}</td><td>{{user.email}}</td><td>{{user.status}}</td><td>{{user.createdAt}}</td><td><a href="{{ url('_editar_user', {'id': user.id}) }}">{% trans %}_EDITAR{% endtrans %}</a> - <a href="{{ url('_deletar_user', {'id': user.id}) }}">{% trans %}_DELETAR{% endtrans %}</a></td></td></tr>
+             <tr><td>{{ user.getName() }}</td><td>{{ user.getUsername() }}</td><td>{{ user.getEmail() }}</td><td>{{ user.getStatus(true) }}</td><td>{{ user.getCreated() }}</td><td><a title="{{ "Editar o usuário"|trans }}" href="{{ url('_editar_user', {'id': user.id}) }}">{{ "Editar"|trans }}</a> - <a title="{{ "Excluir o usuário"|trans }}" href="{{ url('_deletar_user', {'id': user.id}) }}">{{ "Deletar"|trans }}</a></td></td></tr>
         {% endfor %}
              {% else %}
-             <tr><td colspan='6'>{% trans %}_404{% endtrans %}</td></tr>
+             <tr><td colspan='6'>{{ "Nenhum usuário encontrado."|trans }}</td></tr>
              {% endif %}
          </table>
-        <a href="{{ url('_novo_user') }}">{% trans %}_NOVO{% endtrans %}</a>
+        <a title="{{ "Inserir novo usuário"|trans }}" href="{{ url('admin_user_user_novo') }}">{{ "Adicionar usuário"|trans }}</a>
 {% endblock content %}  

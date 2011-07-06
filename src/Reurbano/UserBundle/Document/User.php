@@ -58,7 +58,7 @@ class User implements UserInterface {
     /** @ODM\boolean */
     protected $newsletters;
 
-        public function getId() {
+    public function getId() {
         return $this->id;
     }
 
@@ -106,8 +106,16 @@ class User implements UserInterface {
         $this->mailOk = $mailOk;
     }
 
-    public function getStatus() {
-        return $this->status;
+    public function getStatus($friendly=false) {
+        if ($friendly) {
+            $status[0]="Não confirmado";
+            $status[1]="Ativo";
+            $status[2]="Bloqueado";
+            $status[3]="Removido";
+            return $status[$this->status];
+        } else {
+            return $this->status;
+        }
     }
 
     public function setStatus($status) {
@@ -139,9 +147,9 @@ class User implements UserInterface {
     }
 
     public function getLastLogin() {
-        if($this->lastLogin->getTimestamp()>0){
-        return  date('d/m/Y', $this->lastLogin->getTimestamp());
-        }else{
+        if ($this->lastLogin->getTimestamp() > 0) {
+            return date('d/m/Y', $this->lastLogin->getTimestamp());
+        } else {
             return 0;
         }
     }

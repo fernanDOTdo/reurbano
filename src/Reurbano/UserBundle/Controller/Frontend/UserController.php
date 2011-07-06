@@ -2,7 +2,6 @@
 
 namespace Reurbano\UserBundle\Controller\Frontend;
 
-
 use Mastop\SystemBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,7 +23,7 @@ class UserController extends BaseController {
 
         $script = '
             var ajaxPath = "' . $this->generateUrl('user_user_check') . '";
-            var emailExiste = "' . $this->get('translator')->trans('user.user.novo.frontend.emailexists') . '";
+            var emailExiste = "' . $this->get('translator')->trans('O email digitado já existe, favor inserir outro.') . '";
             ';
         return new Response($script);
     }
@@ -57,12 +56,19 @@ class UserController extends BaseController {
      * @Template()
      */
     public function novoAction() {
-
-        $factory = $this->get('form.factory');
-        $form = $factory->create(new UserForm());
-        return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        $trad = $this->get('translator');
+        $pode = $this->get('mastop')->param('user.all.allownew');
+        if ($pode) {
+            $factory = $this->get('form.factory');
+            $form = $factory->create(new UserForm());
+            return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
+                'form' => $form->createView(),
+            ));
+        } else {
+            $msg = $trad->trans('O cadastro de novos usuários não é permitido.');
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('_home'));
+        }
     }
 
     /**
@@ -75,11 +81,11 @@ class UserController extends BaseController {
         $usuario = $repository->findByActkey($actkey);
         if (!empty($usuario)) {
             $repository->activeUser($usuario->getId());
-            $msg = $trad->trans('user.user.ativar.frontend.actkeyok%email%', array("%email%" => $usuario->getEmail()));
+            $msg = $trad->trans('O <b>%email%</b> foi confirmado como um usuário. Agora você pode fazer login em nosso site.', array("%email%" => $usuario->getEmail()));
             $this->get('session')->setFlash('ok', $msg);
             return $this->redirect($this->generateUrl('_login'));
         } else {
-            $msg = $trad->trans('user.user.ativar.frontend.actkey404');
+            $msg = $trad->trans('Nenhum usuário encontrado com a chave de ativação fornecida.');
             $this->get('session')->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('_home'));
         }
@@ -106,7 +112,7 @@ class UserController extends BaseController {
     private function emailActKey($email, $nome, $actkey) {
         $trad = $this->get('translator');
         $message = \Swift_Message::newInstance()
-                ->setSubject($trad->trans('user.user.novo.frontend.emailConfirmTitle'))
+                ->setSubject($trad->trans('Confirmação de cadastro no site'))
                 ->setFrom('fabio@mastop.com.br')
                 ->setTo($email)
                 ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_ativar', array('actkey' => $actkey), true))), 'text/html');
@@ -127,22 +133,37 @@ class UserController extends BaseController {
         if (!empty($usuario)) {
             if ($usuario->getActkey() != '' && $usuario->getStatus() != 1 && $usuario->getMailOk() == false) {
                 $this->emailActKey($usuario->getEmail(), $usuario->getName(), $usuario->getActkey());
-                $msg = $trad->trans('user.user.reenviar.frontend.emailOk%email%', array("%email%" => $dadosPost['email']));
+                $msg = $trad->trans('Foi enviado um email para <b>%email%</b> com o código de ativação de sua conta.', array("%email%" => $dadosPost['email']));
                 $this->get('session')->setFlash('ok', $msg);
             } else {
-                $msg = $trad->trans('user.user.reenviar.frontend.userAtived%email%', array("%email%" => $dadosPost['email']));
+                $msg = $trad->trans('O usuário <b>%email%</b> já está ativo em nosso site, se não conseguir fazer login tente recuperar a senha.', array("%email%" => $dadosPost['email']));
                 $this->get('session')->setFlash('ok', $msg);
             }
             return $this->redirect($this->generateUrl('_home'));
         } else {
-            $msg = $trad->trans('user.user.reenviar.frontend.email404%email%', array("%email%" => $dadosPost['email']));
+            $msg = $trad->trans('E email <b>%email%</b> não está cadastrado em nosso sistema', array("%email%" => $dadosPost['email']));
             $this->get('session')->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('_home'));
         }
     }
 
+    public function verificaStatus($user) {
+        $trad = $this->get('translator');
+        $status = $user->getStatus();
+        if ($status == 1) {
+            return true;
+        } elseif ($status == 0) {
+            $msg = $trad->trans('O usuário <b>%username%</b> não foi confirmado. Você precisa primeiro confirmar seu usuário através do email cadastrado.', array("%username%" => $user->getUsername()));
+            $this->get('session')->setFlash('error', $msg);
+        } else {
+            $msg = $trad->trans('O usuário <b>%username%</b> está bloqueado.', array("%username%" => $user->getUsername()));
+            $this->get('session')->setFlash('error', $msg);
+        }
+        return false;
+    }
+
     /**
-     * @Route("/detalhes/{username}", name="user_user_view")
+     * @Route("/detalhes/{username}", name="user_user_detalhes")
      * @Secure(roles="ROLE_USER")
      * @Template()
      */
@@ -151,10 +172,14 @@ class UserController extends BaseController {
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $itens = $repository->findByUsername($username);
         if (count($itens) > 0) {
-            return $this->render('ReurbanoUserBundle:Frontend/User:user.html.twig', array(
-                'usuario' => $itens));
+            if ($this->verificaStatus($itens)) {
+                return $this->render('ReurbanoUserBundle:Frontend/User:detalhes.html.twig', array(
+                    'usuario' => $itens));
+            } else {
+                return $this->redirect($this->generateUrl('_home'));
+            }
         } else {
-            $msg = $trad->trans('user.user.view.frontend.erro404%username%', array("%username%" => $username));
+            $msg = $trad->trans('O usuário <b>%username%</b> não existe', array("%username%" => $username));
             $this->get('session')->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('_home'));
         }
@@ -168,6 +193,7 @@ class UserController extends BaseController {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
         $form = $factory->create(new UserForm());
+        $repository = $this->mongo('ReurbanoUserBundle:User');
         $dadosPost = $request->request->get($form->getName());
         $trad = $this->get('translator');
         $erro = array();
@@ -181,12 +207,12 @@ class UserController extends BaseController {
                         ->getQuery()
                         ->execute();
                 if (($result->count() > 0)) {
-                    $erro[] = $trad->trans('UserForm.UserExists%name%', array("%name%" => $dadosPost['username']));
+                    $erro[] = $trad->trans('Já existe o usuário <b>%name%</b>. Utilize outro', array("%name%" => $dadosPost['username']));
                 }
                 // /validar se o username inserido não existe ou se é o dele mesmo
                 //validando se a senha confere com a repetição
                 if ($dadosPost['password']['password'] != $dadosPost['password']['password2']) {
-                    $erro[] = $trad->trans('UserForm.PassDiff');
+                    $erro[] = $trad->trans('A senha digitada não confere com a confirmação');
                 }
                 // /validando se a senha confere com a repetição
                 //validando se o email já não existe
@@ -196,7 +222,7 @@ class UserController extends BaseController {
                         ->getQuery()
                         ->execute();
                 if (($result->count() > 0)) {
-                    $erro[] = $trad->trans('UserForm.EmailExists%email%', array('%email%' => $dadosPost['email']));
+                    $erro[] = $trad->trans('O endereço de email <b>%email%</b> já foi utilizado. Utilize outro', array('%email%' => $dadosPost['email']));
                 }
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
@@ -213,7 +239,7 @@ class UserController extends BaseController {
                     $user->setStatus($dadosPost['status']);
                     //$dm->persist($user);
                     $dm->flush();
-                    $msg = $trad->trans('UserForm.UserEdited%name%', array("%name%" => $dadosPost['name'] . " (" . $dadosPost['username'] . ")"));
+                    $msg = $trad->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name'] . " (" . $dadosPost['username'] . ")"));
                     $this->get('session')->setFlash('ok', $msg);
                 } else {
                     //return array("erro" => $erro, 'sucesso' => false);
@@ -221,18 +247,18 @@ class UserController extends BaseController {
             } else {
                 //validando captcha
                 if (!empty($dadosPost['emailVerify'])) {
-                    $erro[] = $trad->trans('user.user.novo.frontend.valid.captcha');
+                    $erro[] = $trad->trans('Não foi possível cadastrar seu usuário, sistema automatizado de inserção detectado.');
                 }
                 // /validando captcha
                 //validando se a senha confere com a repetição
                 if ($dadosPost['password']['Password'] != $dadosPost['password']['Password2']) {
-                    $erro[] = $trad->trans('user.user.novo.frontend.valid.pass');
+                    $erro[] = $trad->trans('A senha digitada não confere com a confirmação da senha.');
                 }
                 // /validando se a senha confere com a repetição
                 //validando se o email já não existe
                 $query = $repository->findBy(array('email' => $dadosPost['email']));
                 if ($query->count() > 0) {
-                    $erro[] = $trad->trans('user.user.novo.frontend.valid.email%email%', array('%email%' => $dadosPost['email']));
+                    $erro[] = $trad->trans('O email <b>%email%</b> já foi utilizado por outro usuário.', array('%email%' => $dadosPost['email']));
                 }
                 // /validando se o email já não existe
                 if (count($erro) > 0) {
@@ -271,18 +297,20 @@ class UserController extends BaseController {
                 //envio de email para confirmar user
                 $this->emailActKey($dadosPost['email'], $dadosPost['name'], $actkey);
                 // /envio de email para confirmar user
-                $msg = $trad->trans('user.user.novo.frontend.new%name%confirm%email%', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
+                $msg = $trad->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, favor conferir seu email para habilitar sua conta. Foi enviado um email para <b>%email%</b>', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('_home'));
             }
         } else {
-            $erro[] = $trad->trans('erro');
+
+            $this->get('session')->setFlash('ok', $trad->trans('Erro de validação no cadastro, tente novamente.'));
             return $this->redirect($this->generateUrl('_home'));
         }
     }
 
     /**
      * @Route("/editar/{username}", name="user_user_editar")
+     * @Secure(roles="ROLE_USER")
      * @Template()
      */
     public function editarAction($username) {
@@ -292,12 +320,16 @@ class UserController extends BaseController {
         $query = $repository->findByUsername($username);
         $form = $factory->create(new UserForm(), $query);
         if (count($query) > 0) {
-            return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
-                'form' => $form->createView(),
-                'id' => $username, 'nome' => $query->getName()
-            ));
+            if ($this->verificaStatus($query)) {
+                return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
+                    'form' => $form->createView(),
+                    'id' => $username, 'nome' => $query->getName()
+                ));
+            } else {
+                return $this->redirect($this->generateUrl('_home'));
+            }
         } else {
-            $msg = $trad->trans('user.user.view.frontend.erro404%username%', array("%username%" => $username));
+            $msg = $trad->trans('O usuário <b>%username%</b> não existe', array("%username%" => $username));
             $this->get('session')->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('_home'));
         }

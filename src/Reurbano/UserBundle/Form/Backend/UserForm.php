@@ -1,6 +1,6 @@
 <?php
 
-namespace Reurbano\UserBundle\Form;
+namespace Reurbano\UserBundle\Form\Backend;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\AbstractType;

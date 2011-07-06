@@ -1,12 +1,12 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
-<h1>{% trans with {'%name%' : nome } %}user.user.editarNovo.edit%name%{% endtrans %}</h1>
+<h1>{{ "Edição do usuário %name%"|trans({'%name%':nome}) }}</h1>
         <form action="{{ path('_salvar_user') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 {% if id is defined %}
             <input type='hidden' name='Userform[id]' value='{{id}}'>
 {% endif%}
-            <input type="submit" name='salvar' value='{% trans%}_SALVAR{% endtrans %}' />
-            <input type="button" name='voltar' value='{% trans%}_VOLTAR{% endtrans %}' onclick="history.go(-1)" />
+            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
         </form>
 {% endblock content %}  
