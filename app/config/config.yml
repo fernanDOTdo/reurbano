@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
 
 framework:
+    #esi:             ~
     secret: %secret%
     charset: UTF-8
     router: { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -69,9 +70,9 @@ doctrine_mongodb:
     default_database: %mongo_database%_%kernel.environment%
     document_managers:
         default:
-            mappings:
-                ReurbanoUserBundle: ~
-            metadata_cache_driver: array # array, apc, xcache, memcache
+            auto_mapping: true
+            metadata_cache_driver: apc # array, apc, xcache, memcache
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -87,3 +88,9 @@ jms_security_extra:
 mastop_system:
     themes_dir: %themes_dir%
     active_theme: "mastop"
+
+reurbano_core:
+    default_city: "oferta-nacional"
+    quova:
+      apikey: 100.hrh7drfjbhx87nt8avnz 
+      secret: Qp9HKWZU

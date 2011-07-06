@@ -1,0 +1,14 @@
+{% extends '::backend.html.twig' %}
+        
+{% block title %}{{title|trans}}{% endblock %}
+{% set vars = city.getId() ? {'id': city.getId()} : {} %}
+
+{% block content %}
+<h1>{{title|trans}}</h1>
+<ul>
+<form action="{{ path('admin_core_city_save', vars) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <input type="submit" value="{{"Enviar"|trans}}" />
+</form>
+{% endblock %}
