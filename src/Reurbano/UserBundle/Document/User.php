@@ -112,6 +112,7 @@ class User implements UserInterface {
             $status[1]="Ativo";
             $status[2]="Bloqueado";
             $status[3]="Removido";
+            $status[4]="Aguardando aprovação";
             return $status[$this->status];
         } else {
             return $this->status;
@@ -175,7 +176,7 @@ class User implements UserInterface {
     }
 
     public function getRoles() {
-        return array($this->roles);
+        return $this->roles;
     }
 
     public function setRoles($roles) {

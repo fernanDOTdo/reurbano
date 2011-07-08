@@ -3,6 +3,7 @@
 namespace Reurbano\UserBundle\Form\Frontend;
 
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\AbstractType;
 
 class UserForm extends AbstractType {
@@ -18,8 +19,8 @@ class UserForm extends AbstractType {
                 ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome'))
                 ->add('email', 'email', array('label' => 'Email'))
                 ->add('cpf', 'text', array('label' => 'CPF'))
-                ->add('password', 'repeated', array('type' => 'password', 'first_name' => 'Senha', 'second_name' => 'Confirmar a senha'))
-                ->add('agree', 'checkbox', array('label' => 'uEu li e aceito os Termos e Condições de uso do Reurbano', 'required'  => true,'property_path' => false))
+                ->add('password', 'repeated', array('type' => 'password', 'first_name' => 'Password', 'second_name' => 'Password2', 'options'=>array('label' => 'Aleluia')))
+                ->add('agree', 'checkbox', array('label' => 'Eu li e aceito os Termos e Condições de uso do Reurbano', 'required'  => true,'property_path' => false))
                 ->add('newsletters', 'checkbox', array('label' => 'Sim, quero receber notícias e promoções do Reurbano', 'required'  => false))
                 ->add('emailVerify', 'hidden', array('property_path' => false))
 
