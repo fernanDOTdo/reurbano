@@ -1,0 +1,20 @@
+deal_frontend:
+    resource: "@ReurbanoDealBundle/Controller/Frontend/DealController.php"
+    type: annotation
+    prefix:   /ofertas
+deal_sell_frontend:
+    resource: "@ReurbanoDealBundle/Controller/Frontend/SellController.php"
+    type: annotation
+    prefix:   /vender
+deal_backend:
+    resource: "@ReurbanoDealBundle/Controller/Backend/DealController.php"
+    type: annotation
+    prefix:   /admin/ofertas
+deal_category_backend:
+    resource: "@ReurbanoDealBundle/Controller/Backend/CategoryController.php"
+    type: annotation
+    prefix:   /admin/ofertas/categorias
+deal_source_backend:
+    resource: "@ReurbanoDealBundle/Controller/Backend/SourceController.php"
+    type: annotation
+    prefix:   /admin/ofertas/banco

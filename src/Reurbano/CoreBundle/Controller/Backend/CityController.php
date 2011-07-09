@@ -1,13 +1,17 @@
 <?php
 namespace Reurbano\CoreBundle\Controller\Backend;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\CoreBundle\Document\City;
 use Reurbano\CoreBundle\Form\CityType;
 
-class CityController extends Controller
+/**
+ * Controller para administrar (CRUD) cidades.
+ */
+
+class CityController extends BaseController
 {
     /**
      * @Route("/", name="admin_core_city_index")
@@ -15,8 +19,8 @@ class CityController extends Controller
      */
     public function indexAction()
     {
-        //$cidades = $this->get('reurbano.repository.city')->findAll();
-        $cidades = $this->get('reurbano.repository.city')->findAllByOrder();
+        //$cidades = $this->mongo('ReurbanoCoreBundle:City')->findAll();
+        $cidades = $this->mongo('ReurbanoCoreBundle:City')->findAllByOrder();
         return array('cidades' => $cidades);
     }
     /**
@@ -27,10 +31,10 @@ class CityController extends Controller
      */
     public function formAction($id = null)
     {
-        $dm = $this->get('reurbano.dm');
+        $dm = $this->dm();
         $title = ($id) ? "Editar Cidade" : "Nova Cidade";
         if($id){
-            $city = $this->get('reurbano.repository.city')->find($id);
+            $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
             if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
         }else{
             $city = new City();
@@ -53,8 +57,8 @@ class CityController extends Controller
      */
     public function deleteAction($id)
     {
-        $dm = $this->get('reurbano.dm');
-        $city = $this->get('reurbano.repository.city')->find($id);
+        $dm = $this->dm();
+        $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
         if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
         $dm->remove($city);
         $dm->flush();

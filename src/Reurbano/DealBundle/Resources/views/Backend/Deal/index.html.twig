@@ -1,0 +1,18 @@
+{% extends '::backend.html.twig' %}
+        
+{% block title %}{{title|trans}}{% endblock %}
+
+
+{% block content %}
+<h1>{{title|trans}}</h1>
+<ul>
+  {% for key in ofertas|keys %}
+    <li>{{ key }}</li>
+  {% endfor %}
+</ul>
+{% for deal in ofertas %}
+    {{ deal.getId() }} <br />
+  {% else %}
+   {{"Nenhuma oferta encontrada"|trans}}
+  {% endfor %} 
+{% endblock %}
