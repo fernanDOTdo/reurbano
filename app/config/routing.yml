@@ -1,5 +1,7 @@
 ReurbanoCoreBundle:
     resource: "@ReurbanoCoreBundle/Resources/config/routing/routing.yml"
+ReurbanoDealBundle:
+    resource: "@ReurbanoDealBundle/Resources/config/routing/routing.yml"
 mastop_system:
   resource: "@MastopSystemBundle/Resources/config/routing/routing.yml"
 

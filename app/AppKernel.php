@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
             
             new Reurbano\CoreBundle\ReurbanoCoreBundle(),
+            new Reurbano\DealBundle\ReurbanoDealBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

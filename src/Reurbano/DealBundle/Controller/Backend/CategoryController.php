@@ -1,0 +1,69 @@
+<?php
+namespace Reurbano\DealBundle\Controller\Backend;
+
+use Mastop\SystemBundle\Controller\BaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Reurbano\DealBundle\Document\Category;
+use Reurbano\DealBundle\Form\CategoryType;
+
+/**
+ * Controller para administrar (CRUD) categorias.
+ */
+
+class CategoryController extends BaseController
+{
+    /**
+     * @Route("/", name="admin_deal_category_index")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        $title = 'Administração de Categorias';
+        //$categorias = $this->mongo('ReurbanoDealBundle:Category')->findAll();
+        $categorias = $this->mongo('ReurbanoDealBundle:Category')->findAllByOrder();
+        return array('categorias' => $categorias, 'title' => $title);
+    }
+    /**
+     * @Route("/novo", name="admin_deal_category_new")
+     * @Route("/editar/{id}", name="admin_deal_category_edit")
+     * @Route("/salvar/{id}", name="admin_deal_category_save", defaults={"id" = null})
+     * @Template()
+     */
+    public function categoryAction($id = null)
+    {
+        $dm = $this->dm();
+        $title = ($id) ? "Editar Categoria" : "Nova Categoria";
+        if($id){
+            $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
+            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID '.$id);
+        }else{
+            $cat = new Category();
+        }
+        $form = $this->createForm(new CategoryType(), $cat);
+        $request = $this->get('request');
+        if ('POST' == $request->getMethod()) {
+            $form->bindRequest($request);
+            if ($form->isValid()) {
+                $dm->persist($cat);
+                $dm->flush();
+                $this->get('session')->setFlash('ok', $this->trans(($id) ? "Categoria Editada" : "Categoria Criada" ));
+                return $this->redirect($this->generateUrl('admin_deal_category_index'));
+            }
+        }
+        return array('form' => $form->createView(), 'cat' => $cat, 'title'=>  $title);
+    }
+    /**
+     * @Route("/deletar/{id}", name="admin_deal_category_delete")
+     */
+    public function deleteAction($id)
+    {
+        $dm = $this->dm();
+        $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
+        if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID '.$id);
+        $dm->remove($cat);
+        $dm->flush();
+        $this->get('session')->setFlash('ok', $this->trans('Categoria Deletada'));
+        return $this->redirect($this->generateUrl('admin_deal_category_index'));
+    }
+}

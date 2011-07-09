@@ -2,21 +2,11 @@
 
 namespace Reurbano\CoreBundle\Document;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Mastop\SystemBundle\Document\BaseRepository;
 
-class CityRepository extends DocumentRepository
+class CityRepository extends BaseRepository
 {
 
-    /**
-     * Encontra uma cidade pelo seu ID
-     *
-     * @param string $id
-     * @return City ou null
-     **/
-    public function findOneById($id)
-    {
-        return $this->find($id);
-    }
     /**
      * Pega todos ordenado por ORDER
      *
@@ -28,18 +18,6 @@ class CityRepository extends DocumentRepository
     }
 
     /**
-     * Verifica se a cidade existe pelo ID
-     *
-     * @param string $id
-     * @return bool
-     */
-    public function existsById($id)
-    {
-        return 1 === $this->createQueryBuilder()
-            ->field('id')->equals($id)
-            ->getQuery()->count();
-    }
-    /**
      * Retorna as cidades pelo parâmetro "special"
      *
      * @param string $id
@@ -50,9 +28,5 @@ class CityRepository extends DocumentRepository
         return $this->createQueryBuilder()
             ->field('special')->equals($special)
             ->getQuery()->execute();
-    }
-    public function hello()
-    {
-        return "Hello!";
     }
 }
