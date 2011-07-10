@@ -65,11 +65,18 @@ class Source
     protected $priceOffer;
     
     /**
-     * Preço original da oferta
+     * Cidade da oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
      */
     protected $city;
+    
+    /**
+     * Categoria da oferta
+     *
+     * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\Category")
+     */
+    protected $category;
     
     /**
      * Regulamento da oferta
@@ -112,6 +119,14 @@ class Source
     protected $businessAddress;
     
     /**
+     * CEP da empresa
+     *
+     * @var string
+     * @ODM\String
+     */
+    protected $businessCep;
+    
+    /**
      * Latitude da empresa
      *
      * @var int
@@ -127,6 +142,13 @@ class Source
      */
     protected $businessLongitude;
     
+    /**
+     * Data de expiração da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $expiresAt;    
 
     /**
      * Get id
@@ -259,6 +281,26 @@ class Source
     }
 
     /**
+     * Set category
+     *
+     * @param Reurbano\CoreBundle\Document\Category $category
+     */
+    public function setCategory(\Reurbano\CoreBundle\Document\Category $category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * Get category
+     *
+     * @return Reurbano\CoreBundle\Document\Category $category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
      * Set rules
      *
      * @param string $rules
@@ -359,6 +401,26 @@ class Source
     }
 
     /**
+     * Set businessCep
+     *
+     * @param string $businessCep
+     */
+    public function setBusinessCep($businessCep)
+    {
+        $this->businessCep = $businessCep;
+    }
+
+    /**
+     * Get businessCep
+     *
+     * @return string $businessCep
+     */
+    public function getBusinessCep()
+    {
+        return $this->businessCep;
+    }
+
+    /**
      * Set businessLatitude
      *
      * @param int $businessLatitude
@@ -396,5 +458,25 @@ class Source
     public function getBusinessLongitude()
     {
         return $this->businessLongitude;
+    }
+
+    /**
+     * Set expiresAt
+     *
+     * @param date $expiresAt
+     */
+    public function setExpiresAt($expiresAt)
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    /**
+     * Get expiresAt
+     *
+     * @return date $expiresAt
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
     }
 }
