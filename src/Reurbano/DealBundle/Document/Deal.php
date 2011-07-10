@@ -23,14 +23,38 @@ class Deal
      * @ODM\Id
      */
     protected $id;
-
+    
     /**
-     * Título da Oferta
+     * Usuário que fez o anuncio
      *
-     * @var string
-     * @ODM\String
+     * @todo Implementar ReferenceOne para o bundle de usuários
+     * @var int
+     * @ODM\Int
      */
-    protected $title;
+    protected $idUser;
+    
+    /**
+     * Preço original da oferta
+     *
+     * @ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Source")
+     */
+    protected $offer;
+    
+    /**
+     * Preço com desconto da oferta
+     *
+     * @var float
+     * @ODM\Float
+     */
+    protected $price;
+    
+    /**
+     * Quantidade disponivel
+     *
+     * @var int
+     * @ODM\Int
+     */
+    protected $quantity;
     
     /**
      * Vouchers
@@ -42,5 +66,53 @@ class Deal
     
     /** @ODM\Collection */
     protected $tags = array();
+    
+    /**
+     * Se o produto está ativo ou não
+     *
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $active;
+    
+    /**
+     * Rotulação do produto
+     *
+     * @var string
+     * @ODM\String
+     */
+    protected $label;
+    
+    /**
+     * Visualizações do pedido
+     *
+     * @var int
+     * @ODM\Int
+     */
+    protected $views = 0;
+    
+    /**
+     * Data de expiração da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $expiresAt;
+    
+    /**
+     * Data de edição da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $updatedAt;
+    
+    /**
+     * Data de criação da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $createdAt;
 
 }
