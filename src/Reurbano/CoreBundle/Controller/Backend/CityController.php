@@ -14,6 +14,8 @@ use Reurbano\CoreBundle\Form\CityType;
 class CityController extends BaseController
 {
     /**
+     * Lista todas as cidades
+     * 
      * @Route("/", name="admin_core_city_index")
      * @Template()
      */
@@ -24,6 +26,8 @@ class CityController extends BaseController
         return array('cidades' => $cidades);
     }
     /**
+     * Adiciona um novo, edita um já criado e salva ambos
+     * 
      * @Route("/novo", name="admin_core_city_novo")
      * @Route("/editar/{id}", name="admin_core_city_edit")
      * @Route("/salvar/{id}", name="admin_core_city_save", defaults={"id" = null})
@@ -66,7 +70,10 @@ class CityController extends BaseController
         );
     }
     /**
+     * Exibe um pre delete e deleta se for confirmado
+     * 
      * @Route("/deletar/{id}", name="admin_core_city_delete")
+     * @Template()
      */
     public function deleteAction($id)
     {
@@ -82,9 +89,9 @@ class CityController extends BaseController
             $this->get('session')->setFlash('ok', 'Cidade Deletada!');
             return $this->redirect($this->generateUrl('admin_core_city_index'));
         }
-        return $this->render('ReurbanoCoreBundle:Backend/City:preDelete.html.twig', array(
+        return array(
             'name' => $city->getName(),
             'id'   => $city->getId(),
-        ));
+        );
     }
 }
