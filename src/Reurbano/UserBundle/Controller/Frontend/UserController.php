@@ -81,6 +81,15 @@ class UserController extends BaseController {
             $repository->activeUser($usuario->getId());
             $msg = $this->trans('O <b>%email%</b> foi confirmado como um usuário. Agora você pode fazer login em nosso site.', array("%email%" => $usuario->getEmail()));
             $this->get('session')->setFlash('ok', $msg);
+            //notificação de novo usuario
+            $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+            if ($emailsNotify != "") {
+                $emailsNotify = explode(";", $emailsNotify);
+                foreach ($emailsNotify as $email) {
+                    $this->newUserEmail(str_replace(" ", '', $email), $usuario);
+                }
+            }
+            // /notificação de novo usuario
             return $this->redirect($this->generateUrl('_login'));
         } else {
             $msg = $this->trans('Nenhum usuário encontrado com a chave de ativação fornecida.');
@@ -113,6 +122,22 @@ class UserController extends BaseController {
                 ->setFrom('fabio@mastop.com.br')
                 ->setTo($email)
                 ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_ativar', array('actkey' => $actkey), true))), 'text/html');
+        ;
+        $this->get('mailer')->send($message);
+    }
+
+    /**
+     * Envia um email para o $email avisando de novo usuario no site
+     * @param string $email
+     * @param objeto $user
+     */
+    private function newUserEmail($email, $user) {
+        $userStatus=$user->getStatus();
+        $message = \Swift_Message::newInstance()
+                ->setSubject($this->trans($userStatus==4? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
+                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                ->setTo($email)
+                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
         ;
         $this->get('mailer')->send($message);
     }
@@ -307,9 +332,28 @@ class UserController extends BaseController {
                     $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, favor conferir seu email para habilitar sua conta. Foi enviado um email para <b>%email%</b>', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
                 } elseif ($modoCadastro == 'auto') {
                     $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado com sucesso. Seja bem vindo, agora você já pode fazer o seu login.', array("%name%" => $dadosPost['name']));
+                    //notificação de novo usuario
+                    $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                    if ($emailsNotify != "") {
+                        $emailsNotify = explode(";", $emailsNotify);
+                        foreach ($emailsNotify as $email) {
+                            $this->newUserEmail(str_replace(" ", '', $email), $user);
+                        }
+                    }
+                    // /notificação de novo usuario
                 } elseif ($modoCadastro == 'admin') {
                     $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, aguarde a aprovação por um de nossos administradores. Assim que for aprovado você receberá um email de confirmação através do email %email%', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
+                    //notificação de novo usuario
+                    $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                    if ($emailsNotify != "") {
+                        $emailsNotify = explode(";", $emailsNotify);
+                        foreach ($emailsNotify as $email) {
+                            $this->newUserEmail(str_replace(" ", '', $email), $user);
+                        }
+                    }
+                    // /notificação de novo usuario
                 }
+
                 $this->get('session')->setFlash('ok', $msg);
                 if ($modoCadastro == 'auto') {
                     return $this->redirect($this->generateUrl('_login'));

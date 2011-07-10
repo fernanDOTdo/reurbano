@@ -1,9 +1,6 @@
-{% extends '::frontend.html.twig' %}
+{% extends '::backend.html.twig' %}
 {% block content %}
-
-
-<h1>{% trans with {'%name%' : nome } %}user.user.editarNovo.confirmDel%name%{% endtrans %}</h1>
-<a href="{{ url('_deletarOk_user',{'id': id}) }}">{% trans %}_SIM{% endtrans %}</a> | 
-<a href="{{ url('_user') }}">{% trans %}_NAO{% endtrans %}</a> 
-
+<h1>{% trans with {'%name%' : usuario.getName() } %}Tem certeza que deseja remover o usuário %name%?{% endtrans %}</h1>
+<a href="{{ url('admin_user_user_deletarok',{'username': usuario.getUsername()}) }}">{{ "Sim"|trans }}</a> | 
+<a href="{{ url('admin_user_user_index') }}">{{ "Não"|trans }}</a> 
 {% endblock content %}  

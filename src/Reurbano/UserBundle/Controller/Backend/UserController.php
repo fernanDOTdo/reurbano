@@ -225,28 +225,28 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/usuario/deletar/{id}", name="_deletar_user")
+     * @Route("/deletar/{username}", name="admin_user_user_deletar")
      * @Template()
      */
-    public function deletarAction($id) {
-        $query = $this->dm()->getRepository('ReurbanoUserBundle:user')->findOneById($id);
+    public function deletarAction($username) {
+        $usuario = $this->mongo('ReurbanoUserBundle:User')->findByField('username', $username);
 
-        return array('id' => $id, 'nome' => $query->getName());
+        return array('usuario' => $usuario);
     }
 
     /**
-     * @Route("/usuario/deletarOk/{id}", name="_deletarOk_user")
+     * @Route("/deletarOk/{username}", name="admin_user_user_deletarok")
      * @Template()
      */
-    public function deletarOkAction($id) {
-        $query = $this->dm()->getRepository('ReurbanoUserBundle:user')->findOneById($id);
-        $nome = $query->getName();
-        $uname = $query->getUsername();
-        $this->dm()->remove($query);
+    public function deletarOkAction($username) {
+        $usuario = $this->mongo('ReurbanoUserBundle:User')->findByField('username', $username);
+        $nome = $usuario->getName();
+        $uname = $usuario->getUsername();
+        $this->dm()->remove($usuario);
         $this->dm()->flush();
-        $msg = $this->trans('UserForm.UserRemoved%name%', array("%name%" => $nome . " ($uname)"));
+        $msg = $this->trans('O usuário %name% foi removido com sucesso.', array("%name%" => $nome . " ($uname)"));
         $this->get('session')->setFlash('ok', $msg);
-        return $this->redirect($this->generateUrl('_user'));
+        return $this->redirect($this->generateUrl('admin_user_user_index'));
     }
 
 }
