@@ -60,4 +60,124 @@ class Voucher
      * @ODM\Timestamp
      */
     protected $created;
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set filename
+     *
+     * @param string $filename
+     */
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
+    }
+
+    /**
+     * Get filename
+     *
+     * @return string $filename
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Set filesize
+     *
+     * @param string $filesize
+     */
+    public function setFilesize($filesize)
+    {
+        $this->filesize = $filesize;
+    }
+
+    /**
+     * Get filesize
+     *
+     * @return string $filesize
+     */
+    public function getFilesize()
+    {
+        return $this->filesize;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string $path
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string $url
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set created
+     *
+     * @param timestamp $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * Get created
+     *
+     * @return timestamp $created
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
 }
