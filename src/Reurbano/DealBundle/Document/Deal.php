@@ -92,12 +92,20 @@ class Deal
     protected $views = 0;
     
     /**
-     * Data de expiração da oferta
+     * Verifica se a oferta está correta
      *
-     * @var date
-     * @ODM\Date
+     * @var boolean
+     * @ODM\Boolean
      */
-    protected $expiresAt;
+    protected $checked;
+    
+    /**
+     * Verifica se a oferta é destaque
+     *
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $special;
     
     /**
      * Data de edição da oferta
@@ -115,6 +123,7 @@ class Deal
      */
     protected $createdAt;
 
+    
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -311,23 +320,43 @@ class Deal
     }
 
     /**
-     * Set expiresAt
+     * Set checked
      *
-     * @param date $expiresAt
+     * @param boolean $checked
      */
-    public function setExpiresAt($expiresAt)
+    public function setChecked($checked)
     {
-        $this->expiresAt = $expiresAt;
+        $this->checked = $checked;
     }
 
     /**
-     * Get expiresAt
+     * Get checked
      *
-     * @return date $expiresAt
+     * @return boolean $checked
      */
-    public function getExpiresAt()
+    public function getChecked()
     {
-        return $this->expiresAt;
+        return $this->checked;
+    }
+
+    /**
+     * Set special
+     *
+     * @param boolean $special
+     */
+    public function setSpecial($special)
+    {
+        $this->special = $special;
+    }
+
+    /**
+     * Get special
+     *
+     * @return boolean $special
+     */
+    public function getSpecial()
+    {
+        return $this->special;
     }
 
     /**
