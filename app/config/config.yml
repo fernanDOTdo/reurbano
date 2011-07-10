@@ -71,8 +71,16 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
-            metadata_cache_driver: apc # array, apc, xcache, memcache
+            mappings:
+                StofDoctrineExtensionsBundle: false
+            metadata_cache_driver: array # array, apc, xcache, memcache
 
+stof_doctrine_extensions:
+    default_locale: pt_BR
+    mongodb:
+        default: 
+            sluggable: true
+        
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%

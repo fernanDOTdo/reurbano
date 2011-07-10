@@ -34,6 +34,9 @@
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
 
+[DoctrineExtensions]
+    git=http://github.com/l3pp4rd/DoctrineExtensions.git
+
 [SensioFrameworkExtraBundle]
     git=http://github.com/sensio/SensioFrameworkExtraBundle.git
     target=/bundles/Sensio/Bundle/FrameworkExtraBundle
@@ -77,6 +80,10 @@
 [DoctrineMongoDBBundle]
     git=http://github.com/symfony/DoctrineMongoDBBundle.git
     target=/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+
+[DoctrineExtensionsBundle]
+    git=http://github.com/stof/StofDoctrineExtensionsBundle.git
+    target=/bundles/Stof/DoctrineExtensionsBundle
 
 [MastopBundles]
     git=git@github.com:mastop/MastopBundles.git

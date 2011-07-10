@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
             new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
             new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             
             new Reurbano\CoreBundle\ReurbanoCoreBundle(),
             new Reurbano\DealBundle\ReurbanoDealBundle(),

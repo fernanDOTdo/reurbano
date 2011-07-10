@@ -33,13 +33,13 @@ class CategoryController extends BaseController {
      * @Route("/salvar/{id}", name="admin_deal_category_save", defaults={"id" = null})
      * @Template()
      */
-    public function categoryAction($id = null) {
+    public function categoryAction($id = null)
+    {
         $dm = $this->dm();
         $title = ($id) ? "Editar Categoria" : "Nova Categoria";
         if ($id) {
             $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
-            if (!$cat)
-                throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
+            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
         }else {
             $cat = new Category();
         }
