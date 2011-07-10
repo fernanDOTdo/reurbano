@@ -5,7 +5,7 @@ namespace Reurbano\DealBundle\DataFixtures\MongoDB;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Reurbano\DealBundle\Document\City;
+use Reurbano\DealBundle\Document\Category;
 
 class LoadCategoryData implements FixtureInterface, ContainerAwareInterface {
 
