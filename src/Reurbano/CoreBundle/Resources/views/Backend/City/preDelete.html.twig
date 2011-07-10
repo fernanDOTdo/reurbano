@@ -2,13 +2,10 @@
 
 {% block content %}
     <h1>Tem certeza que deseja deletar a cidade: {{ name }}?</h1>
-    <a href="{{path('admin_core_city_delete', {'id': id})}}">
-        Sim
-    </a>
-    |
-    <a href="{{path('admin_core_city_index')}}">
-        Nao
-    </a>
+    <form action="{{ path('admin_core_city_delete', {'id': id}) }}" name="delete" method="post">
+        <input type="submit" value="Sim" />
+        <input type="button" value="Não" onclick="history.go(-1)" />
+    </form>
 {% endblock %}
 
 {% set code = code(_self) %}

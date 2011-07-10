@@ -54,7 +54,7 @@ class CategoryController extends BaseController {
         return array('form' => $form->createView(), 'cat' => $cat, 'title' => $title);
     }
     /**
-     * @Route("/pre/deletar/{id}", name="admin_deal_category_pre_delete")
+     * @Route("/predeletar/{id}", name="admin_deal_category_predelete")
      * @Template()
      */
     public function preDeleteAction($id) {
@@ -69,15 +69,23 @@ class CategoryController extends BaseController {
     /**
      * @Route("/deletar/{id}", name="admin_deal_category_delete")
      */
-    public function deleteAction($id) {
+    public function deleteAction($id)
+    {
+        $request = $this->get('request');
+        $formResult = $request->request;
         $dm = $this->dm();
         $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
-        if (!$cat)
-            throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
-        $dm->remove($cat);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', $this->trans('Categoria Deletada'));
-        return $this->redirect($this->generateUrl('admin_deal_category_index'));
+        if($request->getMethod() == 'POST'){
+            if (!$cat)
+                throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
+            $dm->remove($cat);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans('Categoria Deletada'));
+            return $this->redirect($this->generateUrl('admin_deal_category_index'));
+        }
+        return $this->render('ReurbanoDealBundle:Backend/Category:preDelete.html.twig', array(
+            'name' => $cat->getName(),
+            'id'   => $cat->getId(),
+        ));
     }
-
 }

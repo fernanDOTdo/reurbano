@@ -70,12 +70,21 @@ class CityController extends BaseController
      */
     public function deleteAction($id)
     {
+        $request = $this->get('request');
+        $formResult = $request->request;
         $dm = $this->dm();
         $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
-        if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
-        $dm->remove($city);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', 'Cidade Deletada!');
-        return $this->redirect($this->generateUrl('admin_core_city_index'));
+        if($request->getMethod() == 'POST'){
+            if (!$city) 
+                throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
+            $dm->remove($city);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', 'Cidade Deletada!');
+            return $this->redirect($this->generateUrl('admin_core_city_index'));
+        }
+        return $this->render('ReurbanoCoreBundle:Backend/City:preDelete.html.twig', array(
+            'name' => $city->getName(),
+            'id'   => $city->getId(),
+        ));
     }
 }
