@@ -53,6 +53,19 @@ class CityController extends BaseController
         return array('form' => $form->createView(), 'city' => $city, 'title'=>$title);
     }
     /**
+     * @Route("/pre/deletar/{id}", name="admin_core_city_pre_delete")
+     * @Template()
+     */
+    public function preDeleteAction($id) {
+        $dm = $this->dm();
+        $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
+        
+        return array(
+            'name' => $city->getName(),
+            'id'   => $city->getId(),
+        );
+    }
+    /**
      * @Route("/deletar/{id}", name="admin_core_city_delete")
      */
     public function deleteAction($id)

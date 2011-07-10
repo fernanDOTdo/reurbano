@@ -11,7 +11,7 @@
   {% endfor %}
 </ul>
 {% for cat in categorias %}
-    {{ cat.getId() }} - {{ cat.getName() }} - {{ cat.getOrder() }} - <a href="{{ path('admin_deal_category_edit', {'id': cat.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_deal_category_delete', {'id': cat.getId()}) }}">{{"Deletar"|trans}}</a><br />
+    {{ cat.getId() }} - {{ cat.getName() }} - {{ cat.getOrder() }} - <a href="{{ path('admin_deal_category_edit', {'id': cat.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_deal_category_pre_delete', {'id': cat.getId()}) }}">{{"Deletar"|trans}}</a><br />
   {% else %}
    {{"Nenhuma categoria encontrada"|trans}}
   {% endfor %} 
