@@ -20,6 +20,7 @@ class DocumentUserProvider implements UserProviderInterface
 {
     protected $class;
     protected $repository;
+    protected $em;
 
     public function __construct($em, $class)
     {
@@ -30,8 +31,9 @@ class DocumentUserProvider implements UserProviderInterface
         }
 
         $this->repository = $em->getRepository($class);
+        $this->em = $em;
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -66,5 +68,9 @@ class DocumentUserProvider implements UserProviderInterface
     public function supportsClass($class)
     {
         return $class === $this->class;
+    }
+    public function updateUser(UserInterface $user){
+        $this->em->persist($user);
+        $this->em->flush();
     }
 }

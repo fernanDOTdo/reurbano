@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Core\SecurityContext;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\UserBundle\Form\Frontend\UserForm;
+use Reurbano\UserBundle\Form\Frontend\UserFormEdit;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
 use Reurbano\UserBundle\Document\User;
@@ -22,7 +23,7 @@ class UserController extends BaseController {
     public function scriptAction() {
 
         $script = '
-            var ajaxPath = "' . $this->generateUrl('user_user_check') . '";
+            var ajaxPath = "' . $this->generateUrl('user_user_check', array(), true) . '";
             var emailExiste = "' . $this->get('translator')->trans('O email digitado já existe, favor inserir outro.') . '";
             ';
         return new Response($script);
@@ -53,20 +54,28 @@ class UserController extends BaseController {
 
     /**
      * @Route("/novo", name="user_user_novo")
+     * @Route("/editar/{username}", name="user_user_editar")
+     * @Route("/senha/{username}", name="user_user_senha")
      * @Template()
      */
-    public function novoAction() {
-        $pode = $this->get('mastop')->param('user.all.allownew');
-        if ($pode) {
-            $factory = $this->get('form.factory');
-            $form = $factory->create(new UserForm());
+    public function novoAction($username = false) {
+        if ($username) {
+            $rep = $this->mongo('ReurbanoUserBundle:User');
+            $query = $rep->findByField('username', $username);
+            $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
+            $form = $this->createForm(new UserFormEdit(), $query);
             return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-                'form' => $form->createView(),
+                'form' => $form->createView(), 'titulo' => $titulo,
+                'usuario' => $query
             ));
         } else {
-            $msg = $this->trans('O cadastro de novos usuários não é permitido.');
-            $this->get('session')->setFlash('error', $msg);
-            return $this->redirect($this->generateUrl('_home'));
+            $factory = $this->get('form.factory');
+            $titulo = $this->trans("Novo usuário");
+            $form = $factory->create(new UserForm());
+            return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
+                'form' => $form->createView(), 'titulo' => $titulo,
+                'usuario' => null
+            ));
         }
     }
 
@@ -132,9 +141,9 @@ class UserController extends BaseController {
      * @param objeto $user
      */
     private function newUserEmail($email, $user) {
-        $userStatus=$user->getStatus();
+        $userStatus = $user->getStatus();
         $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans($userStatus==4? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
+                ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
                 ->setFrom($this->get('mastop')->param('system.site.adminmail'))
                 ->setTo($email)
                 ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
@@ -205,22 +214,27 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvar", name="user_user_salvar")
+     * @Route("/salvar/{id}", name="user_user_salvar", defaults={"id" = null})
      * @Template()
      */
-    public function salvarAction() {
+    public function salvarAction($id=null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
-        $form = $factory->create(new UserForm());
+        if ($id) {
+            $form = $factory->create(new UserFormEdit());
+        } else {
+            $form = $factory->create(new UserForm());
+        }
         $repository = $this->mongo('ReurbanoUserBundle:User');
         $dadosPost = $request->request->get($form->getName());
         $erro = array();
         $form->bindRequest($request);
         if ($form->isValid()) {
-            if (isset($dadosPost['id'])) {
+            if ($id) {
+                $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
                 //validar se o username inserido não existe ou se é o dele mesmo
                 $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
-                        ->field('username')->equals($dadosPost['username'])
+                        ->field('username')->equals(str_replace(".", "", str_replace("@", "", $dadosPost['email'])))
                         ->field('id')->notEqual($dadosPost['id'])
                         ->getQuery()
                         ->execute();
@@ -228,13 +242,8 @@ class UserController extends BaseController {
                     $erro[] = $this->trans('Já existe o usuário <b>%name%</b>. Utilize outro', array("%name%" => $dadosPost['username']));
                 }
                 // /validar se o username inserido não existe ou se é o dele mesmo
-                //validando se a senha confere com a repetição
-                if ($dadosPost['password']['password'] != $dadosPost['password']['password2']) {
-                    $erro[] = $this->trans('A senha digitada não confere com a confirmação');
-                }
-                // /validando se a senha confere com a repetição
                 //validando se o email já não existe
-                $result = $dm->createQueryBuilder('ReurbanoUserBundle:user')
+                $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                         ->field('email')->equals($dadosPost['email'])
                         ->field('id')->notEqual($dadosPost['id'])
                         ->getQuery()
@@ -244,23 +253,22 @@ class UserController extends BaseController {
                 }
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
-                    $user = $dm->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
-                    $user->setId($dadosPost['id']);
+
                     $user->setName($dadosPost['name']);
                     $user->setEmail($dadosPost['email']);
-                    $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-                    $user->setUsername($dadosPost['username']);
-                    $user->setPassword($encoder->encodePassword($dadosPost['password']['password'], $user->getSalt()));
-                    //exit($user->getSalt().' => '.$dadosPost['password']['password'].' => '.$encoder->encodePassword($dadosPost['password']['password'], $user->getSalt()).' => '.$encoder->encodePassword($dadosPost['password']['password'], ''));
-                    $user->setGroup($dadosPost['group']);
-                    $user->setAvatar('');
-                    $user->setStatus($dadosPost['status']);
-                    //$dm->persist($user);
-                    $dm->flush();
-                    $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name'] . " (" . $dadosPost['username'] . ")"));
+                    $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+                    $this->dm()->persist($user);
+                    $this->dm()->flush();
+                    $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name']));
                     $this->get('session')->setFlash('ok', $msg);
+                    return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $user->getUsername())));
                 } else {
-                    //return array("erro" => $erro, 'sucesso' => false);
+                    $msg = "";
+                    foreach ($erro as $eItem) {
+                        $msg.=$eItem . " <br />";
+                    }
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $user->getUsername())));
                 }
             } else {
                 $modoCadastro = $this->get('mastop')->param('user.all.autoactive');
@@ -270,7 +278,7 @@ class UserController extends BaseController {
                 }
                 // /validando captcha
                 //validando se a senha confere com a repetição
-                if ($dadosPost['password']['Password'] != $dadosPost['password']['Password2']) {
+                if ($dadosPost['password'] != $dadosPost['Password2']) {
                     $erro[] = $this->trans('A senha digitada não confere com a confirmação da senha.');
                 }
                 // /validando se a senha confere com a repetição
@@ -317,7 +325,7 @@ class UserController extends BaseController {
                 $user->setCpf($dadosPost['cpf']);
                 $user->setEmail($dadosPost['email']);
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-                $user->setPassword($encoder->encodePassword($dadosPost['password']['Password'], $user->getSalt()));
+                $user->setPassword($encoder->encodePassword($dadosPost['password'], $user->getSalt()));
                 //$user->setBirth(0);
                 $user->setGender('');
                 $user->setMoneyFree(0);
@@ -362,35 +370,11 @@ class UserController extends BaseController {
                 }
             }
         } else {
-
+           /* print_r($form->getErrors());
+            exit();*/
             $this->get('session')->setFlash('error', $this->trans('Erro de validação no cadastro, tente novamente.'));
-            return $this->redirect($this->generateUrl('user_user_salvar'));
-        }
-    }
-
-    /**
-     * @Route("/editar/{username}", name="user_user_editar")
-     * @Secure(roles="ROLE_USER")
-     * @Template()
-     */
-    public function editarAction($username) {
-        $factory = $this->get('form.factory');
-        $repository = $this->mongo('ReurbanoUserBundle:User');
-        $query = $repository->findByUsername($username);
-        $form = $factory->create(new UserForm(), $query);
-        if (count($query) > 0) {
-            if ($this->verificaStatus($query)) {
-                return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
-                    'form' => $form->createView(),
-                    'id' => $username, 'nome' => $query->getName()
-                ));
-            } else {
-                return $this->redirect($this->generateUrl('_home'));
-            }
-        } else {
-            $msg = $this->trans('O usuário <b>%username%</b> não existe', array("%username%" => $username));
-            $this->get('session')->setFlash('error', $msg);
-            return $this->redirect($this->generateUrl('_home'));
+            $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
+            return $this->redirect($this->generateUrl('user_user_editar', array('username' => $user->getUsername())));
         }
     }
 

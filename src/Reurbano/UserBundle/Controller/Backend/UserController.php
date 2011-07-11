@@ -167,7 +167,7 @@ class UserController extends BaseController {
                     }
                     $this->get('session')->setFlash('error', $msg);
                     $usuario = $repository->findByField('id', $dadosPost['id']);
-                    return $this->redirect($this->generateUrl('admin_user_user_editar', array('username' => $usuario->getUsername())));
+                    return $this->redirect($this->generateUrl('admin_user_user_salvar', array('username' => $usuario->getUsername())));
                 }
             } else {
                 //inserção

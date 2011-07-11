@@ -1,10 +1,15 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
-        <h1>{{ "Novo usuário"|trans }}</h1>
-        <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+        <h1>{{ titulo }}</h1>
+        {% if usuario %}
+            <form action="{{ path('user_user_salvar',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
+        {% else %}
+            <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+        {% endif%}
+        
     {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "Criar minha conta"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Cancelar"|trans }}' onclick="history.go(-1)" />
+            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
         </form>
 {% endblock content %}  
 {% block javascripts %}
