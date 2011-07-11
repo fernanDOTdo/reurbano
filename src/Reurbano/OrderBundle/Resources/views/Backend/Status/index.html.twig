@@ -1,0 +1,18 @@
+{% extends '::backend.html.twig' %}
+        
+{% block title %}{{title|trans}}{% endblock %}
+
+
+{% block content %}
+<h1>{{title|trans}}</h1>
+<ul>
+  {% for key in status|keys %}
+    <li>{{ key }}</li>
+  {% endfor %}
+</ul>
+{% for stat in status %}
+    {{ stat.getId() }} - {{ stat.getName() }} - {{ stat.getOrder() }} - <a href="{{ path('admin_order_status_edit', {'id': stat.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_order_status_delete', {'id': stat.getId()}) }}">{{"Deletar"|trans}}</a><br />
+  {% else %}
+   {{"Nenhum status encontrado"|trans}}
+  {% endfor %} 
+{% endblock %}
