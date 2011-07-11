@@ -9,86 +9,26 @@ class SourceType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden')
-                ->add('title', 'text', array('label'=>'Título'))
+                ->add('title', 'text', array('label'=>'Título', 'attr' => array('class' => 'medium  LV_invalid_field')))
                 ->add('filename', 'text', array('label'=>'Foto'))
-                ->add('url', 'text', array('label'=>'Link'))
-                ->add('price', 'text', array('label'=>'Valor Original'))
-                ->add('priceOffer', 'text', array('label'=>'Valor com desconto'))
+                ->add('url', 'url', array('label'=>'Link'))
+                ->add('price', 'money', array('label'=>'Valor Original', 'divisor' => 100, 'currency' => 'R$'))
+                ->add('priceOffer', 'money', array('label'=>'Valor com desconto', 'divisor' => 100, 'currency' => 'NBRL'))
+                ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name' ))
+                ->add('category', 'document', array('label'=>'Categoria', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name' ))
+                ->add('rules', 'textarea', array('label'=>'Regulamento'))
+                ->add('details', 'textarea', array('label'=>'Descrição'))
+                ->add('businessUrl', 'url', array('label'=>'Site da empresa'))
+                ->add('businessName', 'text', array('label'=>'Nome da empresa'))
+                ->add('businessAddress', 'text', array('label'=>'Endereço da empresa'))
+                ->add('businessCep', 'text', array('label'=>'CEP da empresa'))
+                ->add('businessLatitude', 'text', array('label'=>'Latitude da empresa'))
+                ->add('businessLongitude', 'text', array('label'=>'Longitude da empresa'))
+                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker hasDatepicker')))
             ;
     }
-    protected $price;
     
-    /**
-     * Preço com desconto da oferta
-     *
-     * @var float
-     * @ODM\Float
-     */
-    protected $priceOffer;
     
-    /**
-     * Preço original da oferta
-     *
-     * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
-     */
-    protected $city;
-    
-    /**
-     * Regulamento da oferta
-     *
-     * @var string
-     * @ODM\String
-     */
-    protected $rules;
-    
-    /**
-     * Descrição da oferta
-     *
-     * @var string
-     * @ODM\String
-     */
-    protected $details;
-    
-    /**
-     * Site da empresa
-     *
-     * @var string
-     * @ODM\String
-     */
-    protected $businessUrl;
-    
-    /**
-     * Nome da empresa
-     *
-     * @var string
-     * @ODM\String
-     */
-    protected $businessName;
-    
-    /**
-     * Endereço da empresa
-     *
-     * @var string
-     * @ODM\String
-     */
-    protected $businessAddress;
-    
-    /**
-     * Latitude da empresa
-     *
-     * @var int
-     * @ODM\Int
-     */
-    protected $businessLatitude;
-    
-    /**
-     * Longitude da empresa
-     *
-     * @var int
-     * @ODM\Int
-     */
-    protected $businessLongitude;
-
     public function getDefaultOptions(array $options) {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Source',
