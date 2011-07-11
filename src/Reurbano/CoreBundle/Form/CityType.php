@@ -20,9 +20,12 @@ class CityType extends AbstractType {
     public function getDefaultOptions(array $options) {
         return array(
             'data_class' => 'Reurbano\CoreBundle\Document\City',
-            'intention'  => 'city_creation',
+            'intention' => 'city_creation',
         );
     }
 
-}
+    public function getName() {
+        return 'city';
+    }
 
+}

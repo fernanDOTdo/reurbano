@@ -1,25 +1,33 @@
 <?php
 namespace Reurbano\CoreBundle\Controller\Backend;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\CoreBundle\Document\City;
 use Reurbano\CoreBundle\Form\CityType;
 
-class CityController extends Controller
+/**
+ * Controller para administrar (CRUD) cidades.
+ */
+
+class CityController extends BaseController
 {
     /**
+     * Lista todas as cidades
+     * 
      * @Route("/", name="admin_core_city_index")
      * @Template()
      */
     public function indexAction()
     {
-        //$cidades = $this->get('reurbano.repository.city')->findAll();
-        $cidades = $this->get('reurbano.repository.city')->findAllByOrder();
+        //$cidades = $this->mongo('ReurbanoCoreBundle:City')->findAll();
+        $cidades = $this->mongo('ReurbanoCoreBundle:City')->findAllByOrder();
         return array('cidades' => $cidades);
     }
     /**
+     * Adiciona um novo, edita um já criado e salva ambos
+     * 
      * @Route("/novo", name="admin_core_city_novo")
      * @Route("/editar/{id}", name="admin_core_city_edit")
      * @Route("/salvar/{id}", name="admin_core_city_save", defaults={"id" = null})
@@ -27,10 +35,10 @@ class CityController extends Controller
      */
     public function formAction($id = null)
     {
-        $dm = $this->get('reurbano.dm');
+        $dm = $this->dm();
         $title = ($id) ? "Editar Cidade" : "Nova Cidade";
         if($id){
-            $city = $this->get('reurbano.repository.city')->find($id);
+            $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
             if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
         }else{
             $city = new City();
@@ -49,16 +57,28 @@ class CityController extends Controller
         return array('form' => $form->createView(), 'city' => $city, 'title'=>$title);
     }
     /**
+     * Exibe um pre delete e deleta se for confirmado
+     * 
      * @Route("/deletar/{id}", name="admin_core_city_delete")
+     * @Template()
      */
     public function deleteAction($id)
     {
-        $dm = $this->get('reurbano.dm');
-        $city = $this->get('reurbano.repository.city')->find($id);
-        if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
-        $dm->remove($city);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', 'Cidade Deletada!');
-        return $this->redirect($this->generateUrl('admin_core_city_index'));
+        $request = $this->get('request');
+        $formResult = $request->request;
+        $dm = $this->dm();
+        $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
+        if($request->getMethod() == 'POST'){
+            if (!$city) 
+                throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
+            $dm->remove($city);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', 'Cidade Deletada!');
+            return $this->redirect($this->generateUrl('admin_core_city_index'));
+        }
+        return array(
+            'name' => $city->getName(),
+            'id'   => $city->getId(),
+        );
     }
 }
