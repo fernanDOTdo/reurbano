@@ -1,0 +1,21 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+        <h1>{{ titulo }}</h1>
+        {% if usuario %}
+            <form action="{{ path('user_user_salvar',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
+        {% else %}
+            <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+        {% endif%}
+        
+    {{ form_widget(form) }}
+            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
+        </form>
+{% endblock content %}  
+{% block javascripts %}
+        <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
+        {% javascripts output='qualquer/coisa.js' 
+                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}

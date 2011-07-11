@@ -73,6 +73,7 @@ doctrine_mongodb:
             auto_mapping: true
             metadata_cache_driver: apc # array, apc, xcache, memcache
 
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%

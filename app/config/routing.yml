@@ -13,7 +13,27 @@ mastop_teste:
 #    pattern:  /
 #    defaults: { _controller: AcmeDemoBundle:Welcome:index }
 #
-# Internal routing configuration to handle ESI
-#_internal:
-# resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-# prefix: /_internal
+_demo_secured:
+    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
+    type:     annotation
+
+_demo:
+    resource: "@AcmeDemoBundle/Controller/DemoController.php"
+    type:     annotation
+    prefix:   /demo
+    
+user:
+   resource:  "@ReurbanoUserBundle/Resources/config/routing.yml"
+   prefix:   /usuario
+   
+userBackend:
+   resource:  "@ReurbanoUserBundle/Resources/config/routingBackend.yml"
+   prefix:   /admin/usuario
+   
+login:
+    resource: "@ReurbanoUserBundle/Controller/Frontend/SecurityController.php"
+    type:     annotation
+    prefix:   /login
+login_check:
+    pattern:   /login_check
+

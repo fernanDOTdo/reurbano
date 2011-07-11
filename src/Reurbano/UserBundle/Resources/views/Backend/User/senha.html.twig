@@ -1,0 +1,10 @@
+{% extends '::backend.html.twig' %}
+{% block content %}
+        <h1>{% trans with {'%name%': usuario.getName(), '%username%': usuario.getUsername() } %} Troca de Senha do usuário %name% (%username%) {% endtrans %}</h1>
+        <form action="{{ path('admin_user_user_salvar_senha')  }}" method="post" {{ form_enctype(form) }}>
+        
+    {{ form_widget(form) }}
+            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
+        </form>
+{% endblock content %}  
