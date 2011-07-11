@@ -71,7 +71,7 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
-            metadata_cache_driver: apc # array, apc, xcache, memcache
+            metadata_cache_driver: array # array, apc, xcache, memcache
 
 
 # Swiftmailer Configuration

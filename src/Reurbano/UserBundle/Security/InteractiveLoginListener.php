@@ -19,7 +19,7 @@ class InteractiveLoginListener
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
-        if ($user instanceof UserInterface) {
+        if ($user instanceof UserInterface && $user->getUsername() != 'admin') {
             $user->setLastlogin(new \DateTime());
             $this->userManager->updateUser($user);
         }

@@ -2,27 +2,14 @@ ReurbanoCoreBundle:
     resource: "@ReurbanoCoreBundle/Resources/config/routing/routing.yml"
 ReurbanoDealBundle:
     resource: "@ReurbanoDealBundle/Resources/config/routing/routing.yml"
-mastop_system:
+MastopSystemBundle:
   resource: "@MastopSystemBundle/Resources/config/routing/routing.yml"
 
-mastop_teste:
+MastopTesteBundle:
     resource: "@MastopTesteBundle/Resources/config/routing/teste.yml"
     prefix:   /teste
 
-#_welcome:
-#    pattern:  /
-#    defaults: { _controller: AcmeDemoBundle:Welcome:index }
-#
-_demo_secured:
-    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
-    type:     annotation
-
-_demo:
-    resource: "@AcmeDemoBundle/Controller/DemoController.php"
-    type:     annotation
-    prefix:   /demo
-    
-user:
+ReurbanoUserBundle:
    resource:  "@ReurbanoUserBundle/Resources/config/routing.yml"
    prefix:   /usuario
    

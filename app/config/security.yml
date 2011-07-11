@@ -23,7 +23,6 @@ security:
              providers: [in_memory, mongo]
         in_memory:
             users:
-                user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                 admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
         mongo:
 #            entity: { class: Symfony\Bundle\DoctrineMongoDBBundle\Security\DocumentUserProvider, property: email }
