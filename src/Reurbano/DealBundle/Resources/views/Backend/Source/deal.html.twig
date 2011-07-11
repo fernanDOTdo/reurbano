@@ -6,9 +6,13 @@
 {% block content %}
 <h1>{{title|trans}}</h1>
 <ul>
-<form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+<div class="box">
+    <div class="block">
+        <form action="{{ path('admin_deal_source_save', vars) }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
 
-    <input type="submit" value="{{"Enviar"|trans}}" />
-</form>
+            <input type="submit" class="button_colour" value="{{"Enviar"|trans}}" />
+        </form>
+    </div>
+</div>
 {% endblock %}
