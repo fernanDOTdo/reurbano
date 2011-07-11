@@ -1,0 +1,11 @@
+{% extends "::backend.html.twig" %}
+
+{% block content %}
+    <h1>Tem certeza que deseja deletar a oferta {{ deal.getTitle() }}?</h1>
+    <form action="{{ path('admin_deal_source_delete', {'id': id}) }}" name="delete" method="post">
+        <input type="submit" value="Sim" />
+        <input type="button" value="Não" onclick="history.go(-1)" />
+    </form>
+{% endblock %}
+
+{% set code = code(_self) %}

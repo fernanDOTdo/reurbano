@@ -23,14 +23,38 @@ class Deal
      * @ODM\Id
      */
     protected $id;
-
+    
     /**
-     * Título da Oferta
+     * Usuário que fez o anuncio
      *
-     * @var string
-     * @ODM\String
+     * @todo Implementar ReferenceOne para o bundle de usuários
+     * @var int
+     * @ODM\Int
      */
-    protected $title;
+    protected $idUser;
+    
+    /**
+     * Preço original da oferta
+     *
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Source")
+     */
+    protected $offer;
+    
+    /**
+     * Preço com desconto da oferta
+     *
+     * @var float
+     * @ODM\Float
+     */
+    protected $price;
+    
+    /**
+     * Quantidade disponivel
+     *
+     * @var int
+     * @ODM\Int
+     */
+    protected $quantity;
     
     /**
      * Vouchers
@@ -42,7 +66,64 @@ class Deal
     
     /** @ODM\Collection */
     protected $tags = array();
+    
+    /**
+     * Se o produto está ativo ou não
+     *
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $active;
+    
+    /**
+     * Rotulação do produto
+     *
+     * @var string
+     * @ODM\String
+     */
+    protected $label;
+    
+    /**
+     * Visualizações do pedido
+     *
+     * @var int
+     * @ODM\Int
+     */
+    protected $views = 0;
+    
+    /**
+     * Verifica se a oferta está correta
+     *
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $checked;
+    
+    /**
+     * Verifica se a oferta é destaque
+     *
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $special;
+    
+    /**
+     * Data de edição da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $updatedAt;
+    
+    /**
+     * Data de criação da oferta
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $createdAt;
 
+    
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -59,23 +140,83 @@ class Deal
     }
 
     /**
-     * Set title
+     * Set idUser
      *
-     * @param string $title
+     * @param int $idUser
      */
-    public function setTitle($title)
+    public function setIdUser($idUser)
     {
-        $this->title = $title;
+        $this->idUser = $idUser;
     }
 
     /**
-     * Get title
+     * Get idUser
      *
-     * @return string $title
+     * @return int $idUser
      */
-    public function getTitle()
+    public function getIdUser()
     {
-        return $this->title;
+        return $this->idUser;
+    }
+
+    /**
+     * Set offer
+     *
+     * @param Reurbano\DealBundle\Document\Source $offer
+     */
+    public function setOffer(\Reurbano\DealBundle\Document\Source $offer)
+    {
+        $this->offer = $offer;
+    }
+
+    /**
+     * Get offer
+     *
+     * @return Reurbano\DealBundle\Document\Source $offer
+     */
+    public function getOffer()
+    {
+        return $this->offer;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float $price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set quantity
+     *
+     * @param int $quantity
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * Get quantity
+     *
+     * @return int $quantity
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
     }
 
     /**
@@ -116,5 +257,145 @@ class Deal
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean $active
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string $label
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Set views
+     *
+     * @param int $views
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * Get views
+     *
+     * @return int $views
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * Set checked
+     *
+     * @param boolean $checked
+     */
+    public function setChecked($checked)
+    {
+        $this->checked = $checked;
+    }
+
+    /**
+     * Get checked
+     *
+     * @return boolean $checked
+     */
+    public function getChecked()
+    {
+        return $this->checked;
+    }
+
+    /**
+     * Set special
+     *
+     * @param boolean $special
+     */
+    public function setSpecial($special)
+    {
+        $this->special = $special;
+    }
+
+    /**
+     * Get special
+     *
+     * @return boolean $special
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param date $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return date $updatedAt
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param date $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return date $createdAt
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }
