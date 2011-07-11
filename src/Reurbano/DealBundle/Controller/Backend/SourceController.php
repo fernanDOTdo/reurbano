@@ -21,8 +21,8 @@ class SourceController extends BaseController
     public function indexAction()
     {
         $title = 'Administração do Banco de Ofertas';
-        //$ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAll();
-        $ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAll();
+        //$ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
         return array('ofertas' => $ofertas, 'title' => $title);
     }
     /**
@@ -37,14 +37,20 @@ class SourceController extends BaseController
         $title = ($id) ? "Editar Oferta" : "Nova Oferta";
         if($id){
             $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
-            if (!$deal) throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
+            if (!$deal) {
+                throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
+            }
         }else{
             $deal = new Source();
         }
-        $form = $this->createForm(new SourceType(), $deal);
         $request = $this->get('request');
+        $form = $this->createForm(new SourceType(), $deal);
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
+            $formResult = $request->request->get('source');
+            $expiresAt = explode('/',$formResult['expiresAt']);
+            $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
+            $deal->setExpiresAt($dataAtual);
             if ($form->isValid()) {
                 $dm->persist($deal);
                 $dm->flush();
@@ -52,19 +58,38 @@ class SourceController extends BaseController
                 return $this->redirect($this->generateUrl('admin_deal_source_index'));
             }
         }
-        return array('form' => $form->createView(), 'deal' => $deal, 'title'=>  $title);
+        return array(
+            'form' => $form->createView(),
+            'deal' => $deal,
+            'title'=>  $title);
     }
     /**
      * @Route("/deletar/{id}", name="admin_deal_source_delete")
+     * @Template()
      */
     public function deleteAction($id)
     {
         $dm = $this->dm();
         $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
-        if (!$deal) throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
-        $dm->remove($deal);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', $this->trans('Oferta Deletada'));
-        return $this->redirect($this->generateUrl('admin_deal_source_index'));
+        if (!$deal) {
+            throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
+        }
+        
+        $request = $this->get('request');
+        
+        if ('POST' == $request->getMethod()) {
+            $dm = $this->dm();
+            $dm->remove($deal);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans('Oferta Deletada'));
+            return $this->redirect($this->generateUrl('admin_deal_source_index'));
+        }
+
+        $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
+        return array(
+            'deal' => $deal,
+            'id' => $id
+        );
+        
     }
 }
