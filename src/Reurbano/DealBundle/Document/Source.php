@@ -74,7 +74,7 @@ class Source
     /**
      * Categoria da oferta
      *
-     * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\Category")
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Category")
      */
     protected $category;
     
@@ -285,7 +285,7 @@ class Source
      *
      * @param Reurbano\CoreBundle\Document\Category $category
      */
-    public function setCategory(\Reurbano\CoreBundle\Document\Category $category)
+    public function setCategory(\Reurbano\DealBundle\Document\Category $category)
     {
         $this->category = $category;
     }
