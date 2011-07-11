@@ -1,0 +1,11 @@
+Reurbano\UserBundle\Entity\User:
+  getters:
+        tokenValid:
+            - True: { message: "The token is invalid" }
+  properties:
+    name:
+      - NotBlank: ~
+      - MinLength: 5
+    email: 
+      - NotBlank: ~
+      - MinLength: 4

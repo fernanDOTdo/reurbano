@@ -1,0 +1,4 @@
+_user_frontend:
+    resource: "@ReurbanoUserBundle/Controller/Frontend/UserController.php"
+    type: annotation
+    prefix:   /
