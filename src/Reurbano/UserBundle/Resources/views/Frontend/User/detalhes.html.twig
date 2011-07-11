@@ -1,0 +1,17 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+    <h1>{{ "Detalhes do usuário %username%"|trans({'%username%' : usuario.getUsername()}) }}</h1>
+    {{ "<b>Nome: </b>"}} {{ usuario.getName() }}
+    <br />
+    {{ "<b>Email: </b>"}} {{ usuario.getEmail() }}    
+    <br />
+    {{ "<b>Data de cadastro: </b>"}} {{ usuario.getCreated() }}    
+    <br />
+    {{ "<b>Último login: </b>"}}
+    {% if  usuario.getLastLogin( )== 0 %}
+        {{ "Nunca"|trans }}
+    {% else %}
+        {{ usuario.getLastLogin() }}
+    {% endif %}
+    <br />
+{% endblock content %}  
