@@ -39,6 +39,7 @@ class City
      *
      * @var string
      * @Gedmo\Slug
+     * @ODM\UniqueIndex
      * @ODM\String
      */
     protected $slug;
