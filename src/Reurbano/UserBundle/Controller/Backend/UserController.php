@@ -248,5 +248,17 @@ class UserController extends BaseController {
         $this->get('session')->setFlash('ok', $msg);
         return $this->redirect($this->generateUrl('admin_user_user_index'));
     }
+    /**
+     * Action para exibir um password criptografado com as atuais configurações
+     * 
+     * @Route("/testpass", name="admin_user_user_testpass")
+     */
+    public function testPass(){
+        $req = $this->getRequest()->query;
+        $pass = $req->get('p');
+        $salt = $req->get('s');
+        $encoder = $this->get('security.encoder_factory')->getEncoder(new User());
+        return new \Symfony\Component\HttpFoundation\Response($encoder->encodePassword($pass, $salt));
+    }
 
 }
