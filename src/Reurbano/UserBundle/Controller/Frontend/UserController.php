@@ -12,6 +12,7 @@ use Reurbano\UserBundle\Form\Frontend\UserForm;
 use Reurbano\UserBundle\Form\Frontend\UserFormEdit;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
+use Reurbano\UserBundle\Form\Frontend\ChangePassForm;
 use Reurbano\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,19 +56,31 @@ class UserController extends BaseController {
     /**
      * @Route("/novo", name="user_user_novo")
      * @Route("/editar/{username}", name="user_user_editar")
-     * @Route("/senha/{username}", name="user_user_senha")
      * @Template()
      */
     public function novoAction($username = false) {
+        $userLogado = $this->get('security.context')->getToken()->getUser();
         if ($username) {
             $rep = $this->mongo('ReurbanoUserBundle:User');
             $query = $rep->findByField('username', $username);
-            $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
-            $form = $this->createForm(new UserFormEdit(), $query);
-            return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-                'form' => $form->createView(), 'titulo' => $titulo,
-                'usuario' => $query
-            ));
+            if (count($query) == 1) {
+                if ($this->get('security.context')->isGranted('ROLE_ADMIN') || ($query->getId() == $userLogado->getId())) {
+                    $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
+                    $form = $this->createForm(new UserFormEdit(), $query);
+                    return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
+                        'form' => $form->createView(), 'titulo' => $titulo,
+                        'usuario' => $query
+                    ));
+                } else {
+                    $msg = $this->trans('Você não tem permissão para editar o usuário.');
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('_home'));
+                }
+            } else {
+                $msg = $this->trans('Não existe o usuário %username%',array("%username%"=>$username));
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('_home'));
+            }
         } else {
             $factory = $this->get('form.factory');
             $titulo = $this->trans("Novo usuário");
@@ -128,9 +141,57 @@ class UserController extends BaseController {
     private function emailActKey($email, $nome, $actkey) {
         $message = \Swift_Message::newInstance()
                 ->setSubject($this->trans('Confirmação de cadastro no site'))
-                ->setFrom('fabio@mastop.com.br')
+                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
                 ->setTo($email)
                 ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_ativar', array('actkey' => $actkey), true))), 'text/html');
+        ;
+        $this->get('mailer')->send($message);
+    }
+
+    /**
+     * Envia um email para o email do $user com o link de troca de senha)
+     *  @param objeto $user
+     */
+    private function emailTrocaSenha($user) {
+        if ($user->getActkey() == '') {
+            $user->setActkey(uniqid(null, true));
+            $this->dm()->persist($user);
+            $this->dm()->flush();
+        }
+        $message = \Swift_Message::newInstance()
+                ->setSubject($this->trans('Solicitação de troca de senha'))
+                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                ->setTo($user->getEmail())
+                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewPass.html.twig', array('usuario' => $user)), 'text/html');
+        ;
+        $this->get('mailer')->send($message);
+    }
+
+    /**
+     * Envia um email para o $newEmail com o link de confirmação para troca de email)
+     *  @param objeto $user
+     *  @param string $newEmail
+     */
+    private function emailTrocaEmail($user, $newEmail) {
+        $message = \Swift_Message::newInstance()
+                ->setSubject($this->trans('Confirmação de troca de email'))
+                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                ->setTo($newEmail)
+                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewEmail.html.twig', array('usuario' => $user, 'newEmail' => $newEmail, 'ip' => $_SERVER['REMOTE_ADDR'])), 'text/html');
+        ;
+        $this->get('mailer')->send($message);
+    }
+
+    /**
+     * Envia um email para o email do $user com o o aviso que a senha foi trocada)
+     *  @param objeto $user
+     */
+    private function emailNewPass($user) {
+        $message = \Swift_Message::newInstance()
+                ->setSubject($this->trans('Sua senha foi trocada em nosso site'))
+                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                ->setTo($user->getEmail())
+                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewPassOk.html.twig', array('usuario' => $user, 'ip' => $_SERVER['REMOTE_ADDR'])), 'text/html');
         ;
         $this->get('mailer')->send($message);
     }
@@ -249,18 +310,25 @@ class UserController extends BaseController {
                         ->getQuery()
                         ->execute();
                 if (($result->count() > 0)) {
-                    $erro[] = $this->trans('O endereço de email <b>%email%</b> já foi utilizado. Utilize outro', array('%email%' => $dadosPost['email']));
+                    $erro[] = $this->trans('O endereço de email <b>%email%</b> já foi utilizado. Escolha outro email.', array('%email%' => $dadosPost['email']));
                 }
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
-
                     $user->setName($dadosPost['name']);
-                    $user->setEmail($dadosPost['email']);
-                    $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+                    $user->setCpf($dadosPost['cpf']);
+                    $user->setEdited(new \DateTime());
                     $this->dm()->persist($user);
                     $this->dm()->flush();
+                    $msgAux = "";
+                    if ($dadosPost['email'] != $user->getEmail()) {
+                        $msgAux = $this->trans('<br />A alteração do email de <b>%emailOld%</b> para <b>%email%</b> somente será realizada após a confirmação do email enviado para seu novo email', array("%emailOld%" => $user->getEmail(), "%email%" => $dadosPost['email']));
+                        $this->emailTrocaEmail($user, $dadosPost['email']);
+                    }
+                    // $user->setEmail($dadosPost['email']);
+                    //$user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+
                     $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name']));
-                    $this->get('session')->setFlash('ok', $msg);
+                    $this->get('session')->setFlash('ok', $msg . $msgAux);
                     return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $user->getUsername())));
                 } else {
                     $msg = "";
@@ -278,7 +346,7 @@ class UserController extends BaseController {
                 }
                 // /validando captcha
                 //validando se a senha confere com a repetição
-                if ($dadosPost['password'] != $dadosPost['Password2']) {
+                if ($dadosPost['password'] != $dadosPost['password2']) {
                     $erro[] = $this->trans('A senha digitada não confere com a confirmação da senha.');
                 }
                 // /validando se a senha confere com a repetição
@@ -370,8 +438,8 @@ class UserController extends BaseController {
                 }
             }
         } else {
-           /* print_r($form->getErrors());
-            exit();*/
+            /* print_r($form->getErrors());
+              exit(); */
             $this->get('session')->setFlash('error', $this->trans('Erro de validação no cadastro, tente novamente.'));
             $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
             return $this->redirect($this->generateUrl('user_user_editar', array('username' => $user->getUsername())));
@@ -379,11 +447,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/usuario/recupera", name="_user_forget")
+     * @Route("/senha/recupera/{username}", name="user_user_recupera", defaults={"username" = null})
      * @Template()
      */
-    public function recuperaAction() {
-
+    public function recuperaAction($username=null) {
         $factory = $this->get('form.factory');
         $form = $factory->create(new ForgetForm());
         return $this->render('ReurbanoUserBundle:Frontend/Security:forget.html.twig', array(
@@ -392,13 +459,103 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/usuario/recuperaok", name="_user_forget_post")
+     * @Route("/recuperaok", name="user_user_recupera_post")
      * @Template()
      */
     public function recuperaokAction() {
-
+        $form = $this->get('form.factory')->create(new ForgetForm());
+        $dadosPost = $this->get('request')->request->get($form->getName());
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+        $usuario = $repository->findByField('email', $dadosPost['email']);
+        if (count($usuario) != 1) {
+            $this->get('session')->setFlash('error', $this->trans('Email não encontrado no sistema.'));
+            return $this->redirect($this->generateUrl('user_user_recupera'));
+        } else {
+            $this->emailTrocaSenha($usuario);
+            $this->get('session')->setFlash('ok', $this->trans('Favor seguir as instruções enviadas para o email %email%.', array('%email%' => $dadosPost['email'])));
+            return $this->redirect($this->generateUrl('_home'));
+        }
         //ver se o post eh username ou email, ver se tem um email/username com este dado alterar campo recoverid para um uniqkey,
         //enviar email para este usuário com uma url com o uniqkey que ao acessar entra em um action que permite o usuário editar a senha
+    }
+
+    /**
+     * @Route("/senha/recuperacao/{actkey}", name="user_user_recuperacao")
+     * @Template()
+     */
+    public function recuperacaoAction($actkey) {
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+        $usuario = $repository->findByField('actkey', $actkey);
+        if (count($usuario) == 1) {
+            $factory = $this->get('form.factory');
+            $form = $factory->create(new ChangePassForm());
+            return $this->render('ReurbanoUserBundle:Frontend/User:changepass.html.twig', array(
+                'form' => $form->createView(), 'actkey' => $usuario->getActkey(), 'email' => $usuario->getEmail()
+            ));
+        } else {
+            $this->get('session')->setFlash('error', $this->trans('Código de recuperação inválido. Solicite novamente a troca de sua senha.'));
+            return $this->redirect($this->generateUrl('_home'));
+        }
+    }
+
+    /**
+     * @Route("/senha/recuperacaook/{actkey}", name="user_user_recuperacaook")
+     * @Template()
+     */
+    public function recuperacaookAction($actkey) {
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+        $usuario = $repository->findByField('actkey', $actkey);
+        if (count($usuario) == 1) {
+            $factory = $this->get('form.factory');
+            $form = $factory->create(new ChangePassForm());
+            $dadosPost = $this->get('request')->request->get($form->getName());
+            if ($dadosPost['password'] != $dadosPost['password2']) {
+                $this->get('session')->setFlash('error', $this->trans('A senha digitada não confere com a confirmação, tente novamente.'));
+                return $this->redirect($this->generateUrl('user_user_recuperacao', array('actkey' => $actkey)));
+            } else {
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($usuario);
+                $usuario->setPassword($encoder->encodePassword($dadosPost['password'], $usuario->getSalt()));
+                $usuario->setActkey('');
+                $this->dm()->persist($usuario);
+                $this->dm()->flush();
+                $this->emailNewPass($usuario);
+                $this->get('session')->setFlash('ok', $this->trans('Senha alterada com sucesso.'));
+                return $this->redirect($this->generateUrl('_home'));
+            }
+        } else {
+            $this->get('session')->setFlash('error', $this->trans('Código de recuperação inválido. Solicite novamente a troca de sua senha.'));
+            return $this->redirect($this->generateUrl('_home'));
+        }
+    }
+
+    /**
+     * @Route("/novoemail/{edited}/{email}", name="user_user_novo_email")
+     * @Template()
+     */
+    public function trocaEmailAction($edited, $email) {
+        $email = html_entity_decode($email);
+        $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+        $data = new \DateTime();
+        $data->setTimestamp($edited);
+
+        $usuario = $repository->findByField('edited', $data);
+        if (count($usuario) == 1) {
+            $verificaEmail = $repository->findByField('email', $email);
+            if (count($verificaEmail) > 0) {
+                $this->get('session')->setFlash('error', $this->trans('Não foi possível trocar seu email. O email %email% já está em uso.', array("%email%" => $email)));
+                return $this->redirect($this->generateUrl('_home'));
+            }
+            $usuario->setEdited(new \DateTime());
+            $usuario->setEmail($email);
+            $usuario->setUsername(str_replace(".", "", str_replace("@", "", $email)));
+            $this->dm()->persist($usuario);
+            $this->dm()->flush();
+            $this->get('session')->setFlash('ok', $this->trans('Seu email foi trocado para %email%.', array("%email%" => $email)));
+            return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $usuario->getUsername())));
+        } else {
+            $this->get('session')->setFlash('error', $this->trans('Não foi possível trocar seu email, repita o processo.'));
+            return $this->redirect($this->generateUrl('_home'));
+        }
     }
 
 }

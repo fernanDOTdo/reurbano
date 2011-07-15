@@ -1,0 +1,9 @@
+{{ "Olá %name%, foi solicitado em nosso site a troca de sua senha."|trans({"%name%":usuario.getName()}) }}
+<br />
+{{ "Para trocar a sua senha basta clicar no link:"|trans }}
+<br />
+<h1>
+    <a href="{{ url('user_user_recuperacao', {'actkey':usuario.getActkey()}) }}" title="">{{ url('user_user_recuperacao',{'actkey':usuario.getActkey()}) }}</a>
+</h1>
+<br />
+<b>{{ "Se não foi você que solicitou a troca de sua senha, basta ignorar este email."|trans }}</b>

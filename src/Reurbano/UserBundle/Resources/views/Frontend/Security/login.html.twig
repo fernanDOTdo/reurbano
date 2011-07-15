@@ -16,6 +16,6 @@
     <br />
     <input type="submit" name="login" value="Login!"/>
 </form>
-<a href="{{ path('_user_forget') }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+<a href="{{ path('user_user_recupera', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
 
 {% endblock content %}  

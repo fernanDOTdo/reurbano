@@ -6,5 +6,5 @@
             <input type="submit" name='reenviar' value='{{ "Enviar novamente!"|trans }}' />
             <input type="button" name='voltar' value='{{ "Cancelar"|trans }}' onclick="history.go(-1)" />
         </form>
-        <div class='info_box info'>{{ "<b>Importante</b><br />Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+        <div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
 {% endblock content %}  
