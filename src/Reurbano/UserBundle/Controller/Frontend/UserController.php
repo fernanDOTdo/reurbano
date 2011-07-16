@@ -25,6 +25,7 @@ class UserController extends BaseController {
 
         $script = '
             var ajaxPath = "' . $this->generateUrl('user_user_check', array(), true) . '";
+            var ajaxPath2 = "' . $this->generateUrl('user_user_check2', array(), true) . '";
             var emailExiste = "' . $this->get('translator')->trans('O email digitado já existe, favor inserir outro.') . '";
             ';
         return new Response($script);
@@ -40,6 +41,31 @@ class UserController extends BaseController {
                 if (!empty($email)) {
                     $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                             ->field('email')->equals($email)
+                            ->getQuery()
+                            ->execute();
+                    if (($result->count() == 0)) {
+                        return new Response('1');
+                    } else {
+                        return new Response('0');
+                    }
+                }
+            }
+        }
+        return new Response($this->get('translator')->trans('_NOTAJAX'));
+    }
+    
+    /**
+     * @Route("/check2", name="user_user_check2")
+     */
+    public function check2Action() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            if ($this->get('request')->getMethod() == 'POST') {
+                $email = $this->get('request')->request->get('email');
+                $id = $this->get('request')->request->get('id');
+                if (!empty($email)) {
+                    $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
+                            ->field('email')->equals($email)
+                            ->field('id')->notEqual($id)
                             ->getQuery()
                             ->execute();
                     if (($result->count() == 0)) {
