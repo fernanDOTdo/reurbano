@@ -22,7 +22,8 @@ $loader->registerNamespaces(array(
     'Doctrine\\ODM\\MongoDB'  => __DIR__.'/../vendor/doctrine-mongodb-odm/lib',
 
     'Doctrine\\Common\\DataFixtures' => __DIR__.'/../vendor/doctrine-fixtures/lib',
-        
+    'Stof'  => __DIR__.'/../vendor/bundles',
+    'Gedmo' => __DIR__.'/../vendor/gedmo-doctrine-extensions/lib',
     ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',
