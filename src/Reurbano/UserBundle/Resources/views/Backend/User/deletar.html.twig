@@ -1,0 +1,6 @@
+{% extends '::backend.html.twig' %}
+{% block content %}
+<h1>{% trans with {'%name%' : usuario.getName() } %}Tem certeza que deseja remover o usuário %name%?{% endtrans %}</h1>
+<a href="{{ url('admin_user_user_deletarok',{'username': usuario.getUsername()}) }}">{{ "Sim"|trans }}</a> | 
+<a href="{{ url('admin_user_user_index') }}">{{ "Não"|trans }}</a> 
+{% endblock content %}  

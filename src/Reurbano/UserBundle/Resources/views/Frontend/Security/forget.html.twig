@@ -1,0 +1,11 @@
+{% extends '::frontend.html.twig' %}
+{% block content %}
+
+<form action="{{ path("_user_forget_post") }}" method="post">
+    <label for="username">Email/Usuário:</label>
+    <input type="text" id="email" name="_email" value="" />
+    <br />
+    <input type="submit" name="login" value="Recuperar"/>
+</form>
+
+{% endblock content %}  

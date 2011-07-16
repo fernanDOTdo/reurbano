@@ -19,7 +19,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             
             new Mastop\SystemBundle\MastopSystemBundle(),
-            #new Mastop\UserBundle\MastopUserBundle(),
+            new Reurbano\UserBundle\ReurbanoUserBundle(),
             new Mastop\TesteBundle\MastopTesteBundle(),
             new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
             new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             
             new Reurbano\CoreBundle\ReurbanoCoreBundle(),
             new Reurbano\DealBundle\ReurbanoDealBundle(),
+            new Reurbano\OrderBundle\ReurbanoOrderBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -9,7 +9,7 @@ class CityType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('name');
+        $builder->add('name', 'text');
         $builder->add('special', 'checkbox', array(
             'label' => 'Exibir em "Principais Cidades"?',
             'required' => false,
