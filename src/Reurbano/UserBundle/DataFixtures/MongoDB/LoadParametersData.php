@@ -60,6 +60,22 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $child->setOrder(3);
         $param->addChildren($child);
         
+        $child = new Children();
+        $child->setName('faceappid');
+        $child->setTitle('ID do Aplicativo Facebook');
+        $child->setDesc('Código do aplicativo criado no facebook developers');
+        $child->setValue('');
+        $child->setOrder(4);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('faceappsecret');
+        $child->setTitle('Código Secret do App criado no Facebook');
+        $child->setDesc('Código gerado no site de developers do Facebook.');
+        $child->setValue('');
+        $child->setOrder(5);
+        $param->addChildren($child);
+        
         $manager->persist($param);
         $manager->flush();
     }

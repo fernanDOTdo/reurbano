@@ -53,7 +53,7 @@ class UserController extends BaseController {
         }
         return new Response($this->get('translator')->trans('_NOTAJAX'));
     }
-    
+
     /**
      * @Route("/check2", name="user_user_check2")
      */
@@ -103,7 +103,7 @@ class UserController extends BaseController {
                     return $this->redirect($this->generateUrl('_home'));
                 }
             } else {
-                $msg = $this->trans('Não existe o usuário %username%',array("%username%"=>$username));
+                $msg = $this->trans('Não existe o usuário %username%', array("%username%" => $username));
                 $this->get('session')->setFlash('error', $msg);
                 return $this->redirect($this->generateUrl('_home'));
             }
@@ -582,6 +582,44 @@ class UserController extends BaseController {
             $this->get('session')->setFlash('error', $this->trans('Não foi possível trocar seu email, repita o processo.'));
             return $this->redirect($this->generateUrl('_home'));
         }
+    }
+
+    /**
+     * @Route("/facebook", name="user_user_facebook")
+     * @Template()
+     */
+    public function facebookAction($username=null) {
+        echo '<p>signed_request contents:</p>';
+        $response = $this->parse_signed_request($this->get('request')->request->get('signed_request'), '429a5cc5c6e6c63db3a085532f71fe63');
+        echo '<pre>';
+        print_r($response);
+        echo '</pre>';
+    }
+
+    public function parse_signed_request($signed_request, $secret) {
+        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+
+        // decode the data
+        $sig = $this->base64_url_decode($encoded_sig);
+        $data = json_decode($this->base64_url_decode($payload), true);
+
+        if (strtoupper($data['algorithm']) !== 'HMAC-SHA256') {
+            error_log('Unknown algorithm. Expected HMAC-SHA256');
+            return null;
+        }
+
+        // check sig
+        $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+        if ($sig !== $expected_sig) {
+            error_log('Bad Signed JSON signature!');
+            return null;
+        }
+
+        return $data;
+    }
+
+    public function base64_url_decode($input) {
+        return base64_decode(strtr($input, '-_', '+/'));
     }
 
 }
