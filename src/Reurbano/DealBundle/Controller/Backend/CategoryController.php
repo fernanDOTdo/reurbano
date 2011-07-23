@@ -70,8 +70,7 @@ class CategoryController extends BaseController {
         $dm = $this->dm();
         $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
         if($request->getMethod() == 'POST'){
-            if (!$cat)
-                throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
+            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
             $dm->remove($cat);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans('Categoria Deletada'));

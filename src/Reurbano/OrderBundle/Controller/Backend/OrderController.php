@@ -1,5 +1,5 @@
 <?php
-namespace Reurbano\DealBundle\Controller\Backend;
+namespace Reurbano\OrderBundle\Controller\Backend;
 
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -53,5 +53,16 @@ class OrderController extends BaseController
     public function commentAction($id)
     {
         return array();
+    }
+    
+    /**
+     * @Route("/novo", name="admin_order_order_")
+     */
+    public function newAction(){
+        $dm = $this->dm();
+        $order = $this->mongo('ReurbanoOrderBundle:Order')->createOrder();
+        $dm->persist($order);
+        $dm->flush();
+        return $this->redirect($this->generateUrl('admin_order_order_index'));
     }
 }

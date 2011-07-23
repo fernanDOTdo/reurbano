@@ -1,11 +1,12 @@
 <?php
-namespace Reurbano\DealBundle\Controller\Backend;
+
+namespace Reurbano\OrderBundle\Controller\Backend;
 
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\OrderBundle\Document\Status;
-use Reurbano\OrderBundle\Form\StatusType;
+use Reurbano\OrderBundle\Form\Backend\StatusType;
 
 /**
  * Controller para administrar (CRUD) status de pedidos.
@@ -26,6 +27,8 @@ class StatusController extends BaseController
         return array('status' => $status, 'title' => $title);
     }
     /**
+     * Adiciona um novo, edita um já criado e salva ambos
+     * 
      * @Route("/novo", name="admin_order_status_new")
      * @Route("/editar/{id}", name="admin_order_status_edit")
      * @Route("/salvar/{id}", name="admin_order_status_save", defaults={"id" = null})
@@ -36,7 +39,7 @@ class StatusController extends BaseController
         $dm = $this->dm();
         $title = ($id) ? "Editar Status" : "Novo Status";
         if($id){
-            $stat = $this->mongo('ReurbanoOrderBundle:Status')->find($id);
+            $stat = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$id);
             if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
         }else{
             $stat = new Status();
@@ -55,18 +58,27 @@ class StatusController extends BaseController
         return array('form' => $form->createView(), 'stat' => $stat, 'title'=>  $title);
     }
     /**
-     * Action para deletar um status
+     * Exibe um pre delete e deleta se for confirmado
      * 
      * @Route("/deletar/{id}", name="admin_order_status_delete")
+     * @Template()
      */
     public function deleteAction($id)
     {
+        $request = $this->get('request');
+        $formResult = $request->request;
         $dm = $this->dm();
-        $stat = $this->mongo('ReurbanoOrderBundle:Status')->find($id);
-        if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
-        $dm->remove($stat);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', $this->trans('Status Deletado'));
-        return $this->redirect($this->generateUrl('admin_order_status_index'));
+        $stat = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$id);
+        if($request->getMethod() == 'POST'){
+            if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
+            $dm->remove($stat);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans('Status Deletado'));
+            return $this->redirect($this->generateUrl('admin_order_status_index'));
+        }
+        return array(
+            'name' => $stat->getName(),
+            'id'   => $stat->getId(),
+        );
     }
 }

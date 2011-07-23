@@ -20,32 +20,20 @@ class Order
      * ID do Pedido
      *
      * @var string
-     * @ODM\Id
+     * @ODM\Id(strategy="NONE")
      */
     protected $id;
 
     /**
      * Usuário (mudar para referenceOne)
      *
-     * @var string
-     * @ODM\String
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
     
     /**
-     * Comentários
-     *
-     * @var array
-     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\Comment")
+     * Array com 
      */
-    protected $comments = array();
-    
-    /**
-     * Status
-     * 
-     * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Status")
-     */
-    private $status;
     
     /**
      * Data de Criação
@@ -63,4 +51,23 @@ class Order
      */
     protected $updated;
     
+    /**
+     * Status
+     * 
+     * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Status")
+     */
+    private $status;
+    
+    /**
+     * Comentários
+     *
+     * @var array
+     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\Comment")
+     */
+    protected $comments = array();
+    
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }
