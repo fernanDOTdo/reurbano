@@ -1,69 +1,78 @@
 <?php
-namespace Reurbano\DealBundle\Controller\Backend;
+namespace Reurbano\DealBundle\Util;
 
-use Mastop\SystemBundle\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Reurbano\DealBundle\Document\Deal;
-use Reurbano\DealBundle\Form\Backend\DealType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * Controller para administrar (CRUD) ofertas.
- */
-
-class DealController extends BaseController
+/* Classe para manipulação de Upload do Deal */
+class Upload
 {
-    /**
-     * @Route("/", name="admin_deal_deal_index")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $title = 'Administração de Ofertas';
-        //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
-        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
-        return array('ofertas' => $ofertas, 'title' => $title);
+    
+    protected $fileUploaded;
+    protected $path;
+    protected $fileName;
+
+    public function __construct(UploadedFile $file){
+        
+        $this->setFileUploaded($file);
+        
     }
-    /**
-     * @Route("/novo", name="admin_deal_deal_new")
-     * @Route("/editar/{id}", name="admin_deal_deal_edit")
-     * @Route("/salvar/{id}", name="admin_deal_deal_save", defaults={"id" = null})
-     * @Template()
-     */
-    public function dealAction($id = null)
-    {
-        $dm = $this->dm();
-        $title = ($id) ? "Editar Oferta" : "Nova Oferta";
-        if($id){
-            $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
-            if (!$deal) throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
-        }else{
-            $deal = new Deal();
+    
+    public function getFileUploaded() {
+        return $this->fileUploaded;
+    }
+
+    public function setFileUploaded($fileUploaded) {
+        $this->fileUploaded = $fileUploaded;
+    }
+    
+    public function getPath() {
+        return $this->path;
+    }
+
+    public function setPath($path) {
+        $this->path = $path;
+    }
+
+    public function getFileName() {
+        return $this->fileName;
+    }
+
+    public function setFileName($fileName) {
+        $this->fileName = $fileName;
+    }
+
+    public function getDeafaultPath(){
+        return "/home/www/andre/reurbano/web/bundles/uploads/reurbanodeal";
+    }
+    
+    public function upload(){
+        
+        if (!$this->fileUploaded instanceof UploadedFile){
+            throw new NotFoundHttpException("Please, set a file to be uploaded");
         }
-        $form = $this->createForm(new DealType(), $deal);
-        $request = $this->get('request');
-        if ('POST' == $request->getMethod()) {
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-                $dm->persist($deal);
-                $dm->flush();
-                $this->get('session')->setFlash('ok', $this->trans(($id) ? "Oferta Editada" : "Oferta Criada" ));
-                return $this->redirect($this->generateUrl('admin_deal_deal_index'));
+        
+        $ext = $this->getFileUploaded()->getClientMimeType();
+        $ext = explode('/', $ext);
+        
+        $fileName = uniqid(rand(), true) . '.' . $ext[count($ext)-1];
+        
+        if ($this->getPath() != ""){
+            while (file_exists($this->getPath().'/'.$fileName)){
+                $fileName = uniqid(rand(), true) . '.' . $ext[count($ext)-1];
             }
+            $this->getFileUploaded()->move($this->getPath(), $fileName);
+        }else {
+            while (file_exists($this->getDeafaultPath().'/'.$fileName)){
+                $fileName = uniqid(rand(), true) . '.' . $ext[count($ext)-1];
+            }
+            $this->getFileUploaded()->move($this->getDeafaultPath(), $fileName);
         }
-        return array('form' => $form->createView(), 'deal' => $deal, 'title'=>  $title);
+        
+        $this->setFileName($fileName);
+        
+        return $this;
+        
     }
-    /**
-     * @Route("/deletar/{id}", name="admin_deal_deal_delete")
-     */
-    public function deleteAction($id)
-    {
-        $dm = $this->dm();
-        $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
-        if (!$deal) throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
-        $dm->remove($deal);
-        $dm->flush();
-        $this->get('session')->setFlash('ok', $this->trans('Oferta Deletada'));
-        return $this->redirect($this->generateUrl('admin_deal_deal_index'));
-    }
+    
 }
