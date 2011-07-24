@@ -19,7 +19,30 @@ class DealController extends BaseController
      */
     public function indexAction()
     {
-        return array();
+     
+        $userCity = $this->get('session')->get('reurbano.user.city');
+        $city = $this->mongo("ReurbanoCoreBundle:City")->hasId($userCity);
+        
+        if ($city){
+            echo "<pre>";
+            $deal = $this->mongo('ReurbanoDealBundle:Deal')->findByCity($userCity);
+            foreach($deal as $k => $v){
+                echo $v->getPrice();
+            }
+            echo "</pre>";
+        }else {
+            echo "Não tem a cidade";
+        }
+        
+        echo "<pre>";
+        print_r($city->getName());
+        echo "</pre>";
+        
+        $title = 'Administração de Ofertas';
+        //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
+        return array('ofertas' => $ofertas, 'title' => $title);
+        //return array();
     }
     /**
      * Action que exibe uma oferta
