@@ -4,7 +4,7 @@ namespace Reurbano\DealBundle\Document;
 
 use Mastop\SystemBundle\Document\BaseRepository;
 
-class DealRepository extends BaseRepository
+class OfferRepository extends BaseRepository
 {
 
     /**
@@ -12,9 +12,10 @@ class DealRepository extends BaseRepository
      *
      * @return Deal ou null
      **/
-    public function findAllByCreated()
+    public function findAll()
     {
-        return $this->findBy(array(), array('created'=>'asc'));
+        return $this->findBy(array(), array());
     }
+    
 
 }
