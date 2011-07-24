@@ -27,11 +27,9 @@ class Deal
     /**
      * Usuário que fez o anuncio
      *
-     * @todo Implementar ReferenceOne para o bundle de usuários
-     * @var int
-     * @ODM\Int
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
-    protected $idUser;
+    protected $user;
     
     /**
      * Preço original da oferta
@@ -140,23 +138,13 @@ class Deal
     }
 
     /**
-     * Set idUser
+     * Get user
      *
-     * @param int $idUser
+     * @return Reurbano\UserBundle\Document\User $user
      */
-    public function setIdUser($idUser)
+    public function getUser()
     {
-        $this->idUser = $idUser;
-    }
-
-    /**
-     * Get idUser
-     *
-     * @return int $idUser
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
+        return $this->user;
     }
 
     /**
@@ -217,6 +205,16 @@ class Deal
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Add voucher
+     *
+     * @param Reurbano\DealBundle\Document\Voucher $voucher
+     */
+    public function setVoucher(\Reurbano\DealBundle\Document\Voucher $voucher)
+    {
+        $this->voucher = $voucher;
     }
 
     /**
@@ -397,5 +395,33 @@ class Deal
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set user
+     *
+     * @param Reurbano\UserBundle\Document\User $user
+     */
+    public function setUser(\Reurbano\UserBundle\Document\User $user)
+    {
+        $this->user = $user;
+    }
+    
+    /**
+     * Seta a data de criação do deal
+     * @ODM\PrePersist
+     */
+    public function doCreatedAt()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
+    
+    /**
+     * Seta a data de atualização do deal
+     * @ODM\PreUpdate
+     */
+    public function doUpdatedAt()
+    {
+        $this->setUpdatedAt(new \DateTime());
     }
 }
