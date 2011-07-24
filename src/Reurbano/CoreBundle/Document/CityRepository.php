@@ -29,4 +29,8 @@ class CityRepository extends BaseRepository
             ->field('special')->equals($special)
             ->getQuery()->execute();
     }
+    
+    public function hasId($id){
+        return $this->findOneById($id);
+    }
 }
