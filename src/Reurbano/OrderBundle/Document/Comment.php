@@ -14,10 +14,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Comment
 {
     /**
-     * Usuário (mudar para referenceOne)
+     * Usuário
      *
-     * @var string
-     * @ODM\String
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
     

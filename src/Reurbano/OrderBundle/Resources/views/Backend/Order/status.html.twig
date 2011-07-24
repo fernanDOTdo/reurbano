@@ -1,8 +1,12 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}Teste{% endblock %}
-
+{% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-<h1>Teste!</h1>
+    <h1>{{title|trans}}</h1>
+    <form action="{{ path('admin_order_order_status', {'id': id}) }}" name="status" id="status" method="post" {{form_enctype(form)}}>
+        {{ form_widget(form) }}
+        
+        <input type="submit" value="Alterar"/>
+    </form>
 {% endblock %}
