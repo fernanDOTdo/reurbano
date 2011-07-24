@@ -46,20 +46,13 @@ class Voucher
     protected $path;
     
     /**
-     * URL
+     * Data de criação da oferta
      *
-     * @var string
-     * @ODM\String
+     * @var date
+     * @ODM\Date
      */
-    protected $url;
-    
-    /**
-     * Data de Envio
-     *
-     * @var string
-     * @ODM\Timestamp
-     */
-    protected $created;
+    protected $createdAt;
+
 
     /**
      * Set title
@@ -142,42 +135,32 @@ class Voucher
     }
 
     /**
-     * Set url
+     * Set createdAt
      *
-     * @param string $url
+     * @param date $createdAt
      */
-    public function setUrl($url)
+    public function setCreatedAt($createdAt)
     {
-        $this->url = $url;
+        $this->createdAt = $createdAt;
     }
 
     /**
-     * Get url
+     * Get createdAt
      *
-     * @return string $url
+     * @return date $createdAt
      */
-    public function getUrl()
+    public function getCreatedAt()
     {
-        return $this->url;
+        return $this->createdAt;
     }
-
+    
     /**
-     * Set created
-     *
-     * @param timestamp $created
+     * Seta a data de criação do voucher
+     * @ODM\PrePersist
      */
-    public function setCreated($created)
+    public function doCreatedAt()
     {
-        $this->created = $created;
+        $this->setCreatedAt(new \DateTime());
     }
-
-    /**
-     * Get created
-     *
-     * @return timestamp $created
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
+    
 }
