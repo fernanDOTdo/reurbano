@@ -68,6 +68,7 @@ class Source
      * Cidade da oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
+     * @ODM\Index
      */
     protected $city;
     
