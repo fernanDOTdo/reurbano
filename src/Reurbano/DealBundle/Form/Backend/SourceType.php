@@ -12,8 +12,8 @@ class SourceType extends AbstractType {
                 ->add('title', 'text', array('label'=>'Título', 'attr' => array('class' => 'medium  LV_invalid_field')))
                 ->add('filename', 'text', array('label'=>'Foto'))
                 ->add('url', 'url', array('label'=>'Link'))
-                ->add('price', 'money', array('label'=>'Valor Original', 'divisor' => 100, 'currency' => 'R$'))
-                ->add('priceOffer', 'money', array('label'=>'Valor com desconto', 'divisor' => 100, 'currency' => 'NBRL'))
+                ->add('price', 'money', array('label'=>'Valor Original', 'divisor' => 100, 'currency' => 'BRL'))
+                ->add('priceOffer', 'money', array('label'=>'Valor com desconto', 'divisor' => 100, 'currency' => 'BRL'))
                 ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name' ))
                 ->add('category', 'document', array('label'=>'Categoria', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name' ))
                 ->add('rules', 'textarea', array('label'=>'Regulamento'))
@@ -24,7 +24,7 @@ class SourceType extends AbstractType {
                 ->add('businessCep', 'text', array('label'=>'CEP da empresa'))
                 ->add('businessLatitude', 'text', array('label'=>'Latitude da empresa'))
                 ->add('businessLongitude', 'text', array('label'=>'Longitude da empresa'))
-                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker hasDatepicker')))
+                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/m/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
             ;
     }
     
