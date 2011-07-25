@@ -53,6 +53,15 @@ class StatusLog
      */
     protected $obs;
     
+    /**
+     * Prepersist para setar o created
+     * 
+     * @ODM\prePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreated(new \DateTime());
+    }
 
     /**
      * Get id

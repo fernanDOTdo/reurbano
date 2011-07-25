@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
+use Reurbano\UserBundle\Document\User;
 
 /**
  * Controller para administrar (CRUD) os pedidos
@@ -52,14 +53,17 @@ class OrderController extends BaseController
         $request = $this->get('request');
         $order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
         $statusArray = $this->mongo('ReurbanoOrderBundle:Status')->FindAll();
-        $status = $statusArray->toArray();
-        
+        foreach($statusArray as $k => $v){
+            $status[$v->getId()] = $v->getName();
+        }
         if($request->getMethod() == 'POST'){
+            $user = $this->get('security.context')->getToken()->getUser();
             $data = $request->request->get('form');
-            
             $status = $this->mongo('ReurbanoOrderBundle:Status')->findOneById($data['status']);
             $statusLog = new StatusLog();
             $statusLog->setStatus($status);
+            $statusLog->setObs($data['obs']);
+            $statusLog->setUser($user);
             
             $order->setStatus($status);
             $order->addStatusLog($statusLog);
@@ -74,6 +78,7 @@ class OrderController extends BaseController
                 ->add('status', 'choice', array(
                     'choices' => $status
                 ))
+                ->add('obs', 'text')
                 ->getForm();
         return array(
             'title' => $title,
