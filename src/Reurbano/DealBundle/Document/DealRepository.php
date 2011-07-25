@@ -19,7 +19,7 @@ class DealRepository extends BaseRepository
     
     public function findByCity($city){
         
-        return $this->findBy(array('offer.city.id'=>$city));
+        return $this->findBy(array('offer.city.$id'=>$city));
         return $this->createQueryBuilder('ReurbanoDealController:Deal')
                 ->field('offer.$city.$id')->equals($city)
                 ->getQuery()->execute();
