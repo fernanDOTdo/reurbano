@@ -11,7 +11,7 @@ class DealType extends AbstractType {
         $builder->add('id', 'hidden')
                 ->add('label', 'text', array('label'=>'Título'))
                 ->add('user', 'document', array('label'=>'Usuário', 'class' => 'Reurbano\\UserBundle\\Document\\User', 'property'=>'name', 'required' => false))
-                ->add('offer', 'document', array('label'=>'Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Source', 'property'=>'title' ))
+                ->add('source', 'document', array('label'=>'Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Source', 'property'=>'title', 'property_path' => false ))
                 ->add('price', 'money', array('label'=>'Valor desejado', 'divisor' => 100, 'currency' => 'BRL'))
                 ->add('quantity', 'integer', array('label'=>'Quantidade disponível'))
                 ->add('active', 'choice', array('choices' => array('sim' => 'Sim','nao' => 'Não'), 'label'=>'Ativo'))
