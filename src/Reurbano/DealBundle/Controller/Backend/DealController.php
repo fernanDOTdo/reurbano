@@ -8,9 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Mastop\SystemBundle\Controller\BaseController;
 
-use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Form\Backend\DealType;
+use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
+use Reurbano\DealBundle\Document\Offer;
 use Reurbano\DealBundle\Util\Upload;
 
 /**
@@ -54,10 +55,16 @@ class DealController extends BaseController
             $form->bindRequest($request);
             $formResult = $request->request->get('deal');
             $formDataResult = $request->files->get('deal');
-            /*echo "<pre>";
-            print_r($formDataResult);
+            $source = $this->mongo('ReurbanoDealBundle:Source')->find($formResult['source']);
+            $city   = $this->mongo('ReurbanoCoreBundle:City')->find($source->getCity()->getId());
+            var_dump($city->getName());
+            $offer = new Offer();
+            $offer->setSource($source);
+            $offer->setCity($city);
+            $deal->setOffer($offer);
+            echo "<pre>";
+            print_r($formResult);
             echo "</pre>";
-            exit();*/
             foreach ($formDataResult as $kFile => $vFile){
                 $file = new Upload($formDataResult[$kFile]);
                 $fileUploaded = $file->upload();
