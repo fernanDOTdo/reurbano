@@ -9,21 +9,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *
  * @author   Fernando Santos <o@fernan.do>
  *
- * @ODM\Document(
- *   collection="offer",
- *   repositoryClass="Reurbano\DealBundle\Document\OfferRepository"
- * )
+ * @ODM\EmbeddedDocument
  */
 class Offer
 {
-    /**
-     * ID da Oferta
-     *
-     * @var string
-     * @ODM\Id
-     */
-    protected $id;
-    
     /**
      * Preço original da oferta
      *
@@ -38,4 +27,44 @@ class Offer
      */
     protected $city;
     
+
+    /**
+     * Set source
+     *
+     * @param Reurbano\DealBundle\Document\Source $source
+     */
+    public function setSource(\Reurbano\DealBundle\Document\Source $source)
+    {
+        $this->source = $source;
+    }
+
+    /**
+     * Get source
+     *
+     * @return Reurbano\DealBundle\Document\Source $source
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Set city
+     *
+     * @param Reurbano\CoreBundle\Document\City $city
+     */
+    public function setCity(\Reurbano\CoreBundle\Document\City $city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * Get city
+     *
+     * @return Reurbano\CoreBundle\Document\City $city
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
 }
