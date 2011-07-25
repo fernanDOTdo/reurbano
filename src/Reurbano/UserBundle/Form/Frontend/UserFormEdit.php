@@ -10,8 +10,6 @@ class UserFormEdit extends AbstractType {
 
     protected $name;
     protected $email;
-    protected $password;
-    protected $password2;
     protected $username;
 
     public function buildForm(FormBuilder $builder, array $options) {
