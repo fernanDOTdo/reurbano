@@ -213,7 +213,7 @@ class UserController extends BaseController {
                 $this->dm()->persist($user);
                 $this->dm()->flush();
 
-                $msg = $this->trans('O usuário <b>%name%</b>foi cadastrado. Dados do usuário: <b>%email%</b> e senha: <b>%pass%</b>', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email'], "%pass%" => $dadosPost['password']));
+                $msg = $this->trans('O usuário <b>%name%</b> foi cadastrado. Dados do usuário: <b>%email%</b> e senha: <b>%pass%</b>', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email'], "%pass%" => $dadosPost['password']));
 
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('admin_user_user_index'));
