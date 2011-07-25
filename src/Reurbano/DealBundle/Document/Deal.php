@@ -34,7 +34,8 @@ class Deal
     /**
      * Preço original da oferta
      *
-     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Source")
+     * @var array
+     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Offer")
      */
     protected $offer;
     
@@ -138,6 +139,16 @@ class Deal
     }
 
     /**
+     * Set user
+     *
+     * @param Reurbano\UserBundle\Document\User $user
+     */
+    public function setUser(\Reurbano\UserBundle\Document\User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
      * Get user
      *
      * @return Reurbano\UserBundle\Document\User $user
@@ -150,9 +161,9 @@ class Deal
     /**
      * Set offer
      *
-     * @param Reurbano\DealBundle\Document\Source $offer
+     * @param Reurbano\DealBundle\Document\Offer $offer
      */
-    public function setOffer(\Reurbano\DealBundle\Document\Source $offer)
+    public function setOffer(\Reurbano\DealBundle\Document\Offer $offer)
     {
         $this->offer = $offer;
     }
@@ -160,7 +171,7 @@ class Deal
     /**
      * Get offer
      *
-     * @return Reurbano\DealBundle\Document\Source $offer
+     * @return Reurbano\DealBundle\Document\Offer $offer
      */
     public function getOffer()
     {
@@ -205,16 +216,6 @@ class Deal
     public function getQuantity()
     {
         return $this->quantity;
-    }
-
-    /**
-     * Add voucher
-     *
-     * @param Reurbano\DealBundle\Document\Voucher $voucher
-     */
-    public function setVoucher(\Reurbano\DealBundle\Document\Voucher $voucher)
-    {
-        $this->voucher = $voucher;
     }
 
     /**
@@ -395,16 +396,6 @@ class Deal
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set user
-     *
-     * @param Reurbano\UserBundle\Document\User $user
-     */
-    public function setUser(\Reurbano\UserBundle\Document\User $user)
-    {
-        $this->user = $user;
     }
     
     /**
