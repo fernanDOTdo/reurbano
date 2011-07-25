@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Mastop\SystemBundle\Document\Parameters;
 use Mastop\SystemBundle\Document\Children;
+use Reurbano\UserBundle\Document\User;
 
 class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
 
