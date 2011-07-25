@@ -155,7 +155,7 @@ class Voucher
     }
     
     /**
-     * Seta a data de criação do voucher
+     * Seta a data de criação do deal
      * @ODM\PrePersist
      */
     public function doCreatedAt()
