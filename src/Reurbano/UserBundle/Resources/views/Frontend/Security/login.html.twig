@@ -14,8 +14,48 @@
     <input type="checkbox" id="remember_me" name="_remember_me" checked />
     <label for="remember_me">{{ "Lembrar meu login"|trans }}</label>
     <br />
-    <input type="submit" name="login" value="Login!"/>
+    <div>
+        <div style='float:left'><input type="submit" name="{{ "Login"|trans }}" value="{{ "Login"|trans }}"/></div>
+        <div style='float:left' id="fb-root"></div>
+        
+        <script type="text/javascript">
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId: '256985260984545',
+                    status: true,
+                    cookie: true,
+                    xfbml: true
+                    
+                });
+
+                 
+                /* initialize FacebookConnect object */
+                FacebookConnect.init(
+                        'http://localhost',
+                        true,
+                        'Se queres conectar-te com o Facebook, tens de nos dar permissão para aceder aos teus dados.',
+                        'Login invalido, Por favor tente mais tarde'
+                );
+                
+            };
+
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol + '//connect.facebook.net/pt_BR/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+
+            </script>
+        <fb:login-button perms="user_about_me,email">Conecte-se</fb:login-button>
+        <span class="facebookText">Tem uma conta no Facebook? Use-a para fazer o seu login no Groupon</span>
+       <!-- <script src="http://connect.facebook.net/en_US/all.js#appId=256985260984545&amp;xfbml=1"></script><fb:login-button appid="256985260984545" perms="user_about_me,email" registration-url="http://localhost" show-faces="false" width="200" max-rows="1">{{ "Login via Facebook"|trans }}</fb:login-button> -->
+    </div>
 </form>
-<a href="{{ path('_user_forget') }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+
+
+
+<br />
+
+<a href="{{ path('user_user_recupera', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
 
 {% endblock content %}  

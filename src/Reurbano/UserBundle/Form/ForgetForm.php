@@ -11,7 +11,7 @@ class ForgetForm extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
-                ->add('email', 'email', array('label' => 'user.user.editarNovo.email'))
+                ->add('email', 'email', array('label' => 'Email'))
         ;
     }
 
