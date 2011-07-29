@@ -49,7 +49,7 @@ class User implements UserInterface {
     protected $email;
     /** @ODM\Date */
     protected $birth;
-    /** @ODM\Int */
+    /** @ODM\String */
     protected $gender;
     /** @ODM\Float */
     protected $moneyFree;
@@ -57,6 +57,8 @@ class User implements UserInterface {
     protected $moneyBlock;
     /** @ODM\boolean */
     protected $newsletters;
+    /** @ODM\String */
+    protected $facebookid;
 
     public function getId() {
         return $this->id;
@@ -105,8 +107,15 @@ class User implements UserInterface {
     public function setMailOk($mailOk) {
         $this->mailOk = $mailOk;
     }
+    public function getFacebookid() {
+        return $this->facebookid;
+    }
 
-    public function getStatus($friendly=false) {
+    public function setFacebookid($facebookid) {
+        $this->facebookid = $facebookid;
+    }
+
+        public function getStatus($friendly=false) {
         if ($friendly) {
             $status[0] = "Não confirmado";
             $status[1] = "Ativo";

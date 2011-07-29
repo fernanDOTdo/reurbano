@@ -15,6 +15,8 @@ use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
 use Reurbano\UserBundle\Form\Frontend\ChangePassForm;
 use Reurbano\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UserController extends BaseController {
 
@@ -588,38 +590,110 @@ class UserController extends BaseController {
      * @Route("/facebook", name="user_user_facebook")
      * @Template()
      */
-    public function facebookAction($username=null) {
-        echo '<p>signed_request contents:</p>';
-        $response = $this->parse_signed_request($this->get('request')->request->get('signed_request'), '429a5cc5c6e6c63db3a085532f71fe63');
-        echo '<pre>';
-        print_r($response);
-        echo '</pre>';
+    public function facebookAction() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            //precisa ver se o usuario facebook ja nao esta cadastrado, se estiver apenas logar
+            //se nao tiver logado entao pegar os dados dele e criar o user automaticamente
+            //em ambos os casos tem que logar automaticamente depois disto
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $request = $this->getRequest();
+            $gets = $request->query;
+
+            $usuario = $repository->findByField('facebookid', $gets->get('facebookId'));
+            $usuario2 = $repository->findByField('email', $gets->get('email'));
+            if (count($usuario) > 0 || count($usuario2) > 0) {
+                //então é existe o user
+                //verificar se os dados cadastrais estao atualizados
+                if (count($usuario) == 1) {
+                    //so tem ele
+                    $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
+                    $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                    $user->setCity($gets->get('cidade'));
+                    $this->dm()->persist($user);
+                    $this->dm()->flush();
+                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
+                    $result['success'] = true;
+                } elseif (count($usuario) > 0) {
+                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo facebookid
+                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro FACEDUPLICITY');
+                    $this->get('session')->setFlash('error', $msg);
+                    $result['success'] = false;
+                }
+                if (count($usuario2) == 1) {
+                    $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
+                    $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                    $user->setCity($gets->get('cidade'));
+                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
+                    $result['success'] = true;
+                } elseif (count($usuario2) > 0) {
+                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo email
+                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro MAILDUPLICITY');
+                    $this->get('session')->setFlash('error', $msg);
+                    $result['success'] = false;
+                }
+                //efetuar o login
+                $this->authenticateUser($user);
+            } else {
+                //novo user, salvar ele
+                $user = new user();
+                $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                $user->setUsername(str_replace(".", "", str_replace("@", "", $gets->get('email'))));
+                $user->setActkey('');
+                $user->setMailOk(true);
+                $user->setStatus(1);
+                $user->setAvatar('');
+                $user->setLang('pt_BR');
+                $user->setTheme('');
+                $user->setCreated(new \DateTime());
+                $user->setRoles('ROLE_USER');
+                $user->setCity($gets->get('cidade'));
+                $user->setCpf('');
+                $user->setEmail($gets->get('email'));
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                srand((double) microtime() * 1000000);
+                $i = 0;
+                $pass = '';
+                while ($i <= 7) {
+                    $num = rand() % 33;
+                    $tmp = substr($chars, $num, 1);
+                    $pass = $pass . $tmp;
+                    $i++;
+                }
+                $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                //$user->setBirth(0);
+                $user->setGender(strtoupper(substr($gets->get('gender'), 0, 1)));
+                $user->setMoneyFree(0);
+                $user->setMoneyBlock(0);
+                $user->setFacebookid($gets->get('facebookId'));
+                $user->setNewsletters(true);
+                $this->dm()->persist($user);
+                $this->dm()->flush();
+                $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
+                $result['success'] = true;
+                //efetuar o login
+                $this->authenticateUser($user);
+            }
+
+
+            return new Response(json_encode($result));
+        }
+        return new Response($this->get('translator')->trans('_NOTAJAX'));
     }
 
-    public function parse_signed_request($signed_request, $secret) {
-        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+    /**
+     * Logar o usuário depois de facebookear
+     *
+     * @param Boolean $reAuthenticate
+     */
+    protected function authenticateUser(UserInterface $user) {
+        $providerKey = "mongo";
+        $user->setLastLogin(new \DateTime());
+        $this->dm()->persist($user);
+        $this->dm()->flush();
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
 
-        // decode the data
-        $sig = $this->base64_url_decode($encoded_sig);
-        $data = json_decode($this->base64_url_decode($payload), true);
-
-        if (strtoupper($data['algorithm']) !== 'HMAC-SHA256') {
-            error_log('Unknown algorithm. Expected HMAC-SHA256');
-            return null;
-        }
-
-        // check sig
-        $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
-        if ($sig !== $expected_sig) {
-            error_log('Bad Signed JSON signature!');
-            return null;
-        }
-
-        return $data;
-    }
-
-    public function base64_url_decode($input) {
-        return base64_decode(strtr($input, '-_', '+/'));
+        $this->container->get('security.context')->setToken($token);
     }
 
 }
