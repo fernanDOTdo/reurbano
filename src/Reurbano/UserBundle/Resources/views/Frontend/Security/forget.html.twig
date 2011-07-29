@@ -1,11 +1,10 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
 
-<form action="{{ path("_user_forget_post") }}" method="post">
-    <label for="username">Email/Usuário:</label>
-    <input type="text" id="email" name="_email" value="" />
+<form action="{{ path("user_user_recupera_post") }}" method="post">
+    {{ form_widget(form) }}
     <br />
-    <input type="submit" name="login" value="Recuperar"/>
+    <input type="submit" name="login" value="{{ "Recuperar"|trans }}"/>
 </form>
-
+<div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{ "Será enviado um email com um link para confirmação de mudança da sua senha, sua senha somente será alterada após confirmar o clique no link do email recebido."|trans}}<br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
 {% endblock content %}  
