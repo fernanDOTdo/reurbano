@@ -20,11 +20,8 @@ security:
 
     providers:
         chain_provider:
-             providers: [in_memory, mongo]
-        in_memory:
-            users:
-                admin: { password: 9YHC7x0ygO6kSFdeYcyHz26IWbHEhwd8N8vuFPpEFAH9soHm8Kv9don/Thcldtgn/od47fHhiK4Hc8lKhwoylQ==, roles: [ 'ROLE_ADMIN' ] }
-                mastop: { password: PFa8hiZBfKSYX/arWu1PzmjoMBBBxT0R7i45oVfHUNzFloxAYG8qQs+q4bAFNhjG2tJF0xyZYvPdfFpaEvIacA==, roles: [ 'ROLE_SUPERADMIN' ] }
+             providers: [mongo]
+       
         mongo:
 #            entity: { class: Symfony\Bundle\DoctrineMongoDBBundle\Security\DocumentUserProvider, property: email }
              id: mastop.user

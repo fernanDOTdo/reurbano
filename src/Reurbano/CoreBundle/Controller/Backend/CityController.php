@@ -29,17 +29,18 @@ class CityController extends BaseController
      * Adiciona um novo, edita um já criado e salva ambos
      * 
      * @Route("/novo", name="admin_core_city_novo")
-     * @Route("/editar/{id}", name="admin_core_city_edit")
-     * @Route("/salvar/{id}", name="admin_core_city_save", defaults={"id" = null})
+     * @Route("/editar/{slug}", name="admin_core_city_edit")
+     * @Route("/salvar/{slug}", name="admin_core_city_save", defaults={"slug" = null})
      * @Template()
      */
-    public function formAction($id = null)
+    public function formAction($slug = null)
     {
         $dm = $this->dm();
-        $title = ($id) ? "Editar Cidade" : "Nova Cidade";
-        if($id){
-            $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
-            if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
+        $title = ($slug) ? "Editar Cidade" : "Nova Cidade";
+        $query = array('slug' => $slug);
+        if($slug){
+            $city = $this->mongo('ReurbanoCoreBundle:City')->findOneBy($query);
+            if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o nome '.$slug);
         }else{
             $city = new City();
         }
