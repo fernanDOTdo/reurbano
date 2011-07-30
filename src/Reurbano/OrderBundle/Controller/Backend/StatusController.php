@@ -24,7 +24,10 @@ class StatusController extends BaseController
     {
         $title = 'Administração de Status';
         $status = $this->mongo('ReurbanoOrderBundle:Status')->findAll();
-        return array('status' => $status, 'title' => $title);
+        return array(
+            'status' => $status,
+            'title' => $title,
+            );
     }
     /**
      * Adiciona um novo, edita um já criado e salva ambos
@@ -39,6 +42,10 @@ class StatusController extends BaseController
         $dm = $this->dm();
         $title = ($id) ? "Editar Status" : "Novo Status";
         if($id){
+            if($id <= 8){
+                $this->get('session')->setFlash('error', $this->trans('Você não pode deletar esse status!'));
+                return $this->redirect($this->generateUrl('admin_order_status_index'));
+            }
             $stat = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$id);
             if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
         }else{
@@ -55,7 +62,11 @@ class StatusController extends BaseController
                 return $this->redirect($this->generateUrl('admin_order_status_index'));
             }
         }
-        return array('form' => $form->createView(), 'stat' => $stat, 'title'=>  $title);
+        return array(
+            'form' => $form->createView(),
+            'stat' => $stat,
+            'title'=>  $title,
+            );
     }
     /**
      * Exibe um pre delete e deleta se for confirmado
@@ -65,6 +76,10 @@ class StatusController extends BaseController
      */
     public function deleteAction($id)
     {
+        if($id <= 8){
+            $this->get('session')->setFlash('error', $this->trans('Você não pode deletar esse status!'));
+            return $this->redirect($this->generateUrl('admin_order_status_index'));
+        }
         $request = $this->get('request');
         $formResult = $request->request;
         $dm = $this->dm();

@@ -66,7 +66,6 @@ class CategoryController extends BaseController {
     public function deleteAction($id)
     {
         $request = $this->get('request');
-        $formResult = $request->request;
         $dm = $this->dm();
         $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
         if($request->getMethod() == 'POST'){
