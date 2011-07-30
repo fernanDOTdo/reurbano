@@ -29,17 +29,18 @@ class CategoryController extends BaseController {
      * Adiciona um novo, edita um já criado e salva ambos
      * 
      * @Route("/novo", name="admin_deal_category_new")
-     * @Route("/editar/{id}", name="admin_deal_category_edit")
-     * @Route("/salvar/{id}", name="admin_deal_category_save", defaults={"id" = null})
+     * @Route("/editar/{slug}", name="admin_deal_category_edit")
+     * @Route("/salvar/{slug}", name="admin_deal_category_save", defaults={"slug" = null})
      * @Template()
      */
-    public function categoryAction($id = null) {
+    public function categoryAction($slug = null)
+    {
         $dm = $this->dm();
-        $title = ($id) ? "Editar Categoria" : "Nova Categoria";
-        if ($id) {
-            $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
-            if (!$cat)
-                throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
+        $title = ($slug) ? "Editar Categoria" : "Nova Categoria";
+        $query = array('slug' => $slug);
+        if ($slug) {
+            $cat = $this->mongo('ReurbanoDealBundle:Category')->findOneBy($query);
+            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o nome ' . $slug);
         }else {
             $cat = new Category();
         }
@@ -50,7 +51,7 @@ class CategoryController extends BaseController {
             if ($form->isValid()) {
                 $dm->persist($cat);
                 $dm->flush();
-                $this->get('session')->setFlash('ok', $this->trans(($id) ? "Categoria Editada" : "Categoria Criada" ));
+                $this->get('session')->setFlash('ok', $this->trans(($slug) ? "Categoria Editada" : "Categoria Criada" ));
                 return $this->redirect($this->generateUrl('admin_deal_category_index'));
             }
         }

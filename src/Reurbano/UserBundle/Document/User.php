@@ -108,11 +108,11 @@ class User implements UserInterface {
 
     public function getStatus($friendly=false) {
         if ($friendly) {
-            $status[0]="Não confirmado";
-            $status[1]="Ativo";
-            $status[2]="Bloqueado";
-            $status[3]="Removido";
-            $status[4]="Aguardando aprovação";
+            $status[0] = "Não confirmado";
+            $status[1] = "Ativo";
+            $status[2] = "Bloqueado";
+            $status[3] = "Removido";
+            $status[4] = "Aguardando aprovação";
             return $status[$this->status];
         } else {
             return $this->status;
@@ -159,16 +159,24 @@ class User implements UserInterface {
         $this->lastLogin = $lastLogin;
     }
 
-    public function getCreated() {
-        return date('d/m/Y', $this->created->getTimestamp());
+    public function getCreated($timestamp=false) {
+        if ($timestamp) {
+            return $this->created->getTimestamp();
+        } else {
+            return date('d/m/Y', $this->created->getTimestamp());
+        }
     }
 
     public function setCreated($created) {
         $this->created = $created;
     }
 
-    public function getEdited() {
-        return $this->edited;
+    public function getEdited($timestamp=false) {
+        if ($timestamp) {
+            return $this->edited->getTimestamp();
+        } else {
+            return date('d/m/Y', $this->edited->getTimestamp());
+        }
     }
 
     public function setEdited($edited) {

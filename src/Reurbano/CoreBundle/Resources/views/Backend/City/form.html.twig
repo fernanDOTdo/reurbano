@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
         
 {% block title %}{{title|trans}}{% endblock %}
-{% set vars = city.getId() ? {'id': city.getId()} : {} %}
+{% set vars = city.getId() ? {'slug': city.getSlug()} : {} %}
 
 {% block content %}
 <h1>{{title|trans}}</h1>
