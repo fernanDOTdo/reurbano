@@ -19,7 +19,6 @@ class DealController extends BaseController
      */
     public function indexAction()
     {
-     
         $userCity = $this->get('session')->get('reurbano.user.city');
         $city = $this->mongo("ReurbanoCoreBundle:City")->hasId($userCity);
         
@@ -39,12 +38,14 @@ class DealController extends BaseController
             /*$deal = $this->mongo('ReurbanoDealBundle:Deal')->findByCity("oferta-nacional");*/
         }
         
+        
         /*echo "<pre>";
         print_r($city->getName());
         echo "</pre>";*/
         
         $title = 'Listagem de Ofertas';
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
+        
         $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
         return array('ofertas' => $ofertas, 'title' => $title);
         //return array();
