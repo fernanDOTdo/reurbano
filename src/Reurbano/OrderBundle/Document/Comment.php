@@ -45,6 +45,16 @@ class Comment
     protected $special;
 
     /**
+     * Prepersist para setar o created
+     * 
+     * @ODM\prePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreated(new \DateTime());
+    }
+    
+    /**
      * Set user
      *
      * @param string $user

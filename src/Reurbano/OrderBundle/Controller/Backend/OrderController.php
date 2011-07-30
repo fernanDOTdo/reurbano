@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
+use Reurbano\OrderBundle\Document\Comment;
 use Reurbano\UserBundle\Document\User;
 
 /**
@@ -78,7 +79,7 @@ class OrderController extends BaseController
                 ->add('status', 'choice', array(
                     'choices' => $status
                 ))
-                ->add('obs', 'text')
+                ->add('obs', 'textarea')
                 ->getForm();
         return array(
             'title' => $title,
@@ -94,7 +95,41 @@ class OrderController extends BaseController
      */
     public function commentAction($id)
     {
-        return array();
+        $title = 'Cometário';
+        $request = $this->get('request');
+        $dm = $this->dm();
+        $order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
+        if($request->getMethod() == 'POST'){
+            $comment = new Comment();
+            $user = $this->get('security.context')->getToken()->getUser();
+            $data = $request->request->get('form');
+            $special = isset($data['Especial'])? true : false;
+            
+            $comment->setMessage($data['Comentario']);
+            $comment->setUser($user);
+            $comment->setSpecial($special);
+            
+            $order->addComments($comment);
+            $dm->persist($order);
+            $dm->flush();
+            
+            $this->get('session')->setFlash('ok', $this->trans('Comentado com sucesso!'));
+            return $this->redirect($this->generateUrl('admin_order_order_index'));
+            
+        }
+        $form = $this->createFormBuilder()
+                ->add('Comentario', 'textarea')
+                ->add('Especial', 'checkbox', array(
+                    'label'    => 'Especial?',
+                    'required' => false,
+                ))
+                ->getForm();
+                
+        return array(
+            'title' => $title,
+            'form'  => $form->createView(),
+            'id'    => $id,
+        );
     }
     
     /**
