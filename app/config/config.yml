@@ -73,7 +73,7 @@ doctrine_mongodb:
             auto_mapping: true
             mappings:
                 StofDoctrineExtensionsBundle: false
-            metadata_cache_driver: apc # array, apc, xcache, memcache
+            metadata_cache_driver: array # array, apc, xcache, memcache
 
 stof_doctrine_extensions:
     default_locale: pt_BR

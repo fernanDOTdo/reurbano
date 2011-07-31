@@ -5,47 +5,37 @@ namespace Reurbano\OrderBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Representa um Reembolso
+ * Description of StatusLog
  *
- * @author   Fernando Santos <o@fernan.do>
- *
- * @ODM\Document(
- *   collection="refund",
- *   repositoryClass="Reurbano\OrderBundle\Document\RefundRepository"
- * )
+ * @author Rafael Basquens <rafael@basquens.com>
+ * 
+ * @ODM\EmbeddedDocument
  */
-class Refund
+class StatusLog
 {
     /**
-     * ID do Reembolso
-     *
-     * @var string
+     * Mongo id
+     * 
+     * @var MongoId
      * @ODM\Id
      */
     protected $id;
-
+    
     /**
-     * Usuário (mudar para referenceOne)
-     *
-     * @var string
-     * @ODM\String
+     * Usuário que editou o status
+     * 
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
     
     /**
-     * Comentários
-     *
-     * @var array
-     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\Comment")
-     */
-    protected $comments = array();
-    
-    /**
      * Status
      * 
+     * @var object
      * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Status")
      */
-    private $status;
+    protected $status;
     
     /**
      * Data de Criação
@@ -56,18 +46,23 @@ class Refund
     protected $created;
     
     /**
-     * Data de Atualização
-     *
-     * @var object
-     * @ODM\Date
+     * Observação de quando o status foi mudado
+     * 
+     * @var string
+     * @ODM\String
      */
-    protected $updated;
-
-    public function __construct()
-    {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    protected $obs;
     
+    /**
+     * Prepersist para setar o created
+     * 
+     * @ODM\prePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreated(new \DateTime());
+    }
+
     /**
      * Get id
      *
@@ -81,9 +76,9 @@ class Refund
     /**
      * Set user
      *
-     * @param string $user
+     * @param Reurbano\UserBundle\Document\User $user
      */
-    public function setUser($user)
+    public function setUser(\Reurbano\UserBundle\Document\User $user)
     {
         $this->user = $user;
     }
@@ -91,31 +86,11 @@ class Refund
     /**
      * Get user
      *
-     * @return string $user
+     * @return Reurbano\UserBundle\Document\User $user
      */
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Add comments
-     *
-     * @param Reurbano\OrderBundle\Document\Comment $comments
-     */
-    public function addComments(\Reurbano\OrderBundle\Document\Comment $comments)
-    {
-        $this->comments[] = $comments;
-    }
-
-    /**
-     * Get comments
-     *
-     * @return Doctrine\Common\Collections\Collection $comments
-     */
-    public function getComments()
-    {
-        return $this->comments;
     }
 
     /**
@@ -159,22 +134,22 @@ class Refund
     }
 
     /**
-     * Set updated
+     * Set obs
      *
-     * @param date $updated
+     * @param string $obs
      */
-    public function setUpdated($updated)
+    public function setObs($obs)
     {
-        $this->updated = $updated;
+        $this->obs = $obs;
     }
 
     /**
-     * Get updated
+     * Get obs
      *
-     * @return date $updated
+     * @return string $obs
      */
-    public function getUpdated()
+    public function getObs()
     {
-        return $this->updated;
+        return $this->obs;
     }
 }
