@@ -10,7 +10,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @author Rafael Basquens <rafael@basquens.com>
  * 
  * @ODM\Document(
- *   collection="source",
+ *   collection="site",
  *   repositoryClass="Reurbano\DealBundle\Document\SiteRepository"
  * )
  */

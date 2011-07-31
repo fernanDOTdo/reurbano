@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\DealBundle\Document\Site;
 use Reurbano\DealBundle\Form\Backend\SiteType;
+use Reurbano\DealBundle\Util\Upload;
 
 /**
  * Controller para administrar (CRUD) sites de compra coletiva.
@@ -50,12 +51,28 @@ class SiteController extends BaseController {
         $request = $this->get('request');
         if('POST' == $request->getMethod()){
             $form->bindRequest($request);
-            if($form->isValid()){
-                $dm->persist($site);
-                $dm->flush();
-                $this->get('session')->setFlash('ok', $this->trans(($id) ? "Site Editado" : "Site Criado" ));
-                return $this->redirect($this->generateUrl('admin_deal_site_index'));
+            $data = $request->request->get($form->getName());
+            $fileData = $request->files->get($form->getName());
+            
+            if($fileData['logo'] != null){
+                $file = new Upload($fileData['logo']);
+                $file->setPath('/home/www/rafa/reurbano/web/uploads/reurbanodeal');
+                $fileUploaded = $file->upload();
+                $site->setFilename($fileUploaded->getFileName());
+                $site->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
+                if ($file->getPath() != ""){
+                    $site->setPath($fileUploaded->getPath());
+                }else {
+                    $site->setPath($fileUploaded->getDeafaultPath());
+                }
             }
+            
+            
+            $dm->persist($site);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans(($id) ? "Site Editado" : "Site Criado" ));
+            return $this->redirect($this->generateUrl('admin_deal_site_index'));
+            
         }
         return array(
             'form' => $form->createView(),
@@ -72,6 +89,19 @@ class SiteController extends BaseController {
      */
     public function deleteAction($id)
     {
-        return array();
+        $request = $this->get('request');
+        $dm = $this->dm();
+        $site = $this->mongo('ReurbanoDealBundle:Site')->find((int)$id);
+        if($request->getMethod() == 'POST'){
+            if(!$site) throw $this->createNotFoundException ('Nenhum site encontrado com o ID' . $id);
+            $dm->remove($site);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans('Site deletado'));
+            return $this->redirect($this->generateUrl('admin_deal_site_index'));
+        }
+        return array(
+            'name' => $site->getName(),
+            'id'   => $site->getId(),
+        );
     }
 }
