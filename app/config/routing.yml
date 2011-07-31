@@ -2,8 +2,12 @@ ReurbanoCoreBundle:
     resource: "@ReurbanoCoreBundle/Resources/config/routing/routing.yml"
 ReurbanoDealBundle:
     resource: "@ReurbanoDealBundle/Resources/config/routing/routing.yml"
+ReurbanoOrderBundle:
+    resource: "@ReurbanoOrderBundle/Resources/config/routing/routing.yml"
 MastopSystemBundle:
   resource: "@MastopSystemBundle/Resources/config/routing/routing.yml"
+MastopMenuBundle:
+  resource: "@MastopMenuBundle/Resources/config/routing/routing.yml"
 
 MastopTesteBundle:
     resource: "@MastopTesteBundle/Resources/config/routing/teste.yml"

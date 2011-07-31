@@ -9,7 +9,7 @@ order_checkout_frontend:
 order_myorders_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/MyOrdersController.php"
     type: annotation
-    prefix:   /minhaconta/pedidos
+    prefix:   /minhaconta/compras
 order_mysales_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/MySalesController.php"
     type: annotation
@@ -21,8 +21,8 @@ order_backend:
 order_status_backend:
     resource: "@ReurbanoOrderBundle/Controller/Backend/StatusController.php"
     type: annotation
-    prefix:   /admin/pedidos/status
+    prefix:   /admin/vendas/status
 order_checkout_backend:
     resource: "@ReurbanoOrderBundle/Controller/Backend/CheckoutController.php"
     type: annotation
-    prefix:   /admin/pedidos/checkout
+    prefix:   /admin/vendas/checkout
