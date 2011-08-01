@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /** @ODM\Document (
- * collection="USRuser",
+ * collection="User",
  * repositoryClass="Reurbano\UserBundle\Document\UserRepository"
  * ) 
  */

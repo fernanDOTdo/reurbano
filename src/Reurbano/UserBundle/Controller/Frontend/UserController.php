@@ -53,7 +53,7 @@ class UserController extends BaseController {
                 }
             }
         }
-        return new Response($this->get('translator')->trans('_NOTAJAX'));
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
@@ -78,7 +78,7 @@ class UserController extends BaseController {
                 }
             }
         }
-        return new Response($this->get('translator')->trans('_NOTAJAX'));
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
@@ -238,12 +238,20 @@ class UserController extends BaseController {
      */
     private function newUserEmail($email, $user) {
         $userStatus = $user->getStatus();
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($email)
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
-        ;
+        if ($email != false) {
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
+                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                    ->setTo($email)
+                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
+            ;
+        } else {
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($this->trans("Seu cadastro no site " . $this->get('mastop')->param('system.site.name') . " foi efetuado"))
+                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                    ->setTo($user->getEmail())
+                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
+        }
         $this->get('mailer')->send($message);
     }
 
@@ -690,6 +698,18 @@ class UserController extends BaseController {
                 $this->dm()->flush();
                 $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
                 $result['success'] = true;
+                //notificação de novo usuario interno
+                $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                if ($emailsNotify != "") {
+                    $emailsNotify = explode(";", $emailsNotify);
+                    foreach ($emailsNotify as $email) {
+                        $this->newUserEmail(str_replace(" ", '', $email), $user);
+                    }
+                }
+                // /notificação de novo usuario interno
+                // notificação ao usuário que ele foi cadastrado
+                $this->newUserEmail(str_replace(" ", '', false), $user);
+                // /notificação ao usuário que ele foi cadastrado
                 //efetuar o login
                 $this->authenticateUser($user);
             }
@@ -697,11 +717,11 @@ class UserController extends BaseController {
 
             return new Response(json_encode($result));
         }
-        return new Response($this->get('translator')->trans('_NOTAJAX'));
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
-     * Logar o usuário depois de facebookear
+     * Logar o usuário depois de facebookear ou twittear
      *
      * @param Boolean $reAuthenticate
      */
@@ -716,16 +736,35 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter", name="user_user_twitter")
+     * @Route("/twitter/check", name="user_user_twitter_ajax")
      * @Template()
      */
-    function twitterAction() {
-        //echo "<script>window.close();";
-        //print_r($this->get('request'));
-        //echo "</script>";
-        $twitter = new \TwitterOAuth('JUTf0s1U3zU8x0yhAWvUYw', 'ID9gSVim3FWwwaGZRgdlOtbUGSTpGR496vAgOoHpE');
-        echo "<body></body>";
-        exit();
+    public function twitterAction() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            $request = $this->getRequest();
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $request = $this->getRequest();
+            $usuario = $repository->findByField('twitterid', $request->get('id'));
+            if (count($usuario) == 1) {
+                $result['success'] = true;
+                $result['existe'] = true;
+            } elseif (count($usuario) == 0) {
+                $result['success'] = true;
+                $result['existe'] = false;
+            } else {
+                $result['success'] = false;
+            }
+            return new Response(json_encode($result));
+        } else {
+            return new Response($this->get('translator')->trans('Operação não permitida.'));
+        }
+    }
+    /**
+     * @Route("/twitter/novo", name="user_user_twitter_novo")
+     * @Template()
+     */
+    public function twitter2Action() {
+        //ajax para salvar o user novo
     }
 
 }

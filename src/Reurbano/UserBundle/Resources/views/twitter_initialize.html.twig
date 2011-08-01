@@ -1,43 +1,42 @@
 {% autoescape false %}
 <span id="{{ twitterDIV}}"></span>
+<span id="{{ twitterDIV}}2"></span>
 <script type="text/javascript">
     twttr.anywhere(function (T) {
-        
-            if (T.isConnected()) {
+        T.hovercards();
+        var currentUser, name, twitter, image, id;
+        if (T.isConnected()) {
+            currentUser = T.currentUser;
+            $('#{{ twitterDIV}}').append("<button type='button' onclick='twttr.anywhere.signOut();'>Logout do Twitter</button>");
+        } else {
+            T("#{{ twitterDIV}}").connectButton({
+                authComplete: function(user) {
+                    twitter = user['screenName'];
+                    id = user['id'];
+                    name = user['name'];
+                    image = user['profileImageUrl'];
+                    //ajax para averiguar se já é user ou new
+                    $.post("{{ url("user_user_twitter_ajax") }}",{ id:id },
+                        function(data){
+                            if( (data.success==true) && (data.existe==true)){
+                                alert("Já existe");
+                            }else if( (data.success==true) && (data.existe==false)){
+                                alert("Não existe");
+                            }else{
+                               alert("Erro AJAX");
+                            }
+                        },
+                    "json");
 
-      currentUser = T.currentUser;
-
-      screenName = currentUser.data('screen_name');
-
-      profileImage = currentUser.data('profile_image_url');
-
-      profileImageTag = "<img src='" + profileImage + "'/>";
-
-      $('#{{ twitterDIV}}').append("" + profileImageTag + " " + screenName);
-
-    } else {
-
-      T("#{{ twitterDIV}}").connectButton({
-
-      authComplete: function(user) {
-
-        alert("OI");
-
-      },
-
-      signOut: function() {
-
-        // triggered when user logs out
-
-      }
-
+                    
+                    
+                },
+                signOut: function() {
+                    twttr.anywhere.signOut();
+                }
+            });
+            $('#{{ twitterDIV}}2').append("{{ twitterTXT }}");
+        };
     });
-
-    };
-    
-    
-
-  });
 </script>
-{{ twitterTXT }}
 {% endautoescape %}
