@@ -26,5 +26,11 @@ class DealRepository extends BaseRepository
         
     }
     
-
+    /*
+     * Retorna o Slug do deal
+     */
+    public function findBySlug($slug){
+        return $this->findOneBy(array('slug' => $slug), array());
+    }
+    
 }

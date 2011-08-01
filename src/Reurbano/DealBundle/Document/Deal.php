@@ -3,6 +3,7 @@
 namespace Reurbano\DealBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Representa uma Oferta
@@ -78,9 +79,21 @@ class Deal
      * Rotulação do produto
      *
      * @var string
+     * @Gedmo\Sluggable
      * @ODM\String
      */
     protected $label;
+    
+    /**
+     * Campo Slug
+     *
+     * @var string
+     * @Gedmo\Slug
+     * @ODM\UniqueIndex
+     * @ODM\String
+     */
+    
+    protected $slug;
     
     /**
      * Visualizações do pedido
@@ -122,7 +135,6 @@ class Deal
      */
     protected $createdAt;
 
-    
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -196,6 +208,26 @@ class Deal
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string $slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -396,23 +428,5 @@ class Deal
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-    
-    /**
-     * Seta a data de criação do deal
-     * @ODM\PrePersist
-     */
-    public function doCreatedAt()
-    {
-        $this->setCreatedAt(new \DateTime());
-    }
-    
-    /**
-     * Seta a data de atualização do deal
-     * @ODM\PreUpdate
-     */
-    public function doUpdatedAt()
-    {
-        $this->setUpdatedAt(new \DateTime());
     }
 }

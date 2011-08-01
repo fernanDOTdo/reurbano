@@ -153,14 +153,4 @@ class Voucher
     {
         return $this->createdAt;
     }
-    
-    /**
-     * Seta a data de criação do deal
-     * @ODM\PrePersist
-     */
-    public function doCreatedAt()
-    {
-        $this->setCreatedAt(new \DateTime());
-    }
-    
 }
