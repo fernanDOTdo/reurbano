@@ -52,7 +52,7 @@ class Upload
     }
 
     public function getDeafaultPath(){
-        return "/home/www/andre/reurbano/web/bundles/uploads/reurbanodeal";
+        return "/home/www/andre/reurbano/web/uploads/reurbanodeal";
     }
     
     public function upload(){
