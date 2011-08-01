@@ -17,6 +17,10 @@ class CityRepository extends BaseRepository
         return $this->findBy(array(), array('order'=>'asc'));
     }
 
+    public function findBySlug($slug){
+        return $this->findOneBy(array('slug' => $slug), array());
+    }
+    
     /**
      * Retorna as cidades pelo parâmetro "special"
      *
@@ -33,4 +37,5 @@ class CityRepository extends BaseRepository
     public function hasId($id){
         return $this->findOneById($id);
     }
+    
 }
