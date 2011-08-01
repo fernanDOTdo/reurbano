@@ -1,7 +1,113 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Ofertas {{oferta}}{% endblock %}
+{% block stylesheets %}
+    <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block javascriptsHead %}
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var geocoder;
+            var map;
 
+            geocoder = new google.maps.Geocoder();    
+
+            geocoder.geocode( { 'address': "{{ oferta.getOffer().getSource().getBusinessAddress() }}" }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var myOptions = {
+                        zoom: 17,
+                        center: results[0].geometry.location,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map, 
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block title %}Ofertas {{title}}{% endblock %}
 {% block content %}
-Teste!
+    <div class="container_12">
+        <div id="dealInformation" class="grid_9">
+            <div class="grid_9">
+                <h1 class="dealTitle">
+                    {{ oferta.getLabel() }}
+                </h1>
+            </div>
+            <div class="grid_5" style="margin-left: 0px; height: 250px;">
+                <div class="dealImage">
+                    <!-- Deal Image -->
+                    <span>
+                        IMAGEM DA OFERTA!
+                    </span>
+                </div>
+            </div>
+            <div class="grid_4" style="margin-right: 0px">
+                <div class="dealOrder">
+                    <div class="dealExpires">
+                        <span class="expiresLabel">Cupom válido até:</span> 
+                        <span class="expiteDate">{{ oferta.getOffer().getSource().getExpiresAt()|date("d/m/Y")  }}</span>
+                    </div>
+                    <div class="dealPrice">
+                        <span class="priceNormalLabel">de</span> <span class="priceNormal">{{ oferta.getOffer().getSource().getPrice() }}</span> 
+                        <span class="priceDescLabel">de</span> <span class="priceDesc">{{ oferta.getPrice() }}</span> 
+                    </div>
+                </div>
+            </div>
+            <div class="grid_9">
+                <div class="dealDetalhe">
+                    Detalhes
+                </div>
+                <div class="dealDescription">
+                    {{ oferta.getOffer().getSource().getDetails() }}
+                </div>
+            </div>
+            <div class="grid_9">
+                <div class="dealRegra">
+                    Regras
+                </div>
+                <div class="dealRules">
+                    {{ oferta.getOffer().getSource().getRules() }}
+                </div>
+            </div>
+            <div class="grid_9">
+                <div class="dealRegra">
+                    Oferta
+                </div>
+                    {{ oferta.getOffer().getSource().getBusinessAddress() }}
+                    {{ oferta.getOffer().getSource().getBusinessCep() }}
+                <div id="map_canvas" style="height:250px;width: 250px;"></div>
+            </div>
+        </div>
+        <div id="otherDeals" class="grid_3">
+            <div class="reurbanoMidia" style="text-align: center;">
+                Reurbano na mídia
+            </div>
+            <div class="relationDeal" style="border: 1px solid #CCCCCC; padding: 15px; margin: 5px;">
+                <div class="relationDealImage" style="text-align: center; padding: 5px; border: 1px solid black; height: 130px;">
+                    Imagem DEAL RELACIONADO
+                </div>
+                <div class="relationDealInformation" style="margin: 10px 0px 0px 0px;">
+                    Informação DEAL RELACIONADO
+                </div>
+            </div>
+            <div class="relationDeal" style="border: 1px solid #CCCCCC; padding: 15px; margin: 5px;">
+                <div class="relationDealImage" style="text-align: center; padding: 5px; border: 1px solid black; height: 130px;">
+                    Imagem DEAL RELACIONADO
+                </div>
+                <div class="relationDealInformation" style="margin: 10px 0px 0px 0px;">
+                    Informação DEAL RELACIONADO
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
 {% endblock %}
