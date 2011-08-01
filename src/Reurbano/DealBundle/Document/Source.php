@@ -68,6 +68,7 @@ class Source
      * Cidade da oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
+     * @ODM\Index
      */
     protected $city;
     
@@ -149,6 +150,8 @@ class Source
      * @ODM\Date
      */
     protected $expiresAt;    
+
+
 
     /**
      * Get id
@@ -283,7 +286,7 @@ class Source
     /**
      * Set category
      *
-     * @param Reurbano\CoreBundle\Document\Category $category
+     * @param Reurbano\DealBundle\Document\Category $category
      */
     public function setCategory(\Reurbano\DealBundle\Document\Category $category)
     {
@@ -293,7 +296,7 @@ class Source
     /**
      * Get category
      *
-     * @return Reurbano\CoreBundle\Document\Category $category
+     * @return Reurbano\DealBundle\Document\Category $category
      */
     public function getCategory()
     {

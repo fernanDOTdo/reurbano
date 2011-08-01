@@ -3,6 +3,7 @@
 namespace Reurbano\DealBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Representa uma Oferta
@@ -27,16 +28,15 @@ class Deal
     /**
      * Usuário que fez o anuncio
      *
-     * @todo Implementar ReferenceOne para o bundle de usuários
-     * @var int
-     * @ODM\Int
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
-    protected $idUser;
+    protected $user;
     
     /**
      * Preço original da oferta
      *
-     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Source")
+     * @var array
+     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Offer")
      */
     protected $offer;
     
@@ -79,9 +79,21 @@ class Deal
      * Rotulação do produto
      *
      * @var string
+     * @Gedmo\Sluggable
      * @ODM\String
      */
     protected $label;
+    
+    /**
+     * Campo Slug
+     *
+     * @var string
+     * @Gedmo\Slug
+     * @ODM\UniqueIndex
+     * @ODM\String
+     */
+    
+    protected $slug;
     
     /**
      * Visualizações do pedido
@@ -123,7 +135,6 @@ class Deal
      */
     protected $createdAt;
 
-    
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -140,31 +151,31 @@ class Deal
     }
 
     /**
-     * Set idUser
+     * Set user
      *
-     * @param int $idUser
+     * @param Reurbano\UserBundle\Document\User $user
      */
-    public function setIdUser($idUser)
+    public function setUser(\Reurbano\UserBundle\Document\User $user)
     {
-        $this->idUser = $idUser;
+        $this->user = $user;
     }
 
     /**
-     * Get idUser
+     * Get user
      *
-     * @return int $idUser
+     * @return Reurbano\UserBundle\Document\User $user
      */
-    public function getIdUser()
+    public function getUser()
     {
-        return $this->idUser;
+        return $this->user;
     }
 
     /**
      * Set offer
      *
-     * @param Reurbano\DealBundle\Document\Source $offer
+     * @param Reurbano\DealBundle\Document\Offer $offer
      */
-    public function setOffer(\Reurbano\DealBundle\Document\Source $offer)
+    public function setOffer(\Reurbano\DealBundle\Document\Offer $offer)
     {
         $this->offer = $offer;
     }
@@ -172,7 +183,7 @@ class Deal
     /**
      * Get offer
      *
-     * @return Reurbano\DealBundle\Document\Source $offer
+     * @return Reurbano\DealBundle\Document\Offer $offer
      */
     public function getOffer()
     {
@@ -197,6 +208,26 @@ class Deal
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string $slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
