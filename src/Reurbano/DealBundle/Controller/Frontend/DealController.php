@@ -20,30 +20,49 @@ class DealController extends BaseController
     public function indexAction()
     {
         $userCity = $this->get('session')->get('reurbano.user.city');
-        $city = $this->mongo("ReurbanoCoreBundle:City")->hasId($userCity);
-        
+        $mongoCity = $this->mongo("ReurbanoCoreBundle:City");
+        $mongoDeal = $this->mongo("ReurbanoDealBundle:Deal");
+        $city = $mongoCity->findBySlug($userCity);
+        $cityId = $city->getId();
+        $title = "Lista de Ofertas em ". $city->getName();
         // Verificação se a cidade do usuário existe
-        if ($city){
+        if (count($city) > 0){
             // Verificação se existe alguma oferta na cidade do usuário
-            $deal = $this->mongo('ReurbanoDealBundle:Deal')->findByCity($userCity);
-            if ($deal){
-                // Exibe as da cidade do usuário
-                return array("deal" => $deal);
-            }else {
-                // Exibe as ofertas nacionais
-                /*$deal = $this->mongo('ReurbanoDealBundle:Deal')->findByCity("oferta-nacional");*/
+            $deal = $mongoDeal->findByCity(new \MongoId($cityId));
+
+            if (count($deal) == 0){
+                $title = "Lista de Ofertas Nacionais";
+                // Caso não exista, exibe as ofertas nacionais
+                $city = $mongoCity->findBySlug("oferta-nacional");
+                $cityId = $city->getId();
+                $deal = $mongoDeal->findByCity(new \MongoId($cityId));
+                
+                foreach($deal as $k => $v){
+                    $this->mastop()->log('Slug de '.$v->getLabel().':'.$v->getSlug().'');
+                    //echo $v->getLabel();
+                }
+                
             }
         }else {
-            // Exibição das ofertas nacionais
-            /*$deal = $this->mongo('ReurbanoDealBundle:Deal')->findByCity("oferta-nacional");*/
+            // Caso não exista, exibe as ofertas nacionais
+            $title = "Lista de Ofertas Nacionais";
+            
+            $city = $mongoCity->findBySlug("oferta-nacional");
+            foreach($city as $k => $v){
+                $cityId = $k;
+            }
+            $deal = $mongoDeal->findByCity(new \MongoId($cityId));
+            
         }
         
+        
+        return array('ofertas' => $deal, 'title' => $title);
         
         /*echo "<pre>";
         print_r($city->getName());
         echo "</pre>";*/
         
-        $title = 'Listagem de Ofertas';
+        $title = 'Listagem de Ofertas ' . $userCity;
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
         
         $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
@@ -53,11 +72,15 @@ class DealController extends BaseController
     /**
      * Action que exibe uma oferta
      * 
-     * @Route("/{ofera}", name="deal_deal_show")
+     * @Route("/oferta/{category}/{oferta}", name="deal_deal_show")
      * @Template()
      */
-    public function showAction($oferta)
+    public function showAction($category, $oferta)
     {
-        return array('oferta' => $ofera);
+        $deal = $this->mongo("ReurbanoDealBundle:Deal")->findBySlug($oferta);
+        $title = $deal->getLabel();
+        
+        return array('oferta' => $deal, 
+                     'title'  => $title);
     }
 }
