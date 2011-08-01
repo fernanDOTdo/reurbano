@@ -63,20 +63,23 @@ class DealController extends BaseController
             $offer->setCity($city);
             $deal->setOffer($offer);
             echo "<pre>";
-            print_r($formResult);
+            print_r($formDataResult);
             echo "</pre>";
+            //exit();
             foreach ($formDataResult as $kFile => $vFile){
-                $file = new Upload($formDataResult[$kFile]);
-                $fileUploaded = $file->upload();
-                $voucher = new Voucher();
-                $voucher->setFilename($fileUploaded->getFileName());
-                $voucher->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
-                if ($file->getPath() != ""){
-                    $voucher->setPath($fileUploaded->getPath());
-                }else {
-                    $voucher->setPath($fileUploaded->getDeafaultPath());
+                if ($vFile){
+                    $file = new Upload($formDataResult[$kFile]);
+                    $fileUploaded = $file->upload();
+                    $voucher = new Voucher();
+                    $voucher->setFilename($fileUploaded->getFileName());
+                    $voucher->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
+                    if ($file->getPath() != ""){
+                        $voucher->setPath($fileUploaded->getPath());
+                    }else {
+                        $voucher->setPath($fileUploaded->getDeafaultPath());
+                    }
+                    $deal->addVoucher($voucher);
                 }
-                $deal->addVoucher($voucher);
             }
             if ($form->isValid()) {
                 $dm->persist($deal);
