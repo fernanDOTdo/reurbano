@@ -1,8 +1,18 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}Teste{% endblock %}
+{% block title %}{{title|trans}}{% endblock %}
 
 
 {% block content %}
-<h1>Teste!</h1>
+<h1>{{title|trans}}</h1>
+<ul>
+  {% for key in order|keys %}
+    <li>{{ key }}</li>
+  {% endfor %}
+</ul>
+{% for order in order %}
+    {{ order.getId() }} - {{ order.getStatus().getName() }} - <a href="{{ path('admin_order_order_view', {'id': order.getId()}) }}">{{"Visualizar"|trans}}</a> - <a href="{{ path('admin_order_order_status', {'id': order.getId()}) }}">{{"Status"|trans}}</a> - <a href="{{ path('admin_order_order_comment', {'id': order.getId()}) }}">{{"Comentar"|trans}}</a><br />
+  {% else %}
+   {{"Nenhum pedido encontrado"|trans}}
+  {% endfor %} 
 {% endblock %}

@@ -10,13 +10,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class SecurityController extends Controller {
 
     /**
-     * @Route("/", name="_login")
+     * @Route("/login", name="_login")
      * @Template()
      */
     public function loginAction() {
+<<<<<<< HEAD
         /* echo "<pre>";
           print_r($_SESSION);
           echo "<pre>";exit(); */
+=======
+>>>>>>> 0712bc29e7c61e0ca04acae758ec10687679feaa
         // get the login error if there is one
         if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
@@ -32,8 +35,28 @@ class SecurityController extends Controller {
             // last username entered by the user
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
             'error' => $error,
+<<<<<<< HEAD
             'redir' => $redir,
         );
     }
 
+=======
+        );
+    }
+
+    /**
+     * @Route("/login_check", name="login_check")
+     */
+    public function securityCheckAction() {
+        // The security layer will intercept this request
+    }
+
+    /**
+     * @Route("/logout", name="_logout")
+     */
+    public function logoutAction() {
+        // The security layer will intercept this request
+    }
+
+>>>>>>> 0712bc29e7c61e0ca04acae758ec10687679feaa
 }

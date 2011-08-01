@@ -7,9 +7,9 @@ if (!isset($_SERVER['HTTP_HOST'])) {
 if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
     '127.0.0.1',
     '::1',
-)) && false === strpos(@$_SERVER['REMOTE_ADDR'], '192.168.0')) {
+))) {
     header('HTTP/1.0 403 Forbidden');
-    die('This script is only accessible from localhost, you '.@$_SERVER['REMOTE_ADDR'].'.');
+    die('This script is only accessible from localhost.');
 }
 
 $majorProblems = array();
@@ -47,6 +47,10 @@ if (!defined('LIBXML_COMPACT')) {
 
 if (!((function_exists('apc_store') && ini_get('apc.enabled')) || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable') || function_exists('xcache_set'))) {
     $minorProblems[] = 'Install and enable a <strong>PHP accelerator</strong> like APC (highly recommended).';
+}
+
+if (!(function_exists('apc_store') && ini_get('apc.enabled') && version_compare(phpversion('apc'), '3.0.17', '>='))) {
+    $majorProblems[] = 'Upgrade your <strong>APC</strong> extension (3.0.17+)';
 }
 
 if (!function_exists('token_get_all')) {
@@ -87,7 +91,7 @@ if (!class_exists('Locale')) {
         $version = $matches[1];
     }
 
-    if(!version_compare($matches[1], '4.0', '>=')) {
+    if (!version_compare($version, '4.0', '>=')) {
         $minorProblems[] = 'Upgrade your <strong>intl</strong> extension with a newer ICU version (4+).';
     }
 }
@@ -98,6 +102,14 @@ if (!class_exists('SQLite3') && !in_array('sqlite', PDO::getAvailableDrivers()))
 
 if (!function_exists('json_encode')) {
     $majorProblems[] = 'Install and enable the <strong>json</strong> extension.';
+}
+
+if (!function_exists('session_start')) {
+    $majorProblems[] = 'Install and enable the <strong>session</strong> extension.';
+}
+
+if (!function_exists('ctype_alpha')) {
+    $majorProblems[] = 'Install and enable the <strong>ctype</strong> extension.';
 }
 
 // php.ini
@@ -144,7 +156,7 @@ if (ini_get('session.auto_start')) {
                 <div class="symfony-block-content">
                     <h1>Welcome!</h1>
                     <p>Welcome to your new Symfony project.</p>
-                    <p>This script will guide you through the basic configuration of your project. You can also do the same by editing the â€˜<strong>app/config/parameters.ini</strong>â€™ file directly.</p>
+                    <p>This script will guide you through the basic configuration of your project. You can also do the same by editing the ‘<strong>app/config/parameters.ini</strong>’ file directly.</p>
 
                     <?php if (count($majorProblems)): ?>
                         <h2>
@@ -165,7 +177,7 @@ if (ini_get('session.auto_start')) {
                                 Additionally, to
                             <?php else: ?>
                                 To<?php endif; ?>
-                            enhance your Symfony experience, itâ€™s recommended that you fix the following :
+                            enhance your Symfony experience, it’s recommended that you fix the following :
                         </p>
                         <ol>
                             <?php foreach ($minorProblems as $problem): ?>

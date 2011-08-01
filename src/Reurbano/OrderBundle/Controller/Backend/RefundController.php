@@ -1,5 +1,5 @@
 <?php
-namespace Reurbano\DealBundle\Controller\Backend;
+namespace Reurbano\OrderBundle\Controller\Backend;
 
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
