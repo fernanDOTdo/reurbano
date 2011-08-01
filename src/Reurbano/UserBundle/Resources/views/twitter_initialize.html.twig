@@ -1,0 +1,43 @@
+{% autoescape false %}
+<span id="{{ twitterDIV}}"></span>
+<script type="text/javascript">
+    twttr.anywhere(function (T) {
+        
+            if (T.isConnected()) {
+
+      currentUser = T.currentUser;
+
+      screenName = currentUser.data('screen_name');
+
+      profileImage = currentUser.data('profile_image_url');
+
+      profileImageTag = "<img src='" + profileImage + "'/>";
+
+      $('#{{ twitterDIV}}').append("" + profileImageTag + " " + screenName);
+
+    } else {
+
+      T("#{{ twitterDIV}}").connectButton({
+
+      authComplete: function(user) {
+
+        alert("OI");
+
+      },
+
+      signOut: function() {
+
+        // triggered when user logs out
+
+      }
+
+    });
+
+    };
+    
+    
+
+  });
+</script>
+{{ twitterTXT }}
+{% endautoescape %}

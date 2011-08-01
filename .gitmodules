@@ -73,3 +73,9 @@
 [submodule "vendor/bundles/Stof/DoctrineExtensionsBundle"]
 	path = vendor/bundles/Stof/DoctrineExtensionsBundle
 	url = git://github.com/stof/StofDoctrineExtensionsBundle.git
+[submodule "vendor/bundles/FOS/TwitterBundle"]
+	path = vendor/bundles/FOS/TwitterBundle
+	url = git://github.com/FriendsOfSymfony/FOSTwitterBundle.git
+[submodule "vendor/twitteroauth"]
+	path = vendor/twitteroauth
+	url = git://github.com/kertz/twitteroauth.git

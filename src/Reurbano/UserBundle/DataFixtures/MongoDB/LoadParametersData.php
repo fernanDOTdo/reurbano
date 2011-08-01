@@ -77,6 +77,22 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $child->setOrder(5);
         $param->addChildren($child);
         
+        $child = new Children();
+        $child->setName('twitterappid');
+        $child->setTitle('ID do Aplicativo Twitter');
+        $child->setDesc('Código do aplicativo criado no twitter developers');
+        $child->setValue('JUTf0s1U3zU8x0yhAWvUYw');
+        $child->setOrder(6);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('twitterappsecret');
+        $child->setTitle('Código Secret do App criado no Twitter');
+        $child->setDesc('Código gerado no site de developers do Twitter.');
+        $child->setValue('7AQZGatGKntBoJBS2l1GS8kYzCxHq9affitEYbHsoNs');
+        $child->setOrder(7);
+        $param->addChildren($child);
+        
         $manager->persist($param);
         $manager->flush();
     }

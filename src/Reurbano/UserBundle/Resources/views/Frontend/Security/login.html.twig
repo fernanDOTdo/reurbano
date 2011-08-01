@@ -1,8 +1,12 @@
 {% extends '::frontend.html.twig' %}
+{% block javascriptsHead %}
+{% include "ReurbanoUserBundle::twitter_setup.html.twig" with {'apiKey':mastop_param('user.all.twitterappid'), 'version':'1'} %}
+{% endblock %}
 {% block content %}
 {% if error %}
 <div>{{ error.message }}</div>
 {% endif %}
+
 
 <form action="{{ path("login_check") }}" method="post">
     <label for="username">{{ "Email:"|trans }}:</label>
@@ -28,7 +32,7 @@
                 });
                 /* initialize FacebookConnect object */
                 FacebookConnect.init(
-                        '{{ url('_home') }}',
+                        '{{ redir }}',
                         true,
                         '{{ "Para poder utilizar o login integrado do Facebook, você precisa permitir que nosso site se comunique com seu Facebook."|trans }}',
                         '{{ "Login invalido, Por favor tente mais tarde"|trans }}'
@@ -138,14 +142,17 @@ var FacebookConnect = {
 }
 
             </script>
-        <fb:login-button perms="user_about_me,email" onlogin="FacebookConnect.connect(false);">Conecte-se</fb:login-button>
-        <span class="facebookText"><small>{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
+            <div>
+                <fb:login-button perms="user_about_me,email" onlogin="FacebookConnect.connect(false);">Conecte-se</fb:login-button>
+                <span class="facebookText"><small>{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
+            </div>
+            
+            <div>
+                {% include "ReurbanoUserBundle::twitter_initialize.html.twig" with {'twitterDIV':'twitter_connect','twitterTXT': "Tem uma conta no Twitter? Use-a para fazer o seu login no  %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')})}  %}
+            </div>
 </form>
-
-
-
 <br />
-
 <a href="{{ path('user_user_recupera', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+<a href="{{ path('user_user_novo') }}" title="{{ "Cadastre-se"|trans }}">{{ "Cadastre-se"|trans }}</a>
 
 {% endblock content %}  

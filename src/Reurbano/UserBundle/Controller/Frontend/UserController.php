@@ -140,7 +140,14 @@ class UserController extends BaseController {
                 }
             }
             // /notificação de novo usuario
-            return $this->redirect($this->generateUrl('_login'));
+            //autologin
+            $usuario->setLastLogin(new \DateTime());
+            $this->dm()->persist($usuario);
+            $this->dm()->flush();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+            $this->container->get('security.context')->setToken($token);
+            // /autologin
+            return $this->redirect($this->generateUrl('_home'));
         } else {
             $msg = $this->trans('Nenhum usuário encontrado com a chave de ativação fornecida.');
             $this->get('session')->setFlash('error', $msg);
@@ -620,11 +627,23 @@ class UserController extends BaseController {
                     $result['success'] = false;
                 }
                 if (count($usuario2) == 1) {
-                    $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
-                    $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
-                    $user->setCity($gets->get('cidade'));
-                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
-                    $result['success'] = true;
+                    $fbID = $usuario2->getFacebookid();
+                    if (!isset($fbID) || $fbID == $gets->get('facebookId')) {
+                        $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
+                        $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                        $user->setCity($gets->get('cidade'));
+                        if (!isset($fbID)) {
+                            $user->setFacebookid($gets->get('facebookId'));
+                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%, seu facebook foi vinculado a sua conta.', array('%name%' => $usuario2->getName())));
+                        } else {
+                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario2->getName())));
+                        }
+
+                        $result['success'] = true;
+                    } else {
+                        $this->get('session')->setFlash('error', $this->trans('Já existe uma conta com estes dados em nosso sistema e ela não pertence ao seu facebook'));
+                        $result['success'] = false;
+                    }
                 } elseif (count($usuario2) > 0) {
                     //eita isto nao deveria acontecer (ter mais de 1 user com mesmo email
                     $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro MAILDUPLICITY');
@@ -694,6 +713,19 @@ class UserController extends BaseController {
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
 
         $this->container->get('security.context')->setToken($token);
+    }
+
+    /**
+     * @Route("/twitter", name="user_user_twitter")
+     * @Template()
+     */
+    function twitterAction() {
+        //echo "<script>window.close();";
+        //print_r($this->get('request'));
+        //echo "</script>";
+        $twitter = new \TwitterOAuth('JUTf0s1U3zU8x0yhAWvUYw', 'ID9gSVim3FWwwaGZRgdlOtbUGSTpGR496vAgOoHpE');
+        echo "<body></body>";
+        exit();
     }
 
 }
