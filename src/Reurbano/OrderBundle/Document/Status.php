@@ -59,7 +59,6 @@ class Status
     {
         return $this->id;
     }
-    
 
     /**
      * Set name
