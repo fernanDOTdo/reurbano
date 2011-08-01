@@ -5,14 +5,17 @@
 
 {% block content %}
 <h1>{{title|trans}}</h1>
-<ul>
-  {% for key in ofertas|keys %}
-    <li>{{ key }}</li>
-  {% endfor %}
-</ul>
 {% for deal in ofertas %}
-    {{ deal.getId() }} <br />
+    {{ deal.getId() }} - 
+    {{ deal.getLabel() }} - 
+    {{ deal.getPrice() }} - 
+    {{ deal.getQuantity() }} - 
+    {{ deal.getSpecial() }} -
+    {{ deal.getOffer().getCity().getName() }} -
+    | <a href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}">Editar</a> 
+    | <a href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}">Deletar</a>
+    | <br />
   {% else %}
    {{"Nenhuma oferta encontrada"|trans}}
   {% endfor %} 
-{% endblock %}
+{% endblock %} 

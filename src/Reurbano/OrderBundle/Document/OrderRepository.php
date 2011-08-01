@@ -1,6 +1,6 @@
 <?php
 
-namespace Reurbano\DealBundle\Document;
+namespace Reurbano\OrderBundle\Document;
 
 use Mastop\SystemBundle\Document\BaseRepository;
 
