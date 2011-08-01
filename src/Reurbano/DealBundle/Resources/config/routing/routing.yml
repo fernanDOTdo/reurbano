@@ -18,3 +18,7 @@ deal_source_backend:
     resource: "@ReurbanoDealBundle/Controller/Backend/SourceController.php"
     type: annotation
     prefix:   /admin/ofertas/banco
+deal_site_backend:
+    resource: "@ReurbanoDealBundle/Controller/Backend/SiteController.php"
+    type: annotation
+    prefix:   /admin/sites

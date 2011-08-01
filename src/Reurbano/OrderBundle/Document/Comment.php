@@ -14,10 +14,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Comment
 {
     /**
-     * Usuário (mudar para referenceOne)
+     * Usuário
      *
-     * @var string
-     * @ODM\String
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
     
@@ -45,6 +44,16 @@ class Comment
      */
     protected $special;
 
+    /**
+     * Prepersist para setar o created
+     * 
+     * @ODM\prePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreated(new \DateTime());
+    }
+    
     /**
      * Set user
      *

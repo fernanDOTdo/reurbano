@@ -20,32 +20,33 @@ class Order
      * ID do Pedido
      *
      * @var string
-     * @ODM\Id
+     * @ODM\Id(strategy="NONE")
      */
     protected $id;
 
     /**
-     * Usuário (mudar para referenceOne)
+     * Usuário
      *
-     * @var string
-     * @ODM\String
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
     
     /**
-     * Comentários
-     *
-     * @var array
-     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\Comment")
-     */
-    protected $comments = array();
-    
-    /**
-     * Status
+     * Array com as informações sobre o pagamento
      * 
-     * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Status")
+     * @var array
+     * @ODM\Hash
      */
-    private $status;
+    protected $payment = array();
+
+    /**
+     * Total do valor gasto no pedido
+     * 
+     * @var float
+     * @ODM\Float
+     */
+    protected $total;
     
     /**
      * Data de Criação
@@ -63,15 +64,81 @@ class Order
      */
     protected $updated;
     
+    /**
+     * Status
+     * 
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Status")
+     */
+    protected $status;
+    
+    /**
+     * Guarda o histórico dos status do pedido
+     * 
+     * @var object
+     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\StatusLog")
+     */
+    protected $statusLog;
+    
+    /**
+     * Mostra a quantidade de cumpons no pedido
+     * 
+     * @var object
+     * @ODM\Hash
+     */
+    protected $deal = array();
+    
+    /**
+     * Para quem vai o dinheiro de comissão
+     * 
+     * @var array
+     * @ODM\Hash
+     */
+    protected $commission;
+
+    /**
+     * Comentários
+     *
+     * @var array
+     * @ODM\EmbedMany(targetDocument="Reurbano\OrderBundle\Document\Comment")
+     */
+    protected $comments = array();
+    
+    /**
+     * Dados do usuário, exemplo: Ip. Origem, OS, etc
+     * 
+     * @var array
+     * @ODM\Hash
+     */
+    protected $userData;
+    
+    /**
+     * Guarda as informações de SEO
+     * 
+     * @var object
+     * @ODM\EmbedOne(targetDocument="Reurbano\CoreBundle\Document\Seo")
+     */
+    protected $seo;
+
     public function __construct()
     {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+       $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
+    /**
+     * Set id
+     *
+     * @param custom_id $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * Get id
      *
-     * @return id $id
+     * @return custom_id $id
      */
     public function getId()
     {
@@ -81,9 +148,9 @@ class Order
     /**
      * Set user
      *
-     * @param string $user
+     * @param Reurbano\UserBundle\Document\User $user
      */
-    public function setUser($user)
+    public function setUser(\Reurbano\UserBundle\Document\User $user)
     {
         $this->user = $user;
     }
@@ -91,7 +158,7 @@ class Order
     /**
      * Get user
      *
-     * @return string $user
+     * @return Reurbano\UserBundle\Document\User $user
      */
     public function getUser()
     {
@@ -99,43 +166,43 @@ class Order
     }
 
     /**
-     * Add comments
+     * Set payment
      *
-     * @param Reurbano\OrderBundle\Document\Comment $comments
+     * @param hash $payment
      */
-    public function addComments(\Reurbano\OrderBundle\Document\Comment $comments)
+    public function setPayment($payment)
     {
-        $this->comments[] = $comments;
+        $this->payment = $payment;
     }
 
     /**
-     * Get comments
+     * Get payment
      *
-     * @return Doctrine\Common\Collections\Collection $comments
+     * @return hash $payment
      */
-    public function getComments()
+    public function getPayment()
     {
-        return $this->comments;
+        return $this->payment;
     }
 
     /**
-     * Set status
+     * Set total
      *
-     * @param Reurbano\OrderBundle\Document\Status $status
+     * @param float $total
      */
-    public function setStatus(\Reurbano\OrderBundle\Document\Status $status)
+    public function setTotal($total)
     {
-        $this->status = $status;
+        $this->total = $total;
     }
 
     /**
-     * Get status
+     * Get total
      *
-     * @return Reurbano\OrderBundle\Document\Status $status
+     * @return float $total
      */
-    public function getStatus()
+    public function getTotal()
     {
-        return $this->status;
+        return $this->total;
     }
 
     /**
@@ -176,5 +243,145 @@ class Order
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set status
+     *
+     * @param Reurbano\OrderBundle\Document\Status $status
+     */
+    public function setStatus(\Reurbano\OrderBundle\Document\Status $status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Get status
+     *
+     * @return Reurbano\OrderBundle\Document\Status $status
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Add statusLog
+     *
+     * @param Reurbano\OrderBundle\Document\StatusLog $statusLog
+     */
+    public function addStatusLog(\Reurbano\OrderBundle\Document\StatusLog $statusLog)
+    {
+        $this->statusLog[] = $statusLog;
+    }
+
+    /**
+     * Get statusLog
+     *
+     * @return Doctrine\Common\Collections\Collection $statusLog
+     */
+    public function getStatusLog()
+    {
+        return $this->statusLog;
+    }
+
+    /**
+     * Set deal
+     *
+     * @param hash $deal
+     */
+    public function setDeal($deal)
+    {
+        $this->deal = $deal;
+    }
+
+    /**
+     * Get deal
+     *
+     * @return hash $deal
+     */
+    public function getDeal()
+    {
+        return $this->deal;
+    }
+
+    /**
+     * Set commission
+     *
+     * @param hash $commission
+     */
+    public function setCommission($commission)
+    {
+        $this->commission = $commission;
+    }
+
+    /**
+     * Get commission
+     *
+     * @return hash $commission
+     */
+    public function getCommission()
+    {
+        return $this->commission;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param Reurbano\OrderBundle\Document\Comment $comments
+     */
+    public function addComments(\Reurbano\OrderBundle\Document\Comment $comments)
+    {
+        $this->comments[] = $comments;
+    }
+
+    /**
+     * Get comments
+     *
+     * @return Doctrine\Common\Collections\Collection $comments
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set userData
+     *
+     * @param hash $userData
+     */
+    public function setUserData($userData)
+    {
+        $this->userData = $userData;
+    }
+
+    /**
+     * Get userData
+     *
+     * @return hash $userData
+     */
+    public function getUserData()
+    {
+        return $this->userData;
+    }
+
+    /**
+     * Set seo
+     *
+     * @param Reurbano\CoreBundle\Document\Seo $seo
+     */
+    public function setSeo(\Reurbano\CoreBundle\Document\Seo $seo)
+    {
+        $this->seo = $seo;
+    }
+
+    /**
+     * Get seo
+     *
+     * @return Reurbano\CoreBundle\Document\Seo $seo
+     */
+    public function getSeo()
+    {
+        return $this->seo;
     }
 }

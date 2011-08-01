@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Mastop\SystemBundle\MastopSystemBundle(),
             new Reurbano\UserBundle\ReurbanoUserBundle(),
             new Mastop\TesteBundle\MastopTesteBundle(),
+            new Mastop\MenuBundle\MastopMenuBundle(),
             new Symfony\Bundle\DoctrineMigrationsBundle\DoctrineMigrationsBundle(),
             new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
             new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),

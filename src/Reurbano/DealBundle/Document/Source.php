@@ -49,6 +49,15 @@ class Source
     protected $url;
     
     /**
+     * Site do source
+     * 
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Site")
+     */
+    protected $site;
+
+
+    /**
      * Preço original da oferta
      *
      * @var float

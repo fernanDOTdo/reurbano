@@ -39,6 +39,16 @@ class Status
      * @ODM\Int
      */
     protected $order = 0;
+    
+    /**
+     * Set id
+     *
+     * @return custom_id $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Get id
