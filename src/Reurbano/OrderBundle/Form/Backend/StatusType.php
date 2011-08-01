@@ -23,5 +23,4 @@ class StatusType extends AbstractType {
     public function getName() {
         return 'status';
     }
-
 }
