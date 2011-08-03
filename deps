@@ -89,6 +89,9 @@
     git=http://github.com/stof/StofDoctrineExtensionsBundle.git
     target=/bundles/Stof/DoctrineExtensionsBundle
 
+[twitteroauth]
+    git=git://github.com/kertz/twitteroauth.git
+
 [MastopBundles]
     git=git@github.com:mastop/MastopBundles.git
     target=/bundles/Mastop
