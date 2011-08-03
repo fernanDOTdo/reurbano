@@ -1,7 +1,19 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Venda cupons de qualquer site de compras coletivas aqui{% endblock %}
+{% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-Teste!
+    <form action="{{ path('deal_sell_index') }}" method="post" {{form_enctype(form)}}>
+        {{ form_widget(form) }}
+        
+        <input type="submit" value="Comentar"/>
+    </form>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>
+    {% javascripts output='bundles/dealbundle/js/sell.js' 
+                   '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
+                   '@ReurbanoDealBundle/Resources/public/js/Frontend/jquery.autocomplete.pack.js'%}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
