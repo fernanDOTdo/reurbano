@@ -727,12 +727,14 @@ class UserController extends BaseController {
      */
     protected function authenticateUser(UserInterface $user) {
         $providerKey = "mongo";
-        $user->setLastLogin(new \DateTime());
-        $this->dm()->persist($user);
-        $this->dm()->flush();
-        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-
-        $this->container->get('security.context')->setToken($token);
+        $role = $user->getRoles();
+        if (in_array("ROLE_USER", $role)) {
+            $user->setLastLogin(new \DateTime());
+            $this->dm()->persist($user);
+            $this->dm()->flush();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+            $this->container->get('security.context')->setToken($token);
+        }
     }
 
     /**
@@ -748,6 +750,9 @@ class UserController extends BaseController {
             if (count($usuario) == 1) {
                 $result['success'] = true;
                 $result['existe'] = true;
+                if (!$this->get("session")->has("twitterID")) {
+                    $this->get("session")->set("twitterID", $request->get('id'));
+                }
             } elseif (count($usuario) == 0) {
                 $result['success'] = true;
                 $result['existe'] = false;
@@ -759,12 +764,101 @@ class UserController extends BaseController {
             return new Response($this->get('translator')->trans('Operação não permitida.'));
         }
     }
+
     /**
      * @Route("/twitter/novo", name="user_user_twitter_novo")
      * @Template()
      */
     public function twitter2Action() {
         //ajax para salvar o user novo
+        if ($this->get('request')->isXmlHttpRequest()) {
+            $request = $this->getRequest();
+            $email = $request->get('email');
+            $id = $request->get('id');
+            $name = $request->get('name');
+            $location = $request->get('location');
+            $screenName = $request->get('screenName');
+            $avatar = $request->get('image');
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findByField('twitterid', $id);
+            $result['success'] = true;
+            if (count($usuario) == 1) {
+                $result['success'] = false;
+                $result['msg'] = $this->get('translator')->trans('Este twitter já está cadastrado como um usuário.');
+            }
+            if (count($usuario) > 1) {
+                $result['success'] = false;
+            }
+            $usuario2 = $repository->findByField('email', $email);
+            if (count($usuario2) == 1) {
+                $result['success'] = false;
+                $result['msg'] = $this->get('translator')->trans('Este email (%email%) já está cadastrado. ', array('%email%' => $email));
+            }
+            if (count($usuario2) > 1) {
+                $result['success'] = false;
+            }
+            if ($result['success']) {
+                $user = new user();
+                $user->setName($name);
+                $user->setUsername(str_replace(".", "", str_replace("@", "", $email)));
+                $user->setActkey('');
+                $user->setMailOk(true);
+                $user->setStatus(1);
+                $user->setAvatar('');
+                $user->setLang('pt_BR');
+                $user->setTheme('');
+                $user->setCreated(new \DateTime());
+                $user->setRoles('ROLE_USER');
+                //$user->setCity($gets->get('cidade'));
+                $user->setCpf('');
+                $user->setEmail($email);
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                srand((double) microtime() * 1000000);
+                $i = 0;
+                $pass = '';
+                while ($i <= 7) {
+                    $num = rand() % 33;
+                    $tmp = substr($chars, $num, 1);
+                    $pass = $pass . $tmp;
+                    $i++;
+                }
+                $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                //$user->setBirth(0);
+                $user->setMoneyFree(0);
+                $user->setMoneyBlock(0);
+                $user->setTwitterid($id);
+                $user->setNewsletters(true);
+                $this->dm()->persist($user);
+                $this->dm()->flush();
+                $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Twitter.'));
+                $this->authenticateUser($user);
+                $result['success'] = true;
+                $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
+                $result['url'] = $this->generateUrl("_home");
+            }
+            return new Response(json_encode($result));
+        }
+    }
+
+    /**
+     * @Route("/twitter/login", name="user_user_twitter_logar")
+     * @Template()
+     */
+    public function twitter3Action() {
+        if ($this->get("session")->has("twitterID")) {
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findByField('twitterid', $this->get("session")->get("twitterID"));
+            $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
+            $this->authenticateUser($user);
+            $result['url'] = $this->generateUrl("_home");
+            $result['msg'] = $this->get('translator')->trans('Login efetuado.');
+            $result['success'] = true;
+        } else {
+            $result['msg'] = $this->get('translator')->trans('Erro ao efetuar login via twitter.');
+            $result['success'] = false;
+        }
+        return new Response(json_encode($result));
     }
 
 }

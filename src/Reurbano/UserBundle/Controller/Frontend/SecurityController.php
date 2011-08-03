@@ -22,7 +22,8 @@ class SecurityController extends Controller {
             $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
         if($this->get('session')->has('_security.target_path')){
-            $redir=$this->get('session')->get('_security.target_path');
+            //$redir=$this->get('session')->get('_security.target_path');
+            $redir=$this->generateUrl("_home");
         }else{
             $redir=$this->generateUrl("_home");
         }

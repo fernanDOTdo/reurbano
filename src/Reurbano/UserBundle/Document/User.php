@@ -59,8 +59,18 @@ class User implements UserInterface {
     protected $newsletters;
     /** @ODM\String */
     protected $facebookid;
+    /** @ODM\String */
+    protected $twitterid;
+    
+    public function getTwitterid() {
+        return $this->twitterid;
+    }
 
-    public function getId() {
+    public function setTwitterid($twitterid) {
+        $this->twitterid = $twitterid;
+    }
+
+        public function getId() {
         return $this->id;
     }
 
