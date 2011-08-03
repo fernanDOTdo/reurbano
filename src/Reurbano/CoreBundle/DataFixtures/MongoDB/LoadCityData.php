@@ -16,7 +16,7 @@ class LoadCityData implements FixtureInterface, ContainerAwareInterface {
     }
 
     public function load($manager) {
-        $cidades = array('São Paulo', 'Rio de Janeiro', 'Campinas', 'Itatiba', 'Belo Horizonte', 'São Bernardo do Campo');
+        $cidades = array('Oferta Nacional','São Paulo', 'Rio de Janeiro', 'Campinas', 'Itatiba', 'Belo Horizonte', 'São Bernardo do Campo');
         foreach ($cidades as $cidade) {
             $City = new City();
             $City->setName($cidade);

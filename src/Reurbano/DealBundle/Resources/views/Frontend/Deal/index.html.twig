@@ -3,5 +3,28 @@
 {% block title %}Listagem de Ofertas{% endblock %}
 
 {% block content %}
-Teste!
-{% endblock %}
+<h1>{{title|trans}}</h1>
+{% for deal in ofertas %}
+    <div class="dealList">
+        <div class="imgDeal">
+        
+        </div>
+        <div class="infoDeal">
+            <span class="dealCategory">{{ deal.getOffer().getSource().getCategory().getName() }}</span>
+            <a href="{{ path( 'deal_deal_show', {'category' : deal.getOffer().getSource().getCategory().getSlug() ,'oferta': deal.getSlug() } ) }}">{{ deal.getOffer().getSource().getTitle() }}</a>
+            <span class="dealAddress">{{ deal.getOffer().getSource().getBusinessAddress() }}</span>
+            <span class="dealExtra">
+                <span class="dealExpires">{{ deal.getOffer().getSource().getExpiresAt()|date("d/m/Y")  }}</span>
+                <span class="dealQuantity">Disponiveis: {{ deal.getQuantity() }}</span>
+            </span>
+        </div>
+        <div class="priceDeal">
+            <span class="dealPriceNormal">De {{ deal.getOffer().getSource().getPrice() }}</span>
+            <span class="dealPriceDesc">Por <span class="dealPrice">{{ deal.getPrice() }}</span></span>
+            <a href="#" class="dealListaDetail">Ver Oferta</a>
+        </div>
+    </div>
+  {% else %}
+   {{"Nenhuma oferta encontrada"|trans}}
+  {% endfor %} 
+{% endblock %} 
