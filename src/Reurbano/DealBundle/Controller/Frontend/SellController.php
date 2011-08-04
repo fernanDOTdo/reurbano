@@ -22,6 +22,13 @@ class SellController extends BaseController
      */
     public function indexAction()
     {
+                $site = 'ou';
+                $regexp = new \MongoRegex('/' . $site . '/i');
+                $site = $this->mongo('ReurbanoDealBundle:Site')
+                        ->createQueryBuilder()
+                        ->sort('createdAt', 'ASC')
+                        ->field('')->equals($regexp)
+                        ->getQuery()->execute();
         $title = "Venda cupons de qualquer site de compras coletivas aqui";
         $form = $this->createFormBuilder()
                 ->add('site', 'text')
@@ -53,14 +60,42 @@ class SellController extends BaseController
      */
     public function ajaxAction()
     {
-        if ($this->get('request')->isXmlHttpRequest()) {
-            if ($this->get('request')->getMethod() == 'POST') {
+        /*if ($this->get('request')->isXmlHttpRequest()) {
+            if ($this->get('request')->getMethod() == 'POST') {*/
                 $site = $this->get('request')->request->get('site');
-                $variavel['ret'] = $site . "123";
-                return new Response(json_encode($variavel));
-            }
-        }
-        return array();
+                /*var_dump($this->get('request')->request);
+                var_dump($site);
+                exit();*/
+                //var_dump($site);
+                //$site = 'p';
+                $regexp = new \MongoRegex('/' . $site . '/i');
+                $site = $this->mongo('ReurbanoDealBundle:Site')
+                        ->createQueryBuilder()
+                        ->sort('createdAt', 'ASC')
+                        ->field('name')->equals($regexp)
+                        ->getQuery()->execute();
+                $retArr = array();
+                $retArr[]['titulo'] = "Andre";
+                $retArr[]['titulo'] = "Uohshitu";
+                $retArr[]['titulo'] = "Craudomira";
+                $retArr[]['titulo'] = "Felizberta";
+                $i = 0;
+                foreach($site as $k => $v){
+                    $retArr[$i]['titulo'] = $v->getName();
+                    $retArr[$i]['id'] = (string)$v->getId();
+                    //echo $v->getId()."<br />";
+                }
+                /*echo "<pre>";
+                var_dump(count($site));
+                echo "</pre>";
+                exit();*/
+                /*echo json_encode($retArr);
+                exit();*/
+                return new Response(json_encode($retArr));
+                return new Response(json_encode($data));
+            /*}
+        }*/
+        //return new Response(json_encode(array()));
     }
     
     /**

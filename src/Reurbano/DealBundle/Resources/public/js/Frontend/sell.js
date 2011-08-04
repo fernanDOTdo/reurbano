@@ -14,10 +14,7 @@ var acOptionsImv = {
         }
     }
 }
-$('#form_site').autocomplete(function(){
+$('#form_site').autocomplete(ajaxPath,acOptionsImv).result(function(event, item){
     var site = $(this).val();
     var cupom = $('#form_cupom').val();
-    $.post(ajaxPath, {site:site}, function(variavel){
-        alert(variavel.ret);
-    }, 'json')
 });
