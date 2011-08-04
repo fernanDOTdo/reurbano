@@ -94,7 +94,12 @@ jms_security_extra:
 
 mastop_system:
     themes_dir: %themes_dir%
-    active_theme: "mastop"
+    active_theme: "reurbano"
+    twitter:
+       file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
+       consumer_key: xxxxxx
+       consumer_secret: xxxxxx
+       callback_url: http://www.example.com/login_check
 
 reurbano_core:
     default_city: "oferta-nacional"

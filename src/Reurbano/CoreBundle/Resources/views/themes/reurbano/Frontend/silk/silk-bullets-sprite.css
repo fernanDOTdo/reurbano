@@ -1,0 +1,30 @@
+﻿
+.ui-silk-bullet, .ui-silk-bullet ul { margin-left: 0; padding: 0; list-style: none; }
+.ui-silk-bullet li { background: transparent url(silk-bullets-sprite.png) ; margin: 0; padding: 0 0 0 16px; list-style: none; background-repeat: no-repeat; }
+
+.ui-silk-bullet-add li { background-position: -286px 8px; }
+.ui-silk-bullet-arrow-bottom li { background-position: -275px -16px; }
+.ui-silk-bullet-arrow-down li { background-position: -264px -40px; }
+.ui-silk-bullet-arrow-top li { background-position: -253px -64px; }
+.ui-silk-bullet-arrow-up li { background-position: -242px -88px; }
+.ui-silk-bullet-black li { background-position: -231px -112px; }
+.ui-silk-bullet-blue li { background-position: -220px -136px; }
+.ui-silk-bullet-delete li { background-position: -209px -160px; }
+.ui-silk-bullet-disk li { background-position: -198px -184px; }
+.ui-silk-bullet-error li { background-position: -187px -208px; }
+.ui-silk-bullet-feed li { background-position: -176px -232px; }
+.ui-silk-bullet-go li { background-position: -165px -256px; }
+.ui-silk-bullet-green li { background-position: -154px -280px; }
+.ui-silk-bullet-key li { background-position: -143px -304px; }
+.ui-silk-bullet-orange li { background-position: -132px -328px; }
+.ui-silk-bullet-picture li { background-position: -121px -352px; }
+.ui-silk-bullet-pink li { background-position: -110px -376px; }
+.ui-silk-bullet-purple li { background-position: -99px -400px; }
+.ui-silk-bullet-red li { background-position: -88px -424px; }
+.ui-silk-bullet-star li { background-position: -77px -448px; }
+.ui-silk-bullet-toggle-minus li { background-position: -66px -472px; }
+.ui-silk-bullet-toggle-plus li { background-position: -55px -496px; }
+.ui-silk-bullet-white li { background-position: -44px -520px; }
+.ui-silk-bullet-wrench li { background-position: -33px -544px; }
+.ui-silk-bullet-yellow li { background-position: -22px -568px; }
+.ui-silk-bullet-tick li { background-position: -11px -592px; }

@@ -24,7 +24,7 @@ class KernelRequestListener
                 if(!$session->has('reurbano.user.city')) {
                     $ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
                     $session->set('reurbano.user.ip', (string)$ip2city->getIP());
-                    $session->set('reurbano.user.city', (string)$ip2city->getCity());
+                    $session->set('reurbano.user.city', (string)$this->container->get('mastop')->slugify($ip2city->getCity()));
                     $session->set('reurbano.user.country', (string)$ip2city->getCountry());
                     $coords = $ip2city->getCoordinates();
                     $session->set('reurbano.user.lati', (string)$coords['lati']);

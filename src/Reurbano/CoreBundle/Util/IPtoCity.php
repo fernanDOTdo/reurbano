@@ -13,7 +13,7 @@ class IPtoCity {
     protected $country;
     protected $coordinates = array();
     function __construct(ContainerInterface $container, $ip) {
-        if(strpos($ip, '192.168.0') !== false){
+        if(strpos($ip, '192.168.0') !== false || strpos($ip, '127.0.0') !== false){
             //$ip = '201.26.109.172'; // IP de teste para o caso de o acesso ser via localhost
             $ip = '201.43.205.208'; // IP de teste para o caso de o acesso ser via localhost
         }
