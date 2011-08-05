@@ -18,6 +18,9 @@
 {% block stylesheets %}{% endblock %}
 <!-- Load JQuery -->		
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+{% javascripts '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 {%if app.request.attributes.get('_route') == '_home' %}
 {% javascripts '@ReurbanoCoreBundle/Resources/public/js/slidejs/slides.min.jquery.js' filter='yui_js' output='reurbano/js/slidejs/slides.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -38,31 +41,62 @@ $(function(){
 {{ mastop_param('system.script.head') }}
 </head>
 <body>
-{# Main #}
-<div id="main">
-    
 {# Mensagens do Sistema #}
 {% if app.session.hasFlash('error') %}
 <div class="alert alert_red">
-    <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/acces_denied_sign.png') }}" />
-    <strong>Erro: </strong> {{ app.session.flash('error')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+    <div class="container_12">
+        <div class="grid_10">
+            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/acces_denied_sign.png') }}" />
+            <strong>Erro: </strong> {{ app.session.flash('error')|raw }}
+        </div>
+        <div class="grid_2">
+            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+        </div>
+    </div>
 </div>
 {% endif %}
 {% if app.session.hasFlash('ok') %}
-   
 <div class="alert alert_green">
-    <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/light_bulb.png') }}" />
-    {{ app.session.flash('ok')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+    <div class="container_12">
+        <div class="grid_10">
+            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/light_bulb.png') }}" />
+            {{ app.session.flash('ok')|raw }}
+        </div>
+        <div class="grid_2">
+            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+        </div>
+    </div>
 </div>
 {% endif %}
 {% if app.session.hasFlash('notice') %}
 <div class="alert alert_grey">
-    <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/grey/info___about.png') }}" />
-    <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+    <div class="container_12">
+        <div class="grid_10">
+            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/grey/info___about.png') }}" />
+            <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+        </div>
+        <div class="grid_2">
+            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+        </div>
+    </div>
 </div>
 {% endif %}
 {# /Mensagens do Sistema #}
-
+{%if app.request.cookies.get('hideNL') is null%}
+    <div id="topNL">
+        <div class="container_12">
+            <div class="grid_10">
+                <form name="" action="{{ path('core_mailing_new') }}" method="post"> Receba ofertas com cupons imperdíveis de {{reurbano_select_city()}} <input type="text" name="email" /> <button type="submit" class="button icon approve">Enviar</button></form>
+            </div>
+            <div class="grid_2">
+                <a id="closeNL" class="button danger icon remove noBG" href="#">Fechar</a>
+            </div>
+        </div>
+    </div>
+{%endif%}
+{# Main #}
+<div id="main">
+    
 {# Header #}
 <div id="hd_wrap">
     <div id="hd" class="container_12">
@@ -166,9 +200,19 @@ $(function(){
 
 {# Footer #}
 <div id="ft_wrap">
-    {{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
     <div class="clearfix"></div>
-    <div id="ft" class="container_12">{% block footer %}<span id="copyright">© {{ "now"|date('Y') }} Mastop Internet Development</span>{% endblock%}</div>
+    <div id="ft" class="container_12">
+        <div id="ftBelt" class="grid_4 prefix_4 suffix_4"><a href="{{ path('_home') }}" title="Homepage">{{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }}</a></div>
+   </div>
+   {{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
+    <div class="container_12">
+        <div id="copyright" class="grid_9">
+            {% block footer %}© {{ "now"|date('Y') }} {{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }} | Todos os direitos reservados.{% endblock%}
+        </div>
+        <div id="poweredBy" class="grid_3">
+            <a href="http://www.mastop.com.br" title="Produzido por Mastop Internet Development">Mastop Devenvolvimento e Consultoria Web</a>
+        </div>
+    </div>
 </div>
 {# /Footer #}
 </div>

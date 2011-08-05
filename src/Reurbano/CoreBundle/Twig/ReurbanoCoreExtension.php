@@ -34,7 +34,7 @@ class ReurbanoCoreExtension extends Twig_Extension
     public function getFunctions()
     {
         $mappings = array(
-            'reurbano_hello'           => 'hello',
+            'reurbano_select_city'           => 'selectCity',
         );
 
         $functions = array();
@@ -44,16 +44,25 @@ class ReurbanoCoreExtension extends Twig_Extension
 
         return $functions;
     }
-    /**
-     * Exemplo de função para extensão do Twig.
-     *
-     * @param string $world
-     * @return string
-     */
 
-    public function hello($world)
+    
+    public function selectCity($name = 'city', $id = null, $class = null)
     {
-        return "Oi $world";
+        $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City');
+        $cities = $repo->findAll();
+        $ret = null;
+        if($cities){
+            $current = $this->container->get('session')->get('reurbano.user.city');
+            $ret = '<select name="'.$name.'"';
+            $ret .= ($id) ? ' id="'.$id.'"' : '';
+            $ret .= ($class) ? ' class="'.$class.'"' : '';
+            $ret .= '>';
+            foreach ($cities as $k => $v){
+                $ret .= '<option value="'.$v->getSlug().'"'.($current == $v->getSlug() ? ' selected="selected"' : '').'>'.$v->getName().'</option>';
+            }
+            $ret .= '</select>';
+        }
+        return $ret;
     }
 
     /**
