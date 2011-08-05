@@ -22,16 +22,18 @@ class CityRepository extends BaseRepository
     }
     
     /**
-     * Retorna as cidades pelo parâmetro "special"
+     * Retorna todas as cidades ordenadas pelo parâmetro "special", "order" e "name"
      *
      * @param string $id
      * @return bool
      */
-    public function getBySpecial($special = true)
+    public function findAll()
     {
         return $this->createQueryBuilder()
-            ->field('special')->equals($special)
-            ->getQuery()->execute();
+                ->sort('special', 'desc')
+                ->sort('order', 'asc')
+                ->sort('name', 'asc')
+                ->getQuery()->execute();
     }
     
     public function hasId($id){

@@ -42,27 +42,27 @@ http://github.com/necolas/css3-github-buttons
 .button:focus,
 .button:active,
 .button.active {
-    border-color: #3072b3;
-    border-bottom-color: #2a65a0;
+    border-color: #D87D08;
+    border-bottom-color: #D37808;
     text-decoration: none; 
     text-shadow: -1px -1px 0 rgba(0,0,0,0.3); 
     color: #fff; 
-    background-color: #3C8DDE;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#599bdc), to(#3072b3));
-    background-image: -moz-linear-gradient(#599bdc, #3072b3);
-    background-image: -o-linear-gradient(#599bdc, #3072b3);
-    background-image: linear-gradient(#599bdc, #3072b3);
+    background-color: #C46F07;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ED7E00), to(#D87D08));
+    background-image: -moz-linear-gradient(#ED7E00, #D87D08);
+    background-image: -o-linear-gradient(#ED7E00, #D87D08);
+    background-image: linear-gradient(#ED7E00, #D87D08);
 }
 
 .button:active,
 .button.active {
-    border-color: #2a65a0;
-    border-bottom-color: #3884CF;
-    background-color: #3072b3;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3072b3), to(#599bdc));
-    background-image: -moz-linear-gradient(#3072b3, #599bdc);
-    background-image: -o-linear-gradient(#3072b3, #599bdc);
-    background-image: linear-gradient(#3072b3, #599bdc);
+    border-color: #D37808;
+    border-bottom-color: #FF8300;
+    background-color: #D87D08;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#D87D08), to(#ED7E00));
+    background-image: -moz-linear-gradient(#D87D08, #ED7E00);
+    background-image: -o-linear-gradient(#D87D08, #ED7E00);
+    background-image: linear-gradient(#D87D08, #ED7E00);
 }
 
 /* overrides extra padding on button elements in Firefox */
@@ -373,12 +373,12 @@ http://github.com/necolas/css3-github-buttons
 .button-group.minor-group .button:hover,
 .button-group.minor-group .button:focus,
 .button-group.minor-group .button:active {
-    background-color: #599bdc;
+    background-color: #ED7E00;
 }
 
 .button-group.minor-group .button:active,
 .button-group.minor-group .button.active {
-    background-color: #3072b3;
+    background-color: #D87D08;
 }
 
 .button-group.minor-group .button.icon:before {

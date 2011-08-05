@@ -14,7 +14,7 @@ framework:
     session:
         default_locale: %locale%
         auto_start: true
-    translator: { fallback: ptBR }
+    translator: { fallback: pt_BR }
 
 # Twig Configuration
 twig:
