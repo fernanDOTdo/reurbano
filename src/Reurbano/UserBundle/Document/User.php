@@ -58,11 +58,42 @@ class User implements UserInterface {
     /** @ODM\boolean */
     protected $newsletters;
     /** @ODM\String */
+    /** @ODM\UniqueIndex */
     protected $facebookid;
     /** @ODM\String */
+    /** @ODM\UniqueIndex */
     protected $twitterid;
-    
-    public function getTwitterid() {
+    /** @ODM\String */
+    protected $twitter;
+    /** @ODM\String */
+    protected $twToken;
+    /** @ODM\String */
+    protected $twSecret;
+    public function getTwitter() {
+        return $this->twitter;
+    }
+
+    public function setTwitter($twitter) {
+        $this->twitter = $twitter;
+    }
+
+    public function getTwToken() {
+        return $this->twToken;
+    }
+
+    public function setTwToken($twToken) {
+        $this->twToken = $twToken;
+    }
+
+    public function getTwSecret() {
+        return $this->twSecret;
+    }
+
+    public function setTwSecret($twSecret) {
+        $this->twSecret = $twSecret;
+    }
+
+        public function getTwitterid() {
         return $this->twitterid;
     }
 

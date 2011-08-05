@@ -148,6 +148,7 @@ var FacebookConnect = {
             </div>
             
             <div>
+                <a href="{{url('user_user_twitter_conect')}}"><img src="./images/lighter.png" alt="Sign in with Twitter"/>TWITTER NOVO</a>
                 {% include "ReurbanoUserBundle::twitter_initialize.html.twig" with {'twitterDIV':'twitter_connect','twitterTXT': "Tem uma conta no Twitter? Use-a para fazer o seu login no  %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')})}  %}
             </div>
 </form>

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Core\SecurityContext;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\UserBundle\Form\Frontend\UserForm;
+use Reurbano\UserBundle\Form\Frontend\UserFormTwitter;
 use Reurbano\UserBundle\Form\Frontend\UserFormEdit;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
@@ -859,6 +860,161 @@ class UserController extends BaseController {
             $result['success'] = false;
         }
         return new Response(json_encode($result));
+    }
+
+    /**
+     * @Route("/twitter/conect", name="user_user_twitter_conect")
+     * @Template()
+     */
+    function twitterConectAction() {
+        $connection = $this->get('mastop.twitter');
+        return $this->redirect($connection->getLoginUrl($this->get('request')));
+    }
+
+    /**
+     * @Route("/twitter/back", name="user_user_twitter_back")
+     * @Template()
+     */
+    function twitterBackAction() {
+        $connection = $this->get('mastop.twitter');
+        $token_credentials = $connection->getAccessToken($this->get('request'));
+        $dados = $connection->getUserData($this->get('request'), array('user_id' => $token_credentials['user_id']));
+        $request = $this->getRequest();
+        /* echo "<pre>";
+          print_r($dados);
+          echo "</pre>";
+
+          exit(); */
+        if (is_object($dados)) {
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findOneBy(array('twitterid' => $token_credentials['user_id']));
+            if ($usuario) {
+                //ja existe um usuario com este twitter, portanto apenas logar ele
+                $this->authenticateUser($usuario);
+                $msg = $this->trans('Login efetuado via Twitter, bem vindo %name%.', array("%name%" => $usuario->getName()));
+                $this->get('session')->setFlash('ok', $msg);
+                return $this->redirect($this->generateUrl('_home'));
+            } else {
+                //novo usuario baseado no twitter, precisa do email dele.
+                $factory = $this->get('form.factory');
+                $titulo = $this->trans("Cadastro via Twitter - Informe seu email");
+                $txtextra = $this->trans("Agora falta pouco para seu cadastro ser concluído, basta informar seu email:");
+                $form = $factory->create(new UserFormTwitter());
+                return $this->render('ReurbanoUserBundle:Frontend/User:novoTwitter.html.twig', array(
+                    'form' => $form->createView(), 'titulo' => $titulo, 'txtextra' => $txtextra
+                ));
+            }
+        } else {
+            $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('_login'));
+        }
+    }
+
+    /**
+     * @Route("/twitter/salvar", name="user_user_twitter_salvar")
+     * @Template()
+     */
+    function twitterNewAction() {
+        $connection = $this->get('mastop.twitter');
+        $request = $this->get('request');
+        $session = $request->getSession();
+        $dados = $connection->getUserData($this->get('request'), array('user_id' => $session->get('tw_user_id')));
+
+        $factory = $this->get('form.factory');
+        $form = $factory->create(new UserFormTwitter());
+        $repository = $this->mongo('ReurbanoUserBundle:User');
+        $dadosPost = $request->request->get($form->getName());
+        if (!empty($dadosPost['email'])) {
+            $usuario = $repository->findByField('email', $dadosPost['email']);
+            if (count($usuario) == 1) {
+                //ja existe usuário com este email
+                $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_twitter_back'));
+            } elseif (count($usuario) == 0) {
+                //email não existe no bd mas será que é realmente email
+                if (preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $dadosPost['email'])) {
+                    if (is_object($dados)) {
+
+                        $user = new user();
+                        $user->setName($dados->name);
+                        $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+                        $user->setActkey('');
+                        $user->setMailOk(true);
+                        $user->setStatus(1);
+                        $user->setAvatar('');
+                        $user->setLang('pt_BR');
+                        $user->setTheme('');
+                        $user->setCreated(new \DateTime());
+                        $user->setRoles('ROLE_USER');
+                        $user->setCity($dados->location);
+                        $user->setCpf('');
+                        $user->setEmail($dadosPost['email']);
+                        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                        srand((double) microtime() * 1000000);
+                        $i = 0;
+                        $pass = '';
+                        while ($i <= 7) {
+                            $num = rand() % 33;
+                            $tmp = substr($chars, $num, 1);
+                            $pass = $pass . $tmp;
+                            $i++;
+                        }
+                        $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                        //$user->setBirth(0);
+                        $user->setMoneyFree(0);
+                        $user->setMoneyBlock(0);
+                        $user->setTwitterid($dados->id);
+                        $user->setTwitter($dados->screen_name);
+
+                        $user->setTwToken($session->get('tw_access_token'));
+                        $user->setTwSecret($session->get('tw_access_token_secret'));
+                        $user->setNewsletters(true);
+                        $this->dm()->persist($user);
+                        $this->dm()->flush();
+                        $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
+                        $result['success'] = true;
+                        //notificação de novo usuario interno
+                        $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                        if ($emailsNotify != "") {
+                            $emailsNotify = explode(";", $emailsNotify);
+                            foreach ($emailsNotify as $email) {
+                                $this->newUserEmail(str_replace(" ", '', $email), $user);
+                            }
+                        }
+                        // /notificação de novo usuario interno
+                        // notificação ao usuário que ele foi cadastrado
+                        $this->newUserEmail(str_replace(" ", '', false), $user);
+                        // /notificação ao usuário que ele foi cadastrado
+                        //efetuar o login
+                        $this->authenticateUser($user);
+                        $result['success'] = true;
+                        $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
+                        return $this->redirect($this->generateUrl('_home'));
+                    } else {
+                        $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
+                        $this->get('session')->setFlash('error', $msg);
+                        return $this->redirect($this->generateUrl('_home'));
+                    }
+                } else {
+                    $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email válido.');
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('user_user_twitter_back'));
+                }
+            } else {
+                //nunca deve cair aqui mas...
+                $msg = $this->trans('Erro ao criar seu usuário, erro no cadastro.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_novo'));
+            }
+        } else {
+            //devolve para o cadastro de email
+            $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('user_user_twitter_back'));
+        }
     }
 
 }
