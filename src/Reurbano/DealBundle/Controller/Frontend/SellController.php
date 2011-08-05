@@ -75,10 +75,10 @@ class SellController extends BaseController
                         ->field('name')->equals($regexp)
                         ->getQuery()->execute();
                 $retArr = array();
-                $retArr[]['titulo'] = "Andre";
-                $retArr[]['titulo'] = "Uohshitu";
-                $retArr[]['titulo'] = "Craudomira";
-                $retArr[]['titulo'] = "Felizberta";
+                $retArr[1]['titulo'] = "Andre";
+                $retArr[2]['titulo'] = "Uohshitu";
+                $retArr[3]['titulo'] = "Craudomira";
+                $retArr[4]['titulo'] = "Felizberta";
                 $i = 0;
                 foreach($site as $k => $v){
                     $retArr[$i]['titulo'] = $v->getName();
@@ -91,7 +91,7 @@ class SellController extends BaseController
                 exit();*/
                 /*echo json_encode($retArr);
                 exit();*/
-                return new Response(json_encode($retArr));
+                //return new Response(json_encode($retArr));
                 return new Response(json_encode($data));
             /*}
         }*/
