@@ -12,7 +12,7 @@
   -moz-border-radius: 3px;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  background: #8b8b8b;
+  background: #999;
   /* for non-css3 browsers */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a9a9a9', endColorstr='#7a7a7a');
   /* for IE */
@@ -20,7 +20,7 @@
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #a9a9a9, #7a7a7a);
   /* for firefox 3.6+ */
-  border: solid 1px #6d6d6d;
+  border: solid 1px #999;
 }
 #nav li {
   margin: 0 4px;
@@ -32,7 +32,7 @@
 #nav a {
   border: none;
   font-weight: bold;
-  color: #FFF;
+  color: #fff;
   text-decoration: none;
   display: block;
   padding: 4px 10px;
