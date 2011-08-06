@@ -1,0 +1,7 @@
+{% extends '::frontend.html.twig' %}
+{% block javascriptsHead %}
+{% include "ReurbanoUserBundle::twitter_setup.html.twig" with {'apiKey':mastop_param('user.all.twitterappid'), 'version':'1'} %}
+{% endblock %}
+{% block content %}
+Oi!
+{% endblock content %}  

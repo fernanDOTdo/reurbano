@@ -65,7 +65,7 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $child->setName('faceappid');
         $child->setTitle('ID do Aplicativo Facebook');
         $child->setDesc('Código do aplicativo criado no facebook developers');
-        $child->setValue('');
+        $child->setValue('256985260984545');
         $child->setOrder(4);
         $param->addChildren($child);
         
@@ -73,8 +73,24 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $child->setName('faceappsecret');
         $child->setTitle('Código Secret do App criado no Facebook');
         $child->setDesc('Código gerado no site de developers do Facebook.');
-        $child->setValue('');
+        $child->setValue('429a5cc5c6e6c63db3a085532f71fe63');
         $child->setOrder(5);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('twitterappid');
+        $child->setTitle('ID do Aplicativo Twitter');
+        $child->setDesc('Código do aplicativo criado no twitter developers');
+        $child->setValue('JUTf0s1U3zU8x0yhAWvUYw');
+        $child->setOrder(6);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('twitterappsecret');
+        $child->setTitle('Código Secret do App criado no Twitter');
+        $child->setDesc('Código gerado no site de developers do Twitter.');
+        $child->setValue('7AQZGatGKntBoJBS2l1GS8kYzCxHq9affitEYbHsoNs');
+        $child->setOrder(7);
         $param->addChildren($child);
         
         $manager->persist($param);

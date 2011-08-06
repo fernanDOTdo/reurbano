@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /** @ODM\Document (
- * collection="USRuser",
+ * collection="User",
  * repositoryClass="Reurbano\UserBundle\Document\UserRepository"
  * ) 
  */
@@ -49,7 +49,7 @@ class User implements UserInterface {
     protected $email;
     /** @ODM\Date */
     protected $birth;
-    /** @ODM\Int */
+    /** @ODM\String */
     protected $gender;
     /** @ODM\Float */
     protected $moneyFree;
@@ -57,8 +57,51 @@ class User implements UserInterface {
     protected $moneyBlock;
     /** @ODM\boolean */
     protected $newsletters;
+    /** @ODM\String */
+    /** @ODM\UniqueIndex */
+    protected $facebookid;
+    /** @ODM\String */
+    /** @ODM\UniqueIndex */
+    protected $twitterid;
+    /** @ODM\String */
+    protected $twitter;
+    /** @ODM\String */
+    protected $twToken;
+    /** @ODM\String */
+    protected $twSecret;
+    public function getTwitter() {
+        return $this->twitter;
+    }
 
-    public function getId() {
+    public function setTwitter($twitter) {
+        $this->twitter = $twitter;
+    }
+
+    public function getTwToken() {
+        return $this->twToken;
+    }
+
+    public function setTwToken($twToken) {
+        $this->twToken = $twToken;
+    }
+
+    public function getTwSecret() {
+        return $this->twSecret;
+    }
+
+    public function setTwSecret($twSecret) {
+        $this->twSecret = $twSecret;
+    }
+
+        public function getTwitterid() {
+        return $this->twitterid;
+    }
+
+    public function setTwitterid($twitterid) {
+        $this->twitterid = $twitterid;
+    }
+
+        public function getId() {
         return $this->id;
     }
 
@@ -105,8 +148,15 @@ class User implements UserInterface {
     public function setMailOk($mailOk) {
         $this->mailOk = $mailOk;
     }
+    public function getFacebookid() {
+        return $this->facebookid;
+    }
 
-    public function getStatus($friendly=false) {
+    public function setFacebookid($facebookid) {
+        $this->facebookid = $facebookid;
+    }
+
+        public function getStatus($friendly=false) {
         if ($friendly) {
             $status[0] = "Não confirmado";
             $status[1] = "Ativo";
