@@ -4,6 +4,8 @@ namespace Reurbano\DealBundle\Controller\Frontend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Reurbano\DealBundle\Documents\Offer;
+use Reurbano\DealBundle\Documents\Source;
 
 /**
  * Controller que cuidará das Ofertas em Frontend.
@@ -28,8 +30,16 @@ class DealController extends BaseController
         // Verificação se a cidade do usuário existe
         if (count($city) > 0){
             // Verificação se existe alguma oferta na cidade do usuário
+            
             $deal = $mongoDeal->findByCity(new \MongoId($cityId));
 
+            foreach ($deal as $k => $v){
+                $precoDe = str_ireplace(',', '', $v->getOffer()->getSource()->getPrice())/100;
+                $precoPor = $v->getPrice()/100;
+                $v->getOffer()->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
+                $v->setPrice(number_format($precoPor, 2, ',', '.'));
+            }
+            
             if (count($deal) == 0){
                 $title = "Lista de Ofertas Nacionais";
                 // Caso não exista, exibe as ofertas nacionais
@@ -48,9 +58,7 @@ class DealController extends BaseController
             $title = "Lista de Ofertas Nacionais";
             
             $city = $mongoCity->findBySlug("oferta-nacional");
-            foreach($city as $k => $v){
-                $cityId = $k;
-            }
+            $cityId = $city->getId();
             $deal = $mongoDeal->findByCity(new \MongoId($cityId));
             
         }
@@ -78,6 +86,15 @@ class DealController extends BaseController
     public function showAction($category, $oferta)
     {
         $deal = $this->mongo("ReurbanoDealBundle:Deal")->findBySlug($oferta);
+        
+        if (!$deal){
+            $this->get('session')->setFlash('notice', 'Oferta não encontrada');
+            return $this->redirect($this->generateUrl('deal_deal_index'));
+        }
+        $precoDe = str_ireplace(',', '', $deal->getOffer()->getSource()->getPrice())/100;
+        $precoPor = $deal->getPrice()/100;
+        $deal->getOffer()->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
+        $deal->setPrice(number_format($precoPor, 2, ',', '.'));
         $title = $deal->getLabel();
         
         return array('oferta' => $deal, 

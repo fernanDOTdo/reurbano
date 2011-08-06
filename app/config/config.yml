@@ -14,7 +14,7 @@ framework:
     session:
         default_locale: %locale%
         auto_start: true
-    translator: { fallback: ptBR }
+    translator: { fallback: pt_BR }
 
 # Twig Configuration
 twig:
@@ -73,7 +73,7 @@ doctrine_mongodb:
             auto_mapping: true
             mappings:
                 StofDoctrineExtensionsBundle: false
-            metadata_cache_driver: array # array, apc, xcache, memcache
+            metadata_cache_driver: apc # array, apc, xcache, memcache
 
 stof_doctrine_extensions:
     default_locale: pt_BR
@@ -97,9 +97,9 @@ mastop_system:
     active_theme: "reurbano"
     twitter:
        file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
-       consumer_key: xxxxxx
-       consumer_secret: xxxxxx
-       callback_url: http://www.example.com/login_check
+       consumer_key: JUTf0s1U3zU8x0yhAWvUYw
+       consumer_secret: 7AQZGatGKntBoJBS2l1GS8kYzCxHq9affitEYbHsoNs
+       callback_url: http://reurbano/usuario/twitter/back
 
 reurbano_core:
     default_city: "oferta-nacional"

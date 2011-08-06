@@ -1,22 +1,22 @@
 /* Geral */
 body {
-  font-family: "Lucida Grande", Arial, Verdana;
+  font-family: Arial, Verdana;
   background-color: #FFF;
-  color: #333;
+  color: #666;
   background: url(../images/header/bg.png) repeat-x;
 }
 
 a {
-  color: #7A9D24;
+  color: #029116;
   text-decoration: none;
 }
 
 a:hover {
-  color: #15567F
+  color: #D87D08;
 }
 
 a:visited {
-  background: #ccc;
+  background: #029116;
   color: #000;
 }
 
@@ -32,12 +32,53 @@ em
 
 h1, h2, h3
 {
-    color:          #404040;
+    color: #666;
 }
-
+.alert{
+    color: #FFF;
+    height: 40px;
+    display: none;
+}
+.alert div.container_12 {
+    height: 26px;
+    padding: 7px 0;
+}
+.alert_red{
+      background: #E50606;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FC6F6F', endColorstr='#E50606');
+      background: -webkit-gradient(linear, left top, left bottom, from(#FC6F6F), to(#E50606));
+      background: -moz-linear-gradient(top, #FC6F6F, #E50606);
+}
+.alert_green{
+      background: #00AA00;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2AD34C', endColorstr='#00AA00');
+      background: -webkit-gradient(linear, left top, left bottom, from(#2AD34C), to(#00AA00));
+      background: -moz-linear-gradient(top, #2AD34C, #00AA00);   
+}
+.alert_grey{
+      background: #888888;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BBBBBB', endColorstr='#888888');
+      background: -webkit-gradient(linear, left top, left bottom, from(#BBBBBB), to(#888888));
+      background: -moz-linear-gradient(top, #BBBBBB, #888888);   
+}
+.noBG{background: transparent; border: 0; text-shadow:none;}
 /*/Geral */
 
 /* Header */
+#topNL{
+  background: #D87D08;
+  /* for non-css3 browsers */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8C00', endColorstr='#D87D08');
+  /* for IE */
+  background: -webkit-gradient(linear, left top, left bottom, from(#FF8C00), to(#D87D08));
+  /* for webkit browsers */
+  background: -moz-linear-gradient(top, #FF8C00, #D87D08);
+  /* for firefox 3.6+ */
+  color: #FFF;
+  height: 40px;
+  display: none;
+}
+#topNL div.container_12{padding: 5px 0; height: 30px;}
 #hd_wrap { /* Div que cobre todo o header */
 
 }
@@ -45,7 +86,7 @@ h1, h2, h3
 
 
 #logo {height: 87px;}
-#logo a{height: 87px; width: 380px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden; clear: both;}
+#logo a{height: 87px; width: 380px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden;}
 #cidades{height: 58px;}
 #login{height: 28px;}
 #menuTop, #menuMain{height: 34px;}
@@ -55,10 +96,10 @@ h1, h2, h3
 #bannerHome{height: 335px; margin-top: 20px;}
 
 #menuTop ul{margin: 3px 0; float: right}
-#menuTop ul li{float: left; margin-left: 10px; list-style: none outside none; font-size: 0.8em;}
+#menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
 #menuTop ul li a{color: #029116; border: 0;}
-#menuTop ul li.current a{color: #333; text-decoration: underline;}
-#menuTop ul li a:hover{text-decoration: underline; background: transparent;}
+#menuTop ul li.current a{color: #15567F; text-decoration: none;}
+#menuTop ul li a:hover{color: #D87D08; text-decoration: none; background: transparent;}
 #headUser{text-align: right; margin-top: 5px; height: 32px;}
 #headUser span{margin-right: 5px}
 /* /Header */
@@ -100,19 +141,15 @@ h1, h2, h3
 
 /* Footer */
 #ft_wrap { /* Div que cobre todo o Footer */
-  background: #fafafa;
-  background: -webkit-gradient(linear, left top, left bottom, from(#dfdfdf), to(#fafafa));
-  /* for webkit browsers */
-  background: -moz-linear-gradient(top, #dfdfdf, #fafafa);
-  /* for firefox 3.6+ */
-  color: #555;
-  font-size: 1em;
-  padding: 2em;
-  text-align: center;
+  background: url(../images/footer/bg.png) repeat-x;
 }
 #ft {/* Div que cobre o footer 960 */}
+#ftBelt{height: 118px; margin-bottom: 15px;}
+#ftBelt a{width: 300px; height: 118px; float: left; background: url(../images/footer/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden;}
 #navFoot{text-align: left; border-bottom: 1px solid #BBB; margin-bottom: 10px;}
 #navFoot ul li{list-style: none outside none; margin-left: 15px;}
 
-span#copyright {text-shadow: 1px 1px 0 #FFF;color: #999;}
+#copyright {text-shadow: 1px 1px 0 #FFF;color: #999;}
+#poweredBy{text-align: right;}
+#poweredBy a{width: 177px; height: 28px; float: right; background: url(../images/footer/mastop-internet-development.png) no-repeat; line-height: 999em; overflow: hidden;}
 /* /Footer */

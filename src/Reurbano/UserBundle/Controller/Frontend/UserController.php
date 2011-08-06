@@ -9,12 +9,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Core\SecurityContext;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\UserBundle\Form\Frontend\UserForm;
+use Reurbano\UserBundle\Form\Frontend\UserFormTwitter;
 use Reurbano\UserBundle\Form\Frontend\UserFormEdit;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
 use Reurbano\UserBundle\Form\Frontend\ChangePassForm;
 use Reurbano\UserBundle\Document\User;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UserController extends BaseController {
 
@@ -51,7 +54,7 @@ class UserController extends BaseController {
                 }
             }
         }
-        return new Response($this->get('translator')->trans('_NOTAJAX'));
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
@@ -76,7 +79,7 @@ class UserController extends BaseController {
                 }
             }
         }
-        return new Response($this->get('translator')->trans('_NOTAJAX'));
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
@@ -138,7 +141,14 @@ class UserController extends BaseController {
                 }
             }
             // /notificação de novo usuario
-            return $this->redirect($this->generateUrl('_login'));
+            //autologin
+            $usuario->setLastLogin(new \DateTime());
+            $this->dm()->persist($usuario);
+            $this->dm()->flush();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+            $this->container->get('security.context')->setToken($token);
+            // /autologin
+            return $this->redirect($this->generateUrl('_home'));
         } else {
             $msg = $this->trans('Nenhum usuário encontrado com a chave de ativação fornecida.');
             $this->get('session')->setFlash('error', $msg);
@@ -229,12 +239,20 @@ class UserController extends BaseController {
      */
     private function newUserEmail($email, $user) {
         $userStatus = $user->getStatus();
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($email)
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
-        ;
+        if ($email != false) {
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
+                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                    ->setTo($email)
+                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
+            ;
+        } else {
+            $message = \Swift_Message::newInstance()
+                    ->setSubject($this->trans("Seu cadastro no site " . $this->get('mastop')->param('system.site.name') . " foi efetuado"))
+                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
+                    ->setTo($user->getEmail())
+                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
+        }
         $this->get('mailer')->send($message);
     }
 
@@ -588,38 +606,415 @@ class UserController extends BaseController {
      * @Route("/facebook", name="user_user_facebook")
      * @Template()
      */
-    public function facebookAction($username=null) {
-        echo '<p>signed_request contents:</p>';
-        $response = $this->parse_signed_request($this->get('request')->request->get('signed_request'), '429a5cc5c6e6c63db3a085532f71fe63');
-        echo '<pre>';
-        print_r($response);
-        echo '</pre>';
+    public function facebookAction() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            //precisa ver se o usuario facebook ja nao esta cadastrado, se estiver apenas logar
+            //se nao tiver logado entao pegar os dados dele e criar o user automaticamente
+            //em ambos os casos tem que logar automaticamente depois disto
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $request = $this->getRequest();
+            $gets = $request->query;
+
+            $usuario = $repository->findByField('facebookid', $gets->get('facebookId'));
+            $usuario2 = $repository->findByField('email', $gets->get('email'));
+            if (count($usuario) > 0 || count($usuario2) > 0) {
+                //então é existe o user
+                //verificar se os dados cadastrais estao atualizados
+                if (count($usuario) == 1) {
+                    //so tem ele
+                    $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
+                    $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                    $user->setCity($gets->get('cidade'));
+                    $this->dm()->persist($user);
+                    $this->dm()->flush();
+                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
+                    $result['success'] = true;
+                } elseif (count($usuario) > 0) {
+                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo facebookid
+                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro FACEDUPLICITY');
+                    $this->get('session')->setFlash('error', $msg);
+                    $result['success'] = false;
+                }
+                if (count($usuario2) == 1) {
+                    $fbID = $usuario2->getFacebookid();
+                    if (!isset($fbID) || $fbID == $gets->get('facebookId')) {
+                        $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
+                        $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                        $user->setCity($gets->get('cidade'));
+                        if (!isset($fbID)) {
+                            $user->setFacebookid($gets->get('facebookId'));
+                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%, seu facebook foi vinculado a sua conta.', array('%name%' => $usuario2->getName())));
+                        } else {
+                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario2->getName())));
+                        }
+
+                        $result['success'] = true;
+                    } else {
+                        $this->get('session')->setFlash('error', $this->trans('Já existe uma conta com estes dados em nosso sistema e ela não pertence ao seu facebook'));
+                        $result['success'] = false;
+                    }
+                } elseif (count($usuario2) > 0) {
+                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo email
+                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro MAILDUPLICITY');
+                    $this->get('session')->setFlash('error', $msg);
+                    $result['success'] = false;
+                }
+                //efetuar o login
+                $this->authenticateUser($user);
+            } else {
+                //novo user, salvar ele
+                $user = new user();
+                $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
+                $user->setUsername(str_replace(".", "", str_replace("@", "", $gets->get('email'))));
+                $user->setActkey('');
+                $user->setMailOk(true);
+                $user->setStatus(1);
+                $user->setAvatar('');
+                $user->setLang('pt_BR');
+                $user->setTheme('');
+                $user->setCreated(new \DateTime());
+                $user->setRoles('ROLE_USER');
+                $user->setCity($gets->get('cidade'));
+                $user->setCpf('');
+                $user->setEmail($gets->get('email'));
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                srand((double) microtime() * 1000000);
+                $i = 0;
+                $pass = '';
+                while ($i <= 7) {
+                    $num = rand() % 33;
+                    $tmp = substr($chars, $num, 1);
+                    $pass = $pass . $tmp;
+                    $i++;
+                }
+                $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                //$user->setBirth(0);
+                $user->setGender(strtoupper(substr($gets->get('gender'), 0, 1)));
+                $user->setMoneyFree(0);
+                $user->setMoneyBlock(0);
+                $user->setFacebookid($gets->get('facebookId'));
+                $user->setNewsletters(true);
+                $this->dm()->persist($user);
+                $this->dm()->flush();
+                $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
+                $result['success'] = true;
+                //notificação de novo usuario interno
+                $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                if ($emailsNotify != "") {
+                    $emailsNotify = explode(";", $emailsNotify);
+                    foreach ($emailsNotify as $email) {
+                        $this->newUserEmail(str_replace(" ", '', $email), $user);
+                    }
+                }
+                // /notificação de novo usuario interno
+                // notificação ao usuário que ele foi cadastrado
+                $this->newUserEmail(str_replace(" ", '', false), $user);
+                // /notificação ao usuário que ele foi cadastrado
+                //efetuar o login
+                $this->authenticateUser($user);
+            }
+
+
+            return new Response(json_encode($result));
+        }
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
-    public function parse_signed_request($signed_request, $secret) {
-        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-
-        // decode the data
-        $sig = $this->base64_url_decode($encoded_sig);
-        $data = json_decode($this->base64_url_decode($payload), true);
-
-        if (strtoupper($data['algorithm']) !== 'HMAC-SHA256') {
-            error_log('Unknown algorithm. Expected HMAC-SHA256');
-            return null;
+    /**
+     * Logar o usuário depois de facebookear ou twittear
+     *
+     * @param Boolean $reAuthenticate
+     */
+    protected function authenticateUser(UserInterface $user) {
+        $providerKey = "mongo";
+        $role = $user->getRoles();
+        if (in_array("ROLE_USER", $role)) {
+            $user->setLastLogin(new \DateTime());
+            $this->dm()->persist($user);
+            $this->dm()->flush();
+            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+            $this->container->get('security.context')->setToken($token);
         }
-
-        // check sig
-        $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
-        if ($sig !== $expected_sig) {
-            error_log('Bad Signed JSON signature!');
-            return null;
-        }
-
-        return $data;
     }
 
-    public function base64_url_decode($input) {
-        return base64_decode(strtr($input, '-_', '+/'));
+    /**
+     * @Route("/twitter/check", name="user_user_twitter_ajax")
+     * @Template()
+     */
+    public function twitterAction() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            $request = $this->getRequest();
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $request = $this->getRequest();
+            $usuario = $repository->findByField('twitterid', $request->get('id'));
+            if (count($usuario) == 1) {
+                $result['success'] = true;
+                $result['existe'] = true;
+                if (!$this->get("session")->has("twitterID")) {
+                    $this->get("session")->set("twitterID", $request->get('id'));
+                }
+            } elseif (count($usuario) == 0) {
+                $result['success'] = true;
+                $result['existe'] = false;
+            } else {
+                $result['success'] = false;
+            }
+            return new Response(json_encode($result));
+        } else {
+            return new Response($this->get('translator')->trans('Operação não permitida.'));
+        }
+    }
+
+    /**
+     * @Route("/twitter/novo", name="user_user_twitter_novo")
+     * @Template()
+     */
+    public function twitter2Action() {
+        //ajax para salvar o user novo
+        if ($this->get('request')->isXmlHttpRequest()) {
+            $request = $this->getRequest();
+            $email = $request->get('email');
+            $id = $request->get('id');
+            $name = $request->get('name');
+            $location = $request->get('location');
+            $screenName = $request->get('screenName');
+            $avatar = $request->get('image');
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findByField('twitterid', $id);
+            $result['success'] = true;
+            if (count($usuario) == 1) {
+                $result['success'] = false;
+                $result['msg'] = $this->get('translator')->trans('Este twitter já está cadastrado como um usuário.');
+            }
+            if (count($usuario) > 1) {
+                $result['success'] = false;
+            }
+            $usuario2 = $repository->findByField('email', $email);
+            if (count($usuario2) == 1) {
+                $result['success'] = false;
+                $result['msg'] = $this->get('translator')->trans('Este email (%email%) já está cadastrado. ', array('%email%' => $email));
+            }
+            if (count($usuario2) > 1) {
+                $result['success'] = false;
+            }
+            if ($result['success']) {
+                $user = new user();
+                $user->setName($name);
+                $user->setUsername(str_replace(".", "", str_replace("@", "", $email)));
+                $user->setActkey('');
+                $user->setMailOk(true);
+                $user->setStatus(1);
+                $user->setAvatar('');
+                $user->setLang('pt_BR');
+                $user->setTheme('');
+                $user->setCreated(new \DateTime());
+                $user->setRoles('ROLE_USER');
+                //$user->setCity($gets->get('cidade'));
+                $user->setCpf('');
+                $user->setEmail($email);
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                srand((double) microtime() * 1000000);
+                $i = 0;
+                $pass = '';
+                while ($i <= 7) {
+                    $num = rand() % 33;
+                    $tmp = substr($chars, $num, 1);
+                    $pass = $pass . $tmp;
+                    $i++;
+                }
+                $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                //$user->setBirth(0);
+                $user->setMoneyFree(0);
+                $user->setMoneyBlock(0);
+                $user->setTwitterid($id);
+                $user->setNewsletters(true);
+                $this->dm()->persist($user);
+                $this->dm()->flush();
+                $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Twitter.'));
+                $this->authenticateUser($user);
+                $result['success'] = true;
+                $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
+                $result['url'] = $this->generateUrl("_home");
+            }
+            return new Response(json_encode($result));
+        }
+    }
+
+    /**
+     * @Route("/twitter/login", name="user_user_twitter_logar")
+     * @Template()
+     */
+    public function twitter3Action() {
+        if ($this->get("session")->has("twitterID")) {
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findByField('twitterid', $this->get("session")->get("twitterID"));
+            $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
+            $this->authenticateUser($user);
+            $result['url'] = $this->generateUrl("_home");
+            $result['msg'] = $this->get('translator')->trans('Login efetuado.');
+            $result['success'] = true;
+        } else {
+            $result['msg'] = $this->get('translator')->trans('Erro ao efetuar login via twitter.');
+            $result['success'] = false;
+        }
+        return new Response(json_encode($result));
+    }
+
+    /**
+     * @Route("/twitter/conect", name="user_user_twitter_conect")
+     * @Template()
+     */
+    function twitterConectAction() {
+        $connection = $this->get('mastop.twitter');
+        return $this->redirect($connection->getLoginUrl($this->get('request')));
+    }
+
+    /**
+     * @Route("/twitter/back", name="user_user_twitter_back")
+     * @Template()
+     */
+    function twitterBackAction() {
+        $connection = $this->get('mastop.twitter');
+        $token_credentials = $connection->getAccessToken($this->get('request'));
+        $dados = $connection->getUserData($this->get('request'), array('user_id' => $token_credentials['user_id']));
+        $request = $this->getRequest();
+        /* echo "<pre>";
+          print_r($dados);
+          echo "</pre>";
+
+          exit(); */
+        if (is_object($dados)) {
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $usuario = $repository->findOneBy(array('twitterid' => $token_credentials['user_id']));
+            if ($usuario) {
+                //ja existe um usuario com este twitter, portanto apenas logar ele
+                $this->authenticateUser($usuario);
+                $msg = $this->trans('Login efetuado via Twitter, bem vindo %name%.', array("%name%" => $usuario->getName()));
+                $this->get('session')->setFlash('ok', $msg);
+                return $this->redirect($this->generateUrl('_home'));
+            } else {
+                //novo usuario baseado no twitter, precisa do email dele.
+                $factory = $this->get('form.factory');
+                $titulo = $this->trans("Cadastro via Twitter - Informe seu email");
+                $txtextra = $this->trans("Agora falta pouco para seu cadastro ser concluído, basta informar seu email:");
+                $form = $factory->create(new UserFormTwitter());
+                return $this->render('ReurbanoUserBundle:Frontend/User:novoTwitter.html.twig', array(
+                    'form' => $form->createView(), 'titulo' => $titulo, 'txtextra' => $txtextra
+                ));
+            }
+        } else {
+            $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('_login'));
+        }
+    }
+
+    /**
+     * @Route("/twitter/salvar", name="user_user_twitter_salvar")
+     * @Template()
+     */
+    function twitterNewAction() {
+        $connection = $this->get('mastop.twitter');
+        $request = $this->get('request');
+        $session = $request->getSession();
+        $dados = $connection->getUserData($this->get('request'), array('user_id' => $session->get('tw_user_id')));
+
+        $factory = $this->get('form.factory');
+        $form = $factory->create(new UserFormTwitter());
+        $repository = $this->mongo('ReurbanoUserBundle:User');
+        $dadosPost = $request->request->get($form->getName());
+        if (!empty($dadosPost['email'])) {
+            $usuario = $repository->findByField('email', $dadosPost['email']);
+            if (count($usuario) == 1) {
+                //ja existe usuário com este email
+                $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_twitter_back'));
+            } elseif (count($usuario) == 0) {
+                //email não existe no bd mas será que é realmente email
+                if (preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $dadosPost['email'])) {
+                    if (is_object($dados)) {
+
+                        $user = new user();
+                        $user->setName($dados->name);
+                        $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+                        $user->setActkey('');
+                        $user->setMailOk(true);
+                        $user->setStatus(1);
+                        $user->setAvatar('');
+                        $user->setLang('pt_BR');
+                        $user->setTheme('');
+                        $user->setCreated(new \DateTime());
+                        $user->setRoles('ROLE_USER');
+                        $user->setCity($dados->location);
+                        $user->setCpf('');
+                        $user->setEmail($dadosPost['email']);
+                        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
+                        srand((double) microtime() * 1000000);
+                        $i = 0;
+                        $pass = '';
+                        while ($i <= 7) {
+                            $num = rand() % 33;
+                            $tmp = substr($chars, $num, 1);
+                            $pass = $pass . $tmp;
+                            $i++;
+                        }
+                        $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
+                        //$user->setBirth(0);
+                        $user->setMoneyFree(0);
+                        $user->setMoneyBlock(0);
+                        $user->setTwitterid($dados->id);
+                        $user->setTwitter($dados->screen_name);
+
+                        $user->setTwToken($session->get('tw_access_token'));
+                        $user->setTwSecret($session->get('tw_access_token_secret'));
+                        $user->setNewsletters(true);
+                        $this->dm()->persist($user);
+                        $this->dm()->flush();
+                        $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
+                        $result['success'] = true;
+                        //notificação de novo usuario interno
+                        $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+                        if ($emailsNotify != "") {
+                            $emailsNotify = explode(";", $emailsNotify);
+                            foreach ($emailsNotify as $email) {
+                                $this->newUserEmail(str_replace(" ", '', $email), $user);
+                            }
+                        }
+                        // /notificação de novo usuario interno
+                        // notificação ao usuário que ele foi cadastrado
+                        $this->newUserEmail(str_replace(" ", '', false), $user);
+                        // /notificação ao usuário que ele foi cadastrado
+                        //efetuar o login
+                        $this->authenticateUser($user);
+                        $result['success'] = true;
+                        $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
+                        return $this->redirect($this->generateUrl('_home'));
+                    } else {
+                        $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
+                        $this->get('session')->setFlash('error', $msg);
+                        return $this->redirect($this->generateUrl('_home'));
+                    }
+                } else {
+                    $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email válido.');
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('user_user_twitter_back'));
+                }
+            } else {
+                //nunca deve cair aqui mas...
+                $msg = $this->trans('Erro ao criar seu usuário, erro no cadastro.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_novo'));
+            }
+        } else {
+            //devolve para o cadastro de email
+            $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('user_user_twitter_back'));
+        }
     }
 
 }

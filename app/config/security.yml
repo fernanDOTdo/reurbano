@@ -21,7 +21,7 @@ security:
     providers:
         chain_provider:
              providers: [mongo]
-       
+             
         mongo:
 #            entity: { class: Symfony\Bundle\DoctrineMongoDBBundle\Security\DocumentUserProvider, property: email }
              id: mastop.user
@@ -47,6 +47,7 @@ security:
             logout:
                 path:   /logout
                 target: /
+                delete_cookies: [twitter_anywhere_identity]
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"

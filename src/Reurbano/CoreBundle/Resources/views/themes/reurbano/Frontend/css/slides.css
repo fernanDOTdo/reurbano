@@ -3,6 +3,7 @@
 	height:335px;
 	position:relative;
         margin: auto;
+        background: #FFF;
 }
 
 #ribbon {
@@ -74,6 +75,7 @@
 	height:21px;
 	display:block;
 	z-index:101;
+        outline: none;
 }
 
 #slides .next {
@@ -104,8 +106,12 @@
 	background-position:0 0;
 	float:left;
 	overflow:hidden;
+        outline: none;
 }
 
 .pagination li.current a {
 	background-position:0 -12px;
+}
+.pagination li.current a:active, .pagination li.current a:focus {
+	outline: none;
 }
