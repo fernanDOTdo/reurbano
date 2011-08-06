@@ -16,5 +16,10 @@ class CategoryRepository extends BaseRepository
     {
         return $this->findBy(array(), array('order'=>'asc'));
     }
+    
+    public function findBySlug($slug)
+    {
+        return $this->findOneBy(array('slug' => $slug), array());
+    }
 
 }
