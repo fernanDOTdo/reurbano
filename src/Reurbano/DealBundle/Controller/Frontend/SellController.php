@@ -74,12 +74,7 @@ class SellController extends BaseController
                         ->sort('createdAt', 'ASC')
                         ->field('name')->equals($regexp)
                         ->getQuery()->execute();
-                $retArr = array();
-                $retArr[1]['titulo'] = "Andre";
-                $retArr[2]['titulo'] = "Uohshitu";
-                $retArr[3]['titulo'] = "Craudomira";
-                $retArr[4]['titulo'] = "Felizberta";
-                $i = 0;
+                
                 foreach($site as $k => $v){
                     $retArr[$i]['titulo'] = $v->getName();
                     $retArr[$i]['id'] = (string)$v->getId();

@@ -14,39 +14,6 @@ var acOptionsImv = {
         }
     }
 }
-var emails = [
-	{ name: "Peter Pan", to: "peter@pan.de" },
-	{ name: "Molly", to: "molly@yahoo.com" },
-	{ name: "Forneria Marconi", to: "live@japan.jp" },
-	{ name: "Master <em>Sync</em>", to: "205bw@samsung.com" },
-	{ name: "Dr. <strong>Tech</strong> de Log", to: "g15@logitech.com" },
-	{ name: "Don Corleone", to: "don@vegas.com" },
-	{ name: "Mc Chick", to: "info@donalds.org" },
-	{ name: "Donnie Darko", to: "dd@timeshift.info" },
-	{ name: "Quake The Net", to: "webmaster@quakenet.org" },
-	{ name: "Dr. Write", to: "write@writable.com" }
-];
-/*$("#suggest13").autocomplete(emails, {
-		minChars: 0,
-		width: 310,
-		matchContains: "word",
-		autoFill: false,
-		formatItem: function(row, i, max) {
-			return i + "/" + max + ": \"" + row.name + "\" [" + row.to + "]";
-		},
-		formatMatch: function(row, i, max) {
-			return row.name + " " + row.to;
-		},
-		formatResult: function(row) {
-			return row.to;
-		}
-	});*/
-var months = [
-        { "titulo": "Peixe Urbano" , id: "peixe"},
-        { "titulo": "Uoshitu", id: "uoshi"},
-        { "titulo": "Craudomira", id: "craudo"},
-        { "titulo": "Felizberta", id: "feliz"}
-];
 $("#form_site").autocomplete(ajaxPath, {
                 dataType: 'json', // this parameter is currently unused
                 extraParams: {
