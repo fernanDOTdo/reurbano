@@ -1,14 +1,7 @@
-{% extends '::backend.html.twig' %}
+{% extends '::frontend.html.twig' %}
         
 {% block title %}{{title|trans}}{% endblock %}
-{% set vars = deal.getId() ? {'id': deal.getId()} : {} %}
 
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-<form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-
-    <input type="submit" value="{{"Enviar"|trans}}" />
-</form>
+Olá!
 {% endblock %}
