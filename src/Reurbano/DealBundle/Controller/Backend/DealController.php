@@ -13,6 +13,7 @@ use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
 use Reurbano\DealBundle\Document\Offer;
 use Reurbano\DealBundle\Util\Upload;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller para administrar (CRUD) ofertas.
@@ -57,15 +58,16 @@ class DealController extends BaseController
             $formDataResult = $request->files->get('deal');
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($formResult['source']);
             $city   = $this->mongo('ReurbanoCoreBundle:City')->find($source->getCity()->getId());
-            var_dump($city->getName());
+            //var_dump($city->getName());
             $offer = new Offer();
             $offer->setSource($source);
             $offer->setCity($city);
             $deal->setOffer($offer);
+            /*echo $deal->getPrice();
             echo "<pre>";
             print_r($formDataResult);
             echo "</pre>";
-            //exit();
+            exit();*/
             foreach ($formDataResult as $kFile => $vFile){
                 if ($vFile){
                     $file = new Upload($formDataResult[$kFile]);
@@ -121,4 +123,43 @@ class DealController extends BaseController
         );
         
     }
+    
+    /**
+     * @Route("/deal.js", name="admin_deal_script")
+     */
+    
+    public function scriptAction() {
+
+        $script = '
+            var ajaxPath = "' . $this->generateUrl('admin_deal_deal_source', array(), true) . '";
+            ';
+        return new Response($script);
+    }
+
+
+    /**
+     * @Route("/source", name="admin_deal_deal_source")
+     */
+    
+    public function getSourceAction(){
+        if ($this->get('request')->isXmlHttpRequest()) {
+            
+            if ($this->get('request')->getMethod() == 'POST') {
+                
+                $id = $this->get('request')->request->get('id');
+                $source = $this->mongo('ReurbanoDealBundle:Source')->find($id);
+                $ret = array();
+                
+                if ($source){
+                    $ret['success']=true;
+                    $ret['title']   = $source->getTitle();
+                    $ret['price']   = $source->getPriceOffer();
+                }else{
+                     $ret['success']=false;
+                }
+                 return new Response(json_encode($ret));
+            }
+        }
+    }
+    
 }
