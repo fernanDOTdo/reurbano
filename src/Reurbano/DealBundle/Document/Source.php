@@ -161,7 +161,6 @@ class Source
     protected $expiresAt;    
 
 
-
     /**
      * Get id
      *
@@ -230,6 +229,26 @@ class Source
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set site
+     *
+     * @param Reurbano\DealBundle\Document\Site $site
+     */
+    public function setSite(\Reurbano\DealBundle\Document\Site $site)
+    {
+        $this->site = $site;
+    }
+
+    /**
+     * Get site
+     *
+     * @return Reurbano\DealBundle\Document\Site $site
+     */
+    public function getSite()
+    {
+        return $this->site;
     }
 
     /**
@@ -491,4 +510,9 @@ class Source
     {
         return $this->expiresAt;
     }
+    
+    public function getTitleFormat(){
+        return substr($this->title, 0, 50)."...";
+    }
+    
 }

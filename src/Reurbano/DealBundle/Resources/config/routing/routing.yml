@@ -22,3 +22,7 @@ deal_site_backend:
     resource: "@ReurbanoDealBundle/Controller/Backend/SiteController.php"
     type: annotation
     prefix:   /admin/sites
+deal_widget:
+    resource: "@ReurbanoDealBundle/Controller/Widget/DealController.php"
+    type: annotation
+    prefix:   /ofertas/widget

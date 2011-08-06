@@ -57,8 +57,8 @@
                         <span class="expiteDate">{{ oferta.getOffer().getSource().getExpiresAt()|date("d/m/Y")  }}</span>
                     </div>
                     <div class="dealPrice">
-                        <span class="priceNormalLabel">de</span> <span class="priceNormal">{{ oferta.getOffer().getSource().getPrice() }}</span> 
-                        <span class="priceDescLabel">de</span> <span class="priceDesc">{{ oferta.getPrice() }}</span> 
+                        <span class="priceNormalLabel">De</span> <span class="priceNormal">R${{ oferta.getOffer().getSource().getPrice() }}</span> 
+                        <span class="priceDescLabel">Por </span> <span class="priceDesc">R${{ oferta.getPrice() }}</span> 
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@
   {% endfor %}
 </ul>
 {% for site in site %}
-    {{ site.getId() }} - {{ site.getName() }} - <a href="{{ path('admin_deal_site_edit', {'id': site.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_deal_site_delete', {'id': site.getId()}) }}">{{"Deletar"|trans}}</a><br />
+    {{ site.getName() }} - <a href="{{ path('admin_deal_site_edit', {'id': site.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_deal_site_delete', {'id': site.getId()}) }}">{{"Deletar"|trans}}</a><br />
   {% else %}
     {{"Nenhum site encontrado"|trans}}
 {% endfor %} 
