@@ -14,6 +14,7 @@ class SourceType extends AbstractType {
                 ->add('url', 'url', array('label'=>'Link'))
                 ->add('price', 'money', array('label'=>'Valor Original', 'divisor' => 100, 'currency' => 'BRL'))
                 ->add('priceOffer', 'money', array('label'=>'Valor com desconto', 'divisor' => 100, 'currency' => 'BRL'))
+                ->add('site', 'document', array('label'=>'Site', 'class' => 'Reurbano\\DealBundle\\Document\\Site', 'property'=>'name', 'required' => false))
                 ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name' ))
                 ->add('category', 'document', array('label'=>'Categoria', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name' ))
                 ->add('rules', 'textarea', array('label'=>'Regulamento'))
