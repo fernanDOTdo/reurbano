@@ -625,7 +625,7 @@ class UserController extends BaseController {
                     $user->setCity($gets->get('cidade'));
                     $this->dm()->persist($user);
                     $this->dm()->flush();
-                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
+                    $this->get('session')->setFlash('ok', $this->trans('Olá %name%.', array('%name%' => $usuario->getName())));
                     $result['success'] = 'true';
                 } elseif ($usuario2) {
                     $fbID = $usuario2->getFacebookid();
@@ -637,7 +637,7 @@ class UserController extends BaseController {
                             $user->setFacebookid($gets->get('facebookId'));
                             $this->get('session')->setFlash('ok', $this->trans('Olá %name%, seu facebook foi vinculado a sua conta.', array('%name%' => $usuario2->getName())));
                         } else {
-                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario2->getName())));
+                            $this->get('session')->setFlash('ok', $this->trans('Olá %name%.', array('%name%' => $usuario2->getName())));
                         }
 
                         $result['success'] = 'true';
@@ -747,7 +747,7 @@ class UserController extends BaseController {
             if ($usuario) {
                 //ja existe um usuario com este twitter, portanto apenas logar ele
                 $this->authenticateUser($usuario);
-                $msg = $this->trans('Login efetuado via Twitter, bem vindo %name%.', array("%name%" => $usuario->getName()));
+                $msg = $this->trans('Olá %name%.', array("%name%" => $usuario->getName()));
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('_home'));
             } else {
@@ -787,8 +787,8 @@ class UserController extends BaseController {
                 return $this->redirect($this->generateUrl('user_user_twitterback'));
         }
         if (!empty($dadosPost['email'])) {
-            $usuario = $repository->findOneBy(array('email', $dadosPost['email']));
-            if (count($usuario) == 1) {
+            $usuario = $repository->findOneBy(array('email'=> $dadosPost['email']));
+            if ($usuario) {
                 //ja existe usuário com este email
                 $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
                 $this->get('session')->setFlash('error', $msg);
