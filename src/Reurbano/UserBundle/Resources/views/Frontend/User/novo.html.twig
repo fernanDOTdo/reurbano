@@ -1,142 +1,51 @@
 {% extends '::frontend.html.twig' %}
+{% block javascriptsHead %}
+{% endblock %}
+{% block title %}{{ "Login"|trans }}{% endblock %}
 {% block content %}
-        <h1>{{ titulo }}</h1>
-        {% if usuario %}
-            <form action="{{ path('user_user_salvar',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
-        {% else %}
-            <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
-        {% endif%}
-        
+{% if error %}
+<div>{{ error.message }}</div>
+{% endif %}
+
+<div class="grid_6">
+    <div class="grid_6 alpha omega">
+        <h2>{{ titulo }}</h2>
+            <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
             <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
             <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
-            
-            <div style='margin-top:10px'><div id="fb-root"></div></div>
-        <script type="text/javascript">
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId: '{{ mastop_param('user.all.faceappid') }}',
-                    status: true,
-                    cookie: true,
-                    xfbml: true
-                });
-                /* initialize FacebookConnect object */
-                FacebookConnect.init(
-                        '{{ url('_home') }}',
-                        true,
-                        '{{ "Para poder utilizar o login integrado do Facebook, você precisa permitir que nosso site se comunique com seu Facebook."|trans }}',
-                        '{{ "Login invalido, Por favor tente mais tarde"|trans }}'
-                );
-                
-            };
-
-            (function() {
-                var e = document.createElement('script'); e.async = true;
-                e.src = document.location.protocol + '//connect.facebook.net/pt_BR/all.js';
-                document.getElementById('fb-root').appendChild(e);
-            }());
-
-
-var FacebookConnect = {
-    status: 'unknown',
-    baseUrl: '',
-    loggedIn: false,
-    user: '',
-    genericErrorText: '',
-    permissionErrorText: '',
-    init: function (url, isLoggedIn, permissionText, genericText) {
-        FacebookConnect.baseUrl = url;
-        FacebookConnect.loggedIn = isLoggedIn;
-        FacebookConnect.permissionErrorText = permissionText;
-        FacebookConnect.genericErrorText = genericText;
-        FB.getLoginStatus(function (response) {
-            status = response.status;
-            if (!FacebookConnect.loggedIn && status == 'connected') {
-                var callback = function (json) {
-                        if (json.success) {
-                            window.location.href=url;
-                        }
-                    }
-                FacebookConnect.loginHandler(callback);
-            }
-        }, true);
-    },
-    connect: function () {
-        
-        FacebookConnect.toggleFacebookError(false);
-        var newStatus = 'unknown';
-        FB.getLoginStatus(function (response) {
-            newStatus = response.status;
-            if (newStatus == 'notConnected') {
-                FacebookConnect.toggleFacebookError(true, FacebookConnect.permissionErrorText);
-            } else if (newStatus == 'connected') {
-                var callback = function (json) {
-                        if (json.success) {
-                            FacebookConnect.forwardUser(json.url);
-                        } else {
-                            FacebookConnect.toggleFacebookError(true, FacebookConnect.genericErrorText)
-                        }
-                    }
-                FacebookConnect.loginHandler(callback, response.session.access_token);
-            }
-            status = newStatus;
-        }, true);
-    },
-    loginHandler: function (callback, securityToken) {
-        FB.api('/me', function (user) {
-            if (user != null) {
-                FacebookConnect.user = user;
-                /*DEBUG TABAJARA*/
-                console.log('user: ', user);
-                /* /DEBUG TABAJARA*/
-                var params = {
-                    'facebookLogin': user.username,
-                    'facebookId': user.id,
-                    'email': user.email,
-                    'firstName': user.first_name,
-                    'lastName': user.last_name,
-                    'cidade': user.location.name,
-                    'returnJson': 'true',
-                    'gender': user.gender,
-                    'facebookToken': securityToken
-                };
-                $.ajax({
-                    url: '{{url("user_user_facebook")}}',
-                    data: params,
-                    dataType: "json",
-                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-                    scriptCharset: 'utf-8',
-                    success: callback,
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        FacebookConnect.toggleFacebookError(true, FacebookConnect.genericErrorText);
-                    }
-                });
-            }
-        });
-    },
-    toggleFacebookError: function (showError, errorText) {
-        if (showError) {
-            $('#facebookError li').html(errorText);
-            $('#facebookError').show();
-        } else {
-            $('#facebookError').hide();
-        }
-    },
-    forwardUser: function (url) {
-         if (url) {
-            window.location.href = url;
-        } else {
-            window.location.href = FacebookConnect.baseUrl;
-        }
-    }
-}
-
-            </script>
-        <fb:login-button perms="user_about_me,email" onlogin="FacebookConnect.connect(false);">Conecte-se</fb:login-button>
-        <span class="facebookText"><small>{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
-            
-            
         </form>
+    </div>
+    <div class="grid_6 alpha omega">
+        <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
+        <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
+    </div>
+</div>
+<div class="grid_6">
+    <div class="grid_6 alpha omega">
+        <h2>{{ "Já sou membro"|trans }}</h2>
+        <form action="{{ path("login_check") }}" method="post">
+            <label for="username">{{ "Email:"|trans }}:</label>
+            <input type="text" id="umail" name="_umail" value="{{ last_username }}" />
+            <br />
+            <label for="password">{{ "Senha:"|trans }}</label>
+            <input type="password" id="password" name="_password" />
+            <br />
+            <input type="checkbox" id="remember_me" name="_remember_me" checked />
+            <label for="remember_me">{{ "Lembrar meu login"|trans }}</label>
+            <br />
+            <div>
+                <div><input type="submit" name="{{ "Login"|trans }}" value="{{ "Login"|trans }}"/></div>
+            </div>
+        </form>
+    </div>
+    <div class="grid_6 alpha omega">
+        <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
+        <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
+    </div>
+    <a class="grid_6" href="{{ path('user_user_recovery', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+</div>
+<div class="clear"></div>
 {% endblock content %}  
 {% block javascripts %}
         <script type="text/javascript" src="{{ path('user_user_script') }}"></script>

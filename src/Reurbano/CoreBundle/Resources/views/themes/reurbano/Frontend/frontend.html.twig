@@ -18,7 +18,12 @@
 {% block stylesheets %}{% endblock %}
 <!-- Load JQuery -->		
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-{% javascripts '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
+<script type="text/javascript">
+var facebookRedir="{{ app.session.get('_security.target_path')|default(mastop_current_url()) }}";
+var facebookAppId="{{ mastop_param('user.all.faceappid') }}";
+var facebookUrl="{{url("user_user_facebook")}}";
+</script>
+{% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {%if app.request.attributes.get('_route') == '_home' %}
@@ -111,14 +116,14 @@ $(function(){
         </div>
         <div class="grid_7">
             <div id="login">
-            Login Facebook e Twitter
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{url('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%endif%}
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
             </div>
             <div id="search">
                 {% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
-                <form action="{# path('core_mailing_new') #}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big">Pega!</button></form>
+                <form action="{# path('core_mailing_new') #}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big blue">Pega!</button></form>
             </div>
         </div>
         <div class="grid_12" id="menuMain">
@@ -218,6 +223,9 @@ $(function(){
 {# /Footer #}
 </div>
 {#/Main #}
+{# Facebook div #}
+<div id="fb-root" class="hidden"></div>
+{#/Facebook div #}
 {# Javascripts #}
 {% block javascripts null%}
 {{ mastop_param('system.script.foot') }}

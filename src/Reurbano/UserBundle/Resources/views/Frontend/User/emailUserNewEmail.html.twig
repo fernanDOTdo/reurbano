@@ -3,6 +3,6 @@
 {{ "Para confirmar este novo email favor clicar no link abaixo:"|trans }}
 <br />
 <h1>
-    <a href="{{ url('user_user_novo_email', {"edited":usuario.getEdited(true),'email':newEmail}) }}" title="{{ "Clique aqui para confirmar a troca de seu email"|trans}}">{{ url('user_user_novo_email', {"edited":usuario.getEdited(true),'email':newEmail}) }}</a>
+    <a href="{{ url('user_user_newemail', {"edited":usuario.getEdited(true),'email':newEmail}) }}" title="{{ "Clique aqui para confirmar a troca de seu email"|trans}}">{{ url('user_user_newemail', {"edited":usuario.getEdited(true),'email':newEmail}) }}</a>
 </h1>
 <b>{{ "Endereço IP: %ip%."|trans({'%ip%':ip}) }}</b>

@@ -2,37 +2,36 @@
 
 namespace Reurbano\UserBundle\Controller\Frontend;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Mastop\SystemBundle\Controller\BaseController;
 use Symfony\Component\Security\Core\SecurityContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Reurbano\UserBundle\Form\Frontend\UserForm;
 
-class SecurityController extends Controller {
+class SecurityController extends BaseController {
 
     /**
      * @Route("/login", name="_login")
      * @Template()
      */
     public function loginAction() {
-        //exit(print_r($this->get('mastop.twitter')));
         // get the login error if there is one
         if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
             $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
-        if($this->get('session')->has('_security.target_path')){
-            //$redir=$this->get('session')->get('_security.target_path');
-            $redir=$this->generateUrl("_home");
-        }else{
-            $redir=$this->generateUrl("_home");
-        }
+
+
+        $factory = $this->get('form.factory');
+        $titulo = $this->trans("Novo membro");
+        $form = $factory->create(new UserForm());
+        
         return array(
             // last username entered by the user
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
             'error' => $error,
-            'redir' => $redir,
-
+            'form' => $form->createView(), 'titulo' => $titulo
         );
     }
 
@@ -49,6 +48,5 @@ class SecurityController extends Controller {
     public function logoutAction() {
         // The security layer will intercept this request
     }
-
 
 }

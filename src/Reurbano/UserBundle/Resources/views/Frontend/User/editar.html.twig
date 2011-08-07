@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
 <h1>{{ "Edição do usuário %name%"|trans({'%name%':nome}) }}</h1>
-        <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 {% if id is defined %}
             <input type='hidden' name='Userform[id]' value='{{id}}'>

@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
 
-<form action="{{ path("user_user_recupera_post") }}" method="post">
+<form action="{{ path("user_user_recoverypost") }}" method="post">
     {{ form_widget(form) }}
     <br />
     <input type="submit" name="login" value="{{ "Recuperar"|trans }}"/>

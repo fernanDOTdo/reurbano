@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /** @ODM\Document (
- * collection="User",
+ * collection="user",
  * repositoryClass="Reurbano\UserBundle\Document\UserRepository"
  * ) 
  */
@@ -45,7 +45,7 @@ class User implements UserInterface {
     protected $city;
     /** @ODM\String */
     protected $cpf;
-    /** @ODM\String */
+    /** @ODM\String @ODM\UniqueIndex */
     protected $email;
     /** @ODM\Date */
     protected $birth;
@@ -58,10 +58,10 @@ class User implements UserInterface {
     /** @ODM\boolean */
     protected $newsletters;
     /** @ODM\String */
-    /** @ODM\UniqueIndex */
     protected $facebookid;
     /** @ODM\String */
-    /** @ODM\UniqueIndex */
+    protected $facebookToken;
+    /** @ODM\String */
     protected $twitterid;
     /** @ODM\String */
     protected $twitter;
@@ -72,8 +72,15 @@ class User implements UserInterface {
     public function getTwitter() {
         return $this->twitter;
     }
+    public function getFacebookToken() {
+        return $this->facebookToken;
+    }
 
-    public function setTwitter($twitter) {
+    public function setFacebookToken($facebookToken) {
+        $this->facebookToken = $facebookToken;
+    }
+
+        public function setTwitter($twitter) {
         $this->twitter = $twitter;
     }
 

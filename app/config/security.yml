@@ -47,7 +47,6 @@ security:
             logout:
                 path:   /logout
                 target: /
-                delete_cookies: [twitter_anywhere_identity]
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
