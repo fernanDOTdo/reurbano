@@ -48,15 +48,17 @@ class SourceController extends BaseController
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
             $formResult = $request->request->get('source');
-            $expiresAt = explode('/',$formResult['expiresAt']);
+            $expiresAt = explode(' ',$formResult['expiresAt']);
             $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
             $deal->setExpiresAt($dataAtual);
-            if ($form->isValid()) {
+            //if ($form->isValid()) {
                 $dm->persist($deal);
                 $dm->flush();
                 $this->get('session')->setFlash('ok', $this->trans(($id) ? "Oferta Editada" : "Oferta Criada" ));
                 return $this->redirect($this->generateUrl('admin_deal_source_index'));
-            }
+            //}else{
+                //$this->get('session')->setFlash('error', $this->trans('Erro ao cadastrar oferta!'));
+            //}
         }
         return array(
             'form' => $form->createView(),
