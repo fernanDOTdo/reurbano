@@ -738,6 +738,18 @@ class UserController extends BaseController {
     function twitterBackAction() {
         $connection = $this->get('mastop.twitter');
         $token_credentials = $connection->getAccessToken($this->get('request'));
+        $session = $this->get('session');
+        if(!empty ($token_credentials)){
+            $session->set('twitter_credentials', serialize($token_credentials));
+        }else{
+            if($session->has('twitter_credentials')){
+                $token_credentials = unserialize($session->get('twitter_credentials'));
+            }else{
+                $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
+                $session->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('_login'));
+            }
+        }
         $dados = $connection->getUserData($this->get('request'), array('user_id' => $token_credentials['user_id']));
         $request = $this->getRequest();
 
@@ -748,7 +760,8 @@ class UserController extends BaseController {
                 //ja existe um usuario com este twitter, portanto apenas logar ele
                 $this->authenticateUser($usuario);
                 $msg = $this->trans('Olá %name%.', array("%name%" => $usuario->getName()));
-                $this->get('session')->setFlash('ok', $msg);
+                $session->setFlash('ok', $msg);
+                !$session->has('twitter_credentials') ?: $session->remove('twitter_credentials', null);
                 return $this->redirect($this->generateUrl('_home'));
             } else {
                 //novo usuario baseado no twitter, precisa do email dele.
@@ -762,7 +775,7 @@ class UserController extends BaseController {
             }
         } else {
             $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
-            $this->get('session')->setFlash('error', $msg);
+            $session->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('_login'));
         }
     }
@@ -783,15 +796,15 @@ class UserController extends BaseController {
         if(!isset($dadosPost['agree'])){
             //precisa aceitar os termos
                 $msg = $this->trans('Você precisa aceitar nossos termos e condições de uso.');
-                $this->get('session')->setFlash('error', $msg);
+                $session->setFlash('error', $msg);
                 return $this->redirect($this->generateUrl('user_user_twitterback'));
         }
         if (!empty($dadosPost['email'])) {
             $usuario = $repository->findOneBy(array('email'=> $dadosPost['email']));
             if ($usuario) {
                 //ja existe usuário com este email
-                $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
-                $this->get('session')->setFlash('error', $msg);
+                $msg = $this->trans('Erro ao criar seu usuário, o email informado já é utilizado por outro usuário.');
+                $session->setFlash('error', $msg);
                 return $this->redirect($this->generateUrl('user_user_twitterback'));
             } else {
                 //email não existe no bd mas será que é realmente email
@@ -835,7 +848,7 @@ class UserController extends BaseController {
                         $user->setNewsletters(true);
                         $this->dm()->persist($user);
                         $this->dm()->flush();
-                        $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
+                        $session->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
                         $result['success'] = true;
                         //notificação de novo usuario interno
                         $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
@@ -853,22 +866,24 @@ class UserController extends BaseController {
                         $this->authenticateUser($user);
                         $result['success'] = true;
                         $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
+                        !$session->has('twitter_credentials') ?: $session->remove('twitter_credentials', null);
                         return $this->redirect($this->generateUrl('_home'));
                     } else {
                         $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');
-                        $this->get('session')->setFlash('error', $msg);
+                        $session->setFlash('error', $msg);
+                        !$session->has('twitter_credentials') ?: $session->remove('twitter_credentials', null);
                         return $this->redirect($this->generateUrl('_home'));
                     }
                 } else {
                     $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email válido.');
-                    $this->get('session')->setFlash('error', $msg);
+                    $session->setFlash('error', $msg);
                     return $this->redirect($this->generateUrl('user_user_twitterback'));
                 }
             }
         } else {
             //devolve para o cadastro de email
             $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
-            $this->get('session')->setFlash('error', $msg);
+            $session->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('user_user_twitterback'));
         }
     }
