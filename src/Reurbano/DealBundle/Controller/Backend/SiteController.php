@@ -56,7 +56,7 @@ class SiteController extends BaseController {
             
             if($fileData['logo'] != null){
                 $file = new Upload($fileData['logo']);
-                $file->setPath('/home/www/rafa/reurbano/web/uploads/reurbanodeal');
+                $file->setPath($this->get('request')->getBasePath() . '/uploads/reurbanodeal');
                 $fileUploaded = $file->upload();
                 $site->setFilename($fileUploaded->getFileName());
                 $site->setFilesize($fileUploaded->getFileUploaded()->getClientSize());

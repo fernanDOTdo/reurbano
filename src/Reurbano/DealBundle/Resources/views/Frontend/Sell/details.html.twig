@@ -3,19 +3,14 @@
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-    <form action="{{ path('deal_sell_details') }}" method="post" {{form_enctype(form)}}>
-        <div>
-            {{ form_label(form.site) }}
-            {{ form_errors(form.site) }}
-            {{ form_widget(form.site) }}
-        </div>
-        <div class="hidden cupom">
-            {{ form_label(form.cupom) }}
-            {{ form_errors(form.cupom) }}
-            {{ form_widget(form.cupom) }}
-        </div>
+    <form action="{{ path('deal_sell_save') }}" method="post" {{ form_enctype(form) }} >
+        <b>Titulo</b><br />
+        {{ source.getTitle() }}<br />
+        <b>Site</b><br />
+        {{ source.getSite.getName }}<br />
         
-        {{ form_rest(form) }}
+        {{ form_widget(form) }}
+        <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
         <input type="submit" value="Enviar"/>
     </form>
 {% endblock %}
