@@ -1,5 +1,6 @@
 web/bundles/
 web/themes/
+web/uploads/
 app/bootstrap*
 app/cache/*
 app/logs/*
