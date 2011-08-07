@@ -1,13 +1,14 @@
 {% extends '::frontend.html.twig' %}
 {% block javascriptsHead %}
 {% endblock %}
+{% block title %}{{ "Login"|trans }}{% endblock %}
 {% block content %}
 {% if error %}
 <div>{{ error.message }}</div>
 {% endif %}
-
 <div class="grid_6">
     <div class="grid_6 alpha omega">
+        <h2>{{ "Já sou membro"|trans }}</h2>
         <form action="{{ path("login_check") }}" method="post">
             <label for="username">{{ "Email:"|trans }}:</label>
             <input type="text" id="umail" name="_umail" value="{{ last_username }}" />
@@ -30,7 +31,25 @@
     <a class="grid_6" href="{{ path('user_user_recovery', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
 </div>
 <div class="grid_6">
-    Form de novo usuário
+    <div class="grid_6 alpha omega">
+        <h2>{{ titulo }}</h2>
+            <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
+            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
+        </form>
+    </div>
+    <div class="grid_6 alpha omega">
+        <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
+        <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
+    </div>
 </div>
-
+<div class="clear"></div>
 {% endblock content %}  
+{% block javascripts %}
+        <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
+        {% javascripts output='qualquer/coisa.js' 
+                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}

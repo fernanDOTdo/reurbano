@@ -10,3 +10,7 @@ city_backend:
     resource: "@ReurbanoCoreBundle/Controller/Backend/CityController.php"
     type: annotation
     prefix:   /admin/cidade
+html_frontend:
+    resource: "@ReurbanoCoreBundle/Controller/Frontend/HtmlController.php"
+    type: annotation
+    prefix:   /conteudo
