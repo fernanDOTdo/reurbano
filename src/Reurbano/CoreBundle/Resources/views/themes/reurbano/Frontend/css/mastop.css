@@ -65,9 +65,11 @@ h1, h2, h3
 }
 .noBG{background: transparent; border: 0; text-shadow:none;}
 .hidden{display: none;}
+span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
 /*/Geral */
 
 /* Header */
+#labelNL{color: #FFF; font-size: 1.2em;}
 #topNL{
   background: #D87D08;
   /* for non-css3 browsers */
@@ -77,7 +79,6 @@ h1, h2, h3
   /* for webkit browsers */
   background: -moz-linear-gradient(top, #FF8C00, #D87D08);
   /* for firefox 3.6+ */
-  color: #FFF;
   height: 40px;
   display: none;
 }
@@ -99,8 +100,7 @@ h1, h2, h3
     padding: 1px 1px 1px 9px;
     background: #fff;
 }
-#topNL div.container_12{padding: 5px 0; height: 30px; font-size: 1.2em;}
-#topNL form span{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
+#formNL{padding: 5px 0; height: 30px;}
 #hd_wrap { /* Div que cobre todo o header */
 
 }
