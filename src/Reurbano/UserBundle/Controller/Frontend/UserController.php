@@ -83,11 +83,11 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novo", name="user_user_novo")
+     * @Route("/novo", name="user_user_new")
      * @Route("/editar/{username}", name="user_user_editar")
      * @Template()
      */
-    public function novoAction($username = false) {
+    public function newAction($username = false) {
         $userLogado = $this->get('security.context')->getToken()->getUser();
         if ($username) {
             $rep = $this->mongo('ReurbanoUserBundle:User');
@@ -122,10 +122,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/ativar/{actkey}", name="user_user_ativar")
+     * @Route("/ativar/{actkey}", name="user_user_active")
      * @Template()
      */
-    public function ativarAction($actkey) {
+    public function activeAction($actkey) {
         $repository = $this->mongo('ReurbanoUserBundle:User');
         $usuario = $repository->findByActkey($actkey);
         if (!empty($usuario)) {
@@ -157,10 +157,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviar", name="user_user_reenviar")
+     * @Route("/reenviar", name="user_user_resend")
      * @Template()
      */
-    public function reenviarAction() {
+    public function resendAction() {
         $factory = $this->get('form.factory');
         $form = $factory->create(new ReenviarForm());
         return $this->render('ReurbanoUserBundle:Frontend/User:reenviar.html.twig', array(
@@ -179,7 +179,7 @@ class UserController extends BaseController {
                 ->setSubject($this->trans('Confirmação de cadastro no site'))
                 ->setFrom($this->get('mastop')->param('system.site.adminmail'))
                 ->setTo($email)
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_ativar', array('actkey' => $actkey), true))), 'text/html');
+                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_active', array('actkey' => $actkey), true))), 'text/html');
         ;
         $this->get('mailer')->send($message);
     }
@@ -257,10 +257,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviarOk", name="user_user_reenviarOk")
+     * @Route("/reenviarOk", name="user_user_resendOk")
      * @Template()
      */
-    public function reenviarOkAction() {
+    public function resendOkAction() {
         $form = $this->get('form.factory')->create(new ReenviarForm());
         $dadosPost = $this->get('request')->request->get($form->getName());
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
@@ -282,6 +282,11 @@ class UserController extends BaseController {
         }
     }
 
+    /**
+     * Verifica se o usuário esta confirmado ou não
+     * @param object $user
+     * @return boolean 
+     */
     public function verificaStatus($user) {
         $status = $user->getStatus();
         if ($status == 1) {
@@ -297,11 +302,11 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/detalhes/{username}", name="user_user_detalhes")
+     * @Route("/detalhes/{username}", name="user_user_details")
      * @Secure(roles="ROLE_USER")
      * @Template()
      */
-    public function detalhesAction($username) {
+    public function detailsAction($username) {
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $itens = $repository->findByUsername($username);
         if (count($itens) > 0) {
@@ -319,10 +324,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvar/{id}", name="user_user_salvar", defaults={"id" = null})
+     * @Route("/salvar/{id}", name="user_user_save", defaults={"id" = null})
      * @Template()
      */
-    public function salvarAction($id=null) {
+    public function saveAction($id=null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
         if ($id) {
@@ -368,19 +373,16 @@ class UserController extends BaseController {
                         $msgAux = $this->trans('<br />A alteração do email de <b>%emailOld%</b> para <b>%email%</b> somente será realizada após a confirmação do email enviado para seu novo email', array("%emailOld%" => $user->getEmail(), "%email%" => $dadosPost['email']));
                         $this->emailTrocaEmail($user, $dadosPost['email']);
                     }
-                    // $user->setEmail($dadosPost['email']);
-                    //$user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
-
                     $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name']));
                     $this->get('session')->setFlash('ok', $msg . $msgAux);
-                    return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $user->getUsername())));
+                    return $this->redirect($this->generateUrl('user_user_details', array('username' => $user->getUsername())));
                 } else {
                     $msg = "";
                     foreach ($erro as $eItem) {
                         $msg.=$eItem . " <br />";
                     }
                     $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $user->getUsername())));
+                    return $this->redirect($this->generateUrl('user_user_details', array('username' => $user->getUsername())));
                 }
             } else {
                 $modoCadastro = $this->get('mastop')->param('user.all.autoactive');
@@ -406,7 +408,7 @@ class UserController extends BaseController {
                         $msg.=$eItem . " <br />";
                     }
                     $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('user_user_novo'));
+                    return $this->redirect($this->generateUrl('user_user_new'));
                 }
                 $user = new user();
                 $user->setName($dadosPost['name']);
@@ -429,16 +431,13 @@ class UserController extends BaseController {
                 $user->setAvatar('');
                 $user->setLang('pt_BR');
                 $user->setTheme('');
-                //$user->setLastLogin(0);
                 $user->setCreated(new \DateTime());
-                //$user->setEdited(0);
                 $user->setRoles('ROLE_USER');
                 $user->setCity(0);
                 $user->setCpf($dadosPost['cpf']);
                 $user->setEmail($dadosPost['email']);
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $user->setPassword($encoder->encodePassword($dadosPost['password'], $user->getSalt()));
-                //$user->setBirth(0);
                 $user->setGender('');
                 $user->setMoneyFree(0);
                 $user->setMoneyBlock(0);
@@ -482,8 +481,6 @@ class UserController extends BaseController {
                 }
             }
         } else {
-            /* print_r($form->getErrors());
-              exit(); */
             $this->get('session')->setFlash('error', $this->trans('Erro de validação no cadastro, tente novamente.'));
             $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
             return $this->redirect($this->generateUrl('user_user_editar', array('username' => $user->getUsername())));
@@ -491,10 +488,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recupera/{username}", name="user_user_recupera", defaults={"username" = null})
+     * @Route("/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})
      * @Template()
      */
-    public function recuperaAction($username=null) {
+    public function recoveryAction($username=null) {
         $factory = $this->get('form.factory');
         $form = $factory->create(new ForgetForm());
         return $this->render('ReurbanoUserBundle:Frontend/Security:forget.html.twig', array(
@@ -503,17 +500,17 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/recuperaok", name="user_user_recupera_post")
+     * @Route("/recuperaok", name="user_user_recoverypost")
      * @Template()
      */
-    public function recuperaokAction() {
+    public function recuveryPostAction() {
         $form = $this->get('form.factory')->create(new ForgetForm());
         $dadosPost = $this->get('request')->request->get($form->getName());
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $usuario = $repository->findByField('email', $dadosPost['email']);
         if (count($usuario) != 1) {
             $this->get('session')->setFlash('error', $this->trans('Email não encontrado no sistema.'));
-            return $this->redirect($this->generateUrl('user_user_recupera'));
+            return $this->redirect($this->generateUrl('user_user_recovery'));
         } else {
             $this->emailTrocaSenha($usuario);
             $this->get('session')->setFlash('ok', $this->trans('Favor seguir as instruções enviadas para o email %email%.', array('%email%' => $dadosPost['email'])));
@@ -524,10 +521,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacao/{actkey}", name="user_user_recuperacao")
+     * @Route("/senha/recuperacao/{actkey}", name="user_user_recovering")
      * @Template()
      */
-    public function recuperacaoAction($actkey) {
+    public function recoveringAction($actkey) {
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $usuario = $repository->findByField('actkey', $actkey);
         if (count($usuario) == 1) {
@@ -543,10 +540,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacaook/{actkey}", name="user_user_recuperacaook")
+     * @Route("/senha/recuperacaook/{actkey}", name="user_user_recoveringok")
      * @Template()
      */
-    public function recuperacaookAction($actkey) {
+    public function recoveringOkAction($actkey) {
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $usuario = $repository->findByField('actkey', $actkey);
         if (count($usuario) == 1) {
@@ -573,10 +570,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novoemail/{edited}/{email}", name="user_user_novo_email")
+     * @Route("/novoemail/{edited}/{email}", name="user_user_newemail")
      * @Template()
      */
-    public function trocaEmailAction($edited, $email) {
+    public function newEmailAction($edited, $email) {
         $email = html_entity_decode($email);
         $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
         $data = new \DateTime();
@@ -595,7 +592,7 @@ class UserController extends BaseController {
             $this->dm()->persist($usuario);
             $this->dm()->flush();
             $this->get('session')->setFlash('ok', $this->trans('Seu email foi trocado para %email%.', array("%email%" => $email)));
-            return $this->redirect($this->generateUrl('user_user_detalhes', array('username' => $usuario->getUsername())));
+            return $this->redirect($this->generateUrl('user_user_details', array('username' => $usuario->getUsername())));
         } else {
             $this->get('session')->setFlash('error', $this->trans('Não foi possível trocar seu email, repita o processo.'));
             return $this->redirect($this->generateUrl('_home'));
@@ -611,31 +608,26 @@ class UserController extends BaseController {
             //precisa ver se o usuario facebook ja nao esta cadastrado, se estiver apenas logar
             //se nao tiver logado entao pegar os dados dele e criar o user automaticamente
             //em ambos os casos tem que logar automaticamente depois disto
-            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:user');
             $request = $this->getRequest();
-            $gets = $request->query;
+            $result['success'] = 'false';
 
-            $usuario = $repository->findByField('facebookid', $gets->get('facebookId'));
-            $usuario2 = $repository->findByField('email', $gets->get('email'));
-            if (count($usuario) > 0 || count($usuario2) > 0) {
-                //então é existe o user
+            $gets = $request->query;
+            $usuario = $repository->findOneBy(array('facebookid' => $gets->get('facebookId')));
+            $usuario2 = $repository->findOneBy(array('email' => $gets->get('email')));
+            if ($usuario || $usuario2) {
+                //é existe o user
                 //verificar se os dados cadastrais estao atualizados
-                if (count($usuario) == 1) {
-                    //so tem ele
+                if ($usuario) {
+                    //o userfacebook é ele
                     $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
                     $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
                     $user->setCity($gets->get('cidade'));
                     $this->dm()->persist($user);
                     $this->dm()->flush();
                     $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
-                    $result['success'] = true;
-                } elseif (count($usuario) > 0) {
-                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo facebookid
-                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro FACEDUPLICITY');
-                    $this->get('session')->setFlash('error', $msg);
-                    $result['success'] = false;
-                }
-                if (count($usuario2) == 1) {
+                    $result['success'] = 'true';
+                } elseif ($usuario2) {
                     $fbID = $usuario2->getFacebookid();
                     if (!isset($fbID) || $fbID == $gets->get('facebookId')) {
                         $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
@@ -648,35 +640,27 @@ class UserController extends BaseController {
                             $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario2->getName())));
                         }
 
-                        $result['success'] = true;
+                        $result['success'] = 'true';
                     } else {
                         $this->get('session')->setFlash('error', $this->trans('Já existe uma conta com estes dados em nosso sistema e ela não pertence ao seu facebook'));
-                        $result['success'] = false;
+                        $result['success'] = 'false';
                     }
-                } elseif (count($usuario2) > 0) {
-                    //eita isto nao deveria acontecer (ter mais de 1 user com mesmo email
-                    $msg = $this->trans('Erro ao sincronizar dados com o Facebook. Entre em contato conosco e informe o erro MAILDUPLICITY');
-                    $this->get('session')->setFlash('error', $msg);
-                    $result['success'] = false;
                 }
                 //efetuar o login
                 $this->authenticateUser($user);
             } else {
                 //novo user, salvar ele
-                $user = new user();
+                $user = new User();
                 $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
                 $user->setUsername(str_replace(".", "", str_replace("@", "", $gets->get('email'))));
+                $user->setEmail($gets->get('email'));
                 $user->setActkey('');
                 $user->setMailOk(true);
                 $user->setStatus(1);
-                $user->setAvatar('');
                 $user->setLang('pt_BR');
-                $user->setTheme('');
                 $user->setCreated(new \DateTime());
                 $user->setRoles('ROLE_USER');
                 $user->setCity($gets->get('cidade'));
-                $user->setCpf('');
-                $user->setEmail($gets->get('email'));
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $chars = "abcdefghijkmnopqrstuvwxyz023456789";
                 srand((double) microtime() * 1000000);
@@ -689,16 +673,16 @@ class UserController extends BaseController {
                     $i++;
                 }
                 $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
-                //$user->setBirth(0);
                 $user->setGender(strtoupper(substr($gets->get('gender'), 0, 1)));
                 $user->setMoneyFree(0);
                 $user->setMoneyBlock(0);
                 $user->setFacebookid($gets->get('facebookId'));
+                $user->setFacebookToken($gets->get('facebookToken'));
                 $user->setNewsletters(true);
                 $this->dm()->persist($user);
                 $this->dm()->flush();
                 $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
-                $result['success'] = true;
+                $result['success'] = 'true';
                 //notificação de novo usuario interno
                 $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
                 if ($emailsNotify != "") {
@@ -714,7 +698,7 @@ class UserController extends BaseController {
                 //efetuar o login
                 $this->authenticateUser($user);
             }
-
+       // exit(var_dump($result));
 
             return new Response(json_encode($result));
         }
@@ -739,131 +723,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/check", name="user_user_twitter_ajax")
-     * @Template()
-     */
-    public function twitterAction() {
-        if ($this->get('request')->isXmlHttpRequest()) {
-            $request = $this->getRequest();
-            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
-            $request = $this->getRequest();
-            $usuario = $repository->findByField('twitterid', $request->get('id'));
-            if (count($usuario) == 1) {
-                $result['success'] = true;
-                $result['existe'] = true;
-                if (!$this->get("session")->has("twitterID")) {
-                    $this->get("session")->set("twitterID", $request->get('id'));
-                }
-            } elseif (count($usuario) == 0) {
-                $result['success'] = true;
-                $result['existe'] = false;
-            } else {
-                $result['success'] = false;
-            }
-            return new Response(json_encode($result));
-        } else {
-            return new Response($this->get('translator')->trans('Operação não permitida.'));
-        }
-    }
-
-    /**
-     * @Route("/twitter/novo", name="user_user_twitter_novo")
-     * @Template()
-     */
-    public function twitter2Action() {
-        //ajax para salvar o user novo
-        if ($this->get('request')->isXmlHttpRequest()) {
-            $request = $this->getRequest();
-            $email = $request->get('email');
-            $id = $request->get('id');
-            $name = $request->get('name');
-            $location = $request->get('location');
-            $screenName = $request->get('screenName');
-            $avatar = $request->get('image');
-            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
-            $usuario = $repository->findByField('twitterid', $id);
-            $result['success'] = true;
-            if (count($usuario) == 1) {
-                $result['success'] = false;
-                $result['msg'] = $this->get('translator')->trans('Este twitter já está cadastrado como um usuário.');
-            }
-            if (count($usuario) > 1) {
-                $result['success'] = false;
-            }
-            $usuario2 = $repository->findByField('email', $email);
-            if (count($usuario2) == 1) {
-                $result['success'] = false;
-                $result['msg'] = $this->get('translator')->trans('Este email (%email%) já está cadastrado. ', array('%email%' => $email));
-            }
-            if (count($usuario2) > 1) {
-                $result['success'] = false;
-            }
-            if ($result['success']) {
-                $user = new user();
-                $user->setName($name);
-                $user->setUsername(str_replace(".", "", str_replace("@", "", $email)));
-                $user->setActkey('');
-                $user->setMailOk(true);
-                $user->setStatus(1);
-                $user->setAvatar('');
-                $user->setLang('pt_BR');
-                $user->setTheme('');
-                $user->setCreated(new \DateTime());
-                $user->setRoles('ROLE_USER');
-                //$user->setCity($gets->get('cidade'));
-                $user->setCpf('');
-                $user->setEmail($email);
-                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-                $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-                srand((double) microtime() * 1000000);
-                $i = 0;
-                $pass = '';
-                while ($i <= 7) {
-                    $num = rand() % 33;
-                    $tmp = substr($chars, $num, 1);
-                    $pass = $pass . $tmp;
-                    $i++;
-                }
-                $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
-                //$user->setBirth(0);
-                $user->setMoneyFree(0);
-                $user->setMoneyBlock(0);
-                $user->setTwitterid($id);
-                $user->setNewsletters(true);
-                $this->dm()->persist($user);
-                $this->dm()->flush();
-                $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Twitter.'));
-                $this->authenticateUser($user);
-                $result['success'] = true;
-                $result['msg'] = $this->get('translator')->trans('Usuário cadastrado.');
-                $result['url'] = $this->generateUrl("_home");
-            }
-            return new Response(json_encode($result));
-        }
-    }
-
-    /**
-     * @Route("/twitter/login", name="user_user_twitter_logar")
-     * @Template()
-     */
-    public function twitter3Action() {
-        if ($this->get("session")->has("twitterID")) {
-            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
-            $usuario = $repository->findByField('twitterid', $this->get("session")->get("twitterID"));
-            $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
-            $this->authenticateUser($user);
-            $result['url'] = $this->generateUrl("_home");
-            $result['msg'] = $this->get('translator')->trans('Login efetuado.');
-            $result['success'] = true;
-        } else {
-            $result['msg'] = $this->get('translator')->trans('Erro ao efetuar login via twitter.');
-            $result['success'] = false;
-        }
-        return new Response(json_encode($result));
-    }
-
-    /**
-     * @Route("/twitter/conect", name="user_user_twitter_conect")
+     * @Route("/twitter/conect", name="user_user_twitterconect")
      * @Template()
      */
     function twitterConectAction() {
@@ -872,7 +732,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/back", name="user_user_twitter_back")
+     * @Route("/twitter/back", name="user_user_twitterback")
      * @Template()
      */
     function twitterBackAction() {
@@ -880,11 +740,7 @@ class UserController extends BaseController {
         $token_credentials = $connection->getAccessToken($this->get('request'));
         $dados = $connection->getUserData($this->get('request'), array('user_id' => $token_credentials['user_id']));
         $request = $this->getRequest();
-        /* echo "<pre>";
-          print_r($dados);
-          echo "</pre>";
 
-          exit(); */
         if (is_object($dados)) {
             $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
             $usuario = $repository->findOneBy(array('twitterid' => $token_credentials['user_id']));
@@ -912,7 +768,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/salvar", name="user_user_twitter_salvar")
+     * @Route("/twitter/salvar", name="user_user_twittersave")
      * @Template()
      */
     function twitterNewAction() {
@@ -920,19 +776,24 @@ class UserController extends BaseController {
         $request = $this->get('request');
         $session = $request->getSession();
         $dados = $connection->getUserData($this->get('request'), array('user_id' => $session->get('tw_user_id')));
-
         $factory = $this->get('form.factory');
         $form = $factory->create(new UserFormTwitter());
         $repository = $this->mongo('ReurbanoUserBundle:User');
         $dadosPost = $request->request->get($form->getName());
+        if(!isset($dadosPost['agree'])){
+            //precisa aceitar os termos
+                $msg = $this->trans('Você precisa aceitar nossos termos e condições de uso.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_twitterback'));
+        }
         if (!empty($dadosPost['email'])) {
-            $usuario = $repository->findByField('email', $dadosPost['email']);
+            $usuario = $repository->findOneBy(array('email', $dadosPost['email']));
             if (count($usuario) == 1) {
                 //ja existe usuário com este email
                 $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
                 $this->get('session')->setFlash('error', $msg);
-                return $this->redirect($this->generateUrl('user_user_twitter_back'));
-            } elseif (count($usuario) == 0) {
+                return $this->redirect($this->generateUrl('user_user_twitterback'));
+            } else {
                 //email não existe no bd mas será que é realmente email
                 if (preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $dadosPost['email'])) {
                     if (is_object($dados)) {
@@ -963,9 +824,9 @@ class UserController extends BaseController {
                             $i++;
                         }
                         $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
-                        //$user->setBirth(0);
                         $user->setMoneyFree(0);
                         $user->setMoneyBlock(0);
+                        $user->setNewsletters(isset($dadosPost['newsletters'])?true:false);
                         $user->setTwitterid($dados->id);
                         $user->setTwitter($dados->screen_name);
 
@@ -1001,19 +862,14 @@ class UserController extends BaseController {
                 } else {
                     $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email válido.');
                     $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('user_user_twitter_back'));
+                    return $this->redirect($this->generateUrl('user_user_twitterback'));
                 }
-            } else {
-                //nunca deve cair aqui mas...
-                $msg = $this->trans('Erro ao criar seu usuário, erro no cadastro.');
-                $this->get('session')->setFlash('error', $msg);
-                return $this->redirect($this->generateUrl('user_user_novo'));
             }
         } else {
             //devolve para o cadastro de email
             $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
             $this->get('session')->setFlash('error', $msg);
-            return $this->redirect($this->generateUrl('user_user_twitter_back'));
+            return $this->redirect($this->generateUrl('user_user_twitterback'));
         }
     }
 

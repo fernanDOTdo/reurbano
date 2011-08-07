@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
 <h1>{{ "Troca de senha do usuario %email%"|trans({"%email%":email})}}</h1>
-<form action="{{ path("user_user_recuperacaook",{'actkey':actkey}) }}" method="post">
+<form action="{{ path("user_user_recoveringok",{'actkey':actkey}) }}" method="post">
     {{ form_widget(form) }}
     <br />
     <input type="submit" name="login" value="{{ "Trocar a senha"|trans }}"/>

@@ -1,42 +1,34 @@
-{% extends '::frontend.html.twig' %}
-{% block content %}
-        <h1>{{ titulo }}</h1>
-        {% if usuario %}
-            <form action="{{ path('user_user_save',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
-        {% else %}
-            <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
-        {% endif%}
-        
-    {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
-            
-            <div style='margin-top:10px'><div id="fb-root"></div></div>
-        <script type="text/javascript">
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId: '{{ mastop_param('user.all.faceappid') }}',
-                    status: true,
-                    cookie: true,
-                    xfbml: true
-                });
-                /* initialize FacebookConnect object */
+    function fblogin(){
+        FB.login(function(response) {
+            if (response.session) {
+                if (response.perms) {
+                    // user is logged in and granted some permissions.
+                    FacebookConnect.connect(false);
+                } else {
+                    // user is logged in, but did not grant any permissions
+                    window.location.reload();
+                }
+            } else {
+                // user is not logged in
+                window.location.reload();
+            }
+        }, {perms:'user_about_me,email'});
+        return false;
+    }
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: facebookAppId,
+            status: true,
+            cookie: true,
+            xfbml: true
+    });
                 FacebookConnect.init(
-                        '{{ url('_home') }}',
+                        facebookRedir,
                         true,
-                        '{{ "Para poder utilizar o login integrado do Facebook, você precisa permitir que nosso site se comunique com seu Facebook."|trans }}',
-                        '{{ "Login invalido, Por favor tente mais tarde"|trans }}'
+                        'Para poder utilizar o login integrado do Facebook, você precisa permitir que nosso site se comunique com seu Facebook.',
+                        'Login invalido, Por favor tente mais tarde'
                 );
-                
             };
-
-            (function() {
-                var e = document.createElement('script'); e.async = true;
-                e.src = document.location.protocol + '//connect.facebook.net/pt_BR/all.js';
-                document.getElementById('fb-root').appendChild(e);
-            }());
-
-
 var FacebookConnect = {
     status: 'unknown',
     baseUrl: '',
@@ -101,7 +93,7 @@ var FacebookConnect = {
                     'facebookToken': securityToken
                 };
                 $.ajax({
-                    url: '{{url("user_user_facebook")}}',
+                    url: facebookUrl,
                     data: params,
                     dataType: "json",
                     contentType: 'application/x-www-form-urlencoded; charset=utf-8',
@@ -116,11 +108,8 @@ var FacebookConnect = {
     },
     toggleFacebookError: function (showError, errorText) {
         if (showError) {
-            $('#facebookError li').html(errorText);
-            $('#facebookError').show();
-        } else {
-            $('#facebookError').hide();
-        }
+            alert(errorText);
+        } 
     },
     forwardUser: function (url) {
          if (url) {
@@ -130,25 +119,3 @@ var FacebookConnect = {
         }
     }
 }
-
-            </script>
-            <div>
-                <fb:login-button perms="user_about_me,email" onlogin="FacebookConnect.connect(false);">Conecte-se</fb:login-button>
-                <span class="facebookText"><small>{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
-            </div>
-            
-            <div>
-                <a href="{{url('user_user_twitterconect')}}"><img src="./images/lighter.png" alt="Sign in with Twitter"/>TWITTER NOVO</a>
-                <span class="facebookText"><small>{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
-            </div>
-            
-            
-        </form>
-{% endblock content %}  
-{% block javascripts %}
-        <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
-        {% javascripts output='qualquer/coisa.js' 
-                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-{% endblock %}
