@@ -780,6 +780,12 @@ class UserController extends BaseController {
         $form = $factory->create(new UserFormTwitter());
         $repository = $this->mongo('ReurbanoUserBundle:User');
         $dadosPost = $request->request->get($form->getName());
+        if(!isset($dadosPost['agree'])){
+            //precisa aceitar os termos
+                $msg = $this->trans('Você precisa aceitar nossos termos e condições de uso.');
+                $this->get('session')->setFlash('error', $msg);
+                return $this->redirect($this->generateUrl('user_user_twitterback'));
+        }
         if (!empty($dadosPost['email'])) {
             $usuario = $repository->findOneBy(array('email', $dadosPost['email']));
             if (count($usuario) == 1) {
@@ -820,6 +826,7 @@ class UserController extends BaseController {
                         $user->setPassword($encoder->encodePassword($pass, $user->getSalt()));
                         $user->setMoneyFree(0);
                         $user->setMoneyBlock(0);
+                        $user->setNewsletters(isset($dadosPost['newsletters'])?true:false);
                         $user->setTwitterid($dados->id);
                         $user->setTwitter($dados->screen_name);
 
