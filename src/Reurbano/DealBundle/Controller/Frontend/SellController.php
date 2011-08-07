@@ -32,7 +32,7 @@ class SellController extends BaseController
                 ->add('site', 'choice',array(
                     'choices' => $site,
                     'attr'    => array(
-                        'class' => 'teste',
+                        'class' => 'chzn-select',
                         'data-placeholder' => 'Escolha um site'
                     )
                 ))
