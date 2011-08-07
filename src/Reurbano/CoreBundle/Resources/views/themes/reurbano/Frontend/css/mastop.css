@@ -34,6 +34,7 @@ h1, h2, h3
 {
     color: #666;
 }
+#closeNL{margin-top:6px;}
 .closeAlert, #closeNL{float: right; background: url('../images/sprite.png') no-repeat -4px -26px; width: 30px; height: 30px; text-indent: -9999em; overflow: hidden; outline: none;}
 .closeAlert:hover, #closeNL:hover{background-position: -4px -56px;}
 .alert{
@@ -90,6 +91,8 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     font-size: 15px;
+    margin-left: 5px;
+    height: 23px;
 }
 #mailNL.idleField{
     color: #999;
@@ -129,7 +132,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 #search{height: 83px; background: url(../images/header/search.png) no-repeat;}
 #search form{margin-left: 45px; height: 65px; padding-top: 18px;}
-#search #q{width: 390px; padding-left: 10px; height: 27px;
+#search #q{width: 390px; padding-left: 10px; height: 28px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -147,7 +150,11 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     padding: 1px 1px 1px 9px;
     background: #FFF;
 }
-
+.twLoginBtn, .fbLoginBtn{margin: 5px 0 0 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden;}
+.twLoginBtn{background-position: -181px -4px;}
+.twLoginBtn:hover{background-position: -181px -31px;}
+.fbLoginBtn{background-position: -41px -4px;}
+.fbLoginBtn:hover{background-position: -41px -31px;}
 /* /Header */
 
 /* Body */

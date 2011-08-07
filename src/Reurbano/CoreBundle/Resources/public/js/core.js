@@ -45,4 +45,9 @@ $(function(){
     e.async = true;
     e.src = document.location.protocol + '//connect.facebook.net/pt_BR/all.js';
     $('#fb-root').append(e);
+    $(".fbLoginBtn").click(function (e) {
+        fblogin();
+        e.preventDefault();
+        return false;
+    });
 });

@@ -234,7 +234,7 @@ select.chzn-select {
   cursor: pointer;
 }
 .chzn-container .chzn-results .highlighted {
-  background: #3875d7;
+  background: #D87D08;
   color: #fff;
 }
 .chzn-container .chzn-results li em {
@@ -266,7 +266,7 @@ select.chzn-select {
   -moz-box-shadow   : 0 0 5px rgba(0,0,0,.3);
   -o-box-shadow     : 0 0 5px rgba(0,0,0,.3);
   box-shadow        : 0 0 5px rgba(0,0,0,.3);
-  border: 1px solid #5897fb;
+  border: 1px solid #F9AF59;
 }
 .chzn-container-active .chzn-single-with-drop {
   border: 1px solid #aaa;
@@ -301,7 +301,7 @@ select.chzn-select {
   -moz-box-shadow   : 0 0 5px rgba(0,0,0,.3);
   -o-box-shadow     : 0 0 5px rgba(0,0,0,.3);
   box-shadow        : 0 0 5px rgba(0,0,0,.3);
-  border: 1px solid #5897fb;
+  border: 1px solid #F9AF59;
 }
 .chzn-container-active .chzn-choices .search-field input {
   color: #111 !important;

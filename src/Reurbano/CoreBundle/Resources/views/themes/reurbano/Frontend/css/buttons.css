@@ -16,7 +16,7 @@ http://github.com/necolas/css3-github-buttons
     margin: 0;
     text-decoration: none; 
     text-shadow: 1px 1px 0 #fff; 
-    font:11px/normal sans-serif; 
+    font:12px/normal sans-serif; 
     color: #333; 
     white-space: nowrap; 
     cursor: pointer; 
@@ -295,11 +295,47 @@ http://github.com/necolas/css3-github-buttons
 /* ............................................................................................................. Big */
 
 .button.big {
-    font-size: 14px; 
+    font-size: 15px; 
 }
 
 .button.big.icon:before { top: 0; }
 
+/* ............................................................................................................. Blue */
+.button.blue {
+    color: #FFF;
+    border-color: #32B0FF;
+    border-bottom-color: #0F4363;
+    background-color: #12496B;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3); 
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#2796DB), to(#15567F));
+    background-image: -moz-linear-gradient(#2796DB, #15567F);
+    background-image: -o-linear-gradient(#2796DB, #15567F);
+    background-image: linear-gradient(#2796DB, #15567F);   
+}
+.button.blue:active,
+.button.blue.active,
+.button.blue:focus{
+    border-color: #0F4363;
+    border-bottom-color: #32B0FF;
+    background-color: #2796DB;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3); 
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#15567F), to(#2796DB));
+    background-image: -moz-linear-gradient(#15567F, #2796DB);
+    background-image: -o-linear-gradient(#15567F, #2796DB);
+    background-image: linear-gradient(#15567F, #2796DB);   
+}
+.button.blue:hover{
+    border-color: #000;
+    border-bottom-color: #333;
+    text-decoration: none;
+    text-shadow: -1px -1px 0 rgba(255,255,255,0.3); 
+    color: #000; 
+    background-color: #FFF;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#FFFFFF), to(#E2E2E2));
+    background-image: -moz-linear-gradient(#FFFFFF, #E2E2E2);
+    background-image: -o-linear-gradient(#FFFFFF, #E2E2E2);
+    background-image: linear-gradient(#FFFFFF, #E2E2E2);
+}
 
 /* ------------------------------------------------------------------------------------------------------------- BUTTON GROUPS */
 
