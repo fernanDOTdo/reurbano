@@ -31,6 +31,10 @@ class SellController extends BaseController
         $form = $this->createFormBuilder()
                 ->add('site', 'choice',array(
                     'choices' => $site,
+                    'attr'    => array(
+                        'class' => 'teste',
+                        'data-placeholder' => 'Escolha um site'
+                    )
                 ))
                 ->add('siteId', 'hidden')
                 ->add('cupom', 'text')
