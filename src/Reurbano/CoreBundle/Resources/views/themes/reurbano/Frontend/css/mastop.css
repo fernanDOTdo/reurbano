@@ -66,10 +66,13 @@ h1, h2, h3
 .noBG{background: transparent; border: 0; text-shadow:none;}
 .hidden{display: none;}
 span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
+.floatL{float: left}
+.floatR{float: right}
+
 /*/Geral */
 
 /* Header */
-#labelNL{color: #FFF; font-size: 1.2em;}
+#labelNL{color: #FFF; font-size: 1.2em; float: left; line-height: 30px; margin-right: 10px;}
 #topNL{
   background: #D87D08;
   /* for non-css3 browsers */
