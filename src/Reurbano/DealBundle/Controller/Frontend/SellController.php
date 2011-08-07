@@ -24,7 +24,7 @@ class SellController extends BaseController
     {
         $title = "Venda cupons de qualquer site de compras coletivas aqui";
         $siteArray = $this->mongo('ReurbanoDealBundle:Site')->findAll();
-        $site = array();
+        $site[] = '';
         foreach($siteArray as $k => $v){
             $site[$v->getId()] = $v->getName();
         }
@@ -32,12 +32,13 @@ class SellController extends BaseController
                 ->add('site', 'choice',array(
                     'choices' => $site,
                     'attr'    => array(
-                        'class' => 'chzn-select',
-                        'data-placeholder' => 'Escolha um site'
+                        'class'            => 'chzn-select',
+                        'data-placeholder' => 'Escolha um site',
+                        'style'            => 'width: 200px;',
                     )
                 ))
-                ->add('siteId', 'hidden')
                 ->add('cupom', 'text')
+                ->add('cupomId', 'hidden')
                 ->getForm();
         return array(
             'title' => $title,
@@ -53,7 +54,6 @@ class SellController extends BaseController
     public function scriptAction() {
         $script = "
             var ajaxPath = '" . $this->generateUrl('deal_sell_ajax', array(), true) . "';
-            var ajaxPath2 = '" . $this->generateUrl('deal_sell_ajax2', array(), true) . "';
             ";
         return new Response($script);
     }
@@ -67,11 +67,13 @@ class SellController extends BaseController
     {
         if ($this->get('request')->isXmlHttpRequest()) {
             if ($this->get('request')->getMethod() == 'GET') {
-                $site = $this->get('request')->query->get('q');
-                $regexp = new \MongoRegex('/' . $site . '/i');
+                $cupom = $this->get('request')->query->get('q');
+                $siteId = $this->get('request')->query->get('siteid');
+                $regexp = new \MongoRegex('/' . $cupom . '/i');
                 $site = $this->mongo('ReurbanoDealBundle:Site')
                         ->createQueryBuilder()
                         ->sort('createdAt', 'ASC')
+                        ->field('name')->equals($regexp)
                         ->field('name')->equals($regexp)
                         ->getQuery()->execute();
                 $data = '';
