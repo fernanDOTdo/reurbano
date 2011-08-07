@@ -30,7 +30,6 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface {
         $user->setMailOk(true);
         $user->setUsername('suportemastopcombr');
         $user->setPassword("QRcrz4q1+CMeIOSJe9qybVEL5agAMeWRc1ZpPj/wDlH8lbgaJetnRvz79I0WuPwjIcuVsU/cuF733/Ts1KHd1A==");
-        $user->setGender("M");
         $manager->persist($user);
         $manager->flush();
 
