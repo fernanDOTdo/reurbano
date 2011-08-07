@@ -14,4 +14,21 @@ $(function(){
             e.preventDefault();
         return false;
         });
+        $('input[type="text"]').not('.focusField').addClass("idleField")
+        .focus(function() {
+		$(this).removeClass("idleField").addClass("focusField");
+                if (this.value == this.defaultValue){
+                        this.value = '';
+                }
+                if(this.value != this.defaultValue){
+                        this.select();
+                }
+        })
+        .blur(function() {
+            if ($.trim(this.value) == ''){
+                    this.value = (this.defaultValue ? this.defaultValue : '');
+                    $(this).removeClass("focusField").addClass("idleField");
+            }
+        });
+        $("select.chzn-select").chosen();
 });

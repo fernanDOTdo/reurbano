@@ -12,13 +12,13 @@
 <meta name="generator" content="Mastop Internet Development" />
 <link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
 <title>{% block title %}{{ mastop_param('system.site.name') }}{%endblock%} - {%if app.request.attributes.get('_route') == '_home'%}{{mastop_param('system.site.slogan')}}{%else%}{{mastop_param('system.site.name')}}{%endif%}</title>
-{% stylesheets 'reurbano/Frontend/css/*.css' filter='yui_css' output='themes/reurbano/css/pack.css' %}
+{% stylesheets 'reurbano/Frontend/css/*.css' filter='?yui_css' output='themes/reurbano/css/pack.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
 {% endstylesheets %}
 {% block stylesheets %}{% endblock %}
 <!-- Load JQuery -->		
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-{% javascripts '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
+{% javascripts '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {%if app.request.attributes.get('_route') == '_home' %}
@@ -50,7 +50,7 @@ $(function(){
             <strong>Erro: </strong> {{ app.session.flash('error')|raw }}
         </div>
         <div class="grid_2">
-            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+            <a class="closeAlert" href="#">Fechar</a>
         </div>
     </div>
 </div>
@@ -63,7 +63,7 @@ $(function(){
             {{ app.session.flash('ok')|raw }}
         </div>
         <div class="grid_2">
-            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+            <a class="closeAlert" href="#">Fechar</a>
         </div>
     </div>
 </div>
@@ -76,7 +76,7 @@ $(function(){
             <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
         </div>
         <div class="grid_2">
-            <a class="closeAlert button danger icon remove noBG" href="#">Fechar</a>
+            <a class="closeAlert" href="#">Fechar</a>
         </div>
     </div>
 </div>
@@ -85,11 +85,11 @@ $(function(){
 {%if app.request.cookies.get('hideNL') is null%}
     <div id="topNL">
         <div class="container_12">
-            <div class="grid_10">
-                <form name="" action="{{ path('core_mailing_new') }}" method="post"> Receba ofertas com cupons imperdíveis de {{reurbano_select_city()}} <input type="text" name="email" /> <button type="submit" class="button icon approve">Enviar</button></form>
+            <div class="grid_11">
+                <form id="formNL" action="{{ path('core_mailing_new') }}" method="post"><span class="arrow">&nbsp</span> <span id="labelNL">Receba ofertas com cupons imperdíveis de </span><div class="floatL">{{reurbano_select_city('cityNL', 'cityNL', 'chzn-select')}}</div><div class="floatL"> <input type="text" id="mailNL" name="email" value="Digite seu email" /> <button type="submit" class="button icon approve">Enviar</button></div></form>
             </div>
-            <div class="grid_2">
-                <a id="closeNL" class="button danger icon remove noBG" href="#">Fechar</a>
+            <div class="grid_1">
+                <a id="closeNL" href="#">Fechar</a>
             </div>
         </div>
     </div>
@@ -117,7 +117,8 @@ $(function(){
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
             </div>
             <div id="search">
-            Busca
+                {% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
+                <form action="{# path('core_mailing_new') #}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big">Pega!</button></form>
             </div>
         </div>
         <div class="grid_12" id="menuMain">
