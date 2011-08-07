@@ -6,42 +6,31 @@
 <div>{{ error.message }}</div>
 {% endif %}
 
-<script type="text/javascript">
-var facebookRedir="{{ redir }}";
-var facebookAppId="{{ mastop_param('user.all.faceappid') }}";
-var facebookUrl="{{url("user_user_facebook")}}";
-</script>
-
-{% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' filter="yui_js" output="reurbanouser/js/facebook.js" %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
-<form action="{{ path("login_check") }}" method="post">
-    <label for="username">{{ "Email:"|trans }}:</label>
-    <input type="text" id="umail" name="_umail" value="{{ last_username }}" />
-    <br />
-    <label for="password">{{ "Senha:"|trans }}</label>
-    <input type="password" id="password" name="_password" />
-    <br />
-    <input type="checkbox" id="remember_me" name="_remember_me" checked />
-    <label for="remember_me">{{ "Lembrar meu login"|trans }}</label>
-    <br />
-    <div>
-        <div><input type="submit" name="{{ "Login"|trans }}" value="{{ "Login"|trans }}"/></div>
+<div class="grid_6">
+    <div class="grid_6 alpha omega">
+        <form action="{{ path("login_check") }}" method="post">
+            <label for="username">{{ "Email:"|trans }}:</label>
+            <input type="text" id="umail" name="_umail" value="{{ last_username }}" />
+            <br />
+            <label for="password">{{ "Senha:"|trans }}</label>
+            <input type="password" id="password" name="_password" />
+            <br />
+            <input type="checkbox" id="remember_me" name="_remember_me" checked />
+            <label for="remember_me">{{ "Lembrar meu login"|trans }}</label>
+            <br />
+            <div>
+                <div><input type="submit" name="{{ "Login"|trans }}" value="{{ "Login"|trans }}"/></div>
+            </div>
+        </form>
     </div>
-    <div>
-        <a href="#" id='facebook-login' onclick='fblogin();'>FACEBOOK?</a>
-        <span class="facebookText"><small>{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
+    <div class="grid_6 alpha omega">
+        <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
+        <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
     </div>
-
-    <div>
-        <a href="{{url('user_user_twitterconect')}}"><img src="./images/lighter.png" alt="Sign in with Twitter"/>TWITTER NOVO</a>
-        <span class="facebookText"><small>{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}</small></span>
-    </div>
-</form>
-
-<br />
-<a href="{{ path('user_user_recovery', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
-<a href="{{ path('user_user_new') }}" title="{{ "Cadastre-se"|trans }}">{{ "Cadastre-se"|trans }}</a>
+    <a class="grid_6" href="{{ path('user_user_recovery', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+</div>
+<div class="grid_6">
+    Form de novo usuário
+</div>
 
 {% endblock content %}  
