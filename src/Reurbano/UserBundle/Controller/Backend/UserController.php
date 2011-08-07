@@ -31,7 +31,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novo", name="admin_user_user_novo")
+     * @Route("/novo", name="admin_user_user_new")
      * @Route("/editar/{username}", name="admin_user_user_editar")
      * @Route("/senha/{username}", name="admin_user_user_senha")
      * @Template()
@@ -74,10 +74,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvarsenha/", name="admin_user_user_salvar_senha")
+     * @Route("/salvarsenha/", name="admin_user_user_savepass")
      * @Template()
      */
-    public function salvarSenhaAction($id=null) {
+    public function savePassAction($id=null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
         $form = $factory->create(new ChangePass());
@@ -109,10 +109,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvar/{id}", name="admin_user_user_salvar", defaults={"id" = null})
+     * @Route("/salvar/{id}", name="admin_user_user_save", defaults={"id" = null})
      * @Template()
      */
-    public function salvarAction($id=null) {
+    public function saveAction($id=null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
         if ($id) {
@@ -167,7 +167,7 @@ class UserController extends BaseController {
                     }
                     $this->get('session')->setFlash('error', $msg);
                     $usuario = $repository->findByField('id', $dadosPost['id']);
-                    return $this->redirect($this->generateUrl('admin_user_user_salvar', array('username' => $usuario->getUsername())));
+                    return $this->redirect($this->generateUrl('admin_user_user_save', array('username' => $usuario->getUsername())));
                 }
             } else {
                 //inserção
@@ -188,7 +188,7 @@ class UserController extends BaseController {
                         $msg.=$eItem . " <br />";
                     }
                     $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('admin_user_user_novo'));
+                    return $this->redirect($this->generateUrl('admin_user_user_new'));
                 }
                 $user = new user();
                 $user->setName($dadosPost['name']);

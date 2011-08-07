@@ -1,7 +1,4 @@
 {% extends '::frontend.html.twig' %}
-{% block javascriptsHead %}
-{% include "ReurbanoUserBundle::twitter_setup.html.twig" with {'apiKey':mastop_param('user.all.twitterappid'), 'version':'1'} %}
-{% endblock %}
 {% block content %}
 {% if error %}
 <div>{{ error.message }}</div>
@@ -148,12 +145,11 @@ var FacebookConnect = {
             </div>
             
             <div>
-                <a href="{{url('user_user_twitter_conect')}}"><img src="./images/lighter.png" alt="Sign in with Twitter"/>TWITTER NOVO</a>
-                {% include "ReurbanoUserBundle::twitter_initialize.html.twig" with {'twitterDIV':'twitter_connect','twitterTXT': "Tem uma conta no Twitter? Use-a para fazer o seu login no  %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')})}  %}
+                <a href="{{url('user_user_twitterconect')}}"><img src="./images/lighter.png" alt="Sign in with Twitter"/>TWITTER NOVO</a>
             </div>
 </form>
 <br />
-<a href="{{ path('user_user_recupera', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
-<a href="{{ path('user_user_novo') }}" title="{{ "Cadastre-se"|trans }}">{{ "Cadastre-se"|trans }}</a>
+<a href="{{ path('user_user_recovery', {'username':last_username} ) }}" title="{{ "Troque sua senha"|trans }}">{{ "Esqueci minha senha"|trans }}</a>
+<a href="{{ path('user_user_new') }}" title="{{ "Cadastre-se"|trans }}">{{ "Cadastre-se"|trans }}</a>
 
 {% endblock content %}  

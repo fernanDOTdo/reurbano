@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /** @ODM\Document (
- * collection="User",
+ * collection="user",
  * repositoryClass="Reurbano\UserBundle\Document\UserRepository"
  * ) 
  */
@@ -46,6 +46,7 @@ class User implements UserInterface {
     /** @ODM\String */
     protected $cpf;
     /** @ODM\String */
+    /** @ODM\UniqueIndex */
     protected $email;
     /** @ODM\Date */
     protected $birth;

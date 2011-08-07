@@ -14,7 +14,6 @@ class SecurityController extends Controller {
      * @Template()
      */
     public function loginAction() {
-        //exit(print_r($this->get('mastop.twitter')));
         // get the login error if there is one
         if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);

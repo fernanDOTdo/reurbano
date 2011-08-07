@@ -2,7 +2,7 @@
 {% block content %}
         <h1>{{ titulo }}</h1>
         <div>{{ txtextra }}</div>
-            <form action="{{ path('user_user_twitter_salvar') }}" method="post" {{ form_enctype(form) }}>
+            <form action="{{ path('user_user_twittersave') }}" method="post" {{ form_enctype(form) }}>
         
     {{ form_widget(form) }}
             <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />

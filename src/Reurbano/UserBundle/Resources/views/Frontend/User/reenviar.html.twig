@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
         <h1>{{ "Reenvio de código de ativação por email"|trans }}</h1>
-        <form action="{{ path('user_user_reenviarOk') }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('user_user_resendOk') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
             <input type="submit" name='reenviar' value='{{ "Enviar novamente!"|trans }}' />
             <input type="button" name='voltar' value='{{ "Cancelar"|trans }}' onclick="history.go(-1)" />

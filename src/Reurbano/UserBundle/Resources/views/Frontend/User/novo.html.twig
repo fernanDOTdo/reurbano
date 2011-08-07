@@ -2,9 +2,9 @@
 {% block content %}
         <h1>{{ titulo }}</h1>
         {% if usuario %}
-            <form action="{{ path('user_user_salvar',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
+            <form action="{{ path('user_user_save',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
         {% else %}
-            <form action="{{ path('user_user_salvar') }}" method="post" {{ form_enctype(form) }}>
+            <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
         {% endif%}
         
     {{ form_widget(form) }}
