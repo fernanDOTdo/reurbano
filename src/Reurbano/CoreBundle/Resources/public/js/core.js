@@ -30,5 +30,5 @@ $(function(){
                     $(this).removeClass("focusField").addClass("idleField");
             }
         });
-        $(".chzn-select").chosen();
+        $("select.chzn-select").chosen();
 });
