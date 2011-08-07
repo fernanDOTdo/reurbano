@@ -744,6 +744,7 @@ class UserController extends BaseController {
             $this->dm()->flush();
             $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
             $this->container->get('security.context')->setToken($token);
+            $this->setCookie('hideNL',1, time() + 604800);
         }
     }
 

@@ -18,9 +18,7 @@ class HtmlController extends BaseController {
     public function termsAction() {
         $request = $this->getRequest();
         return array(
-            // last username entered by the user
-            'titulo' => 'teste',
-            'content' => 'teste',
+            'titulo' => $this->trans('Termos e Codições de Uso %sitename%',array("%sitename%"=>$this->get('mastop')->param('system.site.name'))),
         );
     }
 
