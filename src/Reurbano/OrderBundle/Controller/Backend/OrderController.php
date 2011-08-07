@@ -8,6 +8,7 @@ use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
 use Reurbano\OrderBundle\Document\Comment;
 use Reurbano\UserBundle\Document\User;
+use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
 
 /**
  * Controller para administrar (CRUD) os pedidos
@@ -53,14 +54,12 @@ class OrderController extends BaseController
         $dm = $this->dm();
         $request = $this->get('request');
         $order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
-        $statusArray = $this->mongo('ReurbanoOrderBundle:Status')->FindAll();
-        foreach($statusArray as $k => $v){
-            $status[$v->getId()] = $v->getName();
-        }
+        $form = $this->createForm(new StatusChangeType());
         if($request->getMethod() == 'POST'){
             $user = $this->get('security.context')->getToken()->getUser();
-            $data = $request->request->get('form');
-            $status = $this->mongo('ReurbanoOrderBundle:Status')->findOneById($data['status']);
+            $form = 
+            $data = $request->request->get($form->getName());
+            $status = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$data['status']);
             $statusLog = new StatusLog();
             $statusLog->setStatus($status);
             $statusLog->setObs($data['obs']);
@@ -75,12 +74,7 @@ class OrderController extends BaseController
             $this->get('session')->setFlash('ok', $this->trans('Status atualizado com sucesso!'));
             return $this->redirect($this->generateUrl('admin_order_order_index'));
         }
-        $form = $this->createFormBuilder()
-                ->add('status', 'choice', array(
-                    'choices' => $status
-                ))
-                ->add('obs', 'textarea')
-                ->getForm();
+        $form = $this->createForm(new StatusChangeType());
         return array(
             'title' => $title,
             'form'  => $form->createView(),

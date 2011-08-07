@@ -8,8 +8,17 @@ use Symfony\Component\Form\FormBuilder;
 class SellType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
-        $builder->add('id', 'hidden');
-        $builder->add('title', 'text', array('label'=>'Título'));
+        $builder->add('site', 'document',array(
+                    'class' => 'Reurbano\\DealBundle\\Document\\Site',
+                    'property'=>'name',
+                    'attr'    => array(
+                        'class' => 'chzn-select',
+                        'data-placeholder' => 'Escolha um site', 
+                        'style'=> 'width: 200px;',
+                    )
+                ))
+                ->add('cupom', 'text')
+                ->add('cupomId', 'hidden');
     }
 
     public function getDefaultOptions(array $options) {
