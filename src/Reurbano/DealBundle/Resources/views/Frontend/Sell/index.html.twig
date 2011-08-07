@@ -4,8 +4,18 @@
 
 {% block content %}
     <form action="{{ path('deal_sell_index') }}" method="post" {{form_enctype(form)}}>
-        {{ form_widget(form) }}
+        <div>
+            {{ form_label(form.site) }}
+            {{ form_errors(form.site) }}
+            {{ form_widget(form.site) }}
+        </div>
+        <div class="hidden cupom">
+            {{ form_label(form.cupom) }}
+            {{ form_errors(form.cupom) }}
+            {{ form_widget(form.cupom) }}
+        </div>
         
+        {{ form_rest(form) }}
         <input type="submit" value="Comentar"/>
     </form>
 {% endblock %}

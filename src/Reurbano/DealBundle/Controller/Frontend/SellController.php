@@ -23,13 +23,16 @@ class SellController extends BaseController
     public function indexAction()
     {
         $title = "Venda cupons de qualquer site de compras coletivas aqui";
+        $siteArray = $this->mongo('ReurbanoDealBundle:Site')->findAll();
+        $site = array();
+        foreach($siteArray as $k => $v){
+            $site[$v->getId()] = $v->getName();
+        }
         $form = $this->createFormBuilder()
-                ->add('site', 'text')
-                ->add('siteId', 'hidden', array(
-                    'attr' => array(
-                        'class' => 'hidden'
-                    )
+                ->add('site', 'choice',array(
+                    'choices' => $site,
                 ))
+                ->add('siteId', 'hidden')
                 ->add('cupom', 'text')
                 ->getForm();
         return array(
@@ -44,9 +47,9 @@ class SellController extends BaseController
      * @Route("/script.js", name="deal_sell_script")
      */
     public function scriptAction() {
-
         $script = "
             var ajaxPath = '" . $this->generateUrl('deal_sell_ajax', array(), true) . "';
+            var ajaxPath2 = '" . $this->generateUrl('deal_sell_ajax2', array(), true) . "';
             ";
         return new Response($script);
     }
