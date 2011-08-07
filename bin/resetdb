@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+$rootDir = dirname(__DIR__);
+
+// php on windows can't use the shebang line from system()
+$interpreter = PHP_OS == 'WINNT' ? 'php.exe' : '';
+
+
+// Deleta
+system(sprintf('%s %s doctrine:mongodb:schema:drop', $interpreter, escapeshellarg($rootDir.'/app/console')));
+
+// Cria com indexes
+system(sprintf('%s %s doctrine:mongodb:schema:create --index', $interpreter, escapeshellarg($rootDir.'/app/console')));
+
+// Carrega fixtures com append
+system(sprintf('%s %s doctrine:mongodb:fixtures:load --append', $interpreter, escapeshellarg($rootDir.'/app/console')));
