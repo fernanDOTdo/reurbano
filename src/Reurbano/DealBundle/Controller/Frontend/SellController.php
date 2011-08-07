@@ -22,16 +22,14 @@ class SellController extends BaseController
      */
     public function indexAction()
     {
-                $site = 'ou';
-                $regexp = new \MongoRegex('/' . $site . '/i');
-                $site = $this->mongo('ReurbanoDealBundle:Site')
-                        ->createQueryBuilder()
-                        ->sort('createdAt', 'ASC')
-                        ->field('')->equals($regexp)
-                        ->getQuery()->execute();
         $title = "Venda cupons de qualquer site de compras coletivas aqui";
         $form = $this->createFormBuilder()
                 ->add('site', 'text')
+                ->add('siteId', 'hidden', array(
+                    'attr' => array(
+                        'class' => 'hidden'
+                    )
+                ))
                 ->add('cupom', 'text')
                 ->getForm();
         return array(
@@ -60,36 +58,25 @@ class SellController extends BaseController
      */
     public function ajaxAction()
     {
-        /*if ($this->get('request')->isXmlHttpRequest()) {
-            if ($this->get('request')->getMethod() == 'POST') {*/
-                $site = $this->get('request')->request->get('site');
-                /*var_dump($this->get('request')->request);
-                var_dump($site);
-                exit();*/
-                //var_dump($site);
-                //$site = 'p';
+        if ($this->get('request')->isXmlHttpRequest()) {
+            if ($this->get('request')->getMethod() == 'GET') {
+                $site = $this->get('request')->query->get('q');
                 $regexp = new \MongoRegex('/' . $site . '/i');
                 $site = $this->mongo('ReurbanoDealBundle:Site')
                         ->createQueryBuilder()
                         ->sort('createdAt', 'ASC')
                         ->field('name')->equals($regexp)
                         ->getQuery()->execute();
-                
+                $data = '';
                 foreach($site as $k => $v){
-                    $retArr[$i]['titulo'] = $v->getName();
-                    $retArr[$i]['id'] = (string)$v->getId();
-                    //echo $v->getId()."<br />";
+                    $data .= $v->getName();
+                    $data .= '|';
+                    $data .= $v->getId();
+                    $data .= " \n";
                 }
-                /*echo "<pre>";
-                var_dump(count($site));
-                echo "</pre>";
-                exit();*/
-                /*echo json_encode($retArr);
-                exit();*/
-                //return new Response(json_encode($retArr));
-                return new Response(json_encode($data));
-            /*}
-        }*/
+                return new Response($data);
+            }
+        }
         //return new Response(json_encode(array()));
     }
     
