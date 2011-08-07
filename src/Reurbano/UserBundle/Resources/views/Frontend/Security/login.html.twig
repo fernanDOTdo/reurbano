@@ -7,9 +7,9 @@
 {% endif %}
 
 <script type="text/javascript">
-facebookRedir="{{ redir }}";
-facebookAppId="{{ mastop_param('user.all.faceappid') }}";
-facebookUrl="{{url("user_user_facebook")}}";
+var facebookRedir="{{ redir }}";
+var facebookAppId="{{ mastop_param('user.all.faceappid') }}";
+var facebookUrl="{{url("user_user_facebook")}}";
 </script>
 
 {% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' filter="yui_js" output="reurbanouser/js/facebook.js" %}
