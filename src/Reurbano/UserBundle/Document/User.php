@@ -45,8 +45,7 @@ class User implements UserInterface {
     protected $city;
     /** @ODM\String */
     protected $cpf;
-    /** @ODM\String */
-    /** @ODM\UniqueIndex */
+    /** @ODM\String @ODM\UniqueIndex */
     protected $email;
     /** @ODM\Date */
     protected $birth;
@@ -59,10 +58,10 @@ class User implements UserInterface {
     /** @ODM\boolean */
     protected $newsletters;
     /** @ODM\String */
-    /** @ODM\UniqueIndex */
     protected $facebookid;
     /** @ODM\String */
-    /** @ODM\UniqueIndex */
+    protected $facebookToken;
+    /** @ODM\String */
     protected $twitterid;
     /** @ODM\String */
     protected $twitter;
@@ -73,8 +72,15 @@ class User implements UserInterface {
     public function getTwitter() {
         return $this->twitter;
     }
+    public function getFacebookToken() {
+        return $this->facebookToken;
+    }
 
-    public function setTwitter($twitter) {
+    public function setFacebookToken($facebookToken) {
+        $this->facebookToken = $facebookToken;
+    }
+
+        public function setTwitter($twitter) {
         $this->twitter = $twitter;
     }
 

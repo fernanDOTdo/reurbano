@@ -281,11 +281,12 @@ class UserController extends BaseController {
             return $this->redirect($this->generateUrl('_home'));
         }
     }
-/**
- * Verifica se o usuário esta confirmado ou não
- * @param object $user
- * @return boolean 
- */
+
+    /**
+     * Verifica se o usuário esta confirmado ou não
+     * @param object $user
+     * @return boolean 
+     */
     public function verificaStatus($user) {
         $status = $user->getStatus();
         if ($status == 1) {
@@ -607,26 +608,26 @@ class UserController extends BaseController {
             //precisa ver se o usuario facebook ja nao esta cadastrado, se estiver apenas logar
             //se nao tiver logado entao pegar os dados dele e criar o user automaticamente
             //em ambos os casos tem que logar automaticamente depois disto
-            $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
+            $repository = $this->dm()->getRepository('ReurbanoUserBundle:user');
             $request = $this->getRequest();
-            $gets = $request->query;
+            $result['success'] = 'false';
 
-            $usuario = $repository->findOneBy(array('facebookid', $gets->get('facebookId')));
-            $usuario2 = $repository->findOneBy(array('email', $gets->get('email')));
-            if (count($usuario) > 0 || count($usuario2) > 0) {
-                //então é existe o user
+            $gets = $request->query;
+            $usuario = $repository->findOneBy(array('facebookid' => $gets->get('facebookId')));
+            $usuario2 = $repository->findOneBy(array('email' => $gets->get('email')));
+            if ($usuario || $usuario2) {
+                //é existe o user
                 //verificar se os dados cadastrais estao atualizados
-                if (count($usuario) == 1) {
-                    //so tem ele
+                if ($usuario) {
+                    //o userfacebook é ele
                     $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
                     $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
                     $user->setCity($gets->get('cidade'));
                     $this->dm()->persist($user);
                     $this->dm()->flush();
                     $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario->getName())));
-                    $result['success'] = true;
-                } 
-                if (count($usuario2) == 1) {
+                    $result['success'] = 'true';
+                } elseif ($usuario2) {
                     $fbID = $usuario2->getFacebookid();
                     if (!isset($fbID) || $fbID == $gets->get('facebookId')) {
                         $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
@@ -639,30 +640,27 @@ class UserController extends BaseController {
                             $this->get('session')->setFlash('ok', $this->trans('Olá %name%, login efetuado.', array('%name%' => $usuario2->getName())));
                         }
 
-                        $result['success'] = true;
+                        $result['success'] = 'true';
                     } else {
                         $this->get('session')->setFlash('error', $this->trans('Já existe uma conta com estes dados em nosso sistema e ela não pertence ao seu facebook'));
-                        $result['success'] = false;
+                        $result['success'] = 'false';
                     }
-                } 
+                }
                 //efetuar o login
                 $this->authenticateUser($user);
             } else {
                 //novo user, salvar ele
-                $user = new user();
+                $user = new User();
                 $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
                 $user->setUsername(str_replace(".", "", str_replace("@", "", $gets->get('email'))));
+                $user->setEmail($gets->get('email'));
                 $user->setActkey('');
                 $user->setMailOk(true);
                 $user->setStatus(1);
-                $user->setAvatar('');
                 $user->setLang('pt_BR');
-                $user->setTheme('');
                 $user->setCreated(new \DateTime());
                 $user->setRoles('ROLE_USER');
                 $user->setCity($gets->get('cidade'));
-                $user->setCpf('');
-                $user->setEmail($gets->get('email'));
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $chars = "abcdefghijkmnopqrstuvwxyz023456789";
                 srand((double) microtime() * 1000000);
@@ -679,11 +677,12 @@ class UserController extends BaseController {
                 $user->setMoneyFree(0);
                 $user->setMoneyBlock(0);
                 $user->setFacebookid($gets->get('facebookId'));
+                $user->setFacebookToken($gets->get('facebookToken'));
                 $user->setNewsletters(true);
                 $this->dm()->persist($user);
                 $this->dm()->flush();
                 $this->get('session')->setFlash('ok', $this->trans('Cadastro efetuado com seus dados do Facebook.'));
-                $result['success'] = true;
+                $result['success'] = 'true';
                 //notificação de novo usuario interno
                 $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
                 if ($emailsNotify != "") {
@@ -699,7 +698,7 @@ class UserController extends BaseController {
                 //efetuar o login
                 $this->authenticateUser($user);
             }
-
+       // exit(var_dump($result));
 
             return new Response(json_encode($result));
         }
@@ -858,7 +857,7 @@ class UserController extends BaseController {
                     $this->get('session')->setFlash('error', $msg);
                     return $this->redirect($this->generateUrl('user_user_twitterback'));
                 }
-            } 
+            }
         } else {
             //devolve para o cadastro de email
             $msg = $this->trans('Erro ao criar seu usuário, favor fornecer um email.');
