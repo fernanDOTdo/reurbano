@@ -3,9 +3,15 @@
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-    <form action="{{ path('deal_sell_details') }}" method="post" >
+    <form action="{{ path('deal_sell_save') }}" method="post" {{ form_enctype(form) }} >
+        <b>Titulo</b><br />
+        {{ source.getTitle() }}<br />
+        <b>Site</b><br />
+        {{ source.getSite.getName }}<br />
+        
         {{ form_widget(form) }}
-        <input type="submit" value="Comentar"/>
+        <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
+        <input type="submit" value="Enviar"/>
     </form>
 {% endblock %}
 {% block javascripts %}

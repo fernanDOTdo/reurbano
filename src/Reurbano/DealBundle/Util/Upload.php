@@ -50,10 +50,6 @@ class Upload
     public function setFileName($fileName) {
         $this->fileName = $fileName;
     }
-
-    public function getDeafaultPath(){
-        return "/home/www/andre/reurbano/web/bundles/uploads/reurbanodeal";
-    }
     
     public function upload(){
         
@@ -69,10 +65,7 @@ class Upload
             }
             $this->getFileUploaded()->move($this->getPath(), $fileName);
         }else {
-            while (file_exists($this->getDeafaultPath().'/'.$fileName)){
-                $fileName = uniqid(rand(), true) . '.' . $ext[count($ext)-1];
-            }
-            $this->getFileUploaded()->move($this->getDeafaultPath(), $fileName);
+            throw new \Exception("Please, set a FolderPath");
         }
         
         $this->setFileName($fileName);
