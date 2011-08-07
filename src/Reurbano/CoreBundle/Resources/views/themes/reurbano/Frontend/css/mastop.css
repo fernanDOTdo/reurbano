@@ -34,6 +34,8 @@ h1, h2, h3
 {
     color: #666;
 }
+.closeAlert, #closeNL{float: right; background: url('../images/sprite.png') no-repeat -4px -26px; width: 30px; height: 30px; text-indent: -9999em; overflow: hidden; outline: none;}
+.closeAlert:hover, #closeNL:hover{background-position: -4px -56px;}
 .alert{
     color: #FFF;
     height: 40px;
@@ -62,6 +64,7 @@ h1, h2, h3
       background: -moz-linear-gradient(top, #BBBBBB, #888888);   
 }
 .noBG{background: transparent; border: 0; text-shadow:none;}
+.hidden{display: none;}
 /*/Geral */
 
 /* Header */
@@ -78,7 +81,26 @@ h1, h2, h3
   height: 40px;
   display: none;
 }
-#topNL div.container_12{padding: 5px 0; height: 30px;}
+#mailNL{
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 15px;
+}
+#mailNL.idleField{
+    color: #999;
+    border: 1px solid #c8c8c8;
+    padding: 2px 2px 2px 10px;
+    background: #f2f2f2;
+}
+#mailNL.focusField{
+    color: #666;
+    border: 2px solid #DF7F06;
+    padding: 1px 1px 1px 9px;
+    background: #fff;
+}
+#topNL div.container_12{padding: 5px 0; height: 30px; font-size: 1.2em;}
+#topNL form span{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
 #hd_wrap { /* Div que cobre todo o header */
 
 }
@@ -90,7 +112,6 @@ h1, h2, h3
 #cidades{height: 58px;}
 #login{height: 28px;}
 #menuTop, #menuMain{height: 34px;}
-#search{height: 83px; background: url(../images/header/search.png) no-repeat;}
 #menuMain{}
 #menuCat{height: 41px;}
 #bannerHome{height: 335px; margin-top: 20px;}
@@ -102,6 +123,28 @@ h1, h2, h3
 #menuTop ul li a:hover{color: #D87D08; text-decoration: none; background: transparent;}
 #headUser{text-align: right; margin-top: 5px; height: 32px;}
 #headUser span{margin-right: 5px}
+
+#search{height: 83px; background: url(../images/header/search.png) no-repeat;}
+#search form{margin-left: 45px; height: 65px; padding-top: 18px;}
+#search #q{width: 390px; padding-left: 10px; height: 27px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+	font-size: 15px;
+}
+#search #q.idleField{
+    color: #999;
+    border: 1px solid #c8c8c8;
+    padding: 2px 2px 2px 10px;
+    background: #f2f2f2;
+}
+#search #q.focusField{
+    color: #666;
+    border: 2px solid #DF7F06;
+    padding: 1px 1px 1px 9px;
+    background: #FFF;
+}
+
 /* /Header */
 
 /* Body */
