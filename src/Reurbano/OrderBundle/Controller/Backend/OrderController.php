@@ -27,8 +27,9 @@ class OrderController extends BaseController
         $title = 'Administração de Pedidos';
         $order = $this->mongo('ReurbanoOrderBundle:Order')->FindAll();
         return array(
-            'order' => $order,
-            'title' => $title,
+            'order'   => $order,
+            'title'   => $title,
+            'current' => 'admin_order_order_index',
             );
     }
     /**
@@ -76,9 +77,10 @@ class OrderController extends BaseController
         }
         $form = $this->createForm(new StatusChangeType());
         return array(
-            'title' => $title,
-            'form'  => $form->createView(),
-            'id'    => $id,
+            'title'   => $title,
+            'form'    => $form->createView(),
+            'id'      => $id,
+            'current' => 'admin_order_order_index',
         );
     }
     /**
@@ -120,9 +122,10 @@ class OrderController extends BaseController
                 ->getForm();
                 
         return array(
-            'title' => $title,
-            'form'  => $form->createView(),
-            'id'    => $id,
+            'title'   => $title,
+            'form'    => $form->createView(),
+            'id'      => $id,
+            'current' => 'admin_order_order_index',
         );
     }
     
