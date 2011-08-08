@@ -48,10 +48,9 @@ $(function(){
 <body>
 {# Mensagens do Sistema #}
 {% if app.session.hasFlash('error') %}
-<div class="alert alert_red">
+<div class="alert alert_error">
     <div class="container_12">
         <div class="grid_10">
-            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/acces_denied_sign.png') }}" />
             <strong>Erro: </strong> {{ app.session.flash('error')|raw }}
         </div>
         <div class="grid_2">
@@ -61,10 +60,9 @@ $(function(){
 </div>
 {% endif %}
 {% if app.session.hasFlash('ok') %}
-<div class="alert alert_green">
+<div class="alert alert_success">
     <div class="container_12">
         <div class="grid_10">
-            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/white/light_bulb.png') }}" />
             {{ app.session.flash('ok')|raw }}
         </div>
         <div class="grid_2">
@@ -74,10 +72,9 @@ $(function(){
 </div>
 {% endif %}
 {% if app.session.hasFlash('notice') %}
-<div class="alert alert_grey">
+<div class="alert alert_notice">
     <div class="container_12">
         <div class="grid_10">
-            <img height="24" width="24" src="{{ asset('themes/reurbano/admin/images/icons/large/grey/info___about.png') }}" />
             <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
         </div>
         <div class="grid_2">
@@ -87,11 +84,11 @@ $(function(){
 </div>
 {% endif %}
 {# /Mensagens do Sistema #}
-{%if app.request.cookies.get('hideNL') is null%}
+{%if app.request.cookies.get('hideNL') is null and is_granted('ROLE_USER') == false%}
     <div id="topNL">
         <div class="container_12">
             <div class="grid_11">
-                <form id="formNL" action="{{ path('core_mailing_new') }}" method="post"><span class="arrow">&nbsp</span> <span id="labelNL">Receba ofertas com cupons imperdíveis de </span><div class="floatL">{{reurbano_select_city('cityNL', 'cityNL', 'chzn-select')}}</div><div class="floatL"> <input type="text" id="mailNL" name="email" value="Digite seu email" /> <button type="submit" class="button icon approve">Enviar</button></div></form>
+                <form id="formNL" action="{{ path('core_mailing_new') }}" method="post"><span class="arrow">&nbsp</span> <span id="labelNL">Receba ofertas com cupons imperdíveis de </span><div class="floatL">{{reurbano_select_city('cityNL', 'cityNL', 'chzn-select')}}</div><div class="floatL"> <input type="text" id="mailNL" name="email" value="Digite seu email" /> <button type="submit" class="button gray">Enviar</button></div></form>
             </div>
             <div class="grid_1">
                 <a id="closeNL" href="#">Fechar</a>
@@ -110,13 +107,13 @@ $(function(){
             <div id="logo">
             <a id="logo" href="{{ path('_home') }}" title="Homepage">{{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }}</a>
             </div>
-            <div id="cidades">
-            Cidades
+            <div id="cities">
+                <span id="cityLabel">em</span> <div class="chzn-container  chzn-container-single" id="cityCombo"><a title="Selecione a cidade" class="chzn-single" href="#"><span>{{app.session.get('reurbano.user.cityName')}}</span><div><b></b></div></a></div>
             </div>
         </div>
         <div class="grid_7">
             <div id="login">
-                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{url('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%endif%}
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{url('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span>{%endif%}
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
@@ -126,6 +123,27 @@ $(function(){
                 <form action="{# path('core_mailing_new') #}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big blue">Pega!</button></form>
             </div>
         </div>
+        
+        {# Lista de cidades #}
+        {% set cities = reurbano_get_cities() %}
+        <div id="listCities">
+            <a href="#" id="closeCities" title="fechar" class="floatR button primary small">X</a>
+            <h2>Principais cidades</h2>
+            <ul class="highCities clearfix">
+                {% for city in cities['special'] %}
+                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'name':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+                {% endfor %}
+            </ul>
+            <br>
+            <h2>Outras cidades</h2>
+            <ul>
+                {% for city in cities['other'] %}
+                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'name':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+                {% endfor %}
+            </ul>
+    </div>
+        {# /Lista de cidades #}
+        
         <div class="grid_12" id="menuMain">
             {{mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})}}
         </div>
@@ -154,38 +172,6 @@ $(function(){
         </div>
         <div class="clear"></div>
         {%endif%}
-        
-        
-        {#
-        <div class="grid_5">
-            <div id="logo">
-                <a href="{{ path('_home') }}">
-                {% image 'reurbano/Frontend/images/logo.gif' %}
-                <img src="{{ asset_url }}" alt="{{mastop_param('system.site.name')}}" />
-                {% endimage %}
-                </a>
-            </div>
-            <div id="slogan">
-                {{mastop_param('system.site.slogan')}}
-            </div>
-            
-        </div>
-
-    
-        <div class="grid_7">
-            <div class="grid_7 alpha" id="menuTop">
-                {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
-            </div>
-            <div class="grid_7 alpha omega" id="menuMain">
-                <div id="navbar">
-                    {{mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})}}
-                </div>
-            </div>
-            <div class="grid_7 alpha" id="headUser">
-                {%if is_granted('ROLE_USER')%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>!</span>{%endif%}
-            </div>
-        </div>
-       #}
     {% endblock%}
     </div>
 </div>

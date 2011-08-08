@@ -35,6 +35,7 @@ class ReurbanoCoreExtension extends Twig_Extension
     {
         $mappings = array(
             'reurbano_select_city'           => 'selectCity',
+            'reurbano_get_cities'           => 'getCities',
         );
 
         $functions = array();
@@ -61,6 +62,23 @@ class ReurbanoCoreExtension extends Twig_Extension
                 $ret .= '<option value="'.$v->getSlug().'"'.($current == $v->getSlug() ? ' selected="selected"' : '').'>'.$v->getName().'</option>';
             }
             $ret .= '</select>';
+        }
+        return $ret;
+    }
+    
+    public function getCities()
+    {
+        $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City');
+        $cities = $repo->findAll();
+        $ret = array('special'=>array(), 'normal'=>array());
+        if($cities){
+            foreach ($cities as $k => $v){
+                if($v->getSpecial()){
+                    $ret['special'][] = $v;
+                }else{
+                    $ret['other'][] = $v;
+                }
+            }
         }
         return $ret;
     }

@@ -17,6 +17,13 @@ class CityController extends BaseController
      */
     public function indexAction($name)
     {
+        $cidade = $this->mongo('ReurbanoCoreBundle:City')->findBySlug($name);
+        if(!$cidade){
+            $this->get('session')->setFlash('error', 'Cidade não encontrada');
+            return $this->redirect($this->generateUrl('_home'));
+        }
+        $this->get('session')->set('reurbano.user.city', $name);
+        $this->get('session')->set('reurbano.user.cityName', $cidade->getName());
         return array('name' => $name);
     }
 }
