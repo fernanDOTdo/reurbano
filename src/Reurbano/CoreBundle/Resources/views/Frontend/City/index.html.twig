@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Listagem de Cidades{% endblock %}
+{% block title %}Ofertas de {{app.session.get('reurbano.user.cityName')}}{% endblock %}
 
 {% block content %}
-Hello {{ name }}!
+Cidade definida como {{app.session.get('reurbano.user.cityName')}}! (Renderizar ofertas da cidade)
 {% endblock %}
