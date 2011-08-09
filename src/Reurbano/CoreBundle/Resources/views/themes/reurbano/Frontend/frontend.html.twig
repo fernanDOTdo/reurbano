@@ -1,3 +1,4 @@
+{% set protocol = mastop_protocol() %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="pt_BR" lang="pt_BR">
 <head>
@@ -16,8 +17,8 @@
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
 {% endstylesheets %}
 {% block stylesheets %}{% endblock %}
-<!-- Load JQuery -->		
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<!-- Load JQuery -->
+<script type="text/javascript" src="{{protocol}}ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
 <script type="text/javascript">
 var facebookRedir="{{ app.session.get('_security.target_path')|default(mastop_current_url()) }}";
 var facebookAppId="{{ mastop_param('user.all.faceappid') }}";
@@ -113,7 +114,7 @@ $(function(){
         </div>
         <div class="grid_7">
             <div id="login">
-                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{url('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span>{%endif%}
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span>{%endif%}
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
@@ -127,7 +128,7 @@ $(function(){
         {# Lista de cidades #}
         {% set cities = reurbano_get_cities() %}
         <div id="listCities">
-            <a href="#" id="closeCities" title="fechar" class="floatR button primary small">X</a>
+            <a href="#" id="closeCities" title="Fechar" class="floatR button primary small orange">X</a>
             <h2>Principais cidades</h2>
             <ul class="highCities clearfix">
                 {% for city in cities['special'] %}
@@ -148,7 +149,7 @@ $(function(){
             {{mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})}}
         </div>
         <div class="grid_12" id="menuCat">
-            Menu Categorias
+            Menu Categorias <a href="{{path('user_user_resend')}}">Teste</a>
         </div>
         {%if app.request.attributes.get('_route') == '_home'%}
         {# Só exibe o banner se estiver na home #}

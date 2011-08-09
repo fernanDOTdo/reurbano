@@ -81,6 +81,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
   height: 40px;
   display: none;
 }
+#cityNL{width: 200px;}
 #mailNL{
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -150,6 +151,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 .twLoginBtn:hover{background-position: -181px -31px;}
 .fbLoginBtn{background-position: -41px -4px;}
 .fbLoginBtn:hover{background-position: -41px -31px;}
+
 /* Lista e Combo de Cidades */
 #cityLabel{
     font-weight: 700;
@@ -193,18 +195,24 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     margin: 0;
 }
 #listCities ul li a{
-    background: #1B6DA0;
-    color: #000;
+    background: #6c9ab7;
+    color: #003454;
     display: block;
-    border: 1px solid #0F3B56;
+    border: 1px solid #71a4c5;
     margin: 3px;
     padding: 1px 3px;
     font-weight: 700;
 }
-#listCities ul li a:hover, #listCities ul li a.selected{
+#listCities ul li a:hover{
     background: #FFF;
     color: #15567F;
     border: 1px solid #2090D6;
+}
+#listCities ul li a.selected{
+    background: #FFF;
+    color: #666;
+    border: 1px solid #333;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* /Header */
