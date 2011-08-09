@@ -29,7 +29,7 @@ class SiteController extends BaseController {
         return array(
             'site'    => $site,
             'title'   => $title,
-            'current' => 'admin_order_order_index',);
+            'current' => 'admin_deal_deal_index',);
     }
     
     /**
@@ -81,7 +81,7 @@ class SiteController extends BaseController {
             'form'    => $form->createView(),
             'site'    => $site,
             'title'   => $title,
-            'current' => 'admin_order_order_index',
+            'current' => 'admin_deal_deal_index',
         );
     }
     
@@ -106,7 +106,7 @@ class SiteController extends BaseController {
         return array(
             'name'    => $site->getName(),
             'id'      => $site->getId(),
-            'current' => 'admin_order_order_index',
+            'current' => 'admin_deal_deal_index',
         );
     }
 }

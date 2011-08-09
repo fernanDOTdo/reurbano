@@ -33,7 +33,7 @@ class DealController extends BaseController
         return array(
             'ofertas' => $ofertas,
             'title'   => $title,
-            'current' => 'admin_order_order_index',
+            'current' => 'admin_deal_deal_index',
             );
     }
     /**
@@ -99,7 +99,7 @@ class DealController extends BaseController
             'form'    => $form->createView(),
             'deal'    => $deal,
             'title'   =>  $title,
-            'current' => 'admin_order_order_index',);
+            'current' => 'admin_deal_deal_index',);
     }
     /**
      * @Route("/deletar", name="admin_deal_deal_delete")

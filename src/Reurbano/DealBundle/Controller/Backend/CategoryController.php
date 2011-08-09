@@ -25,7 +25,7 @@ class CategoryController extends BaseController {
         return array(
             'categorias' => $categorias,
             'title'      => $title,
-            'current'    => 'admin_order_order_index',
+            'current'    => 'admin_deal_deal_index',
             );
     }
 
@@ -63,7 +63,7 @@ class CategoryController extends BaseController {
             'form'    => $form->createView(),
             'cat'     => $cat,
             'title'   => $title,
-            'current' => 'admin_order_order_index',);
+            'current' => 'admin_deal_deal_index',);
     }
     /**
      * Exibe um pre delete e deleta se for confirmado
@@ -86,7 +86,7 @@ class CategoryController extends BaseController {
         return array(
             'name' => $cat->getName(),
             'id'   => $cat->getId(),
-            'current' => 'admin_order_order_index',
+            'current' => 'admin_deal_deal_index',
         );
     }
 }
