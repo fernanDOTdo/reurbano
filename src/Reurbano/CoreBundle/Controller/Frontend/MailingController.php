@@ -18,6 +18,6 @@ class MailingController extends BaseController
     public function newAction()
     {
         $request = $this->getRequest();
-        exit(print_r($request));
+        exit(print_r($request->request));
     }
 }

@@ -49,6 +49,7 @@ class City
      *
      * @var string
      * @ODM\Int
+     * @ODM\Index
      */
     protected $order = 0;
     

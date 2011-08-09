@@ -25,10 +25,19 @@ class KernelRequestListener
                     $ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
                     $cidade = (string)$this->container->get('mastop')->slugify($ip2city->getCity());
                     $session->set('reurbano.user.ip', (string)$ip2city->getIP());
-                    if($this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->has('slug', $cidade)){
-                        $session->set('reurbano.user.city', $cidade); // Cidade atual está no DB
+                    $cidadeDB = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->findBySlug($cidade);
+                    if($cidadeDB){ // Cidade atual está no DB
+                        $session->set('reurbano.user.city', $cidade);
+                        $session->set('reurbano.user.cityName', $cidadeDB->getName());
                     }else{
-                        $session->set('reurbano.user.city', $this->container->getParameter('reurbano.default_city')); // Cidade atual não está no DB, então seta a cidade padrão como atual
+                        $cidadeDB = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->findBySlug($this->container->getParameter('reurbano.default_city'));
+                        if($cidadeDB){
+                            $session->set('reurbano.user.city', $this->container->getParameter('reurbano.default_city')); // Cidade atual não está no DB, então seta a cidade padrão como atual
+                            $session->set('reurbano.user.cityName', $cidadeDB->getName());
+                        }else{ // Cidade padrão não foi encontrada no DB (isso é ruim)
+                            $session->set('reurbano.user.city', $cidade);
+                            $session->set('reurbano.user.cityName', $ip2city->getCity());
+                        }
                     }
                     $session->set('reurbano.user.country', (string)$ip2city->getCountry());
                     $coords = $ip2city->getCoordinates();

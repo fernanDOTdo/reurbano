@@ -15,11 +15,6 @@ a:hover {
   color: #D87D08;
 }
 
-a:visited {
-  background: #029116;
-  color: #000;
-}
-
 strong
 {
     font-weight: bold;
@@ -46,23 +41,23 @@ h1, h2, h3
     height: 26px;
     padding: 7px 0;
 }
-.alert_red{
-      background: #E50606;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FC6F6F', endColorstr='#E50606');
-      background: -webkit-gradient(linear, left top, left bottom, from(#FC6F6F), to(#E50606));
-      background: -moz-linear-gradient(top, #FC6F6F, #E50606);
+.alert_error{
+      background: #a60000;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eb0000', endColorstr='#a60000');
+      background: -webkit-gradient(linear, left top, left bottom, from(#eb0000), to(#a60000));
+      background: -moz-linear-gradient(top, #eb0000, #a60000);
 }
-.alert_green{
-      background: #00AA00;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2AD34C', endColorstr='#00AA00');
-      background: -webkit-gradient(linear, left top, left bottom, from(#2AD34C), to(#00AA00));
-      background: -moz-linear-gradient(top, #2AD34C, #00AA00);   
+.alert_success{
+      background: #007b03;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#08b40d', endColorstr='#007b03');
+      background: -webkit-gradient(linear, left top, left bottom, from(#08b40d), to(#007b03));
+      background: -moz-linear-gradient(top, #08b40d, #007b03);   
 }
-.alert_grey{
-      background: #888888;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BBBBBB', endColorstr='#888888');
-      background: -webkit-gradient(linear, left top, left bottom, from(#BBBBBB), to(#888888));
-      background: -moz-linear-gradient(top, #BBBBBB, #888888);   
+.alert_notice{
+      background: #00388b;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#146aea', endColorstr='#00388b');
+      background: -webkit-gradient(linear, left top, left bottom, from(#146aea), to(#00388b));
+      background: -moz-linear-gradient(top, #146aea, #00388b);   
 }
 .noBG{background: transparent; border: 0; text-shadow:none;}
 .hidden{display: none;}
@@ -73,19 +68,20 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 /*/Geral */
 
 /* Header */
-#labelNL{color: #FFF; font-size: 1.2em; float: left; line-height: 30px; margin-right: 10px;}
+#labelNL{color: #FFF; font-size: 1.2em; float: left; line-height: 30px; margin-right: 10px; text-shadow: -1px -1px 0 rgba(0,0,0,0.3);}
 #topNL{
-  background: #D87D08;
+  background: #c770008;
   /* for non-css3 browsers */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8C00', endColorstr='#D87D08');
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8C00', endColorstr='#c77000');
   /* for IE */
-  background: -webkit-gradient(linear, left top, left bottom, from(#FF8C00), to(#D87D08));
+  background: -webkit-gradient(linear, left top, left bottom, from(#FF8C00), to(#c77000));
   /* for webkit browsers */
-  background: -moz-linear-gradient(top, #FF8C00, #D87D08);
+  background: -moz-linear-gradient(top, #FF8C00, #c77000);
   /* for firefox 3.6+ */
   height: 40px;
   display: none;
 }
+#cityNL{width: 200px;}
 #mailNL{
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -96,15 +92,15 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 }
 #mailNL.idleField{
     color: #999;
-    border: 1px solid #c8c8c8;
-    padding: 2px 2px 2px 10px;
-    background: #f2f2f2;
+    border: 2px solid #DF7F06;
+    padding: 1px 1px 1px 9px;
+    background: #FFF;
 }
 #mailNL.focusField{
     color: #666;
-    border: 2px solid #DF7F06;
+    border: 2px solid #c56e00;
     padding: 1px 1px 1px 9px;
-    background: #fff;
+    background: #fff4e6;
 }
 #formNL{padding: 5px 0; height: 30px;}
 #hd_wrap { /* Div que cobre todo o header */
@@ -115,18 +111,18 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 #logo {height: 87px;}
 #logo a{height: 87px; width: 380px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden;}
-#cidades{height: 58px;}
-#login{height: 28px;}
+#cities{height: 58px; line-height: 40px;}
+#login{height: 28px; text-align: right;}
 #menuTop, #menuMain{height: 34px;}
 #menuMain{}
 #menuCat{height: 41px;}
 #bannerHome{height: 335px; margin-top: 20px;}
 
-#menuTop ul{margin: 3px 0; float: right}
+#menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
-#menuTop ul li a{color: #029116; border: 0;}
-#menuTop ul li.current a{color: #15567F; text-decoration: none;}
-#menuTop ul li a:hover{color: #D87D08; text-decoration: none; background: transparent;}
+#menuTop ul li a{color: #D87D08; border: 0;}
+#menuTop ul li.current a{color: #7A9D24; text-decoration: none;}
+#menuTop ul li a:hover{color: #2072a5; text-decoration: none; background: transparent;}
 #headUser{text-align: right; margin-top: 5px; height: 32px;}
 #headUser span{margin-right: 5px}
 
@@ -140,21 +136,85 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 }
 #search #q.idleField{
     color: #999;
-    border: 1px solid #c8c8c8;
+    border: 1px solid #d9d9d9;
     padding: 2px 2px 2px 10px;
-    background: #f2f2f2;
+    background: #f6f6f6;
 }
 #search #q.focusField{
     color: #666;
-    border: 2px solid #DF7F06;
+    border: 2px solid #d9d9d9;
     padding: 1px 1px 1px 9px;
     background: #FFF;
 }
-.twLoginBtn, .fbLoginBtn{margin: 5px 0 0 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden;}
+.twLoginBtn, .fbLoginBtn{margin: 5px 0 0 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
 .twLoginBtn{background-position: -181px -4px;}
 .twLoginBtn:hover{background-position: -181px -31px;}
 .fbLoginBtn{background-position: -41px -4px;}
 .fbLoginBtn:hover{background-position: -41px -31px;}
+
+/* Lista e Combo de Cidades */
+#cityLabel{
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-top: 5px;
+    float: left;
+}
+#cityCombo{
+    font-size: 1.5em;
+    margin: 10px 0 0 10px;
+    float: left;
+    width: 270px;
+}
+#cityCombo a{
+    color: #999;
+}
+
+
+#listCities{
+    background: #15567F;
+    box-shadow: 0 -2px 2px #0D0D0D;
+    padding: 5px 10px;
+    width: 920px;
+    float: left;
+    margin: 0 10px 10px 10px;
+    display: none;
+}
+#listCities h2{
+    color: #FFF;
+    font-size: 1.3em;
+    margin-bottom: 0.5em;;
+}
+#listCities ul{
+    list-style: none outside none;
+    margin: 0;
+}
+#listCities ul li{
+    float: left;
+    width: 20%;
+    line-height: 22px;
+    margin: 0;
+}
+#listCities ul li a{
+    background: #6c9ab7;
+    color: #003454;
+    display: block;
+    border: 1px solid #71a4c5;
+    margin: 3px;
+    padding: 1px 3px;
+    font-weight: 700;
+}
+#listCities ul li a:hover{
+    background: #FFF;
+    color: #15567F;
+    border: 1px solid #2090D6;
+}
+#listCities ul li a.selected{
+    background: #FFF;
+    color: #666;
+    border: 1px solid #333;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
 /* /Header */
 
 /* Body */

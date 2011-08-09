@@ -50,4 +50,15 @@ $(function(){
         e.preventDefault();
         return false;
     });
+    // Como e Lista de Cidades
+    $("#cityCombo a, #closeCities").click(function (e) {
+        $('#listCities').slideToggle();
+        if ( $('#listCities').is(':visible')){
+            $('html,body').animate({
+                scrollTop: $("#cityCombo").offset().top
+            },'slow');
+        }
+        e.preventDefault();
+        return false;
+    });
 });

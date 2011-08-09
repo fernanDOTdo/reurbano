@@ -8,6 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\UserBundle\Form\Frontend\UserForm;
 
+/**
+ * @Route("", requirements={"_scheme" = "https"})
+ */
 class SecurityController extends BaseController {
 
     /**
