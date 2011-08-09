@@ -25,8 +25,9 @@ class StatusController extends BaseController
         $title = 'Administração de Status';
         $status = $this->mongo('ReurbanoOrderBundle:Status')->findAll();
         return array(
-            'status' => $status,
-            'title' => $title,
+            'status'  => $status,
+            'title'   => $title,
+            'current' => 'admin_order_order_index',
             );
     }
     /**
@@ -63,9 +64,10 @@ class StatusController extends BaseController
             }
         }
         return array(
-            'form' => $form->createView(),
-            'stat' => $stat,
-            'title'=>  $title,
+            'form'    => $form->createView(),
+            'stat'    => $stat,
+            'title'   =>  $title,
+            'current' => 'admin_order_order_index',
             );
     }
     /**
@@ -92,8 +94,9 @@ class StatusController extends BaseController
             return $this->redirect($this->generateUrl('admin_order_status_index'));
         }
         return array(
-            'name' => $stat->getName(),
-            'id'   => $stat->getId(),
+            'name'    => $stat->getName(),
+            'id'      => $stat->getId(),
+            'current' => 'admin_order_order_index',
         );
     }
 }
