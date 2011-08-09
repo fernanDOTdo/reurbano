@@ -22,7 +22,11 @@ class CategoryController extends BaseController {
     public function indexAction() {
         $title = 'Administração de Categorias';
         $categorias = $this->mongo('ReurbanoDealBundle:Category')->findAllByOrder();
-        return array('categorias' => $categorias, 'title' => $title);
+        return array(
+            'categorias' => $categorias,
+            'title'      => $title,
+            'current'    => 'admin_order_order_index',
+            );
     }
 
     /**
@@ -55,7 +59,11 @@ class CategoryController extends BaseController {
                 return $this->redirect($this->generateUrl('admin_deal_category_index'));
             }
         }
-        return array('form' => $form->createView(), 'cat' => $cat, 'title' => $title);
+        return array(
+            'form'    => $form->createView(),
+            'cat'     => $cat,
+            'title'   => $title,
+            'current' => 'admin_order_order_index',);
     }
     /**
      * Exibe um pre delete e deleta se for confirmado
@@ -78,6 +86,7 @@ class CategoryController extends BaseController {
         return array(
             'name' => $cat->getName(),
             'id'   => $cat->getId(),
+            'current' => 'admin_order_order_index',
         );
     }
 }
