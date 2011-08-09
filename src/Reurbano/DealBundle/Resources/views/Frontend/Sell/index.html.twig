@@ -2,6 +2,12 @@
 
 {% block title %}{{title|trans}}{% endblock %}
 
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.css' filter='?yui_css' output='reurbano/dealbundle/css/pack.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block content %}
     <form action="{{ path('deal_sell_details') }}" method="post" {{form_enctype(form)}}>
         <div>
@@ -21,8 +27,8 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>
-    {% javascripts output='bundles/dealbundle/js/sell.js' 
-                   '@ReurbanoDealBundle/Resources/public/js/Frontend/jquery.autocomplete.pack.js'
+    {% javascripts output='bundles/dealbundle/js/sell.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
                    '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
                    %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
