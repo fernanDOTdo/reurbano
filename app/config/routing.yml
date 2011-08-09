@@ -14,7 +14,6 @@ MastopTesteBundle:
 
 ReurbanoUserBundle:
    resource:  "@ReurbanoUserBundle/Resources/config/routing.yml"
-   prefix:   /usuario
    
 userBackend:
    resource:  "@ReurbanoUserBundle/Resources/config/routingBackend.yml"
@@ -23,6 +22,8 @@ userBackend:
 _login:
     resource: "@ReurbanoUserBundle/Controller/Frontend/SecurityController.php"
     type:     annotation
+    requirements:
+        _scheme:  https
 _logout:
     resource: "@ReurbanoUserBundle/Controller/Frontend/SecurityController.php"
     type:     annotation
