@@ -11,7 +11,7 @@
   {% endfor %}
 </ul>
 {% for cidade in cidades %}
-    {{ cidade.getId() }} - {{ cidade.getName() }} - {{ cidade.getSlug() }} - {{ cidade.isSpecial() }} - {{ cidade.getOrder() }} - <a href="{{ path('admin_core_city_edit', {'slug': cidade.getSlug()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_core_city_delete', {'id': cidade.getId()}) }}">{{"Deletar"|trans}}</a><br />
+    {{ cidade.getId() }} - {{ cidade.getName() }} - {{ cidade.getSlug() }} - {{ cidade.isSpecial() }} - {{ cidade.getOrder() }} - <a href="{{ path('admin_core_city_form', {'slug': cidade.getSlug()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_core_city_delete', {'id': cidade.getId()}) }}">{{"Deletar"|trans}}</a><br />
   {% else %}
     Nenhuma cidade encontrada!
   {% endfor %} 
