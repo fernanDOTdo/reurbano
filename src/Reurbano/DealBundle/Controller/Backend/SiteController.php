@@ -26,7 +26,10 @@ class SiteController extends BaseController {
     {
         $title = 'Administração de Sites';
         $site = $this->mongo('ReurbanoDealBundle:Site')->findAllByOrder();
-        return array('site' => $site, 'title' => $title);
+        return array(
+            'site'    => $site,
+            'title'   => $title,
+            'current' => 'admin_deal_deal_index',);
     }
     
     /**
@@ -75,9 +78,10 @@ class SiteController extends BaseController {
             
         }
         return array(
-            'form' => $form->createView(),
-            'site' => $site,
-            'title'=> $title,
+            'form'    => $form->createView(),
+            'site'    => $site,
+            'title'   => $title,
+            'current' => 'admin_deal_deal_index',
         );
     }
     
@@ -100,8 +104,9 @@ class SiteController extends BaseController {
             return $this->redirect($this->generateUrl('admin_deal_site_index'));
         }
         return array(
-            'name' => $site->getName(),
-            'id'   => $site->getId(),
+            'name'    => $site->getName(),
+            'id'      => $site->getId(),
+            'current' => 'admin_deal_deal_index',
         );
     }
 }

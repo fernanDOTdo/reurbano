@@ -23,7 +23,11 @@ class SourceController extends BaseController
         $title = 'Administração do Banco de Ofertas';
         $ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAll();
         //$ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
-        return array('ofertas' => $ofertas, 'title' => $title);
+        return array(
+            'ofertas' => $ofertas,
+            'title'   => $title,
+            'current' => 'admin_deal_deal_index',
+            );
     }
     /**
      * @Route("/novo", name="admin_deal_source_new")
@@ -61,9 +65,11 @@ class SourceController extends BaseController
             }
         }
         return array(
-            'form' => $form->createView(),
-            'deal' => $deal,
-            'title'=>  $title);
+            'form'    => $form->createView(),
+            'deal'    => $deal,
+            'title'   =>  $title,
+            'current' => 'admin_deal_deal_index',
+            );
     }
     /**
      * @Route("/deletar/{id}", name="admin_deal_source_delete")
@@ -89,8 +95,9 @@ class SourceController extends BaseController
 
         $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
         return array(
-            'deal' => $deal,
-            'id' => $id
+            'deal'    => $deal,
+            'id'      => $id,
+            'current' => 'admin_deal_deal_index',
         );
         
     }

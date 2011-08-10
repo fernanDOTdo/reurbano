@@ -30,7 +30,11 @@ class DealController extends BaseController
         $title = 'Administração de Ofertas';
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
         $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
-        return array('ofertas' => $ofertas, 'title' => $title);
+        return array(
+            'ofertas' => $ofertas,
+            'title'   => $title,
+            'current' => 'admin_deal_deal_index',
+            );
     }
     /**
      * @Route("/novo", name="admin_deal_deal_new")
@@ -92,9 +96,10 @@ class DealController extends BaseController
             }
         }
         return array(
-            'form' => $form->createView(),
-            'deal' => $deal,
-            'title'=>  $title);
+            'form'    => $form->createView(),
+            'deal'    => $deal,
+            'title'   =>  $title,
+            'current' => 'admin_deal_deal_index',);
     }
     /**
      * @Route("/deletar", name="admin_deal_deal_delete")
