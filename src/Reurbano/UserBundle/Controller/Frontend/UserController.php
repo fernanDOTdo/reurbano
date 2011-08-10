@@ -101,8 +101,8 @@ class UserController extends BaseController {
             $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, aguarde a aprovação por um de nossos administradores. Assim que for aprovado você receberá um email de confirmação através do email %email%', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
         }
         return $this->render('ReurbanoUserBundle:Frontend/User:confirmation.html.twig', array(
-            'msg' => $msg
-        ));
+                    'msg' => $msg
+                ));
     }
 
     /**
@@ -120,9 +120,9 @@ class UserController extends BaseController {
                     $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
                     $form = $this->createForm(new UserFormEdit(), $query);
                     return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-                        'form' => $form->createView(), 'titulo' => $titulo,
-                        'usuario' => $query
-                    ));
+                                'form' => $form->createView(), 'titulo' => $titulo,
+                                'usuario' => $query
+                            ));
                 } else {
                     $msg = $this->trans('Você não tem permissão para editar o usuário.');
                     $this->get('session')->setFlash('error', $msg);
@@ -144,11 +144,11 @@ class UserController extends BaseController {
             $titulo = $this->trans("Novo membro");
             $form = $factory->create(new UserForm());
             return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-                'form' => $form->createView(), 'titulo' => $titulo,
-                'usuario' => null,
-                'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
-                'error' => $error,
-            ));
+                        'form' => $form->createView(), 'titulo' => $titulo,
+                        'usuario' => null,
+                        'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
+                        'error' => $error,
+                    ));
         }
     }
 
@@ -173,11 +173,7 @@ class UserController extends BaseController {
             }
             // /notificação de novo usuario
             //autologin
-            $usuario->setLastLogin(new \DateTime());
-            $this->dm()->persist($usuario);
-            $this->dm()->flush();
-            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-            $this->container->get('security.context')->setToken($token);
+            $this->authenticateUser($usuario);
             // /autologin
             return $this->redirect($this->generateUrl('_home'));
         } else {
@@ -195,8 +191,8 @@ class UserController extends BaseController {
         $factory = $this->get('form.factory');
         $form = $factory->create(new ReenviarForm());
         return $this->render('ReurbanoUserBundle:Frontend/User:reenviar.html.twig', array(
-            'form' => $form->createView(),
-        ));
+                    'form' => $form->createView(),
+                ));
     }
 
     /**
@@ -343,7 +339,7 @@ class UserController extends BaseController {
         if (count($itens) > 0) {
             if ($this->verificaStatus($itens)) {
                 return $this->render('ReurbanoUserBundle:Frontend/User:detalhes.html.twig', array(
-                    'usuario' => $itens));
+                            'usuario' => $itens));
             } else {
                 return $this->redirect($this->generateUrl('_home'));
             }
@@ -523,8 +519,8 @@ class UserController extends BaseController {
         $factory = $this->get('form.factory');
         $form = $factory->create(new ForgetForm());
         return $this->render('ReurbanoUserBundle:Frontend/Security:forget.html.twig', array(
-            'form' => $form->createView(),
-        ));
+                    'form' => $form->createView(),
+                ));
     }
 
     /**
@@ -559,8 +555,8 @@ class UserController extends BaseController {
             $factory = $this->get('form.factory');
             $form = $factory->create(new ChangePassForm());
             return $this->render('ReurbanoUserBundle:Frontend/User:changepass.html.twig', array(
-                'form' => $form->createView(), 'actkey' => $usuario->getActkey(), 'email' => $usuario->getEmail()
-            ));
+                        'form' => $form->createView(), 'actkey' => $usuario->getActkey(), 'email' => $usuario->getEmail()
+                    ));
         } else {
             $this->get('session')->setFlash('error', $this->trans('Código de recuperação inválido. Solicite novamente a troca de sua senha.'));
             return $this->redirect($this->generateUrl('_home'));
@@ -738,8 +734,8 @@ class UserController extends BaseController {
      *
      * @param Boolean $reAuthenticate
      */
-    protected function authenticateUser(UserInterface $user) {
-        $providerKey = "mongo";
+    private function authenticateUser(UserInterface $user) {
+        $providerKey = "main";
         $role = $user->getRoles();
         if (in_array("ROLE_USER", $role)) {
             $user->setLastLogin(new \DateTime());
@@ -747,7 +743,7 @@ class UserController extends BaseController {
             $this->dm()->flush();
             $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
             $this->container->get('security.context')->setToken($token);
-            $this->setCookie('hideNL',1, time() + 604800);
+            $this->setCookie('hideNL', 1, time() + 604800);
         }
     }
 
@@ -799,8 +795,8 @@ class UserController extends BaseController {
                 $txtextra = $this->trans("Agora falta pouco para seu cadastro ser concluído, basta informar seu email:");
                 $form = $factory->create(new UserFormTwitter());
                 return $this->render('ReurbanoUserBundle:Frontend/User:novoTwitter.html.twig', array(
-                    'form' => $form->createView(), 'titulo' => $titulo, 'txtextra' => $txtextra
-                ));
+                            'form' => $form->createView(), 'titulo' => $titulo, 'txtextra' => $txtextra
+                        ));
             }
         } else {
             $msg = $this->trans('Erro ao cadastrar o usuário, não foi possível comunicar-se com o Twitter.');

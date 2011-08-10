@@ -3,7 +3,7 @@
 {{ title }}
 {% endblock title %}
 {% block content %}
-<div class="content" style="padding:0">
+<div class="content box grid_12 round_all" style="padding:0">
                         <table class="static"> 
         			<thead> 
                                     <tr> 
@@ -25,7 +25,7 @@
              <tr><td colspan='6'>{{ "Nenhum usuário encontrado."|trans }}</td></tr>
              {% endif %}
                         </table>
-    </div>
-
+</div>
+<div class='clear'></div>
         <button onclick="window.location='{{path('admin_user_user_new')}}'" title="{{ "Inserir novo usuário"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar usuário"|trans }}</button>
 {% endblock content %}  
