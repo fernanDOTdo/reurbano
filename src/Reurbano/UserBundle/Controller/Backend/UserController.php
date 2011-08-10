@@ -23,11 +23,13 @@ class UserController extends BaseController {
         $rep = $this->get('doctrine.odm.mongodb.document_manager');
         $dados = $rep->getRepository("ReurbanoUserBundle:User")->findAll();
         $itens = array();
+        $titulo = $this->trans("Listagem de usuários");
         foreach ($dados as $dt) {
             $itens[] = array("id" => $dt->getId(), "nome" => $dt->getName(), "email" => $dt->getEmail(), "createdAt" => $dt->getCreated(), 'username' => $dt->getUsername(), 'status' => ($dt->getStatus() ? $this->trans('_ATIVO') : $this->trans('_DESATIVADO')));
         }
         return $this->render('ReurbanoUserBundle:Backend/User:index.html.twig', array(
-            'usuarios' => $dados));
+                    'title' => $titulo,
+                    'usuarios' => $dados));
     }
 
     /**
@@ -44,17 +46,18 @@ class UserController extends BaseController {
             $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
             $form = $this->createForm(new UserFormEdit(), $query);
             return $this->render('ReurbanoUserBundle:Backend/User:novo.html.twig', array(
-                'form' => $form->createView(), 'titulo' => $titulo,
-                'usuario' => $query
-            ));
+                        'form' => $form->createView(), 'title' => $titulo,
+                        'usuario' => $query
+                    ));
         } else {
             $factory = $this->get('form.factory');
             $titulo = $this->trans("Novo usuário");
             $form = $factory->create(new UserForm());
             return $this->render('ReurbanoUserBundle:Backend/User:novo.html.twig', array(
-                'form' => $form->createView(), 'titulo' => $titulo,
-                'usuario' => null
-            ));
+                        'form' => $form->createView(), 'title' => $titulo,
+                        'usuario' => null,
+                        'current' => 'admin_user_user_index'
+                    ));
         }
     }
 
@@ -66,11 +69,12 @@ class UserController extends BaseController {
 
         $rep = $this->mongo('ReurbanoUserBundle:User');
         $query = $rep->findByField('username', $username);
-        $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
+        $titulo = $this->trans("Edição de senha do usuário %name%", array("%name%" => $query->getName()));
         $form = $this->createForm(new ChangePass(), $query);
         return $this->render('ReurbanoUserBundle:Backend/User:senha.html.twig', array(
-            'form' => $form->createView(), 'usuario' => $query
-        ));
+                    'form' => $form->createView(), 'usuario' => $query,
+                    'title' => $titulo,
+                ));
     }
 
     /**
@@ -225,35 +229,34 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/deletar/{username}", name="admin_user_user_deletar")
+     * @Route("/deletar", name="admin_user_user_deletar")
      * @Template()
      */
-    public function deletarAction($username) {
-        $usuario = $this->mongo('ReurbanoUserBundle:User')->findByField('username', $username);
-
-        return array('usuario' => $usuario);
+    public function deletarAction() {
+        $request = $this->getRequest();
+        $username = $request->get('username');
+        if ('POST' == $request->getMethod()) {
+            $id = $request->get('id');
+            $usuario = $this->mongo('ReurbanoUserBundle:User')->findOneById($id);
+            $nome = $usuario->getName();
+            $uname = $usuario->getUsername();
+            $this->dm()->remove($usuario);
+            $this->dm()->flush();
+            $msg = $this->trans('O usuário %name% foi removido com sucesso.', array("%name%" => $nome . " ($uname)"));
+            $this->get('session')->setFlash('ok', $msg);
+            return $this->redirect($this->generateUrl('admin_user_user_index'));
+        } else {
+            $usuario = $this->mongo('ReurbanoUserBundle:User')->findOneBy(array('username' => $username));
+            return $this->confirm($this->trans('Tem certeza que deseja remover o usuário %name%?', array("%name%" => $usuario->getName())), array('id' => $usuario->getId()));
+        }
     }
 
-    /**
-     * @Route("/deletarOk/{username}", name="admin_user_user_deletarok")
-     * @Template()
-     */
-    public function deletarOkAction($username) {
-        $usuario = $this->mongo('ReurbanoUserBundle:User')->findByField('username', $username);
-        $nome = $usuario->getName();
-        $uname = $usuario->getUsername();
-        $this->dm()->remove($usuario);
-        $this->dm()->flush();
-        $msg = $this->trans('O usuário %name% foi removido com sucesso.', array("%name%" => $nome . " ($uname)"));
-        $this->get('session')->setFlash('ok', $msg);
-        return $this->redirect($this->generateUrl('admin_user_user_index'));
-    }
     /**
      * Action para exibir um password criptografado com as atuais configurações
      * 
      * @Route("/testpass", name="admin_user_user_testpass")
      */
-    public function testPass(){
+    public function testPass() {
         $req = $this->getRequest()->query;
         $pass = $req->get('p');
         $salt = $req->get('s');

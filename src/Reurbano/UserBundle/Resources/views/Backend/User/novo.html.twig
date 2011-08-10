@@ -1,16 +1,18 @@
 {% extends '::backend.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock title %}
 {% block content %}
-        <h1>{{ titulo }}</h1>
+    <div class="box grid_12 round_all">
         {% if usuario %}
-            <form action="{{ path('admin_user_user_save',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
+            <form class="block" action="{{ path('admin_user_user_save',{ 'id':usuario.getId() }) }}" method="post" {{ form_enctype(form) }}>
         {% else %}
-            <form action="{{ path('admin_user_user_save') }}" method="post" {{ form_enctype(form) }}>
+            <form class="block" action="{{ path('admin_user_user_save') }}" method="post" {{ form_enctype(form) }}>
         {% endif%}
-        
-    {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
-        </form>
+        {{ form_widget(form) }}
+                <button class="button_colour"><span>{{ "Salvar"|trans }}</span></button>
+            </form>
+</div>
 {% endblock content %}  
 {% block javascripts %}
         <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
