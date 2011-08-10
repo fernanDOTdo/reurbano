@@ -71,6 +71,7 @@ class DealController extends BaseController
             foreach ($formDataResult as $kFile => $vFile){
                 if ($vFile){
                     $file = new Upload($formDataResult[$kFile]);
+                    $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal");
                     $fileUploaded = $file->upload();
                     $voucher = new Voucher();
                     $voucher->setFilename($fileUploaded->getFileName());
@@ -96,12 +97,14 @@ class DealController extends BaseController
             'title'=>  $title);
     }
     /**
-     * @Route("/deletar/{id}", name="admin_deal_deal_delete")
+     * @Route("/deletar", name="admin_deal_deal_delete")
      * @Template()
      */
-    public function deleteAction($id)
+    public function deleteAction()
     {
         $dm = $this->dm();
+        $request = $this->getRequest();
+        $id = $request->get('id');
         $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
         if (!$deal) {
             throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
@@ -116,11 +119,8 @@ class DealController extends BaseController
             $this->get('session')->setFlash('ok', $this->trans('Oferta Deletada'));
             return $this->redirect($this->generateUrl('admin_deal_deal_index'));
         }
-
-        return array(
-            'deal' => $deal,
-            'id' => $id
-        );
+        
+        return $this->confirm('Tem certeza de que deseja remover a oferta "' . $deal->getLabel() . '"', array('id' => $deal->getId()));
         
     }
     
