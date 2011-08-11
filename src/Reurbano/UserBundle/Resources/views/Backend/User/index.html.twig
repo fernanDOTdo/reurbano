@@ -1,15 +1,31 @@
 {% extends '::backend.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock title %}
 {% block content %}
-<h1>{{ "Listagem de Usuários"|trans }}</h1>
-        <table width="100%" border="1" cellpadding="2" cellspacing="0">
-            <tr><th><b>{{ "Nome"|trans }}</b></th><th><b>{{ "Login"|trans }}</b></th><th><b>{{ "Email"|trans }}</b></th><th><b>{{ "Status"|trans }}</b></th><th><b>{{ "Criado"|trans }}</b></th><th><b>{{ "Ações"|trans }}</b></th></tr>
-        {% if (usuarios) %}
+<div class="content box grid_12 round_all" style="padding:0">
+                        <table class="static"> 
+        			<thead> 
+                                    <tr> 
+                                        <th>{{ "Nome"|trans }}</th> 
+                                        <th>{{ "Login"|trans }}</th> 
+                                        <th class="nowrap">{{ "Email"|trans }}</th> 
+                                        <th class="center nowrap">{{ "Status"|trans }}</th> 
+                                        <th class="center nowrap">{{ "Criado"|trans }}</th> 
+                                        <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+                                    </tr> 
+				</thead> 
+                                {% if (usuarios) %}
         {% for user in usuarios %}
-             <tr><td>{{ user.getName() }}</td><td>{{ user.getUsername() }}</td><td>{{ user.getEmail() }}</td><td>{{ user.getStatus(true) }}</td><td>{{ user.getCreated() }}</td><td><a title="{{ "Editar o usuário"|trans }}" href="{{ url('admin_user_user_editar', {'username': user.username}) }}">{{ "Editar"|trans }}</a> - <a title="{{ "Excluir o usuário"|trans }}" href="{{ url('admin_user_user_deletar', {'username': user.username}) }}">{{ "Deletar"|trans }}</a> - <a title="{{ "Excluir o usuário"|trans }}" href="{{ url('admin_user_user_senha', {'username': user.username}) }}">{{ "Senha"|trans }}</a></td></td></tr>
-        {% endfor %}
+             <tr><td>{{ user.getName() }}</td><td>{{ user.getUsername() }}</td><td>{{ user.getEmail() }}</td><td>{{ user.getStatus(true) }}</td><td>{{ user.getCreated() }}</td>
+                 <td class="center nowrap">
+                     <a class="button button-set-start small white" title="{{ "Editar o usuário"|trans }}" href="{{ url('admin_user_user_editar', {'username': user.username}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set small white" title="{{ "Trocar a senha deste usuário"|trans }}" href="{{ url('admin_user_user_senha', {'username': user.username}) }}"><span class="ui-silk ui-silk-lock-edit">{{ "Senha"|trans }}</span></a><a class="button button-set-finish small red" title="{{ "Excluir o usuário"|trans }}" href="{{ url('admin_user_user_deletar', {'username': user.username}) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
+        {% endfor %}</td></td></tr>
              {% else %}
              <tr><td colspan='6'>{{ "Nenhum usuário encontrado."|trans }}</td></tr>
              {% endif %}
-         </table>
-        <a title="{{ "Inserir novo usuário"|trans }}" href="{{ url('admin_user_user_new') }}">{{ "Adicionar usuário"|trans }}</a>
+                        </table>
+</div>
+<div class='clear'></div>
+        <button onclick="window.location='{{path('admin_user_user_new')}}'" title="{{ "Inserir novo usuário"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar usuário"|trans }}</button>
 {% endblock content %}  

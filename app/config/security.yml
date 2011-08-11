@@ -19,10 +19,7 @@ security:
         ROLE_SUPERADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        chain_provider:
-             providers: [mongo]
-             
-        mongo:
+        main:
 #            entity: { class: Symfony\Bundle\DoctrineMongoDBBundle\Security\DocumentUserProvider, property: email }
              id: mastop.user
 
@@ -31,7 +28,7 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        secured_area:
+        main:
             pattern:    ^/
             anonymous: ~
             form_login:

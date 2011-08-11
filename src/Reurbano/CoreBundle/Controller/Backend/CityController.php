@@ -28,20 +28,14 @@ class CityController extends BaseController
     /**
      * Adiciona um novo, edita um já criado e salva ambos
      * 
-     * @Route("/novo", name="admin_core_city_novo")
-     * @Route("/editar/{slug}", name="admin_core_city_edit")
-     * @Route("/salvar/{slug}", name="admin_core_city_save", defaults={"slug" = null})
+     * @Route("/form/{slug}", name="admin_core_city_form", defaults={"slug" = null})
      * @Template()
      */
-    public function formAction($slug = null)
+    public function formAction(City $city = null)
     {
         $dm = $this->dm();
-        $title = ($slug) ? "Editar Cidade" : "Nova Cidade";
-        $query = array('slug' => $slug);
-        if($slug){
-            $city = $this->mongo('ReurbanoCoreBundle:City')->findOneBy($query);
-            if (!$city) throw $this->createNotFoundException('Nenhuma cidade encontrada com o nome '.$slug);
-        }else{
+        $title = ($city) ? "Editar Cidade" : "Nova Cidade";
+        if(!$city){
             $city = new City();
         }
         $form = $this->createForm(new CityType(), $city);
@@ -63,23 +57,14 @@ class CityController extends BaseController
      * @Route("/deletar/{id}", name="admin_core_city_delete")
      * @Template()
      */
-    public function deleteAction($id)
+    public function deleteAction(City $city)
     {
-        $request = $this->get('request');
-        $formResult = $request->request;
-        $dm = $this->dm();
-        $city = $this->mongo('ReurbanoCoreBundle:City')->find($id);
-        if($request->getMethod() == 'POST'){
-            if (!$city) 
-                throw $this->createNotFoundException('Nenhuma cidade encontrada com o ID '.$id);
-            $dm->remove($city);
-            $dm->flush();
+        if($this->get('request')->getMethod() == 'POST'){
+            $this->dm()->remove($city);
+            $this->dm()->flush();
             $this->get('session')->setFlash('ok', 'Cidade Deletada!');
             return $this->redirect($this->generateUrl('admin_core_city_index'));
         }
-        return array(
-            'name' => $city->getName(),
-            'id'   => $city->getId(),
-        );
+        return $this->confirm('Tem certeza de que deseja remover a cidade "' . $city->getName() . '"?', array('id' => $city->getId()));
     }
 }

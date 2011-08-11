@@ -18,7 +18,9 @@ class DashboardController extends BaseController
      * @Template()
      */
     public function indexAction(){
-        $title = 'titulo';
-        return array();
+        $title = 'Minha Conta';
+        return array(
+            'title' => $title,
+        );
     }
 }

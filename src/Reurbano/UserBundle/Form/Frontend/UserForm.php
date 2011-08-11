@@ -17,13 +17,13 @@ class UserForm extends AbstractType {
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
                 ->add('id', 'hidden')
-                ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome'))
-                ->add('email', 'email', array('label' => 'Email'))
-                ->add('cpf', 'text', array('label' => 'CPF'))
-                ->add('password', 'password', array('label' => 'Senha'))
-                ->add('password2', 'password', array('property_path' => false, 'label' => 'Repita a senha'))
-                ->add('agree', 'checkbox', array('label' => 'Eu li e aceito os Termos e Condições de uso do Reurbano', 'required' => true, 'property_path' => false))
-                ->add('newsletters', 'checkbox', array('label' => 'Sim, quero receber notícias e promoções do Reurbano', 'required' => false))
+                ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome: '))
+                ->add('email', 'email', array('label' => 'Email: '))
+                ->add('cpf', 'text', array('label' => 'CPF: '))
+                ->add('password', 'password', array('label' => 'Senha: '))
+                ->add('password2', 'password', array('property_path' => false, 'label' => 'Repita a senha: '))
+                ->add('agree', 'checkbox', array('label' => 'Eu li e aceito os Termos e Condições de uso do site ', 'required' => true, 'property_path' => false))
+                ->add('newsletters', 'checkbox', array('label' => 'Sim, quero receber notícias e promoções do Reurbano ', 'required' => false))
                 ->add('emailVerify', 'hidden', array('property_path' => false))
 
         ;
