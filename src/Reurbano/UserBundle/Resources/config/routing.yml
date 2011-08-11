@@ -1,4 +1,14 @@
-_user_frontend:
+user_frontend:
     resource: "@ReurbanoUserBundle/Controller/Frontend/UserController.php"
     type: annotation
-    prefix:   /
+    prefix:   /usuario
+    
+user_frontend:
+    resource: "@ReurbanoUserBundle/Controller/Frontend/DashboardController.php"
+    type: annotation
+    prefix:   /usuario/minha-conta
+    
+user_backend:
+    resource: "@ReurbanoUserBundle/Controller/Backend/UserController.php"
+    type: annotation
+    prefix:   /admin/usuario

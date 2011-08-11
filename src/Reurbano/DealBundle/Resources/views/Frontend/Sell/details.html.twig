@@ -14,12 +14,3 @@
         <input type="submit" value="Enviar"/>
     </form>
 {% endblock %}
-{% block javascripts %}
-    <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>
-    {% javascripts output='bundles/dealbundle/js/sell.js' 
-                   '@ReurbanoDealBundle/Resources/public/js/Frontend/jquery.autocomplete.pack.js'
-                   '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
-                   %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}

@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-/**
- * @Route("/usuario", requirements={"_scheme" = "https"})
- */
 class UserController extends BaseController {
 
     /**
@@ -159,8 +156,8 @@ class UserController extends BaseController {
     public function activeAction($actkey) {
         $repository = $this->mongo('ReurbanoUserBundle:User');
         $usuario = $repository->findByActkey($actkey);
-        if (!empty($usuario)) {
-            $repository->activeUser($usuario->getId());
+        if ($usuario) {
+           // $repository->activeUser($usuario->getId());
             $msg = $this->trans('O <b>%email%</b> foi confirmado como um usuário. Agora você pode fazer login em nosso site.', array("%email%" => $usuario->getEmail()));
             $this->get('session')->setFlash('ok', $msg);
             //notificação de novo usuario
@@ -172,14 +169,10 @@ class UserController extends BaseController {
                 }
             }
             // /notificação de novo usuario
-            //autologin
-            $usuario->setLastLogin(new \DateTime());
-            $this->dm()->persist($usuario);
-            $this->dm()->flush();
-            $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
-            $this->container->get('security.context')->setToken($token);
+            //autologinz
+            $this->authenticateUser($usuario);
             // /autologin
-            return $this->redirect($this->generateUrl('_home'));
+            //return $this->redirect($this->generateUrl('_home'));
         } else {
             $msg = $this->trans('Nenhum usuário encontrado com a chave de ativação fornecida.');
             $this->get('session')->setFlash('error', $msg);
