@@ -1,3 +1,0 @@
-_user_backend:
-    resource: "@ReurbanoUserBundle/Controller/Backend/UserController.php"
-    type: annotation

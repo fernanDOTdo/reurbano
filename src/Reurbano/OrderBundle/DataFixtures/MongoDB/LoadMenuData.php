@@ -22,7 +22,6 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
         // Pega menu Pai System-Admin
         $menu = $repo->findByBundleCode('system', 'admin');
         if($menu){
-            // Pega menu filho "Cidades" dentro do City Admin
             $menuItem = $repo->getChildrenByCode($menu, 'vendas');
             if(!$menuItem){ // Só adiciona o novo menu se ele já não existir
                 $child = new MenuItem();

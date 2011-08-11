@@ -61,7 +61,7 @@ class SourceController extends BaseController
                 $this->get('session')->setFlash('ok', $this->trans(($id) ? "Oferta Editada" : "Oferta Criada" ));
                 return $this->redirect($this->generateUrl('admin_deal_source_index'));
             }else{
-                //$this->get('session')->setFlash('error', $this->trans('Erro ao cadastrar oferta!'));
+                $this->get('session')->setFlash('error', $this->trans('Erro ao cadastrar oferta!'));
             }
         }
         return array(
