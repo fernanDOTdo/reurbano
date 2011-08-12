@@ -1,18 +1,22 @@
 {% extends '::frontend.html.twig' %}
+{% block title %}{{titulo}}{% endblock %}
 {% block content %}
-        <h1>{{ titulo }}</h1>
-        <div>{{ txtextra }}</div>
-            <form action="{{ path('user_user_twittersave') }}" method="post" {{ form_enctype(form) }}>
-        
+<div class="grid_12">
+    <h1>{{ titulo }}</h1>
+    <div>{{ txtextra }}</div>
+    <form action="{{ path('user_user_twittersave') }}" method="post" {{ form_enctype(form) }}>
+
     {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
-        </form>
+        <div class="grid_2 push_5">
+            <button class='button green' type="submit">{{ "Cadastrar"|trans }}</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}  
 {% block javascripts %}
-        <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
+<script type="text/javascript" src="{{ path('user_user_script') }}"></script>
         {% javascripts output='qualquer/coisa.js' 
                 '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% endblock %}
