@@ -1,10 +1,23 @@
 {% extends '::frontend.html.twig' %}
+{% block title %}
+{{ "Recuperação de Senha"|trans }}
+{% endblock title %}
 {% block content %}
-
-<form action="{{ path("user_user_recoverypost") }}" method="post">
+<div class="grid_6">
+    <div class="grid_6 alpha omega">
+       <h1> {{"Recuperação de Senha"|trans}}</h1>
+       {{ "Informe seu email abaixo para receber as instruções de como trocar sua senha:"|trans }}
+        <form action="{{ path("user_user_recoverypost") }}" method="post">
     {{ form_widget(form) }}
-    <br />
-    <input type="submit" name="login" value="{{ "Recuperar"|trans }}"/>
-</form>
-<div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{ "Será enviado um email com um link para confirmação de mudança da sua senha, sua senha somente será alterada após confirmar o clique no link do email recebido."|trans}}<br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+            <div class="grid_2 push_2">
+                <button class='button green' type="submit">{{ "Recuperar"|trans }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="grid_6">
+    <div class="grid_6 alpha omega">
+        <div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{ "Será enviado um email com um link para confirmação de mudança da sua senha, sua senha somente será alterada após confirmar o clique no link do email recebido."|trans}}<br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+    </div>
+</div>
 {% endblock content %}  

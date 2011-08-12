@@ -12,14 +12,12 @@
         <h2>{{ titulo }}</h2>
             <form action="{{ path('user_user_save') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-            <input type="submit" name='salvar' value='{{ "Salvar"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Voltar"|trans }}' onclick="history.go(-1)" />
+                <div class="grid_2 push_3">
+            <button class='button green' type="submit">{{ "Cadastrar"|trans }}</button>
+                </div>
         </form>
     </div>
-    <div class="grid_6 alpha omega">
-        <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
-        <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
-    </div>
+
 </div>
 <div class="grid_6">
     <div class="grid_6 alpha omega">
@@ -34,12 +32,12 @@
             <input type="checkbox" id="remember_me" name="_remember_me" checked />
             <label for="remember_me">{{ "Lembrar meu login"|trans }}</label>
             <br />
-            <div>
-                <div><input type="submit" name="{{ "Login"|trans }}" value="{{ "Login"|trans }}"/></div>
+            <div class="grid_2 push_2">
+                <button class='button green' type='submit'>{{ "Login"|trans }}</button>
             </div>
         </form>
     </div>
-    <div class="grid_6 alpha omega">
+        <div class="grid_6 alpha omega">
         <a href="#" id='facebook-login' class="fbLoginBtn" title="{{"Tem uma conta no Facebook? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Facebook</a>
         <a href="{{url('user_user_twitterconect')}}" class="twLoginBtn" title="{{"Tem uma conta no Twitter? Use-a para fazer o seu login no %sitename%"|trans ({"%sitename%":mastop_param('system.site.name')}) }}">Logar com Twitter</a>
     </div>

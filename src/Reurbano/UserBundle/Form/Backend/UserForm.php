@@ -20,11 +20,7 @@ class UserForm extends AbstractType {
                 ->add('status', 'choice', array(
                     'label' => 'Ativo',
                     'required' => true,
-                    'expanded' => true,
-                    'multiple' => false,
                     'choices' => array('1' => 'Sim', '2' => 'Não')))
-               // ->add('birth', 'birthday', array('label' => 'Aniversário'))
-
         ;
     }
 
