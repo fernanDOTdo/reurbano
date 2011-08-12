@@ -1,10 +1,18 @@
 {% extends '::frontend.html.twig' %}
+{% block title %}
+{{ "Reenvio de Código de ativação por email"|trans }}
+{% endblock title %}
 {% block content %}
-        <h1>{{ "Reenvio de código de ativação por email"|trans }}</h1>
-        <form action="{{ path('user_user_resendOk') }}" method="post" {{ form_enctype(form) }}>
+<div class="grid_6">
+    <h1>{{ "Reenvio de código de ativação por email"|trans }}</h1>
+    <form action="{{ path('user_user_resendOk') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-            <input type="submit" name='reenviar' value='{{ "Enviar novamente!"|trans }}' />
-            <input type="button" name='voltar' value='{{ "Cancelar"|trans }}' onclick="history.go(-1)" />
-        </form>
-        <div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+        <div class="grid_2 push_3">
+            <button class='button green' type='submit'>{{ "Enviar novamente!"|trans }}</button>
+        </div>
+    </form>
+</div>
+<div class="grid_6">
+    <div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+</div>
 {% endblock content %}  

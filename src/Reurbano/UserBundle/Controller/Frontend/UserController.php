@@ -89,7 +89,7 @@ class UserController extends BaseController {
      * @Route("/confirmacao/{username}", name="user_user_confirmation")
      * @Template()
      */
-    function cadastroOkAction($username) {
+    function confirmationOkAction($username) {
         $rep = $this->mongo('ReurbanoUserBundle:User');
         $usuario = $rep->findOneBy(array('username' => $username));
         $modoCadastro = $this->get('mastop')->param('user.all.autoactive');
@@ -107,11 +107,12 @@ class UserController extends BaseController {
 
     /**
      * @Route("/novo", name="user_user_new")
-     * @Route("/editar/{username}", name="user_user_editar")
+     * @Route("/editar/{username}", name="user_user_edit")
      * @Template()
      */
     public function newAction($username = false) {
         $userLogado = $this->get('security.context')->getToken()->getUser();
+        $error = array();
         if ($username) {
             $rep = $this->mongo('ReurbanoUserBundle:User');
             $query = $rep->findByField('username', $username);
@@ -119,9 +120,11 @@ class UserController extends BaseController {
                 if ($this->get('security.context')->isGranted('ROLE_ADMIN') || ($query->getId() == $userLogado->getId())) {
                     $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
                     $form = $this->createForm(new UserFormEdit(), $query);
-                    return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
+                    return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
                                 'form' => $form->createView(), 'titulo' => $titulo,
-                                'usuario' => $query
+                                'usuario' => $query,
+                                'error' => $error,
+                                'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
                             ));
                 } else {
                     $msg = $this->trans('Você não tem permissão para editar o usuário.');
@@ -454,7 +457,6 @@ class UserController extends BaseController {
                     $user->setMailOk(true);
                     $user->setStatus(4);
                 }
-
                 $user->setAvatar('');
                 $user->setLang('pt_BR');
                 $user->setTheme('');
@@ -500,14 +502,13 @@ class UserController extends BaseController {
                     }
                     // /notificação de novo usuario
                 }
-
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('user_user_confirmation', array('username' => $user->getUsername())));
             }
         } else {
             $this->get('session')->setFlash('error', $this->trans('Erro de validação no cadastro, tente novamente.'));
             $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
-            return $this->redirect($this->generateUrl('user_user_editar', array('username' => $user->getUsername())));
+            return $this->redirect($this->generateUrl('user_user_edit', array('username' => $user->getUsername())));
         }
     }
 
@@ -584,7 +585,8 @@ class UserController extends BaseController {
                 $this->dm()->persist($usuario);
                 $this->dm()->flush();
                 $this->emailNewPass($usuario);
-                $this->get('session')->setFlash('ok', $this->trans('Senha alterada com sucesso.'));
+                $this->get('session')->setFlash('ok', $this->trans('Senha alterada com sucesso, seja bem vindo %name$.',array('%name%'=>$usuario->getName())));
+                $this->authenticateUser($usuario);
                 return $this->redirect($this->generateUrl('_home'));
             }
         } else {

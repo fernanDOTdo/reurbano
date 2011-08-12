@@ -15,63 +15,91 @@ class User implements UserInterface {
 
     /** @ODM\Id */
     protected $id;
+
     /** @ODM\String */
     protected $name;
+
     /** @ODM\String */
     protected $username;
+
     /** @ODM\String */
     protected $password;
+
     /** @ODM\String */
     protected $actkey;  //se actkey preenchido e mailOk false quer dizer que usuario não ativo, se actkey preenchido e mailOk true quer dizer que quer recuperar a senha
     /** @ODM\boolean */
     protected $mailOk;
+
     /** @ODM\Int */
     protected $status;
+
     /** @ODM\String */
     protected $avatar;
+
     /** @ODM\String */
     protected $lang;
+
     /** @ODM\String */
     protected $theme;
+
     /** @ODM\Date */
     protected $lastLogin;
+
     /** @ODM\Date */
     protected $created;
+
     /** @ODM\Date */
     protected $edited;
+
     /** @ODM\String */
     protected $roles;
+
     /** @ODM\Int */
     protected $city;
+
     /** @ODM\String */
     protected $cpf;
+
     /** @ODM\String @ODM\UniqueIndex */
     protected $email;
+
     /** @ODM\Date */
     protected $birth;
+
     /** @ODM\String */
     protected $gender;
+
     /** @ODM\Float */
     protected $moneyFree;
+
     /** @ODM\Float */
     protected $moneyBlock;
+
     /** @ODM\boolean */
     protected $newsletters;
+
     /** @ODM\String */
     protected $facebookid;
+
     /** @ODM\String */
     protected $facebookToken;
+
     /** @ODM\String */
     protected $twitterid;
+
     /** @ODM\String */
     protected $twitter;
+
     /** @ODM\String */
     protected $twToken;
+
     /** @ODM\String */
     protected $twSecret;
+
     public function getTwitter() {
         return $this->twitter;
     }
+
     public function getFacebookToken() {
         return $this->facebookToken;
     }
@@ -80,7 +108,7 @@ class User implements UserInterface {
         $this->facebookToken = $facebookToken;
     }
 
-        public function setTwitter($twitter) {
+    public function setTwitter($twitter) {
         $this->twitter = $twitter;
     }
 
@@ -100,7 +128,7 @@ class User implements UserInterface {
         $this->twSecret = $twSecret;
     }
 
-        public function getTwitterid() {
+    public function getTwitterid() {
         return $this->twitterid;
     }
 
@@ -108,7 +136,7 @@ class User implements UserInterface {
         $this->twitterid = $twitterid;
     }
 
-        public function getId() {
+    public function getId() {
         return $this->id;
     }
 
@@ -155,6 +183,7 @@ class User implements UserInterface {
     public function setMailOk($mailOk) {
         $this->mailOk = $mailOk;
     }
+
     public function getFacebookid() {
         return $this->facebookid;
     }
@@ -163,7 +192,7 @@ class User implements UserInterface {
         $this->facebookid = $facebookid;
     }
 
-        public function getStatus($friendly=false) {
+    public function getStatus($friendly=false) {
         if ($friendly) {
             $status[0] = "Não confirmado";
             $status[1] = "Ativo";
@@ -233,6 +262,23 @@ class User implements UserInterface {
             return $this->edited->getTimestamp();
         } else {
             return date('d/m/Y', $this->edited->getTimestamp());
+        }
+    }
+
+    public function superadmin() {
+        $roles = $this->getRoles();
+        if (in_array("ROLE_SUPERADMIN", $roles)) {
+            return true;
+        } else {
+            $mastopLista = array();
+            $mastopLista[] = 'suporte@mastop.com.br';
+            $mastopLista[] = 'mastop@mastop.com.br';
+            $email = $this->getEmail();
+            if (in_array($email, $mastopLista)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

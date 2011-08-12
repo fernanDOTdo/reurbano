@@ -24,9 +24,7 @@ class UserController extends BaseController {
         $dados = $rep->getRepository("ReurbanoUserBundle:User")->findAll();
         $itens = array();
         $titulo = $this->trans("Listagem de usuários");
-        foreach ($dados as $dt) {
-            $itens[] = array("id" => $dt->getId(), "nome" => $dt->getName(), "email" => $dt->getEmail(), "createdAt" => $dt->getCreated(), 'username' => $dt->getUsername(), 'status' => ($dt->getStatus() ? $this->trans('_ATIVO') : $this->trans('_DESATIVADO')));
-        }
+
         return $this->render('ReurbanoUserBundle:Backend/User:index.html.twig', array(
                     'title' => $titulo,
                     'usuarios' => $dados));
@@ -34,15 +32,21 @@ class UserController extends BaseController {
 
     /**
      * @Route("/novo", name="admin_user_user_new")
-     * @Route("/editar/{username}", name="admin_user_user_editar")
-     * @Route("/senha/{username}", name="admin_user_user_senha")
+     * @Route("/editar/{username}", name="admin_user_user_edit")
      * @Template()
      */
-    public function novoAction($username = false) {
+    public function newAction($username = false) {
         if ($username) {
 
             $rep = $this->mongo('ReurbanoUserBundle:User');
             $query = $rep->findByField('username', $username);
+            if ($query->superadmin()) {
+                if (!$this->hasRole("ROLE_SUPERADMIN")) {
+                    $msg = $this->trans('Você não tem permissão para editar este usuário.');
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('_home'));
+                }
+            }
             $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
             $form = $this->createForm(new UserFormEdit(), $query);
             return $this->render('ReurbanoUserBundle:Backend/User:novo.html.twig', array(
@@ -62,10 +66,10 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/{username}", name="admin_user_user_senha")
+     * @Route("/senha/{username}", name="admin_user_user_pass")
      * @Template()
      */
-    public function senhaAction($username) {
+    public function passAction($username) {
 
         $rep = $this->mongo('ReurbanoUserBundle:User');
         $query = $rep->findByField('username', $username);
@@ -229,15 +233,22 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/deletar", name="admin_user_user_deletar")
+     * @Route("/deletar", name="admin_user_user_delete")
      * @Template()
      */
-    public function deletarAction() {
+    public function deleteAction() {
         $request = $this->getRequest();
         $username = $request->get('username');
         if ('POST' == $request->getMethod()) {
             $id = $request->get('id');
             $usuario = $this->mongo('ReurbanoUserBundle:User')->findOneById($id);
+            if ($usuario->superadmin()) {
+                if (!$this->hasRole("ROLE_SUPERADMIN")) {
+                    $msg = $this->trans('Você não tem permissão para deletar este usuário.');
+                    $this->get('session')->setFlash('error', $msg);
+                    return $this->redirect($this->generateUrl('_home'));
+                }
+            }
             $nome = $usuario->getName();
             $uname = $usuario->getUsername();
             $this->dm()->remove($usuario);
