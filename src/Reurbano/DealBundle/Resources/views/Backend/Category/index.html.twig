@@ -1,18 +1,36 @@
 {% extends '::backend.html.twig' %}
-        
 {% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-  {% for key in categorias|keys %}
-    <li>{{ key }}</li>
-  {% endfor %}
-</ul>
+<div class="content box grid_12 round_all">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Categoria"|trans }}</th> 
+                <th>{{ "Slug"|trans }}</th> 
+                <th class="nowrap">{{ "Ordem"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
 {% for cat in categorias %}
-    {{ cat.getId() }} - {{ cat.getName() }} - {{ cat.getSlug() }} - {{ cat.getOrder() }} - <a href="{{ path('admin_deal_category_edit', {'slug': cat.getSlug()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_deal_category_delete', {'id': cat.getId()}) }}">{{"Deletar"|trans}}</a><br />
+        <tr>
+            <td>
+            {{ cat.getName() }}
+            </td>
+            <td>
+            {{ cat.getSlug() }}
+            </td>
+            <td>
+                {{ cat.getOrder() }}
+            </td>
+            <td class="center">
+                <a class="button button-set-start small white" href="{{ path('admin_deal_category_edit', {'slug': cat.getSlug()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_deal_category_delete', {'id': cat.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            </td>
+        </tr>
   {% else %}
-    {{"Nenhuma categoria encontrada"|trans}}
+        <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
 {% endfor %} 
+    </table>
+    <div class='clear'></div>
+    <button onclick="window.location='{{path('admin_deal_category_new')}}'" title="{{ "Inserir nova categoria"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar categoria"|trans }}</button>
+</div>
 {% endblock %}

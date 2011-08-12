@@ -21,10 +21,10 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
         $repo = $manager->getRepository('MastopMenuBundle:Menu');
         // Pega menu Pai System-Admin
         $menu = $repo->findByBundleCode('system', 'admin');
-        if($menu){
+        if ($menu) {
             // Pega menu filho "Cidades" dentro do City Admin
             $menuItem = $repo->getChildrenByCode($menu, 'cidades');
-            if(!$menuItem){ // Só adiciona o novo menu se ele já não existir
+            if (!$menuItem) { // Só adiciona o novo menu se ele já não existir
                 $child = new MenuItem();
                 $child->setCode('cidades');
                 $child->setName('Cidades');
@@ -35,11 +35,22 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
                 $menu->addChildren($child);
                 $manager->persist($menu);
                 $manager->flush();
+
+                $child2 = new MenuItem();
+                $child2->setCode('city.novo');
+                $child2->setName('Adicionar');
+                $child2->setRole('ROLE_ADMIN');
+                $child2->setUrl('admin_core_city_form');
+                $child2->setRoute(true);
+                $child->addChildren($child2);
+                $manager->persist($menu);
+                $manager->flush();
             }
         }
     }
-    public function getOrder()
-    {
+
+    public function getOrder() {
         return 2;
     }
+
 }

@@ -1,14 +1,13 @@
 {% extends '::backend.html.twig' %}
-        
+
 {% block title %}{{title|trans}}{% endblock %}
 {% set vars = stat.getId() ? {'id': stat.getId()} : {} %}
 
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-<form action="{{ path('admin_order_status_save', vars) }}" method="post" {{ form_enctype(form) }}>
+<div class="content box grid_12 round_all">
+    <form action="{{ path('admin_order_status_save', vars) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-
-    <input type="submit" value="{{"Enviar"|trans}}" />
-</form>
-{% endblock %}
+            <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+    </form>
+</div>
+{% endblock content %}

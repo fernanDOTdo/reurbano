@@ -24,9 +24,9 @@ class CategoryController extends BaseController {
         $categorias = $this->mongo('ReurbanoDealBundle:Category')->findAllByOrder();
         return array(
             'categorias' => $categorias,
-            'title'      => $title,
-            'current'    => 'admin_deal_deal_index',
-            );
+            'title' => $title,
+            'current' => 'admin_deal_deal_index',
+        );
     }
 
     /**
@@ -37,14 +37,14 @@ class CategoryController extends BaseController {
      * @Route("/salvar/{slug}", name="admin_deal_category_save", defaults={"slug" = null})
      * @Template()
      */
-    public function categoryAction($slug = null)
-    {
+    public function categoryAction($slug = null) {
         $dm = $this->dm();
         $title = ($slug) ? "Editar Categoria" : "Nova Categoria";
         $query = array('slug' => $slug);
         if ($slug) {
             $cat = $this->mongo('ReurbanoDealBundle:Category')->findOneBy($query);
-            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o nome ' . $slug);
+            if (!$cat)
+                throw $this->createNotFoundException('Nenhuma categoria encontrada com o nome ' . $slug);
         }else {
             $cat = new Category();
         }
@@ -60,33 +60,32 @@ class CategoryController extends BaseController {
             }
         }
         return array(
-            'form'    => $form->createView(),
-            'cat'     => $cat,
-            'title'   => $title,
+            'form' => $form->createView(),
+            'cat' => $cat,
+            'title' => $title,
+            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Categorias'),'url'=>$this->generateUrl('admin_deal_category_index'))),
             'current' => 'admin_deal_deal_index',);
     }
+
     /**
      * Exibe um pre delete e deleta se for confirmado
      * 
      * @Route("/deletar/{id}", name="admin_deal_category_delete")
      * @Template()
      */
-    public function deleteAction($id)
-    {
+    public function deleteAction($id) {
         $request = $this->get('request');
         $dm = $this->dm();
         $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);
-        if($request->getMethod() == 'POST'){
-            if (!$cat) throw $this->createNotFoundException('Nenhuma categoria encontrada com o ID ' . $id);
+        if ($request->getMethod() == 'POST') {
+            if (!$cat)
+                throw $this->createNotFoundException($this->trans('Nenhuma categoria encontrada com o ID %id%'), array("%id$" => $id));
             $dm->remove($cat);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans('Categoria deletada'));
             return $this->redirect($this->generateUrl('admin_deal_category_index'));
         }
-        return array(
-            'name' => $cat->getName(),
-            'id'   => $cat->getId(),
-            'current' => 'admin_deal_deal_index',
-        );
+        return $this->confirm($this->trans('Tem certeza que deseja remover a categoria %name%?', array("%name%" => $cat->getName())), array('id' => $cat->getId()));
     }
+
 }

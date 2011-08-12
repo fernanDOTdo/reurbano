@@ -1,18 +1,29 @@
 {% extends '::backend.html.twig' %}
-        
 {% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-  {% for key in status|keys %}
-    <li>{{ key }}</li>
-  {% endfor %}
-</ul>
-{% for stat in status %}
-    {{ stat.getId() }} - {{ stat.getName() }} - {{ stat.getOrder() }} - <a href="{{ path('admin_order_status_edit', {'id': stat.getId()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_order_status_delete', {'id': stat.getId()}) }}">{{"Deletar"|trans}}</a><br />
-  {% else %}
-   {{"Nenhum status encontrado"|trans}}
-  {% endfor %} 
+<div class="content box grid_12 round_all">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "ID"|trans }}</th> 
+                <th>{{ "Título"|trans }}</th> 
+                <th class="nowrap">{{ "Ordem"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+        {% for stat in status %}
+            <tr>
+                <td>{{ stat.getId() }} </td>
+                <td> {{ stat.getName() }} </td>
+                <td> {{ stat.getOrder() }}</td>
+                <td class="center nowrap">
+                    <a class="button button-set-start small white" href="{{ path('admin_order_status_edit', {'id': stat.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_order_status_delete', {'id': stat.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a></td>
+            </tr>  
+        {% else %}
+            <tr><td colspan="4">{{"Nenhum status encontrado"|trans}}</td></tr>
+        {% endfor %} 
+    </table>
+    <div class='clear'></div>
+<button onclick="window.location='{{path('admin_order_status_new')}}'" title="{{ "Inserir novo status"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar status"|trans }}</button>
+</div>
 {% endblock %}
