@@ -1,7 +1,6 @@
 order_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/OrderController.php"
     type: annotation
-    prefix:   /compras
 order_checkout_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/CheckoutController.php"
     type: annotation
