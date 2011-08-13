@@ -23,7 +23,7 @@ class CityController extends BaseController
     {
         //$cidades = $this->mongo('ReurbanoCoreBundle:City')->findAll();
         $cidades = $this->mongo('ReurbanoCoreBundle:City')->findAllByOrder();
-        return array('cidades' => $cidades);
+        return array('cidades' => $cidades,'title'=>$this->trans("Listagem de Cidades"));
     }
     /**
      * Adiciona um novo, edita um já criado e salva ambos

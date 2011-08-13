@@ -37,7 +37,7 @@ security:
                 remember_me: true
                 username_parameter: _umail
             remember_me:
-                key:      someS3cretKey
+                key:      %secretRemember%
                 lifetime: 3600
                 path:     /
                 domain:   ~

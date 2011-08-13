@@ -22,7 +22,7 @@ class StatusController extends BaseController
      */
     public function indexAction()
     {
-        $title = 'Administração de Status';
+        $title = $this->trans('Administração de Status');
         $status = $this->mongo('ReurbanoOrderBundle:Status')->findAll();
         return array(
             'status'  => $status,
@@ -41,12 +41,8 @@ class StatusController extends BaseController
     public function statusAction($id = null)
     {
         $dm = $this->dm();
-        $title = ($id) ? "Editar Status" : "Novo Status";
+        $title = $this->trans(($id) ? "Editar Status" : "Novo Status");
         if($id){
-            if($id <= 8){
-                $this->get('session')->setFlash('error', $this->trans('Você não pode deletar esse status!'));
-                return $this->redirect($this->generateUrl('admin_order_status_index'));
-            }
             $stat = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$id);
             if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
         }else{
@@ -67,6 +63,7 @@ class StatusController extends BaseController
             'form'    => $form->createView(),
             'stat'    => $stat,
             'title'   =>  $title,
+            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Status'),'url'=>$this->generateUrl('admin_order_status_index'))),
             'current' => 'admin_order_order_index',
             );
     }
@@ -87,16 +84,13 @@ class StatusController extends BaseController
         $dm = $this->dm();
         $stat = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$id);
         if($request->getMethod() == 'POST'){
-            if (!$stat) throw $this->createNotFoundException('Nenhum status encontrado com o ID '.$id);
+            if (!$stat) throw $this->createNotFoundException($this->trans('Nenhum status encontrado com o ID %id%',array('%id%'=>$id)));
             $dm->remove($stat);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans('Status Deletado'));
             return $this->redirect($this->generateUrl('admin_order_status_index'));
         }
-        return array(
-            'name'    => $stat->getName(),
-            'id'      => $stat->getId(),
-            'current' => 'admin_order_order_index',
-        );
+        return $this->confirm($this->trans('Tem certeza que deseja deletar o status %name%?', array("%name%" => $stat->getName())), array('id' => $stat->getId()));
+
     }
 }

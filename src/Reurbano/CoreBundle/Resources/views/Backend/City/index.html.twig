@@ -1,18 +1,31 @@
 {% extends '::backend.html.twig' %}
-        
-{% block title %}Listagem de Cidades{% endblock %}
-
-
+{% block title %}{{title}}{% endblock %}
 {% block content %}
-<h1>Admin Area!</h1>
-<ul>
-  {% for key in cidades|keys %}
-    <li>{{ key }}</li>
-  {% endfor %}
-</ul>
+<div class="content box grid_12 round_all">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Cidade"|trans }}</th> 
+                <th>{{ "Slug"|trans }}</th> 
+                <th class="nowrap">{{ "Especial"|trans }}</th> 
+                <th class="nowrap">{{ "Ordem"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
 {% for cidade in cidades %}
-    {{ cidade.getId() }} - {{ cidade.getName() }} - {{ cidade.getSlug() }} - {{ cidade.isSpecial() }} - {{ cidade.getOrder() }} - <a href="{{ path('admin_core_city_form', {'slug': cidade.getSlug()}) }}">{{"Editar"|trans}}</a> - <a href="{{ path('admin_core_city_delete', {'id': cidade.getId()}) }}">{{"Deletar"|trans}}</a><br />
+        <tr>
+            <td class="nowrap">{{ cidade.getName() }}</td>
+            <td class="nowrap">{{ cidade.getSlug() }}</td>
+            <td>{{ cidade.isSpecial() }}</td>
+            <td>{{ cidade.getOrder() }}</td>
+            <td class="center nowrap">
+                <a class="button button-set-start small white" href="{{ path('admin_core_city_form', {'slug': cidade.getSlug()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</a></span><a class="button button-set-finish small red" href="{{ path('admin_core_city_delete', {'id': cidade.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a></td>
+        </tr>
   {% else %}
-    Nenhuma cidade encontrada!
+        <tr><td colspan="5">{{ "Nenhuma cidade encontrada!"|trans }}</td></tr>
   {% endfor %} 
+    </table>
+    <div class='clear'></div>
+    <button onclick="window.location='{{path('admin_core_city_form')}}'" title="{{ "Inserir nova cidade"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar cidade"|trans }}</button>
+</div>
 {% endblock %}

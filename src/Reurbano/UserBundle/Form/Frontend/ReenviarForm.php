@@ -11,7 +11,7 @@ class ReenviarForm extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
-                ->add('email', 'email', array('label' => 'user.user.reenviar.frontend.email'))
+                ->add('email', 'email', array('label' => 'Informe seu email'))
 
         ;
     }
