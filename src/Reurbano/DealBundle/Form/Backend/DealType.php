@@ -13,7 +13,7 @@ class DealType extends AbstractType {
                 ->add('user', 'document', array('label'=>'Usuário', 'class' => 'Reurbano\\UserBundle\\Document\\User', 'property'=>'name', 'required' => false))
                 ->add('site', 'document', array('label'=>'Site', 'class' => 'Reurbano\\DealBundle\\Document\\Site', 'property'=>'name', 'property_path' => false ))
                 ->add('source', 'document', array('label'=>'Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Source', 'property'=>'titleFormat', 'property_path' => false, 'attr' => array('style' => 'width: 400px;') ))
-                ->add('price', 'money', array('label'=>'Valor desejado', 'divisor' => 100, 'currency' => 'BRL'))
+                ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
                 ->add('quantity', 'integer', array('label'=>'Quantidade disponível'))
                 ->add('active', 'choice', array('choices' => array('sim' => 'Sim','nao' => 'Não'), 'label'=>'Ativo'))
                 ->add('special', 'choice', array('choices' => array('sim' => 'Sim','nao' => 'Não'), 'label'=>'Destaque'))

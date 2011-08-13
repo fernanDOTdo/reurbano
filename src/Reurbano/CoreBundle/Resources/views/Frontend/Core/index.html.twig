@@ -1,9 +1,6 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Ofertas de {{app.session.get('reurbano.user.cityName')}}{% endblock %}
-
 {% block content %}
-Cidade definida como {{app.session.get('reurbano.user.cityName')}}! (Renderizar ofertas da cidade)
 <div class="grid_9">
 {% render 'ReurbanoDealBundle:Widget\\Deal:render' %}
 </div>

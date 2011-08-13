@@ -23,7 +23,7 @@
   border: solid 1px #999;
 }
 #nav li {
-  margin: 0 4px;
+  margin: 0 5px;
   padding: 0 0 6px;
   float: left;
   position: relative;
@@ -35,7 +35,7 @@
   color: #fff;
   text-decoration: none;
   display: block;
-  padding: 4px 10px;
+  padding: 4px 8px;
   margin: 0;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;

@@ -33,12 +33,12 @@ class Deal
     protected $user;
     
     /**
-     * Preço original da oferta
+     * Source da Oferta
      *
      * @var array
-     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Offer")
+     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Source")
      */
-    protected $offer;
+    protected $source;
     
     /**
      * Preço com desconto da oferta
@@ -47,6 +47,15 @@ class Deal
      * @ODM\Float
      */
     protected $price;
+    
+    /**
+     * Porcentagem do desconto (sobre o preço original)
+     *
+     * @var int
+     * @ODM\Int
+     * @ODM\Index
+     */
+    protected $discount;
     
     /**
      * Quantidade disponivel
@@ -134,6 +143,28 @@ class Deal
      * @ODM\Date
      */
     protected $createdAt;
+    
+    /** @ODM\PrePersist */
+    public function doPrePersist()
+    {
+        $this->setCreatedAt(new \DateTime);
+        $count1 = $this->getPrice() / $this->getSource()->getPrice();
+        $count2 = $count1 * 100;
+        $count3 = 100 - $count2;
+        $count = number_format($count3, 0);
+        $this->setDiscount($count);
+    }
+
+    /** @ODM\PreUpdate */
+    public function doPreUpdate()
+    {
+        $this->setUpdatedAt(new \DateTime);
+        $count1 = $this->getPrice() / $this->getSource()->getPrice();
+        $count2 = $count1 * 100;
+        $count3 = 100 - $count2;
+        $count = number_format($count3, 0);
+        $this->setDiscount($count);
+    }
 
     public function __construct()
     {
@@ -168,26 +199,6 @@ class Deal
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set offer
-     *
-     * @param Reurbano\DealBundle\Document\Offer $offer
-     */
-    public function setOffer(\Reurbano\DealBundle\Document\Offer $offer)
-    {
-        $this->offer = $offer;
-    }
-
-    /**
-     * Get offer
-     *
-     * @return Reurbano\DealBundle\Document\Offer $offer
-     */
-    public function getOffer()
-    {
-        return $this->offer;
     }
 
     /**
@@ -428,5 +439,45 @@ class Deal
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set source
+     *
+     * @param Reurbano\DealBundle\Document\Source $source
+     */
+    public function setSource(\Reurbano\DealBundle\Document\Source $source)
+    {
+        $this->source = $source;
+    }
+
+    /**
+     * Get source
+     *
+     * @return Reurbano\DealBundle\Document\Source $source
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param int $discount
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return int $discount
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 }

@@ -1,0 +1,33 @@
+<div class="dealBox">
+{%for deal in deals%}
+{%set dealLink = path('deal_deal_show', {'city': app.session.get('reurbano.user.city'), 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
+<div class="deal">
+    <div class="grid_2 alpha dealThumb">
+    {#Imagem#}
+    <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+    </div>
+    <div class="grid_5">
+    {#Conteúdo#}
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel}}</a>
+    </div>
+    <div class="grid_2 omega">
+    {#Preços#}
+            De: {{deal.getSource.getPrice}}<br />
+            Por: {{deal.getPrice}}<br />
+    </div>
+    <div class="clear"></div>
+    <div class="grid_7 alpha">
+    {#Dados#}
+            DADOS
+    </div>
+    <div class="grid_2 omega">
+    {#Comprar#}
+            COMPRAR
+    </div>
+    <hr />
+</div>
+<div class="clear"></div>
+{%else%}
+Nenhuma oferta encontrada
+{%endfor%}
+</div>

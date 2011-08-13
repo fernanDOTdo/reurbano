@@ -132,24 +132,24 @@ $(function(){
             <h2>Principais cidades</h2>
             <ul class="highCities clearfix">
                 {% for city in cities['special'] %}
-                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'name':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
                 {% endfor %}
             </ul>
             <br>
             <h2>Outras cidades</h2>
             <ul>
                 {% for city in cities['other'] %}
-                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'name':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
                 {% endfor %}
             </ul>
     </div>
         {# /Lista de cidades #}
         
         <div class="grid_12" id="menuMain">
-            {{mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})}}
+            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
         </div>
         <div class="grid_12" id="menuCat">
-            Menu Categorias <a href="{{path('user_user_resend')}}">Teste</a>
+            {#mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})#}
         </div>
         {%if app.request.attributes.get('_route') == '_home'%}
         {# Só exibe o banner se estiver na home #}
@@ -168,11 +168,11 @@ $(function(){
 				<a href="#" class="prev"><img src="{{ asset('themes/reurbano/images/slides/arrow-prev.png') }}" width="19" height="21" alt="Arrow Prev"></a>
 				<a href="#" class="next"><img src="{{ asset('themes/reurbano/images/slides/arrow-next.png') }}" width="19" height="21" alt="Arrow Next"></a>
 			</div>
-                            <img src="{{ asset('themes/reurbano/images/slides/frame.png') }}" width="900" height="361" alt="Frame" id="frame">                            
+                            <img src="{{ asset('themes/reurbano/images/slides/frame.png') }}" width="900" height="361" alt="Frame" id="frame" />                            
 		</div>
         </div>
-        <div class="clear"></div>
         {%endif%}
+        <div class="clear"></div>
     {% endblock%}
     </div>
 </div>
@@ -185,7 +185,7 @@ $(function(){
     {# Conteúdo #}
     {% block content null %}
     {# /Conteúdo #}
-        
+    <div class="clear"></div>    
     </div>
 </div>
 {% endblock body %}

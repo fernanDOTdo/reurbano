@@ -1,0 +1,16 @@
+<ul id="nav">
+{% for cat in categories %}
+    {% set class = null %}
+    {%if loop.first%}
+        {% set class = 'first' %}
+    {%elseif loop.last%}
+        {% set class = 'last' %}
+    {%endif%}
+    {%if selected == cat.getSlug() %} 
+        {% set class = class ~ ' current' %}
+    {%endif%}
+    <li{%if class is not null%} class="{{class}}"{%endif%}>
+        <a title="Ofertas de {{cat.getName()}} em {{app.session.get('reurbano.user.cityName')}}"{%if cat.getSlug() == selected %} href="javascript:void(0);"{%else%} href="{{ path('deal_category_index', {'city':app.session.get('reurbano.user.city'), 'slug':cat.getSlug()}) }}"{%endif%}>{{cat.getName()}}</a>
+    </li>
+{% endfor %}
+</ul>
