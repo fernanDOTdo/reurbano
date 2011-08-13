@@ -12,8 +12,9 @@
     </div>
     <div class="grid_2 omega">
     {#Preços#}
-            De: {{deal.getSource.getPrice}}<br />
-            Por: {{deal.getPrice}}<br />
+            <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
+            <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+            <div class="buyNow"><a rel="nofollow" class="button big orange primary" href="{{path('deal_checkout_index', {'id': deal.getId})}}">Comprar</a></div>
     </div>
     <div class="clear"></div>
     <div class="grid_7 alpha">
@@ -22,7 +23,7 @@
     </div>
     <div class="grid_2 omega">
     {#Comprar#}
-            COMPRAR
+            
     </div>
     <hr />
 </div>

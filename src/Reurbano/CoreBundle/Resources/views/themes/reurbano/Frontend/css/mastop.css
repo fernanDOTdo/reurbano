@@ -277,6 +277,11 @@ span.discount{
 }
 span.discount.high{background: #D87D08;}
 span.discount.medium{background: #15567F;}
+
+div.priceSource{}
+div.priceSource strong{text-decoration: line-through}
+div.price{}
+div.price strong{font-size: 2em;}
 /* /Body */
 
 /* Footer */
