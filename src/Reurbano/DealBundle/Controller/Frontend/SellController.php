@@ -4,12 +4,12 @@ namespace Reurbano\DealBundle\Controller\Frontend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Response;
 
 use Reurbano\DealBundle\Document\Site;
 use Reurbano\DealBundle\Document\Source;
 use Reurbano\DealBundle\Document\Deal;
-use Reurbano\DealBundle\Document\Offer;
 use Reurbano\DealBundle\Document\Voucher;
 
 use Reurbano\DealBundle\Util\Upload;
@@ -20,7 +20,8 @@ use Reurbano\DealBundle\Form\Frontend\DealType;
 
 
 /**
- * Controller que cuidará das Ofertas em Frontend.
+ * Controller para enviar uma Ofertapara venda.
+ * @Route("/vender", requirements={"_scheme" = "https"})
  */
 
 class SellController extends BaseController
@@ -29,6 +30,7 @@ class SellController extends BaseController
      * Action para vender cupom
      * 
      * @Route("/", name="deal_sell_index")
+     * @Secure(roles="ROLE_USER")
      * @Template()
      */
     public function indexAction()
@@ -88,6 +90,7 @@ class SellController extends BaseController
      * Detalhes da oferta
      * 
      * @route("/detalhes", name="deal_sell_details")
+     * @Secure(roles="ROLE_USER")
      * @Template()
      */
     public function detailsAction()
@@ -111,6 +114,7 @@ class SellController extends BaseController
      * Salva o deal
      * 
      * @Route("/salvar", name="deal_sell_save")
+     * @Secure(roles="ROLE_USER")
      */
     public function saveAction(){
         $dm = $this->dm();
@@ -120,7 +124,6 @@ class SellController extends BaseController
         $data = $this->get('request')->request->get($form->getName());
         if($request->getMethod() == 'POST'){
             $deal = new Deal();
-            $offer = new Offer();
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['sourceId']);
             $formDataResult = $request->files->get($form->getName());
             foreach ($formDataResult as $kFile => $vFile){
@@ -140,14 +143,12 @@ class SellController extends BaseController
                     $deal->addVoucher($voucher);
                 }
             }
-            $offer->setSource($source);
-            $offer->setCity($source->getCity());
+            $deal->setSource($source);
             $price = $data['price'];
             $quantity = $data['quantity'];
             
             
             $deal->setUser($user);
-            $deal->setOffer($offer);
             $deal->setPrice($price);
             $deal->setQuantity($quantity);
             $deal->setActive(true);

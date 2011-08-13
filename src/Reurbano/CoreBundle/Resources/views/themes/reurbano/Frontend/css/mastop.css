@@ -219,10 +219,17 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 /* Body */
 #bd_wrap { /* Div que cobre todo o Body */
-  padding-bottom: 3em;
-  padding-top: 3em;
+  padding-bottom: 1em;
 }
-#bd {min-height: 400px;background: #FFF; /* Div que cobre o body 960 */}
+#bd {
+    /* Div que cobre o body 960 */
+    min-height: 400px;
+    background: #FFF;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid #E5E5E5;
+}
 
 #navbar {
 	float: right;
@@ -250,6 +257,31 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 #navbar a.active { 
    border-bottom: 3px solid #222;
 }
+
+/*Lista de Deals*/
+.dealBox{}
+.deal{margin:5px 0;}
+.deal .dealThumb {position: relative;}
+.deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
+.deal .dealThumb a img{width: 140px; height: 100px;}
+span.discount{
+    background: #7A9D24;
+    color: #FFF;
+    font-weight: 700;
+    left: 0;
+    padding: 2px 3px;
+    position: absolute;
+    -webkit-border-bottom-right-radius: 7px;
+    -moz-border-radius-bottomright: 7px;
+    border-bottom-right-radius: 7px;
+}
+span.discount.high{background: #D87D08;}
+span.discount.medium{background: #15567F;}
+
+div.priceSource{}
+div.priceSource strong{text-decoration: line-through}
+div.price{}
+div.price strong{font-size: 2em;}
 /* /Body */
 
 /* Footer */

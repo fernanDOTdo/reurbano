@@ -12,7 +12,7 @@
 
             geocoder = new google.maps.Geocoder();    
 
-            geocoder.geocode( { 'address': "{{ oferta.getOffer().getSource().getBusinessAddress() }}" }, function(results, status) {
+            geocoder.geocode( { 'address': "{{ oferta.getSource().getBusinessAddress() }}" }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var myOptions = {
                         zoom: 17,
@@ -54,10 +54,10 @@
                 <div class="dealOrder">
                     <div class="dealExpires">
                         <span class="expiresLabel">Cupom válido até:</span> 
-                        <span class="expiteDate">{{ oferta.getOffer().getSource().getExpiresAt()|date("d/m/Y")  }}</span>
+                        <span class="expiteDate">{{ oferta.getSource().getExpiresAt()|date("d/m/Y")  }}</span>
                     </div>
                     <div class="dealPrice">
-                        <span class="priceNormalLabel">De</span> <span class="priceNormal">R${{ oferta.getOffer().getSource().getPrice() }}</span> 
+                        <span class="priceNormalLabel">De</span> <span class="priceNormal">R${{ oferta.getSource().getPrice() }}</span> 
                         <span class="priceDescLabel">Por </span> <span class="priceDesc">R${{ oferta.getPrice() }}</span> 
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     Detalhes
                 </div>
                 <div class="dealDescription">
-                    {{ oferta.getOffer().getSource().getDetails() }}
+                    {{ oferta.getSource().getDetails() }}
                 </div>
             </div>
             <div class="grid_9">
@@ -75,15 +75,15 @@
                     Regras
                 </div>
                 <div class="dealRules">
-                    {{ oferta.getOffer().getSource().getRules() }}
+                    {{ oferta.getSource().getRules() }}
                 </div>
             </div>
             <div class="grid_9">
                 <div class="dealRegra">
                     Oferta
                 </div>
-                    {{ oferta.getOffer().getSource().getBusinessAddress() }}
-                    {{ oferta.getOffer().getSource().getBusinessCep() }}
+                    {{ oferta.getSource().getBusinessAddress() }}
+                    {{ oferta.getSource().getBusinessCep() }}
                 <div id="map_canvas" style="height:250px;width: 250px;"></div>
             </div>
         </div>

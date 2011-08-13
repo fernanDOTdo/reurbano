@@ -1,7 +1,9 @@
+core_frontend:
+    resource: "@ReurbanoCoreBundle/Controller/Frontend/CoreController.php"
+    type: annotation
 city_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/CityController.php"
     type: annotation
-    prefix:   /cidade
 mailing_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/MailingController.php"
     type: annotation

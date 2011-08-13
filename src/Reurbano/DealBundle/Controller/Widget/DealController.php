@@ -13,63 +13,45 @@ use Mastop\SystemBundle\Controller\BaseController;
 class DealController extends BaseController
 {
     /**
-     * @Route("/renderDeal/{categoria}/{quantidade}", name="widget_deal_render_deals")
-     * @Template()
+     * Widget que renderiza as ofertas
+     * 
      */
-    public function renderDealsAction($categoria = null, $quantidade = null)
+    public function renderAction($cat = null, $limit = 10, $skip = 0, $sort = 'views', $order = 'desc', $template = 'default')
     {
-        
-        $userCity = $this->get('session')->get('reurbano.user.city');
-        $mongoCity = $this->mongo("ReurbanoCoreBundle:City");
-        $mongoDeal = $this->mongo("ReurbanoDealBundle:Deal");
-        $mongoSource = $this->mongo("ReurbanoDealBundle:Source");
-        $mongoCategory = $this->mongo("ReurbanoDealBundle:Category");
-        
-        $city = $mongoCity->findBySlug($userCity);
-        $categoria = (!is_null($categoria))? $categoria : "beleza-e-saude" ;
-        $quantidade = (!is_null($quantidade))? $quantidade : 4 ;
-        $title = 'Administração de Ofertas';
-        
-        if (count($city) == 0){
-            $city = $mongoCity->findBySlug("oferta-nacional");
-            $cityId = $city->getId();
+        $dealRepo = $this->mongo("ReurbanoDealBundle:Deal");
+        $dealQuery = $dealRepo->createQueryBuilder();
+        $dealQuery->field('source.city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
+        $dealQuery->field('active')->equals(true);
+        if($cat){
+            $dealQuery->field('source.category.$id')->equals(new \MongoId($cat));
         }
-        
-        $categoria = $mongoCategory->findBySlug($categoria);
-        
-        $cityId = $city->getId();
-        $categoryId = $categoria->getId();
-        
-        echo count($categoria);
-        echo "<br /><br />";
-        echo $categoria->getId();
-        echo "<br /><br />";
-        $source = $mongoSource->findByCategoryCity($categoryId, $cityId);
-        //$source = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
+        $dealQuery->sort($sort, $order)->limit($limit);
+        if($skip > 0){
+            $dealQuery->skip($skip);
+        }
+        $dealsFound = $dealQuery->getQuery()->execute();
         $deals = array();
-        $i = 1;
-        foreach($source as $k => $v){
-            $deal = $mongoDeal->findBySource(new \MongoId($v->getId()));
-            if ($i <= $quantidade){
-                foreach($deal as $kDeal => $vDeal){
-                    if ($i <= $quantidade){
-                        $voucher = $vDeal->getVoucher();
-                        $deals[$kDeal]['label'] = $vDeal->getLabel();
-                        $deals[$kDeal]['price'] = $v->getPrice();
-                        $deals[$kDeal]['offerPrice'] = $vDeal->getPrice();
-                        $deals[$kDeal]['slug'] = $vDeal->getSlug();
-                        $deals[$kDeal]['category'] = $categoria;
-                        $deals[$kDeal]['image'] = (count($voucher) > 0) ? $voucher[0]->getFilename() : 'sem-imagem.jpg';
-                        //echo $voucher[0]->getFilename();
-                        echo $vDeal->getSlug()."<br />";
-                    }
-                    $i++;
-                }
+        $total = 0;
+        if($dealsFound){
+            foreach ($dealsFound as $k => $d){
+                $deals[$k] = $d;
             }
+            $total = count($dealsFound);
         }
-        echo count($source);
+        
+        
+
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findByCategory($categoria);
-        return array('title' => $title);
+        return $this->render(
+            'ReurbanoDealBundle:Widget/Deal:'.$template.'.html.twig',
+            array(
+                'total'  => $total,
+                'cat'    => $cat,
+                'limit'  => $limit,
+                'skip'   => $skip,
+                'deals'  => $deals,
+            )
+        );
     }
     
 }

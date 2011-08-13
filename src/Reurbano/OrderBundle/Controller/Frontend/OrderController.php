@@ -5,6 +5,7 @@ use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\OrderBundle\Document\Order;
+use Reurbano\DealBundle\Document\Deal;
 
 /**
  * Controller que cuidará das compras em Frontend
@@ -16,17 +17,17 @@ class OrderController extends BaseController
     /**
      * Action para exibir o carrinho de compras
      * 
-     * @Route("/", name="deal_order_index")
+     * @Route("/comprar/{id}", name="order_order_index")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Deal $deal)
     {
         return array();
     }
     /**
      * Action incluir oferta no carrinho de compras
      * 
-     * @Route("/adicionar/{oferta}", name="deal_order_inc")
+     * @Route("/adicionar/{oferta}", name="order_order_inc")
      */
     public function incAction($oferta)
     {
@@ -35,7 +36,7 @@ class OrderController extends BaseController
     /**
      * Action remover oferta do carrinho de compras
      * 
-     * @Route("/remover/{oferta}", name="deal_order_del")
+     * @Route("/remover/{oferta}", name="order_order_del")
      */
     public function delAction($oferta)
     {
@@ -44,7 +45,7 @@ class OrderController extends BaseController
     /**
      * Action atualizar oferta no carrinho de compras (mudando quantidade)
      * 
-     * @Route("/atualizar", name="deal_order_upd")
+     * @Route("/atualizar", name="order_order_upd")
      */
     public function updAction()
     {
@@ -53,7 +54,7 @@ class OrderController extends BaseController
     /**
      * Action fechar pedido
      * 
-     * @Route("/fechar-pedido", name="deal_order_finish")
+     * @Route("/pagar", name="order_order_finish")
      * @Template()
      */
     public function finishAction()

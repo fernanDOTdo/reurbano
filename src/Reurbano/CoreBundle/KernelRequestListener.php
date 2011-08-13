@@ -29,14 +29,17 @@ class KernelRequestListener
                     if($cidadeDB){ // Cidade atual está no DB
                         $session->set('reurbano.user.city', $cidade);
                         $session->set('reurbano.user.cityName', $cidadeDB->getName());
+                        $session->set('reurbano.user.cityId', $cidadeDB->getId());
                     }else{
                         $cidadeDB = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->findBySlug($this->container->getParameter('reurbano.default_city'));
                         if($cidadeDB){
                             $session->set('reurbano.user.city', $this->container->getParameter('reurbano.default_city')); // Cidade atual não está no DB, então seta a cidade padrão como atual
                             $session->set('reurbano.user.cityName', $cidadeDB->getName());
+                            $session->set('reurbano.user.cityId', $cidadeDB->getId());
                         }else{ // Cidade padrão não foi encontrada no DB (isso é ruim)
                             $session->set('reurbano.user.city', $cidade);
                             $session->set('reurbano.user.cityName', $ip2city->getCity());
+                            $session->set('reurbano.user.cityId', '0');
                         }
                     }
                     $session->set('reurbano.user.country', (string)$ip2city->getCountry());
