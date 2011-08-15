@@ -51,8 +51,10 @@ class SourceController extends BaseController
         $form = $this->createForm(new SourceType(), $deal);
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
-            $formResult = $request->request->get('source');
-            $expiresAt = explode('/',$formResult['expiresAt']);
+            $formResult = $request->get('expiresAt');
+            $expiresAt = explode('/',$formResult);
+            print_r( $formResult);
+            exit();
             $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
             $deal->setExpiresAt($dataAtual);
             if ($form->isValid()) {
@@ -67,6 +69,7 @@ class SourceController extends BaseController
         return array(
             'form'    => $form->createView(),
             'deal'    => $deal,
+            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Banco de Ofertas'),'url'=>$this->generateUrl('admin_deal_source_index'))),
             'title'   =>  $title,
             'current' => 'admin_deal_deal_index',
             );
