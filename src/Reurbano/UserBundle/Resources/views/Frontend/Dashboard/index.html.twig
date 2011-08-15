@@ -9,19 +9,25 @@
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-    <div>
+    <div class="clear"></div>
+    <div class="grid_12">
         <!-- the tabs -->
         <ul class="tabs">
-            <li><a href="#">Tab 1</a></li>
-            <li><a href="#">Tab 2</a></li>
-            <li><a href="#">Tab 3</a></li>
+            {% a %}
+            <li><a href="#">Meus Dados</a></li>
+            <li><a href="#">Minhas Compras</a></li>
+            <li><a href="#">Minhas Ofertas</a></li>
+            <li><a href="#">Minhas Vendas</a></li>
+            <li><a href="#">Meu Financeiro</a></li>
         </ul>
 
         <!-- tab "panes" -->
         <div class="panes">
-            <div>First tab content. Tab contents are called "panes"</div>
-            <div>Second tab content</div>
-            <div>Third tab content</div>
+            <div>Aqui vão os dados do cliente</div>
+            <div>As compras do usúario</div>
+            <div>As ofertas enviadas pelo usúario</div>
+            <div>As vendas do usúario</div>
+            <div>Financeiro do usúario</div>
         </div>
     </div>
 

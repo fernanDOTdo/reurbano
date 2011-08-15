@@ -19,8 +19,24 @@ class DashboardController extends BaseController
      */
     public function indexAction(){
         $title = 'Minha Conta';
+        $tabs = array(
+            'Meus Dados',
+            'Minhas Compras',
+            'Minhas Ofertas',
+            'Minhas Vendas',
+            'Meu Financeiro',
+        );
+        $panes = array(
+            'ReurbanoUserBundle:Widget\\MyData:dashboard',
+            'ReurbanoOrderBundle:Widget\\MyOrders:dashboard',
+            'ReurbanoDealBundle:Widget\\MyDeals:dashboard',
+            'ReurbanoDealBundle:Widget\\Mysell:dashboard',
+            'ReurbanoDealBundle:Widget\\MyBalance:dashboard',
+        );
         return array(
             'title' => $title,
+            'tabs'  => $tabs,
+            'panes' => $panes,
         );
     }
 }
