@@ -225,10 +225,6 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     /* Div que cobre o body 960 */
     min-height: 400px;
     background: #FFF;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border: 1px solid #E5E5E5;
 }
 
 #navbar {
@@ -260,28 +256,41 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 /*Lista de Deals*/
 .dealBox{}
+.dealBox hr{height:1px; border-width:0; background-color:#0069AC; width: 100%; margin: 10px auto;}
 .deal{margin:5px 0;}
+.deal.over{background-color: #DEF0FC;}
+.deal .dealTitle { margin-top: 3px}
+.deal .dealTitle a{color:#15567F; font-size: 14px; font-weight: 700; line-height: 18px;}
+.deal .dealTitle a:hover{text-decoration: none; color: #0076c1}
 .deal .dealThumb {position: relative;}
 .deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
 .deal .dealThumb a img{width: 140px; height: 100px;}
 span.discount{
-    background: #7A9D24;
+    background: #8bb919;
     color: #FFF;
     font-weight: 700;
     left: 0;
-    padding: 2px 3px;
+    padding: 4px 5px;
     position: absolute;
     -webkit-border-bottom-right-radius: 7px;
     -moz-border-radius-bottomright: 7px;
     border-bottom-right-radius: 7px;
 }
-span.discount.high{background: #D87D08;}
-span.discount.medium{background: #15567F;}
+span.discount.high{background: #0069ac;}
+span.discount.medium{background: #f37200;}
 
-div.priceSource{}
+div.priceSource{text-align: right; margin: 3px 10px 0 0}
 div.priceSource strong{text-decoration: line-through}
-div.price{}
-div.price strong{font-size: 2em;}
+div.price{text-align: right; margin: 0 10px 0 0}
+div.price strong{font-size: 1.7em; color:#7A9D24;}
+div.expires{font-size: 0.9em;}
+div.buyNow{text-align: right; margin: 0 10px 0 0}
+div.dealSource, div.dealCity, div.dealExpires, div.dealQtd{font-size: 11px;}
+div.dealQtd{text-align: right; margin: 0 10px 0 0}
+div.dealSource{text-align: center;}
+div.dealCity {font-weight: 700; color: #333;}
+div.dealCity span{padding-left: 17px; background: url(../images/flag.png) center left no-repeat;}
+div.dealAddress {font-size: 11px}
 /* /Body */
 
 /* Footer */

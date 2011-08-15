@@ -14,6 +14,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   collection="deal",
  *   repositoryClass="Reurbano\DealBundle\Document\DealRepository"
  * )
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "special"="desc"})
+ * })
  */
 class Deal
 {
@@ -45,6 +48,7 @@ class Deal
      *
      * @var float
      * @ODM\Float
+     * @ODM\Index
      */
     protected $price;
     
@@ -53,7 +57,7 @@ class Deal
      *
      * @var int
      * @ODM\Int
-     * @ODM\Index
+     * @ODM\Index(order="desc")
      */
     protected $discount;
     
@@ -81,6 +85,7 @@ class Deal
      *
      * @var boolean
      * @ODM\Boolean
+     * @ODM\Index(order="desc")
      */
     protected $active;
     
@@ -90,6 +95,7 @@ class Deal
      * @var string
      * @Gedmo\Sluggable
      * @ODM\String
+     * @ODM\Index
      */
     protected $label;
     
@@ -125,6 +131,7 @@ class Deal
      *
      * @var boolean
      * @ODM\Boolean
+     * @ODM\Index(order="desc")
      */
     protected $special;
     
@@ -141,6 +148,7 @@ class Deal
      *
      * @var date
      * @ODM\Date
+     * @ODM\Index(order="desc")
      */
     protected $createdAt;
     

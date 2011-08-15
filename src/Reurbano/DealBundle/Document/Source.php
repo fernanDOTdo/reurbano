@@ -61,6 +61,7 @@ class Source
      * 
      * @var object
      * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Site")
+     * @ODM\Index
      */
     protected $site;
 
