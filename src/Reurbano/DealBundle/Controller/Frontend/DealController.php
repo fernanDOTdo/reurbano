@@ -4,6 +4,8 @@ namespace Reurbano\DealBundle\Controller\Frontend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Reurbano\DealBundle\Documents\Source;
 
 /**
@@ -12,6 +14,32 @@ use Reurbano\DealBundle\Documents\Source;
 
 class DealController extends BaseController
 {
+    
+    
+    /**
+     * Action que lista as ofertas via ajax
+     * 
+     * @Route("/ofertas/ajax")
+     * @Method("POST")
+     * @Template()
+     */
+    public function  ajaxAction(){
+        $request = $this->getRequest();
+        $cat = $request->request->get('cat');
+        $pg = $request->request->get('pg');
+        $sort = $request->request->get('sort');
+        if(!$request->isXmlHttpRequest() || !$pg || !$cat){
+            throw new AccessDeniedHttpException('Você não tem permissão para acessar esta página.');
+        }
+        $ret['cat'] = ($cat == 'all') ? null : $cat;
+        if($pg != 1){
+            list($field, $pg) = explode('_', $pg);
+        }
+        $ret['pg'] = $pg;
+        $ret['sort'] = $sort;
+        return $ret;
+    }
+
     /**
      * Action que lista as ofertas na cidade do usuário
      * 

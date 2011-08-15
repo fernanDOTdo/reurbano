@@ -61,4 +61,53 @@ $(function(){
         e.preventDefault();
         return false;
     });
+    // Hover para ofertas
+    $("div.deal").hover(
+        function () {
+            $(this).addClass("over");
+        }, 
+        function () {
+            $(this).removeClass("over");
+        }
+        );
+    // Ajax para Ofertas
+    $("a.dealSort").live('click', function (e) {
+        if($(this).hasClass('active')){
+            e.preventDefault();
+            return false;
+        }
+        var dealBox = $(this).parent().parent().next().next();
+        var id = $(this).attr('id');
+        var cat = $(this).parent().find('input[name="cat"]').val();
+        var sort = $(this).parent().find('input[name="sort"]');
+        var thisVal = $(this).html();
+        $(this).html('&nbsp;<img src="/bundles/mastopsystem/images/load.gif" />&nbsp;');
+        $(dealBox).load('/ofertas/ajax', {pg: 1, cat: cat, sort: id}, function(){
+            $('#'+sort.val()).removeClass('active');
+            $('#'+id).addClass('active').html(thisVal);
+            sort.val(id);
+            $.cookie('dealsort', id, {
+                path: '/'
+            });
+        });
+        e.preventDefault();
+        return false;
+    });
+    $("a.dealPag").live('click', function (e) {
+        if($(this).hasClass('active')){
+            e.preventDefault();
+            return false;
+        }
+        var dealBox = $(this).parent().parent();
+        var id = $(this).attr('id');
+        var cat = $('#dealActions').find('input[name="cat"]').val();
+        var sort = $('#dealActions').find('input[name="sort"]');
+        var thisVal = $(this).html();
+        var pgActive = $(this).parent().find('a.active');
+        $(this).html('&nbsp;<img src="/bundles/mastopsystem/images/load.gif" />&nbsp;');
+        $(dealBox).load('/ofertas/ajax', {pg: id, cat: cat, sort: sort.val()});
+        e.preventDefault();
+        return false;
+    });
+
 });

@@ -14,6 +14,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   collection="category",
  *   repositoryClass="Reurbano\DealBundle\Document\CategoryRepository"
  * )
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"order"="asc", "name"="asc"})
+ * })
  */
 class Category
 {

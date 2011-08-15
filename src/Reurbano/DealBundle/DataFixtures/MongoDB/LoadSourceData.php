@@ -19,6 +19,7 @@ class LoadSourceData extends AbstractFixture implements OrderedFixtureInterface,
     public function load($manager) {
         $citySP = $manager->getRepository('ReurbanoCoreBundle:City')->findBySlug('sao-paulo');
         $cityRJ = $manager->getRepository('ReurbanoCoreBundle:City')->findBySlug('rio-de-janeiro');
+        $cityNacional = $manager->getRepository('ReurbanoCoreBundle:City')->findBySlug('oferta-nacional');
         $catServicos = $manager->getRepository('ReurbanoDealBundle:Category')->findBySlug('servicos');
         $catProdutos = $manager->getRepository('ReurbanoDealBundle:Category')->findBySlug('produtos');
         $siteGroupon = $manager->getRepository('ReurbanoDealBundle:Site')->findOneById(1);
@@ -130,6 +131,42 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setBusinessAddress('R. da Quitanda, 67 Sl 302 - Centro');
         $source->setBusinessCep('20011030');
         $source->setExpiresAt(new \DateTime('2012-02-16'));
+        $manager->persist($source);
+        $manager->flush();
+        
+        $source = new Source();
+        $source->setTitle("Processador de alimentos Change a Bowhl Hamilton Beach+ frete. De R$ 479,90 por R$ 199, na Polishop (Oferta Nacional)");
+        $source->setFilename('http://static.br.groupon-content.net/63/97/1313174649763.jpg');
+        $source->setThumb('http://static.br.groupon-content.net/29/98/1313174649829.jpg');
+        $source->setUrl('http://www.groupon.com.br/ofertas/oferta-nacional/Polishop/667956');
+        $source->setSite($siteGroupon);
+        $source->setPrice(479.9);
+        $source->setPriceOffer(199);
+        $source->setCity($cityNacional);
+        $source->setCategory($catProdutos);
+        $source->setRules('1 groupon por pessoa
+    Vale por 1 mês
+    Frete grátis, com entrega em até 12 dias úteis
+    2 dias úteis após o recebimento do groupon, você deve validar a compra acessando o hotsite da promoção www.polishop.com.br/groupon e fornecendo os dados necessários
+    Oferta não cumulativa com outras promoções
+    Informação pelos telefones (11) 3444-0186, das 9h às 18h, ou pelo e-mail groupon@polishop.com.br
+');
+        $source->setDetails('
+				<h3 class="subHeadline">Processador de
+alimentos Change a Bowhl Hamilton Beach+ frete. De R$ 479,90 por R$ 199, na
+Polishop</h3>
+				<p><br>A teoria da relatividade veio para mostrar que até mesmo o paraíso pode depender do referencial. Com o Groupon de hoje, grandes cozinheiros e amantes dos bons pratos descobrem que o melhor dos mundos pode significar legumes fatiados com facilidade, nenhuma louça suja na pia e braços sem dores na hora de ralar: por R$ 199, a oferta vale 1 Processador Change a&nbsp; Bowhl Hamilton Beach + frete grátis, na Polishop.<br><br>Desenvolvido para revolucionar todos os conceitos domésticos, o Change a Bowhl oferece 300 w de potência e uma única lâmina reversível capaz de cortes precisos até mesmo nos casos dos alimentos mais duros, sendo possível utilizá-lo para fatiar salame, legumes ou até mesmo para ralar coco para sobremesa. Em cada tipo diferente de corte é possível alternar a posição da lâmina.&nbsp; Encontre a tomada mais próxima, aperte o botão e assita tudo de camarote.<br><br>Confira as especificações técnicas do produto:<br><br>Marca: Hamilton Beach<br>Modelo: 70800 <br>Voltagem: 110V ou 220V <br>Espessura do alimento fatiado no aparelho: 3 mm <br>Capacidade de cada pote: Até 6 xícaras ou 1.419 ml <br>Todas as partes removíveis podem ir à lava-louças <br>Possui Pressionador de Alimentos <br>Composição: <br>Lâmina: Aço Inox <br>Cor predominante: Branco <br>Garantia do Fabricante: 1 Ano <br>Potência: 300w <br>Trava de segurança: Sim <br><br><br>Itens inclusos:<br>1 Change a Bowhl <br>1 Manual de instruções em português <br><br><br><img title="/69/13/1313174731369.jpg" src="https://static.groupon.com.br/69/13/1313174731369.jpg" alt="/69/13/1313174731369.jpg"><br><br></p>
+				<div class="wrapper"></div>
+				<div class="merchantContact">
+					<h3 class="subHeadline">Polishop</h3>
+					-&nbsp;-, -&nbsp;-<br>
+					 <a onclick="window.open(this.href); return false;" href="http://www.polishop.com.br">http://www.polishop.com.br</a><br>
+	                  </div>
+				
+			');
+        $source->setBusinessUrl('http://www.polishop.com.br');
+        $source->setBusinessName('Polishop');
+        $source->setExpiresAt(new \DateTime('2011-09-15'));
         $manager->persist($source);
         $manager->flush();
         
