@@ -4,7 +4,8 @@ namespace Reurbano\DealBundle\Controller\Frontend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Reurbano\DealBundle\Documents\Offer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Reurbano\DealBundle\Documents\Source;
 
 /**
@@ -13,10 +14,36 @@ use Reurbano\DealBundle\Documents\Source;
 
 class DealController extends BaseController
 {
+    
+    
+    /**
+     * Action que lista as ofertas via ajax
+     * 
+     * @Route("/ofertas/ajax")
+     * @Method("POST")
+     * @Template()
+     */
+    public function  ajaxAction(){
+        $request = $this->getRequest();
+        $cat = $request->request->get('cat');
+        $pg = $request->request->get('pg');
+        $sort = $request->request->get('sort');
+        if(!$request->isXmlHttpRequest() || !$pg || !$cat){
+            throw new AccessDeniedHttpException('Você não tem permissão para acessar esta página.');
+        }
+        $ret['cat'] = ($cat == 'all') ? null : $cat;
+        if($pg != 1){
+            list($field, $pg) = explode('_', $pg);
+        }
+        $ret['pg'] = $pg;
+        $ret['sort'] = $sort;
+        return $ret;
+    }
+
     /**
      * Action que lista as ofertas na cidade do usuário
      * 
-     * @Route("/", name="deal_deal_index")
+     * @Route("/ofertas", name="deal_deal_index")
      * @Template()
      */
     public function indexAction()
@@ -34,9 +61,9 @@ class DealController extends BaseController
             $deal = $mongoDeal->findByCity(new \MongoId($cityId));
 
             foreach ($deal as $k => $v){
-                $precoDe = str_ireplace(',', '', $v->getOffer()->getSource()->getPrice())/100;
+                $precoDe = str_ireplace(',', '', $v->getSource()->getPrice())/100;
                 $precoPor = $v->getPrice()/100;
-                $v->getOffer()->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
+                $v->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
                 $v->setPrice(number_format($precoPor, 2, ',', '.'));
             }
             
@@ -80,20 +107,20 @@ class DealController extends BaseController
     /**
      * Action que exibe uma oferta
      * 
-     * @Route("/oferta/{category}/{oferta}", name="deal_deal_show")
+     * @Route("/ofertas-em-{city}/{category}/{slug}", name="deal_deal_show")
      * @Template()
      */
-    public function showAction($category, $oferta)
+    public function showAction($city, $category, $slug)
     {
-        $deal = $this->mongo("ReurbanoDealBundle:Deal")->findBySlug($oferta);
+        $deal = $this->mongo("ReurbanoDealBundle:Deal")->findBySlug($slug);
         
         if (!$deal){
             $this->get('session')->setFlash('notice', 'Oferta não encontrada');
             return $this->redirect($this->generateUrl('deal_deal_index'));
         }
-        $precoDe = str_ireplace(',', '', $deal->getOffer()->getSource()->getPrice())/100;
+        $precoDe = str_ireplace(',', '', $deal->getSource()->getPrice())/100;
         $precoPor = $deal->getPrice()/100;
-        $deal->getOffer()->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
+        $deal->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
         $deal->setPrice(number_format($precoPor, 2, ',', '.'));
         $title = $deal->getLabel();
         

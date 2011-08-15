@@ -17,15 +17,15 @@ class DealRepository extends BaseRepository
         return $this->findBy(array(), array('created'=>'asc'));
     }
     
-    public function findByCity($city){
+    public function findByCity($id){
         
-        return $this->findBy(array('offer.city.$id'=>$city));
+        return $this->findBy(array('source.city.$id'=>new \MongoId($id)));
         
     }
     
-    public function findBySource($source){
+    public function findBySource($id){
         
-        return $this->findBy(array('offer.source.$id'=>$source));
+        return $this->findBy(array('source.id'=>new \MongoId($id)));
         
     }
     

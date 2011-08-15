@@ -1,7 +1,5 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Ofertas de {{app.session.get('reurbano.user.cityName')}}{% endblock %}
-
 {% block content %}
 <div class="grid_9">
 {% render 'ReurbanoDealBundle:Widget\\Deal:render' with{'limit': mastop_param('deal.all.perpage'), 'orderBy': app.request.cookies.get('dealsort')|default(mastop_param('deal.all.dealsort'))} %}

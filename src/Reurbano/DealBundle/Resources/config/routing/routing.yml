@@ -1,11 +1,9 @@
 deal_frontend:
     resource: "@ReurbanoDealBundle/Controller/Frontend/DealController.php"
     type: annotation
-    prefix:   /ofertas
 deal_sell_frontend:
     resource: "@ReurbanoDealBundle/Controller/Frontend/SellController.php"
     type: annotation
-    prefix:   /vender
 deal_backend:
     resource: "@ReurbanoDealBundle/Controller/Backend/DealController.php"
     type: annotation
@@ -22,7 +20,6 @@ deal_site_backend:
     resource: "@ReurbanoDealBundle/Controller/Backend/SiteController.php"
     type: annotation
     prefix:   /admin/sites
-deal_widget:
-    resource: "@ReurbanoDealBundle/Controller/Widget/DealController.php"
+deal_category_frontend:
+    resource: "@ReurbanoDealBundle/Controller/Frontend/CategoryController.php"
     type: annotation
-    prefix:   /ofertas/widget

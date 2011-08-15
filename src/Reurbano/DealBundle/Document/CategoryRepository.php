@@ -14,7 +14,10 @@ class CategoryRepository extends BaseRepository
      **/
     public function findAllByOrder()
     {
-        return $this->findBy(array(), array('order'=>'asc'));
+        return $this->createQueryBuilder()
+                ->sort('order', 'asc')
+                ->sort('name', 'asc')
+                ->getQuery()->execute();
     }
     
     public function findBySlug($slug)
