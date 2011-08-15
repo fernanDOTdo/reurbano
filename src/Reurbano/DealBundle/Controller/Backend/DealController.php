@@ -11,7 +11,6 @@ use Mastop\SystemBundle\Controller\BaseController;
 use Reurbano\DealBundle\Form\Backend\DealType;
 use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
-use Reurbano\DealBundle\Document\Offer;
 use Reurbano\DealBundle\Util\Upload;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -63,10 +62,7 @@ class DealController extends BaseController
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($formResult['source']);
             $city   = $this->mongo('ReurbanoCoreBundle:City')->find($source->getCity()->getId());
             //var_dump($city->getName());
-            $offer = new Offer();
-            $offer->setSource($source);
-            $offer->setCity($city);
-            $deal->setOffer($offer);
+            $deal->setSource($source);
             /*echo $deal->getPrice();
             echo "<pre>";
             print_r($formDataResult);

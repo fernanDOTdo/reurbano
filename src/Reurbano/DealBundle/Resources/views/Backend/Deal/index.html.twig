@@ -10,7 +10,7 @@
     {{ deal.getPrice() }} - 
     {{ deal.getQuantity() }} - 
     {{ deal.getSpecial() }} -
-    {{ deal.getOffer().getCity().getName() }} -
+    {{ deal.getSource().getCity().getName() }} -
     | <a href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}">Editar</a> 
     | <a href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}">Deletar</a>
     | <br />

@@ -4,20 +4,14 @@ ReurbanoDealBundle:
     resource: "@ReurbanoDealBundle/Resources/config/routing/routing.yml"
 ReurbanoOrderBundle:
     resource: "@ReurbanoOrderBundle/Resources/config/routing/routing.yml"
+ReurbanoUserBundle:
+   resource:  "@ReurbanoUserBundle/Resources/config/routing/routing.yml"
 MastopSystemBundle:
   resource: "@MastopSystemBundle/Resources/config/routing/routing.yml"
 MastopMenuBundle:
   resource: "@MastopMenuBundle/Resources/config/routing/routing.yml"
-
 MastopTesteBundle:
     resource: "@MastopTesteBundle/Resources/config/routing/teste.yml"
-
-ReurbanoUserBundle:
-   resource:  "@ReurbanoUserBundle/Resources/config/routing.yml"
-   
-userBackend:
-   resource:  "@ReurbanoUserBundle/Resources/config/routingBackend.yml"
-   prefix:   /admin/usuario
    
 _login:
     resource: "@ReurbanoUserBundle/Controller/Frontend/SecurityController.php"
@@ -29,4 +23,3 @@ _logout:
     type:     annotation
 login_check:
     pattern:   /login_check
-

@@ -1,0 +1,72 @@
+{%if showSort%}
+    <div class="sortPag button-group minor-group floatR">
+    <form method="post" action="#" id="dealActions">
+    <a id="sortNew" href="#" class="dealSort button{%if orderBy == 'sortNew'%} active{%endif%}">Mais Novos</a>
+    <a id="sortCheap" href="#" class="dealSort button{%if orderBy == 'sortCheap'%} active{%endif%}">Mais Baratos</a>
+    <a id="sortExpires" href="#" class="dealSort button{%if orderBy == 'sortExpires'%} active{%endif%}">Vencimento</a>
+    <a id="sortDiscount" href="#" class="dealSort button{%if orderBy == 'sortDiscount'%} active{%endif%}">Maior Desconto</a>
+    <input type="hidden" name="cat" value="{{cat|default('all')}}" />
+    <input type="hidden" name="sort" value="{{orderBy}}" />
+    </form>
+    </div>
+    <div class="clear"></div>
+    <div class="dealBox">
+{%endif%}
+    {# Encontrados: {{found}} de {{total}} #}
+{%for deal in deals%}
+{%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
+<div class="deal">
+    <div class="grid_2 alpha dealThumb">
+    {#Imagem#}
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+    </div>
+    <div class="grid_5 dealTitle">
+    {#Conteúdo#}
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel}}</a>
+            {%if deal.getSource.getBusinessAddress is not null%}
+                <div class="dealAddress">
+                    {{deal.getSource.getBusinessAddress}}
+                </div>        
+           {%endif%}
+    </div>
+    <div class="grid_2 omega">
+    {#Preços#}
+            <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
+            <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+            <div class="buyNow"><a rel="nofollow" class="button big orange primary pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    </div>
+    <div class="clear"></div>
+    <div class="grid_2 alpha dealSource">
+            do <span>{{deal.getSource.getSite.getName}}</span>
+    </div>
+    <div class="grid_2 dealCity">
+        &nbsp;{%if deal.getSource.getCity.getSlug == 'oferta-nacional'%}<span> Oferta Nacional</span>{%endif%}
+    </div>
+    <div class="grid_3 dealExpires">
+            Expira em <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
+    </div>
+    <div class="grid_2 dealQtd omega">
+            {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
+            {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+            {% endtranschoice %}
+    </div>
+    <div class="clear"></div>
+</div>
+{%if loop.last == false%}
+<hr />
+<div class="clear"></div>
+{%endif%}
+{%else%}
+Nenhuma oferta encontrada
+{%endfor%}
+{%if pagination and totalPages > 1 %}
+    <div class="dealPagination button-group minor-group floatR">
+    {% for i in 1..totalPages %}
+    <a id="DealPag_{{i}}" href="#" class="dealPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+    {% endfor %}
+    </div>
+    <div class="clear"></div>
+{%endif%}
+{%if showSort%}
+</div>
+{%endif%}

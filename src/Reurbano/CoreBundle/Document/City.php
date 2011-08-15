@@ -14,6 +14,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   collection="city",
  *   repositoryClass="Reurbano\CoreBundle\Document\CityRepository"
  * )
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"special"="desc", "order"="asc", "name"="asc"})
+ * })
  */
 class City
 {
@@ -49,7 +52,6 @@ class City
      *
      * @var string
      * @ODM\Int
-     * @ODM\Index
      */
     protected $order = 0;
     

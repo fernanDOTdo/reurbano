@@ -401,6 +401,49 @@ http://github.com/necolas/css3-github-buttons
     background-image: linear-gradient(#D87D08, #D87D08);   
 }
 
+/* ............................................................................................................. Red */
+.button.red {
+    color: #FFF;
+    border-color: #8d0000;
+    border-bottom-color: #8d0000;
+    background-color: #8d0000;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cd0000', endColorstr='#8d0000');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cd0000), to(#8d0000));
+    background-image: -moz-linear-gradient(#cd0000, #8d0000);
+    background-image: -o-linear-gradient(#cd0000, #8d0000);
+    background-image: linear-gradient(#cd0000, #8d0000);   
+}
+
+.button.red:hover,
+.button.red:focus,
+.button.red:active,
+.button.red.active {
+	color: #FFF;
+    border-color: #ba0000;
+    border-bottom-color: #ba0000;
+    background-color: #ba0000;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9c00', endColorstr='#ba0000');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff0000), to(#ba0000));
+    background-image: -moz-linear-gradient(#ff0000, #ba0000);
+    background-image: -o-linear-gradient(#ff0000, #ba0000);
+    background-image: linear-gradient(#ff0000, #ba0000);     
+}
+
+.button.red:active,
+.button.red.active {
+    border-color: #ba0000;
+    border-bottom-color: #ba0000;
+    background-color: #ba0000;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ba0000', endColorstr='#ba0000');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ba0000), to(#ba0000));
+    background-image: -moz-linear-gradient(#ba0000, #ba0000);
+    background-image: -o-linear-gradient(#ba0000, #ba0000);
+    background-image: linear-gradient(#ba0000, #ba0000);   
+}
+
 /* ............................................................................................................. Green */
 .button.green {
     color: #FFF;

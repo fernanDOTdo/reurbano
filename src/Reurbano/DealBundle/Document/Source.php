@@ -39,6 +39,14 @@ class Source
      * @ODM\String
      */
     protected $filename;
+
+    /**
+     * Thumbnail
+     *
+     * @var string
+     * @ODM\String
+     */
+    protected $thumb;
     
     /**
      * URL da Oferta
@@ -53,6 +61,7 @@ class Source
      * 
      * @var object
      * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Site")
+     * @ODM\Index
      */
     protected $site;
 
@@ -85,6 +94,7 @@ class Source
      * Categoria da oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Category")
+     * @ODM\Index
      */
     protected $category;
     
@@ -515,4 +525,24 @@ class Source
         return substr($this->title, 0, 50)."...";
     }
     
+
+    /**
+     * Set thumb
+     *
+     * @param string $thumb
+     */
+    public function setThumb($thumb)
+    {
+        $this->thumb = $thumb;
+    }
+
+    /**
+     * Get thumb
+     *
+     * @return string $thumb
+     */
+    public function getThumb()
+    {
+        return $this->thumb;
+    }
 }
