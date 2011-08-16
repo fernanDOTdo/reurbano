@@ -30,7 +30,7 @@ class DashboardController extends BaseController
             'ReurbanoUserBundle:Widget\\MyData:dashboard',
             'ReurbanoOrderBundle:Widget\\MyOrders:dashboard',
             'ReurbanoDealBundle:Widget\\MyDeals:dashboard',
-            'ReurbanoDealBundle:Widget\\Mysell:dashboard',
+            'ReurbanoDealBundle:Widget\\MySell:dashboard',
             'ReurbanoDealBundle:Widget\\MyBalance:dashboard',
         );
         return array(

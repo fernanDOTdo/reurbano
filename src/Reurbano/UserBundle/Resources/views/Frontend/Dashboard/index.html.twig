@@ -13,21 +13,20 @@
     <div class="grid_12">
         <!-- the tabs -->
         <ul class="tabs">
-            {% a %}
-            <li><a href="#">Meus Dados</a></li>
-            <li><a href="#">Minhas Compras</a></li>
-            <li><a href="#">Minhas Ofertas</a></li>
-            <li><a href="#">Minhas Vendas</a></li>
-            <li><a href="#">Meu Financeiro</a></li>
+            {% for tabs in tabs %}
+                <li>
+                    <a href="#">{{tabs}}</a>
+                </li>
+            {% endfor %}
         </ul>
 
         <!-- tab "panes" -->
         <div class="panes">
-            <div>Aqui vão os dados do cliente</div>
-            <div>As compras do usúario</div>
-            <div>As ofertas enviadas pelo usúario</div>
-            <div>As vendas do usúario</div>
-            <div>Financeiro do usúario</div>
+            {% for panes in panes %}
+                <div>
+                    {% render panes %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 
