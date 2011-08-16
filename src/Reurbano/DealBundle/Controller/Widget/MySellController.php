@@ -14,7 +14,7 @@ class MySellController extends BaseController
     /**
      * Dashboard do MyData
      * 
-     * @template()
+     * @Template()
      */
     public function dashboardAction(){
         return array();
