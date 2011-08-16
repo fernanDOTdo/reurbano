@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MySellController extends BaseController
 {
     /**
-     * Dashboard do MyData
+     * Dashboard do MySell
      * 
      * @Template()
      */

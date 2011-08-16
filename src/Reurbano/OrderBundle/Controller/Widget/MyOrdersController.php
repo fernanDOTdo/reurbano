@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MyOrdersController extends BaseController
 {
     /**
-     * Dashboard do MyData
+     * Dashboard do MyOrders
      * 
      * @Template()
      */
