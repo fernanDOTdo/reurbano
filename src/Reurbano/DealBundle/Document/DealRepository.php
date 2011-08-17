@@ -6,7 +6,21 @@ use Mastop\SystemBundle\Document\BaseRepository;
 
 class DealRepository extends BaseRepository
 {
-
+    
+    public function findOneByCityCat($city, $cat = null, $special = false, $sort = 'special', $order = 'desc'){
+        $deal = $this->createQueryBuilder()
+                ->field('source.city.$id')->equals(new \MongoId($city))
+                ->field('active')->equals(true);
+        if($cat){
+            $deal->field('source.category.$id')->equals(new \MongoId($cat));
+        }
+        if($special){
+            $deal->field('special')->equals(true);
+        }
+        $deal->sort($sort, $order);
+        return $deal->getQuery()
+                ->getSingleResult();
+    }
     /**
      * Pega todos ordenado por CREATED
      *
