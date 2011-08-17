@@ -1,24 +1,23 @@
 <?php
+
 namespace Reurbano\DealBundle\Controller\Widget;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Mastop\SystemBundle\Controller\BaseController;
 
 /*
  * Controller para os Widgets do Deal
  */
 
-class DealController extends BaseController
-{
+class DealController extends BaseController {
+
     /**
      * Widget que renderiza as ofertas
      * 
      */
-    public function renderAction($cat = null, $limit = 4, $pg = 1, $orderBy = 'createdAt', $template = 'default', $showSort = true, $pagination = true)
-    {
-        switch ($orderBy){
+    public function renderAction($cat = null, $limit = 4, $pg = 1, $orderBy = 'createdAt', $template = 'default', $showSort = true, $pagination = true, $search = null) {
+        switch ($orderBy) {
             case 'sortCheap':
                 $sort = 'price';
                 $order = 'asc';
@@ -39,19 +38,24 @@ class DealController extends BaseController
         }
         $dealRepo = $this->mongo("ReurbanoDealBundle:Deal");
         $dealQuery = $dealRepo->createQueryBuilder();
-        if($this->get('session')->get('reurbano.user.city') == 'oferta-nacional'){
+        if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
             $dealQuery->field('source.city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
-        }else{
-            $cityNacional = $this->mongo("ReurbanoCoreBundle:City")->findBySlug('oferta-nacional');
-            $dealQuery->field('source.city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacional->getId())));
+        } else {
+            $cityNacionalId = $this->get('session')->get('reurbano.user.nacional');
+            $dealQuery->field('source.city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacionalId)));
         }
         $dealQuery->field('active')->equals(true);
-        if($cat){
+        if ($cat) {
             $dealQuery->field('source.category.$id')->equals(new \MongoId($cat));
+        }
+        if($search){
+            $regexp = new \MongoRegex('/' . $search . '/i');
+            $tags = explode(' ', $search);
+            $dealQuery->addOr($dealQuery->expr()->field('label')->equals($regexp))->addOr($dealQuery->expr()->field('tags')->all($tags));
         }
         $total = 0;
         $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->limit($limit);
-        if($pg > 1){
+        if ($pg > 1) {
             $pag = $pg - 1;
             $dealQuery->skip($limit * $pag);
         }
@@ -59,42 +63,49 @@ class DealController extends BaseController
         $deals = array();
         $found = 0;
         $total = 0;
-        if($dealsFound){
-            foreach ($dealsFound as $k => $d){
+        if ($dealsFound) {
+            foreach ($dealsFound as $k => $d) {
                 $deals[$k] = $d;
             }
             $found = $dealsFound->count(true);
             $total = $dealsFound->count();
         }
-        
+
         // Pagination
-        if($total > $found){
+        if ($total > $found) {
             $restPages = $total % $limit;
             $restPages > 0 ? $totalPages = intval($total / $limit) + 1 : $totalPages = intval($total / $limit);
-        }else{
+        } else {
             $totalPages = 1;
         }
-        
-        
-        
-
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findByCategory($categoria);
         return $this->render(
-            'ReurbanoDealBundle:Widget/Deal:'.$template.'.html.twig',
-            array(
-                'orderBy'=> $orderBy,
-                'found'  => $found,
-                'total'  => $total,
-                'cat'    => $cat,
-                'limit'  => $limit,
-                'pg'     => $pg,
-                'totalPages'     => $totalPages,
-                'deals'  => $deals,
-                'pagination'  => $pagination,
-                'showSort'  => $showSort,
-            )
+                        'ReurbanoDealBundle:Widget/Deal:' . $template . '.html.twig', array(
+                    'orderBy' => $orderBy,
+                    'found' => $found,
+                    'total' => $total,
+                    'cat' => $cat,
+                    'limit' => $limit,
+                    'pg' => $pg,
+                    'totalPages' => $totalPages,
+                    'deals' => $deals,
+                    'pagination' => $pagination,
+                    'showSort' => $showSort,
+                    'search' => $search,
+                        )
         );
     }
-    
-    
+
+    /**
+     * Widget que renderiza uma oferta no bloco
+     * @param object $deal
+     */
+    public function blockAction($deal) {
+        return $this->render(
+                        'ReurbanoDealBundle:Widget/Deal:block.html.twig', array(
+                        'deal' => $deal,
+                        )
+        );
+    }
+
 }
