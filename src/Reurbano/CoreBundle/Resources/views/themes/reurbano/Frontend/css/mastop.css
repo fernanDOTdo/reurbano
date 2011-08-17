@@ -1,3 +1,5 @@
+/*Fonte para a linha abaixo: http://www.vcarrer.com/2009/06/1-line-css-grid-framework.html */
+.dp50 {width:50%;  float:left;  display: inline;  *margin-right:-1px; }
 /* Geral */
 body {
   font-family: Arial, Verdana;
@@ -64,6 +66,12 @@ h1, h2, h3
 span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
 .floatL{float: left}
 .floatR{float: right}
+.m5{margin: 5px;}
+.mT5{margin-top: 5px;}
+.mB5{margin-bottom: 5px;}
+.m10{margin: 10px;}
+.mT10{margin-top: 10px;}
+.mB10{margin-bottom: 10px;}
 
 /*/Geral */
 
@@ -115,8 +123,11 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 #login{height: 28px; text-align: right;}
 #menuTop, #menuMain{height: 34px;}
 #menuMain{}
-#menuCat{height: 41px;}
-#bannerHome{height: 335px; margin-top: 20px;}
+#breadcrumbs{height: 25px; padding-top: 10px;}
+#breadcrumbs div{float: left; margin-right: 5px;}
+#breadcrumbs div span{font-weight: 700; font-size: 1.1em;}
+#breadcrumbs div a span{font-weight: 400;}
+#bannerHome{height: 335px; margin-top: 35px;}
 
 #menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
@@ -147,10 +158,10 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     background: #FFF;
 }
 .twLoginBtn, .fbLoginBtn{margin: 5px 0 0 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
-.twLoginBtn{background-position: -181px -4px;}
-.twLoginBtn:hover{background-position: -181px -31px;}
-.fbLoginBtn{background-position: -41px -4px;}
-.fbLoginBtn:hover{background-position: -41px -31px;}
+.twLoginBtn{background-position: -181px -31px;}
+.twLoginBtn:hover{background-position: -181px -4px;}
+.fbLoginBtn{background-position: -41px -31px;}
+.fbLoginBtn:hover{background-position: -41px -4px;}
 
 /* Lista e Combo de Cidades */
 #cityLabel{
@@ -220,6 +231,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 /* Body */
 #bd_wrap { /* Div que cobre todo o Body */
   padding-bottom: 1em;
+  margin-top: 10px;
 }
 #bd {
     /* Div que cobre o body 960 */
@@ -270,6 +282,7 @@ span.discount{
     color: #FFF;
     font-weight: 700;
     left: 0;
+    top:0;
     padding: 4px 5px;
     position: absolute;
     -webkit-border-bottom-right-radius: 7px;
@@ -289,8 +302,65 @@ div.dealSource, div.dealCity, div.dealExpires, div.dealQtd{font-size: 11px;}
 div.dealQtd{text-align: right; margin: 0 10px 0 0}
 div.dealSource{text-align: center;}
 div.dealCity {font-weight: 700; color: #333;}
-div.dealCity span{padding-left: 17px; background: url(../images/flag.png) center left no-repeat;}
+div.dealCity span, span.brFlag{padding-left: 17px; background: url(../images/flag.png) center left no-repeat;}
 div.dealAddress {font-size: 11px}
+
+/*Blocos*/
+div.block{
+    -moz-box-shadow: 0 0 5px #D4D4D4;
+    -webkit-box-shadow: 0 0 5px #D4D4D4;
+    box-shadow: 0 0 5px #D4D4D4;
+    border:1px solid #D4D4D4;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin-bottom: 15px;
+}
+div.blockTitle{
+    font-weight: 700;
+    padding: 5px;
+    border-bottom: 1px solid #D4D4D4;
+    background-color: #ffffff;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
+    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
+    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
+    background-image: linear-gradient(#ffffff, #e4e4e4);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+}
+div.blockContent{
+    margin: 5px 3px;
+}
+div.blockContent div.deal{
+    margin: 5px;
+}
+div.blockContent div.dealThumb a{
+    margin: 0 5px 5px 0;
+}
+div.blockContent div.dealThumb a img, div.blockContent div.dealThumb a{
+    height: 60px;
+    width: 80px;
+}
+div.blockContent span.discount{
+    font-weight: 400;
+    font-size: 0.9em;
+    padding: 2px 3px;
+}
+div.blockContent div.dealTitle a{
+    font-weight: 400;
+    font-size: 0.9em;
+}
+
+
+
+
+
 /* /Body */
 
 /* Footer */

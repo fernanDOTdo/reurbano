@@ -22,6 +22,8 @@ class CategoryController extends BaseController {
             $this->get('session')->set('reurbano.user.cityName', $cidade->getName());
             $this->get('session')->set('reurbano.user.cityId', $cidade->getId());
         }
-        return array('cat' => $cat, 'slug' => $cat->getSlug());
+        $breadcrumbs[] = array('title'=>$this->get('session')->get('reurbano.user.cityName'), 'url' => $this->generateUrl('core_city_index', array('slug' => $this->get('session')->get('reurbano.user.city'))));
+        $breadcrumbs[] = array('title'=>$cat->getName());
+        return array('cat' => $cat, 'slug' => $cat->getSlug(), 'breadcrumbs' => $breadcrumbs);
     }
 }

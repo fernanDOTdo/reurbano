@@ -121,7 +121,7 @@ $(function(){
             </div>
             <div id="search">
                 {% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
-                <form action="{# path('core_mailing_new') #}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big blue">Pega!</button></form>
+                <form action="{{ path('deal_deal_search') }}" method="get"> <input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%else%}Encontre cupons de compra coletiva{%endif%}"  /> <button type="submit" class="button big blue">Pega!</button></form>
             </div>
         </div>
         
@@ -148,11 +148,25 @@ $(function(){
         <div class="grid_12" id="menuMain">
             {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
         </div>
-        <div class="grid_12" id="menuCat">
-            {#mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})#}
+        {%if breadcrumbs is defined%}
+        <div class="grid_12" id="breadcrumbs">
+            <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="{{path('_home')}}" itemprop="url">
+                <span itemprop="title">Home</span>
+                </a> › 
+            </div>  
+        {%for item in breadcrumbs%}
+            <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+                {%if item.url is defined%}<a href="{{item.url}}" itemprop="url">{%endif%}
+                <span itemprop="title">{{item.title}}</span>
+                {%if item.url is defined%}</a> {%endif%}{%if loop.last == false%} › {%endif%}
+            </div>
+        {%endfor%}
         </div>
+        {%endif%}
         {%if app.request.attributes.get('_route') == '_home'%}
         {# Só exibe o banner se estiver na home #}
+        <div class="clear"></div>   
         <div class="grid_12" id="bannerHome">
             <div id="bannerSlides">
 			<img src="{{ asset('themes/reurbano/images/slides/new-ribbon.png') }}" width="112" height="112" alt="New Ribbon" id="ribbon">
@@ -200,7 +214,7 @@ $(function(){
    {{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
     <div class="container_12">
         <div id="copyright" class="grid_9">
-            {% block footer %}© {{ "now"|date('Y') }} {{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }} | Todos os direitos reservados.{% endblock%}
+            {% block footer %} {{ mastop_param('system.site.footer') }} {% endblock%}
         </div>
         <div id="poweredBy" class="grid_3">
             <a href="http://www.mastop.com.br" title="Produzido por Mastop Internet Development">Mastop Devenvolvimento e Consultoria Web</a>

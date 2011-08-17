@@ -15,7 +15,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   repositoryClass="Reurbano\DealBundle\Document\DealRepository"
  * )
  * @ODM\Indexes({
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "special"="desc"})
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "special"="desc"}),
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "tags"="desc"})
  * })
  */
 class Deal
@@ -161,6 +162,41 @@ class Deal
         $count3 = 100 - $count2;
         $count = number_format($count3, 0);
         $this->setDiscount($count);
+    }
+    /** @ODM\PrePersist
+    /** @ODM\PreUpdate
+     */
+    public function doPrePersistUpdateTags()
+    {
+        $walk = function($v){
+            // Remove os caracteres (),$%.*!+
+            $v = preg_replace('/[(),$%.*!+]/', '', $v);
+            if(strlen($v) < 2 || is_numeric($v)){
+                // Se $v for número ou tiver menos de 2 caracteres, retorna nulo
+                return null;
+            }else{
+                // Retorna $v minúsculo
+                return strtolower($v);
+            }
+        };
+        // Separa o label por espaços
+        $tags = explode(' ', $this->getLabel());
+        // Adiciona nas tags o mesmo label sem acento
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $this->getLabel());
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
+        $tags2 = explode('-', $clean);
+        // Junta o label sem acento com o label com acento
+        $tags = array_merge($tags, $tags2);
+        // Roda a função walk nas tags
+        $tags = array_map($walk, $tags);
+        // Remove itens repetidos das tags
+        $tags = array_unique($tags);
+        // Remove itens nulos das tags
+        $tags = array_filter($tags, 'strlen');
+        // Salva as tags
+        $this->setTags($tags);
     }
 
     /** @ODM\PreUpdate */
