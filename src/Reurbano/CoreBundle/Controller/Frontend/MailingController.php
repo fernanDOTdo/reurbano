@@ -19,10 +19,14 @@ class MailingController extends BaseController
     public function newAction()
     {
         $request = $this->getRequest();
+        $dm = $this->dm();
         $city = $request->request->get('cityNL');
         $mailing = new Mailing();
         $mailing->setMail($request->request->get('email'));
         $mailing->setCity($request->request->get('cityNL'));
-        exit(print_r($request->request));
+        $dm->persist($mailing);
+        $dm->flush();
+        $this->setCookie('hideNL', 1);
+        return $this->redirect($this->generateUrl('_home'));
     }
 }

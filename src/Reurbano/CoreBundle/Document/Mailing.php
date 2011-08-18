@@ -119,4 +119,10 @@ class Mailing
     {
         return $this->createdAt;
     }
+    
+    /** @ODM\PrePersist */
+    public function doPrePersist()
+    {
+        $this->setCreatedAt(new \DateTime);
+    }
 }
