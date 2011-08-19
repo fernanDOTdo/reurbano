@@ -272,7 +272,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 .deal{margin:5px 0;}
 .deal.over{background-color: #DEF0FC;}
 .deal .dealTitle { margin-top: 3px}
-.deal .dealTitle a{color:#15567F; font-size: 14px; font-weight: 700; line-height: 18px;}
+.deal .dealTitle a{color:#15567F; font-size: 14px; font-weight: 700; line-height: 17px;}
 .deal .dealTitle a:hover{text-decoration: none; color: #0076c1}
 .deal .dealThumb {position: relative;}
 .deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
@@ -357,10 +357,65 @@ div.blockContent div.dealTitle a{
     font-size: 0.9em;
 }
 
+/*Bloco Facebook*/
+#facemask {
+	background: url(../images/facemask.png) 0 -20px no-repeat;
+	height: 300px;
+        width: 300px;
+	display: block;
+	position: relative;
+        text-indent: -999em;
+	z-index: 20;
+	margin: 0 0 -300px;
+        -webkit-transition:background-color 0.15s ease-in;
+	-moz-transition:background-color 0.15s ease-in;
+	-o-transition:background-color 0.15s ease-in;
+	transition:background-color 0.15s ease-in;
+        overflow: hidden;
+}
+#facemask:hover {
+	background-color: rgba(255, 255, 255, 0.5);
+}
 
 
+/* Forms */
+input.errorField {
+    border-color: #F00 !important;
+}
 
-
+/* Página do Deal */
+#dealTitle{font-size: 22px; margin-bottom: 0;}
+#dealShare{text-align: right; margin-bottom: 15px;}
+#dealThumb{position: relative;}
+#dealThumb img{width: 380px;}
+#dealThumb span.discount{font-size: 2em;}
+#dealPrices {margin: 10px 0;}
+#dealPrices div.priceSource, #dealPrices div.price, #dealPrices div.buyNow, #dealInfos div.dealSite{text-align: center;}
+#dealPrices div.priceSource strong{font-size: 1.3em;}
+#dealPrices div.price strong{font-size: 2.5em;}
+#dealPrices div.buyNow a{font-size: 2em;}
+#dealInfos div.dealQtd, #dealInfos div.dealExpire{text-align: center; font-size: 15px;}
+#dealInfos strong{font-size: 1.2em;}
+#dealInfos div.dealSite{margin-top:10px;}
+#dealRules {
+    border-left: 1px solid #D4D4D4;
+    padding-left: 5px;
+}
+#dealRules ul{
+    list-style: square outside;
+}
+#dealRules ul li{
+    margin-left: 20px;
+}
+#dealDetails img{
+    max-width: 370px;
+}
+#dealDetails h2, #dealRules h2{
+    font-size: 16px;
+}
+#dealDetails h3{
+    font-size: 13px;
+}
 /* /Body */
 
 /* Footer */
