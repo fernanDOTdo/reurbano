@@ -1,0 +1,21 @@
+.full_widget { /*background: #F15D22 !important;*/ }
+.full_widget, .total, .connections { width: 300px !important; height: 300px !important; }
+.full_widget, .connections { overflow: hidden !important; }
+
+.full_widget, .connections { border: 0px !important; }
+
+.grid_item, .connections_grid, .connections, .connect_top { padding: 0px !important; }
+.grid_item { width: 50px !important; height: 50px !important; opacity: 0.9 !important; }
+
+.total { position: absolute !important; top: 136px !important; z-index: 50 !important; text-align: center !important; font-size: 18px !important; font-family:"Lucida Grande","Lucida Sans Unicode",Helvetica,Arial,Verdana,sans-serif !important; text-align: center !important; font-weight: 700 !important; color: #FFF !important; text-shadow: 0 0 5px #222222, 0 0 10px #333333, 0 0 15px #444444, 0 0 20px #555555, 0 0 10px #666666, 0 0 10px #777777, 0 0 20px #888888, 0 0 25px #999999; }
+.total b { font-size: 30px !important; }
+
+.connect_top { position: absolute !important; z-index: 60 !important; top: 300px !important; width:300px !important; width: 290px !important; padding: 5px !important; background: #fff !important; }
+
+.connect_top > a, .connect_top .name_block, td + .connect_widget_vertical_center  { display: none !important; }
+
+.connect_action { padding: 0px !important; }
+
+.connect_widget_interactive_area { margin: 0px !important; }
+
+.connect_widget_like_button { margin-left: 220px !important; }

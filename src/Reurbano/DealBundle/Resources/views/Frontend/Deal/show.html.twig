@@ -1,113 +1,87 @@
 {% extends '::frontend.html.twig' %}
 
-{% block stylesheets %}
-    <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
-{% endblock %}
 {% block javascriptsHead %}
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            var geocoder;
-            var map;
-
-            geocoder = new google.maps.Geocoder();    
-
-            geocoder.geocode( { 'address': "{{ oferta.getSource().getBusinessAddress() }}" }, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var myOptions = {
-                        zoom: 17,
-                        center: results[0].geometry.location,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }
-                    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-                    map.setCenter(results[0].geometry.location);
-                    var marker = new google.maps.Marker({
-                        map: map, 
-                        position: results[0].geometry.location
-                    });
-                } else {
-                    alert("Geocode was not successful for the following reason: " + status);
-                }
-            });
-        });
-    </script>
+    {%if deal.getSource.getBusinessAddress is not null%}
+    {#Colocar Mapa caso a oferta tenha endereço #}
+    {%endif%}
 {% endblock %}
 
-{% block title %}Ofertas {{title}}{% endblock %}
+{% block title %}{{title}}{% endblock %}
 {% block content %}
-    <div class="container_12">
-        <div id="dealInformation" class="grid_9">
-            <div class="grid_9">
-                <h1 class="dealTitle">
-                    {{ oferta.getLabel() }}
-                </h1>
-            </div>
-            <div class="grid_5" style="margin-left: 0px; height: 250px;">
-                <div class="dealImage">
-                    <!-- Deal Image -->
-                    <span>
-                        IMAGEM DA OFERTA!
-                    </span>
-                </div>
-            </div>
-            <div class="grid_4" style="margin-right: 0px">
-                <div class="dealOrder">
-                    <div class="dealExpires">
-                        <span class="expiresLabel">Cupom válido até:</span> 
-                        <span class="expiteDate">{{ oferta.getSource().getExpiresAt()|date("d/m/Y")  }}</span>
-                    </div>
-                    <div class="dealPrice">
-                        <span class="priceNormalLabel">De</span> <span class="priceNormal">R${{ oferta.getSource().getPrice() }}</span> 
-                        <span class="priceDescLabel">Por </span> <span class="priceDesc">R${{ oferta.getPrice() }}</span> 
-                    </div>
-                </div>
-            </div>
-            <div class="grid_9">
-                <div class="dealDetalhe">
-                    Detalhes
-                </div>
-                <div class="dealDescription">
-                    {{ oferta.getSource().getDetails() }}
-                </div>
-            </div>
-            <div class="grid_9">
-                <div class="dealRegra">
-                    Regras
-                </div>
-                <div class="dealRules">
-                    {{ oferta.getSource().getRules() }}
-                </div>
-            </div>
-            <div class="grid_9">
-                <div class="dealRegra">
-                    Oferta
-                </div>
-                    {{ oferta.getSource().getBusinessAddress() }}
-                    {{ oferta.getSource().getBusinessCep() }}
-                <div id="map_canvas" style="height:250px;width: 250px;"></div>
-            </div>
-        </div>
-        <div id="otherDeals" class="grid_3">
-            <div class="reurbanoMidia" style="text-align: center;">
-                Reurbano na mídia
-            </div>
-            <div class="relationDeal" style="border: 1px solid #CCCCCC; padding: 15px; margin: 5px;">
-                <div class="relationDealImage" style="text-align: center; padding: 5px; border: 1px solid black; height: 130px;">
-                    Imagem DEAL RELACIONADO
-                </div>
-                <div class="relationDealInformation" style="margin: 10px 0px 0px 0px;">
-                    Informação DEAL RELACIONADO
-                </div>
-            </div>
-            <div class="relationDeal" style="border: 1px solid #CCCCCC; padding: 15px; margin: 5px;">
-                <div class="relationDealImage" style="text-align: center; padding: 5px; border: 1px solid black; height: 130px;">
-                    Imagem DEAL RELACIONADO
-                </div>
-                <div class="relationDealInformation" style="margin: 10px 0px 0px 0px;">
-                    Informação DEAL RELACIONADO
-                </div>
-            </div>
-        </div>
-        <div class="clear"></div>
+<div class="grid_8">
+    {# Título e Share #}
+    <h1 class="grid_8" id="dealTitle">{{title}}</h1>
+    <div class="grid_8" id="dealShare">
+        <fb:like href="{{url('deal_deal_show', {'city': city, 'category': cat.getSlug, 'slug': deal.getSlug})}}" send="true" layout="button_count" width="55" show_faces="false" action="like" font="lucida grande"></fb:like>
+        <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="ReurbanoBrasil">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <g:plusone size="medium"></g:plusone>
+        <!-- Place this tag after the last plusone tag -->
+        <script type="text/javascript">
+          window.___gcfg = {lang: 'pt-BR'};
+
+          (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+          })();
+        </script>
     </div>
+    <div class="grid_5 alpha">
+        {# Foto #}
+        <div id="dealThumb">
+            <img src="{{asset(deal.getSource.getFilename)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+        </div>
+    </div>
+    <div class="grid_3 omega">
+        {# Preços #}
+        <div id="dealPrices">
+            <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
+            <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+            <div class="buyNow"><a rel="nofollow" class="button big orange primary" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+        </div>
+        <div id="dealInfos">
+            {# Quantidade #}
+            <div class="dealQtd">
+            {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
+                    {0} Oferta vendida|{1} <strong>1</strong> cupom disponível|]1,Inf] <strong>%count%</strong> cupons disponíveis
+            {% endtranschoice %}
+            </div>
+            {# Validade #}
+            <div class="dealExpire">
+            Use o cupom até <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
+            </div>
+            {# Link da Oferta #}
+            <div class="dealSite">
+                <a rel="nofollow" href="{{deal.getSource.getUrl}}" target="_blank" title="Veja a página da oferta no {{deal.getSource.getSite.getName}}"><img src="{{asset('/uploads/reurbanodeal/'~deal.getSource.getSite.getFilename)}}" alt="Página da Oferta no {{deal.getSource.getSite.getName}}" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="grid_5 alpha mT10">
+        <div id="dealDetails">
+            <h2>Informações</h2>
+        {{deal.getSource.getDetails|raw}}
+        {%if deal.getSource.getBusinessAddress != ''%}
+            <p><img src="http://maps.google.com/maps/api/staticmap?center={{deal.getSource.getBusinessAddress}}&zoom=16&markers=color:orange|label:R|{{deal.getSource.getBusinessAddress}}&size=380x260&sensor=false" /></p>
+        {%endif%}
+        </div>
+    </div>
+    <div class="grid_3 omega mT10">
+        <div id="dealRules">
+            <h2>Regras</h2>
+            <ul>
+            {%for rule in rules%}
+                {%if rule != ''%}<li>{{rule}}</li>{%endif%}
+            {%endfor%}
+            </ul>
+            <h2>Empresa</h2>
+            <p>{{deal.getSource.getBusinessName}}</p>
+            {%if deal.getSource.getBusinessUrl != ''%}
+            <p><a href="{{deal.getSource.getBusinessUrl}}" rel="nofollow" target="_blank">{{deal.getSource.getBusinessUrl}}</a></p>
+            {%endif%}
+        </div>
+    </div>
+</div>
+<div class="grid_4">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat, 'id': deal.getId}} %}
+</div>
 {% endblock %}

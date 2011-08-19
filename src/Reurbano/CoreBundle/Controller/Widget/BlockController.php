@@ -81,12 +81,41 @@ class BlockController extends BaseController {
                             }
                         }
                     }
-                    
                 }
                 break;
             case 'search': // Página de busca
                 break;
             case 'deal': // Página de oferta
+                if (isset($opts['cat']) && isset ($opts['id'])) {
+                    $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true, 'special', 'desc', $opts['id']);
+                    $catSpecialId = null;
+                    if ($catSpecial) {
+                        $catSpecialId = $catSpecial->getId();
+                        $ret[$c]['title'] = 'Destaque de ' . $opts['cat']->getName();
+                        $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                        $ret[$c]['opts'] = array('deal' => $catSpecial);
+                        $c++;
+                    }
+                    $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), false, 'price', 'asc', $opts['id']);
+                    if ($blockCheap && $blockCheap->getId() != $catSpecialId) { // Evita 2 ofertas iguais em blocos diferentes
+                        $ret[$c]['title'] = 'Mais Barato de '.$opts['cat']->getName();
+                        $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                        $ret[$c]['opts'] = array('deal' => $blockCheap);
+                        $c++;
+                    }
+                    if ($session->get('reurbano.user.city') != 'oferta-nacional') {
+                        $nacionalId = $session->get('reurbano.user.nacional');
+                        if ($nacionalId) {
+                            $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, $opts['cat']->getId(), true);
+                            if ($blockSpecialNacional) {
+                                $ret[$c]['title'] = $opts['cat']->getName().' em Oferta Nacional <span class="brFlag floatR"> &nbsp; </span>';
+                                $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                                $ret[$c]['opts'] = array('deal' => $blockSpecialNacional);
+                                $c++;
+                            }
+                        }
+                    }
+                }
                 break;
             case 'sell': // Página de venda
                 break;
@@ -125,8 +154,10 @@ class BlockController extends BaseController {
                 $c++;
                 break;
         }
-        $ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';
-        $ret[$c]['opts'] = array('url' => 'http://www.facebook.com/pages/Reurbano/188401247891549', 'width' => '292', 'border' => '#FFFFFF');
+        $ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebookFans';
+        $ret[$c]['opts'] = array('profile' => '188401247891549', 'url' => 'http://www.facebook.com/recompracoletiva', 'css' => 'http://www.mastop.com.br/fernando/css/facebook.css');
+        //$ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';
+        //$ret[$c]['opts'] = array('url' => 'http://www.facebook.com/recompracoletiva', 'width' => '292', 'border' => '#FFFFFF');
         return $this->render(
                         'ReurbanoCoreBundle:Widget/Block:render.html.twig', array(
                     'blocks' => $ret
@@ -142,6 +173,20 @@ class BlockController extends BaseController {
      */
     public function facebookAction($url, $width, $border = '#000000', $faces = 'true', $stream = 'false', $header = 'false') {
         return array('url' => $url, 'width' => $width, 'border' => $border, 'faces' => $faces, 'stream' => $stream, 'header' => $header);
+    }
+    /**
+     * Widget que renderiza o Bloco do Facebook Fans
+     * @param string $profile
+     * @param int $width
+     * @param int $height
+     * @param int $connections
+     * @param string $css
+     * @param bool $stream
+     * @param bool $header
+     * @Template()
+     */
+    public function facebookFansAction($profile, $url, $width = 300, $height = 330, $connections = 36, $css = null, $stream = 'false', $header = 'false') {
+        return array('profile' => $profile, 'url' => $url, 'width' => $width, 'height' => $height, 'connections' => $connections, 'css' => $css, 'stream' => $stream, 'header' => $header);
     }
 
 }

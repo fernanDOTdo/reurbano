@@ -1,6 +1,6 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Resultado da Busca por "{{q}}"{% endblock %}
+{% block title %}Resultado da Busca por "{{q}}" em {{app.session.get('reurbano.user.cityName')}}{% endblock %}
 
 {% block content %}
 <div class="grid_8">
