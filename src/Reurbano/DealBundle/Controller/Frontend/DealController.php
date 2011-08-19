@@ -100,6 +100,7 @@ class DealController extends BaseController
         $ret['title'] = $deal->getLabel();
         $ret['rules'] = ($deal->getSource()->getRules() != '') ? preg_split( '/\r\n|\r|\n/', $deal->getSource()->getRules()) : array();
         $ret['breadcrumbs'] = $breadcrumbs;
+        $ret['keywords'] = implode(', ', explode(' ', $deal->getLabel()));
         return $ret;
     }
 }
