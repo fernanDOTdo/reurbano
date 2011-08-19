@@ -27,10 +27,12 @@ class DealController extends BaseController
         $request = $this->getRequest();
         $cat = $request->request->get('cat');
         $pg = $request->request->get('pg');
+        $q = $request->request->get('q');
         $sort = $request->request->get('sort');
         if(!$request->isXmlHttpRequest() || !$pg || !$cat){
             throw new AccessDeniedHttpException('Você não tem permissão para acessar esta página.');
         }
+        $ret['search'] = (empty ($q)) ? null : $q;
         $ret['cat'] = ($cat == 'all') ? null : $cat;
         if($pg != 1){
             list($field, $pg) = explode('_', $pg);
@@ -39,6 +41,22 @@ class DealController extends BaseController
         $ret['sort'] = $sort;
         return $ret;
     }
+    /**
+     * Action que busca ofertas
+     * 
+     * @Route("/busca", name="deal_deal_search")
+     * @Method("GET")
+     * @Template()
+     */
+    public function  searchAction(){
+        $request = $this->getRequest();
+        $q = $request->query->get('q');
+        $ret['q'] = $q;
+        $ret['breadcrumbs'][]['title'] = 'Resultado da busca por "'.$q.'"';
+        return $ret;
+    }
+    
+    
 
     /**
      * Action que lista as ofertas na cidade do usuário
@@ -123,8 +141,12 @@ class DealController extends BaseController
         $deal->getSource()->setPrice(number_format($precoDe, 2, ',', '.'));
         $deal->setPrice(number_format($precoPor, 2, ',', '.'));
         $title = $deal->getLabel();
-        
+        $breadcrumbs[] = array('title'=>$deal->getSource()->getCity()->getName(), 'url' => $this->generateUrl('core_city_index', array('slug' => $deal->getSource()->getCity()->getSlug())));
+        $breadcrumbs[] = array('title'=>$deal->getSource()->getCategory()->getName(), 'url' => $this->generateUrl('deal_category_index', array('city' => $deal->getSource()->getCity()->getSlug(), 'slug'=>$deal->getSource()->getCategory()->getSlug())));
+        $breadcrumbs[] = array('title' => (isset ($title[90])) ? substr($title, 0, 90).'...' : $title);
         return array('oferta' => $deal, 
-                     'title'  => $title);
+                     'title'  => $title,
+                     'breadcrumbs'  => $breadcrumbs,
+                      );
     }
 }

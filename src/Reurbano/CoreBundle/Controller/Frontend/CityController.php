@@ -21,6 +21,7 @@ class CityController extends BaseController
         $this->get('session')->set('reurbano.user.city', $city->getSlug());
         $this->get('session')->set('reurbano.user.cityName', $city->getName());
         $this->get('session')->set('reurbano.user.cityId', $city->getId());
-        return array();
+        $breadcrumbs[]['title'] = $city->getName();
+        return array('breadcrumbs'=>$breadcrumbs);
     }
 }

@@ -26,6 +26,7 @@ class KernelRequestListener
                     $cidade = (string)$this->container->get('mastop')->slugify($ip2city->getCity());
                     $session->set('reurbano.user.ip', (string)$ip2city->getIP());
                     $cidadeDB = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->findBySlug($cidade);
+                    $nacionalDB = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City')->findBySlug('oferta-nacional');
                     if($cidadeDB){ // Cidade atual está no DB
                         $session->set('reurbano.user.city', $cidade);
                         $session->set('reurbano.user.cityName', $cidadeDB->getName());
@@ -41,6 +42,9 @@ class KernelRequestListener
                             $session->set('reurbano.user.cityName', $ip2city->getCity());
                             $session->set('reurbano.user.cityId', '0');
                         }
+                    }
+                    if($nacionalDB){ // Guarda o ID da Oferta Nacional na session
+                        $session->set('reurbano.user.nacional', $nacionalDB->getId());
                     }
                     $session->set('reurbano.user.country', (string)$ip2city->getCountry());
                     $coords = $ip2city->getCoordinates();

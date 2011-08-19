@@ -1,12 +1,12 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Ofertas de {{app.session.get('reurbano.user.cityName')}}{% endblock %}
+{% block title %}Ofertas em {{app.session.get('reurbano.user.cityName')}}{% endblock %}
 
 {% block content %}
-<div class="grid_9">
+<div class="grid_8">
 {% render 'ReurbanoDealBundle:Widget\\Deal:render' with{'limit': mastop_param('deal.all.perpage'), 'orderBy': app.request.cookies.get('dealsort')|default(mastop_param('deal.all.dealsort'))} %}
 </div>
-<div class="grid_3">
-Bloco Lateral
+<div class="grid_4">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'city'} %}
 </div>
 {% endblock %}

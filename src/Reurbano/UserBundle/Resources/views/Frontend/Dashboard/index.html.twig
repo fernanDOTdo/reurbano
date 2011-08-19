@@ -1,7 +1,41 @@
 {% extends '::frontend.html.twig' %}
 
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/tabs/jquery.tools.min.css' filter='?yui_css' output='reurbano/corebundle/css/tabs.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
-    teste
+    <div class="clear"></div>
+    <div class="grid_12">
+        <!-- the tabs -->
+        <ul class="tabs">
+            {% for tabs in tabs %}
+                <li>
+                    <a href="#">{{tabs}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- tab "panes" -->
+        <div class="panes">
+            {% for panes in panes %}
+                <div>
+                    {% render panes  %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {% javascripts output='bundles/corebundle/js/abas.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/tabs/jquery.tools.min.js'
+                   '@ReurbanoUserBundle/Resources/public/js/Frontend/dashboard.js'
+                   %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

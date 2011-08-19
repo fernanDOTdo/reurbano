@@ -1,0 +1,19 @@
+{%for block in blocks%}
+<div class="block">
+    {%if block.title is defined %}
+        <div class="blockTitle">{{block.title|raw}}</div>
+    {%endif%}
+    <div class="blockContent">
+    {%if block.content is defined%}
+        {{block.content}}   
+    {%endif%}
+    {%if block.widget is defined%}
+        {%if block.opts%}
+            {% render block.widget with block.opts %}
+        {%else%}
+            {% render block.widget %}
+        {%endif%}
+    {%endif%}
+    </div>
+</div>
+{%endfor%}
