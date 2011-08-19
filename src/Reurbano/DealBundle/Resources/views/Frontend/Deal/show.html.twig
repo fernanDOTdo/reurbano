@@ -1,9 +1,12 @@
 {% extends '::frontend.html.twig' %}
-
+{%set dealLink = url('deal_deal_show', {'city': city, 'category': cat.getSlug, 'slug': deal.getSlug}) %}
 {% block javascriptsHead %}
-    {%if deal.getSource.getBusinessAddress is not null%}
-    {#Colocar Mapa caso a oferta tenha endereço #}
-    {%endif%}
+    {# AppId e AppAdmins pode-se colocar na parte de "scripts" das preferências #}
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="" />
+    <meta property="og:url" content="{{dealLink}}" />
+    <meta property="og:image" content="{{asset(deal.getSource.getThumb)}}" />
 {% endblock %}
 
 {% block title %}{{title}}{% endblock %}
@@ -12,7 +15,7 @@
     {# Título e Share #}
     <h1 class="grid_8" id="dealTitle">{{title}}</h1>
     <div class="grid_8" id="dealShare">
-        <fb:like href="{{url('deal_deal_show', {'city': city, 'category': cat.getSlug, 'slug': deal.getSlug})}}" send="true" layout="button_count" width="55" show_faces="false" action="like" font="lucida grande"></fb:like>
+        <fb:like href="{{dealLink}}" send="true" layout="button_count" width="55" show_faces="false" action="like" font="lucida grande"></fb:like>
         <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="ReurbanoBrasil">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <g:plusone size="medium"></g:plusone>
         <!-- Place this tag after the last plusone tag -->
@@ -79,6 +82,9 @@
             <p><a href="{{deal.getSource.getBusinessUrl}}" rel="nofollow" target="_blank">{{deal.getSource.getBusinessUrl}}</a></p>
             {%endif%}
         </div>
+    </div>
+    <div class="grid_8 alpha omega" id="dealComments">
+    <fb:comments href="{{dealLink}}" num_posts="10" width="620"></fb:comments>
     </div>
 </div>
 <div class="grid_4">
