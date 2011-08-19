@@ -28,7 +28,7 @@ class DealRepository extends BaseRepository
      **/
     public function findAllByCreated()
     {
-        return $this->findBy(array(), array('created'=>'asc'));
+        return $this->findBy(array(), array('createdAt'=>'desc'));
     }
     
     public function findByCity($id){

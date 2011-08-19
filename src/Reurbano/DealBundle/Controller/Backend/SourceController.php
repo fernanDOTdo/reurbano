@@ -38,7 +38,7 @@ class SourceController extends BaseController
     public function dealAction($id = null)
     {
         $dm = $this->dm();
-        $title = ($id) ? "Editar Oferta" : "Nova Oferta";
+        $title = ($id) ? "Editar Banco de Oferta" : "Novo Banco de Oferta";
         if($id){
             $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
             if (!$deal) {
@@ -69,9 +69,9 @@ class SourceController extends BaseController
         return array(
             'form'    => $form->createView(),
             'deal'    => $deal,
-            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Banco de Ofertas'),'url'=>$this->generateUrl('admin_deal_source_index'))),
             'title'   =>  $title,
             'current' => 'admin_deal_deal_index',
+            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Banco de Ofertas'),'url'=>$this->generateUrl('admin_deal_source_index'))),
             );
     }
     /**
@@ -97,11 +97,8 @@ class SourceController extends BaseController
         }
 
         $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
-        return array(
-            'deal'    => $deal,
-            'id'      => $id,
-            'current' => 'admin_deal_deal_index',
-        );
+        
+        return $this->confirm('Tem certeza de que deseja remover a oferta "' . $deal->getTitle() . '"', array('id' => $deal->getId()));
         
     }
 }

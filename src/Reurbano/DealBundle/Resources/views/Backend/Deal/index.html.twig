@@ -1,20 +1,44 @@
 {% extends '::backend.html.twig' %}
-        
 {% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
+<div class="content box grid_12 round_all" style="padding:0">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Imagem"|trans }}</th> 
+                <th>{{ "Oferta"|trans }}</th> 
+                <th>{{ "Usuário"|trans }}</th> 
+                <th class="nowrap">{{ "Qtde"|trans }}</th> 
+                <th class="center nowrap">{{ "Valor"|trans }}</th> 
+                <th class="center">{{ "Categoria"|trans }}</th> 
+                <th class="center">{{ "Cidade"|trans }}</th> 
+                <th class="center">{{ "Especial"|trans }}</th> 
+                <th class="center">{{ "Data"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
 {% for deal in ofertas %}
-    {{ deal.getId() }} - 
-    {{ deal.getLabel() }} - 
-    {{ deal.getPrice() }} - 
-    {{ deal.getQuantity() }} - 
-    {{ deal.getSpecial() }} -
-    {{ deal.getSource().getCity().getName() }} -
-    | <a href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}">Editar</a> 
-    | <a href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}">Deletar</a>
-    | <br />
+        <tr>
+            <td class='center'>
+                <a target="_blank" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}">
+                    <img width="140" height="100" src="{{ deal.getSource().getThumb() }}" title="{{ deal.getSource().getTitle() }}" alt="{{ deal.getSource().getTitle() }}" />
+                </a>
+            </td>
+            <td>{{ deal.getLabel(50) }}</td>
+            <td>{{ deal.getUser().getName() }}</td>
+            <td>{{ deal.getQuantity() }}</td>
+            <td class='nowrap'>{{ deal.getPrice(true) }}</td>
+            <td>{{ deal.getSource().getCategory().getName() }}</td>
+            <td>{{  deal.getSource().getCity().getName() }}</td>
+            <td>{{ deal.getSpecial(true) }}</td>
+            <td>{{ deal.getCreatedAt()|date('d/m/Y') }}</td>
+            <td class="center nowrap">
+                <a target="_blank" class="button button-set-start small white" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}"><span class="ui-silk ui-silk ui-silk-eye">{{ "Visualizar"|trans }}</span></a><a class="button button-set small white" href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
+            </td>
+        </tr>
   {% else %}
-   {{"Nenhuma oferta encontrada"|trans}}
+        <tr><td colspan='9'>{{"Nenhuma oferta encontrada"|trans}}</td></tr>
   {% endfor %} 
+    </table>
+    <button onclick="window.location='{{path('admin_deal_source_new')}}'" title="{{ "Inserir nova oferta"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Nova Oferta"|trans }}</button>
 {% endblock %} 
