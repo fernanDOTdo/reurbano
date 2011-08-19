@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ODM\Document(
  *   collection="mail",
- *   repositoryClass="Reurbano\CoreBundle\Document\MailRepository"
+ *   repositoryClass="Reurbano\CoreBundle\Document\MailingRepository"
  * )
  */
 class Mailing
@@ -42,7 +42,7 @@ class Mailing
     protected $mail;
     
     /**
-     * Data de criação da oferta
+     * Data de inserção do e-mail
      *
      * @var date
      * @ODM\Date
@@ -120,7 +120,9 @@ class Mailing
         return $this->createdAt;
     }
     
-    /** @ODM\PrePersist */
+    /** 
+     * @ODM\PrePersist 
+     */
     public function doPrePersist()
     {
         $this->setCreatedAt(new \DateTime);
