@@ -1,17 +1,27 @@
 {% extends '::backend.html.twig' %}
-        
 {% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
+<div class="content box grid_12 round_all" style="padding:0">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Título"|trans }}</th> 
+                <th>{{ "Cidade"|trans }}</th> 
+                <th class="nowrap">{{ "Vencimento"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
 {% for deal in ofertas %}
-    {{ deal.getTitle() }} - 
-    {{ deal.getCity().getName() }} -
-    {{ deal.getExpiresAt().getTimestamp()|date("d/m/Y") }}
-    | <a href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}">Editar</a> 
-    | <a href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}">Deletar</a>
-    | <br />
+    <tr>
+        <td>{{ deal.getTitle() }}</td>
+        <td>{{ deal.getCity().getName() }}</td>
+        <td>{{ deal.getExpiresAt().getTimestamp()|date("d/m/Y") }}</td>
+        <td class="center nowrap">
+            <a href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}">Editar</a><a href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}">Deletar</a>
+        </td>
+     </tr>
   {% else %}
-   {{"Nenhuma oferta encontrada"|trans}}
+   <tr><td colspan='4'>{{"Nenhuma oferta encontrada"|trans}}</td></tr>
   {% endfor %} 
+    </table>
 {% endblock %}

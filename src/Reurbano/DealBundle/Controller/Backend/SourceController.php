@@ -49,12 +49,12 @@ class SourceController extends BaseController
         }
         $request = $this->get('request');
         $form = $this->createForm(new SourceType(), $deal);
+         $dadosPost = $request->request->get($form->getName());
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
-            $formResult = $request->get('expiresAt');
+            $formResult = $dadosPost['expiresAt'];
             $expiresAt = explode('/',$formResult);
-            print_r( $formResult);
-            exit();
+
             $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
             $deal->setExpiresAt($dataAtual);
             if ($form->isValid()) {
