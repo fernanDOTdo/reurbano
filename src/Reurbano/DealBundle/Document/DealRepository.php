@@ -7,7 +7,7 @@ use Mastop\SystemBundle\Document\BaseRepository;
 class DealRepository extends BaseRepository
 {
     
-    public function findOneByCityCat($city, $cat = null, $special = false, $sort = 'special', $order = 'desc'){
+    public function findOneByCityCat($city, $cat = null, $special = false, $sort = 'special', $order = 'desc', $notId = null){
         $deal = $this->createQueryBuilder()
                 ->field('source.city.$id')->equals(new \MongoId($city))
                 ->field('active')->equals(true);
@@ -16,6 +16,9 @@ class DealRepository extends BaseRepository
         }
         if($special){
             $deal->field('special')->equals(true);
+        }
+        if($notId){
+            $deal->field('id')->notEqual(new \MongoId($notId));
         }
         $deal->sort($sort, $order);
         return $deal->getQuery()
