@@ -300,13 +300,9 @@ class Source
      *
      * @return float $priceOffer
      */
-    public function getPriceOffer($format=false)
+    public function getPriceOffer()
     {
-        if($format){
-            return "R$ ".number_format($this->priceOffer,2,",",".");
-        }else{
             return $this->priceOffer;
-        }
     }
 
     /**
