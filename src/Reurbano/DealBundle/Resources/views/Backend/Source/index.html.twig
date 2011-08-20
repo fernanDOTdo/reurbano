@@ -21,7 +21,7 @@
         <td>{{ deal.getSite().getName() }}</td>
         <td>{{ deal.getCity().getName() }}</td>
         <td>{{ deal.getCategory().getName() }}</td>
-        <td class='nowrap'>{{ deal.getPriceOffer(true) }}</td>
+        <td class='nowrap'>{{ deal.getPriceOffer()|money }}</td>
         <td class="center nowrap">
             <a class="button button-set-start small white" href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
         </td>

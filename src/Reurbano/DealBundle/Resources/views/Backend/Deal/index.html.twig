@@ -27,7 +27,7 @@
             <td>{{ deal.getLabel(50) }}</td>
             <td>{{ deal.getUser().getName() }}</td>
             <td>{{ deal.getQuantity() }}</td>
-            <td class='nowrap'>{{ deal.getPrice(true) }}</td>
+            <td class='nowrap'>{{ deal.getPrice()|money }}</td>
             <td>{{ deal.getSource().getCategory().getName() }}</td>
             <td>{{  deal.getSource().getCity().getName() }}</td>
             <td>{{ deal.getSpecial(true) }}</td>
