@@ -1,5 +1,7 @@
 {%for block in blocks%}
+{%if block.title is defined %}
 <div class="block">
+{%endif%}
     {%if block.title is defined %}
         <div class="blockTitle">{{block.title|raw}}</div>
     {%endif%}
@@ -15,5 +17,7 @@
         {%endif%}
     {%endif%}
     </div>
+{%if block.title is defined %}
 </div>
+{%endif%}
 {%endfor%}
