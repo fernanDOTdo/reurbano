@@ -260,13 +260,9 @@ class Deal
      *
      * @return float $price
      */
-    public function getPrice($format=false)
+    public function getPrice()
     {
-        if($format){
-            return "R$ ".number_format($this->price,2,",",".");
-        }else{
             return $this->price;
-        }
     }
 
     /**
