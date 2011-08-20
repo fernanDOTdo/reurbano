@@ -260,9 +260,13 @@ class Deal
      *
      * @return float $price
      */
-    public function getPrice()
+    public function getPrice($format=false)
     {
-        return $this->price;
+        if($format){
+            return "R$ ".number_format($this->price,2,",",".");
+        }else{
+            return $this->price;
+        }
     }
 
     /**
@@ -380,9 +384,13 @@ class Deal
      *
      * @return string $label
      */
-    public function getLabel()
+    public function getLabel($limit=0)
     {
-        return $this->label;
+        if($limit>0){
+            return substr($this->label,0,$limit).(strlen($this->label)>$limit?"...":"");
+        }else{
+            return $this->label;
+        }
     }
 
     /**
@@ -440,9 +448,13 @@ class Deal
      *
      * @return boolean $special
      */
-    public function getSpecial()
+    public function getSpecial($format=false)
     {
-        return $this->special;
+        if($format){
+        return $this->special==true?"Sim":"Não";
+        }else{
+            return $this->special;
+        }
     }
 
     /**

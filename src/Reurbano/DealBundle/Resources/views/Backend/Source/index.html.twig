@@ -1,18 +1,34 @@
 {% extends '::backend.html.twig' %}
-        
 {% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
-<h1>{{title|trans}}</h1>
+<div class="content box grid_12 round_all" style="padding:0">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th calss='center'>{{ "Imagem"|trans }}</th> 
+                <th>{{ "Título"|trans }}</th> 
+                <th>{{ "Origem"|trans }}</th> 
+                <th>{{ "Cidade"|trans }}</th> 
+                <th>{{ "Categoria"|trans }}</th> 
+                <th>{{ "Preço"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
 {% for deal in ofertas %}
-    {{ deal.getTitle() }} - 
-    {{ deal.getCity().getName() }} -
-    {{ deal.getExpiresAt().getTimestamp()|date("d/m/Y") }}
-    | <a href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}">Editar</a> 
-    | <a href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}">Deletar</a>
-    | <br />
+    <tr>
+        <td class='center'><img width="140" height="100" src="{{ deal.getThumb() }}" title="{{ deal.getTitle() }}" alt="{{ deal.getTitle() }}" /></td>
+        <td>{{ deal.getTitle(50) }}</td>
+        <td>{{ deal.getSite().getName() }}</td>
+        <td>{{ deal.getCity().getName() }}</td>
+        <td>{{ deal.getCategory().getName() }}</td>
+        <td class='nowrap'>{{ deal.getPriceOffer()|money }}</td>
+        <td class="center nowrap">
+            <a class="button button-set-start small white" href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
+        </td>
+     </tr>
   {% else %}
-   {{"Nenhuma oferta encontrada"|trans}}
+   <tr><td colspan='6'>{{"Nenhuma oferta encontrada"|trans}}</td></tr>
   {% endfor %} 
+    </table>
+    <button onclick="window.location='{{path('admin_deal_source_new')}}'" title="{{ "Inserir novo item ao banco de ofertas"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Novo Banco de Ofertas"|trans }}</button>
 {% endblock %}
