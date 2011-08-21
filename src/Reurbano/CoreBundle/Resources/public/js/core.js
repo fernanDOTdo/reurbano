@@ -53,7 +53,7 @@ $(function(){
         return true;
     });
     // Todos os inputs do tipo text tem um class "idleField" por padrão e ganham um "focusField" quando o elemento ganha foco
-    $('input[type="text"]').not('.focusField').addClass("idleField")
+    $('input[type="text"],input[type="password"],input[type="email"],textarea').not('.focusField').addClass("idleField")
     .focus(function() {
         $(this).removeClass("idleField").addClass("focusField");
         if (this.value == this.defaultValue){
