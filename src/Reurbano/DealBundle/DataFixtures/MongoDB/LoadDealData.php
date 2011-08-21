@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Reurbano\DealBundle\Document\Deal;
+use Reurbano\DealBundle\Document\Comission;
 
 class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
 
@@ -20,6 +21,12 @@ class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, C
         $userMastop = $manager->getRepository('ReurbanoUserBundle:User')->findByEmail('mastop@mastop.com.br');
         $userSuporte = $manager->getRepository('ReurbanoUserBundle:User')->findByEmail('suporte@mastop.com.br');
         $sources = $manager->getRepository('ReurbanoDealBundle:Source')->findAll();
+        // Comissão padrão
+        $comission = new Comission();
+        $comission->setSellerpercent(10);
+        $comission->setSellerreal(1);
+        $comission->setBuyerpercent(10);
+        $comission->setBuyerreal(0);
         if($sources){
             foreach ($sources as $source){
                 // Mastop
@@ -32,6 +39,7 @@ class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, C
                 $deal->setLabel($source->getTitle());
                 $deal->setSpecial(true);
                 $deal->setCreatedAt(new \DateTime);
+                $deal->setComission($comission);
                 $manager->persist($deal);
                 $manager->flush();
                 // Suporte
@@ -44,6 +52,7 @@ class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, C
                 $deal->setLabel($source->getTitle());
                 $deal->setSpecial(false);
                 $deal->setCreatedAt(new \DateTime);
+                $deal->setComission($comission);
                 $manager->persist($deal);
                 $manager->flush();
             }
