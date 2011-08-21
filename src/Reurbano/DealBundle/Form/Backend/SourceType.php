@@ -4,6 +4,7 @@ namespace Reurbano\DealBundle\Form\Backend;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Reurbano\CoreBundle\Form\CoordinatesType;
 
 class SourceType extends AbstractType {
 
@@ -23,9 +24,8 @@ class SourceType extends AbstractType {
                 ->add('businessName', 'text', array('label'=>'Nome da empresa'))
                 ->add('businessAddress', 'text', array('label'=>'Endereço da empresa'))
                 ->add('businessCep', 'text', array('label'=>'CEP da empresa'))
-                ->add('businessLatitude', 'text', array('label'=>'Latitude da empresa'))
-                ->add('businessLongitude', 'text', array('label'=>'Longitude da empresa'))
                 ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/m/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
+                ->add('coordinates', new CoordinatesType(), array('label'=>'Coordenadas'))
             ;
     }
     

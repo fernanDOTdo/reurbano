@@ -1,15 +1,34 @@
 <?php
 
+/**
+ * Reurbano/DealBundle/Document/Deal.php
+ *
+ * Representa uma oferta
+ *  
+ * 
+ * @copyright 2011 Mastop Internet Development.
+ * @link http://www.mastop.com.br
+ * @author Fernando Santos <o@fernan.do>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 namespace Reurbano\DealBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Representa uma Oferta
- *
- * @author   Fernando Santos <o@fernan.do>
- *
  * @ODM\Document(
  *   collection="deal",
  *   repositoryClass="Reurbano\DealBundle\Document\DealRepository"
@@ -30,7 +49,7 @@ class Deal
     protected $id;
     
     /**
-     * Usuário que fez o anuncio
+     * Usuário dono da Oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
@@ -45,6 +64,14 @@ class Deal
     protected $source;
     
     /**
+     * Dados da Comissão
+     *
+     * @var array
+     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Comission")
+     */
+    protected $comission;
+    
+    /**
      * Preço com desconto da oferta
      *
      * @var float
@@ -54,7 +81,7 @@ class Deal
     protected $price;
     
     /**
-     * Porcentagem do desconto (sobre o preço original)
+     * Porcentagem do desconto (sobre o preço original da oferta)
      *
      * @var int
      * @ODM\Int
@@ -78,11 +105,15 @@ class Deal
      */
     protected $voucher = array();
     
-    /** @ODM\Collection */
+    /**
+     * Tags (usadas na busca do site)
+     * @var array
+     * @ODM\Collection
+     */
     protected $tags = array();
     
     /**
-     * Se o produto está ativo ou não
+     * Se a oferta está ativa ou não
      *
      * @var boolean
      * @ODM\Boolean
@@ -91,7 +122,7 @@ class Deal
     protected $active;
     
     /**
-     * Rotulação do produto
+     * Label da Oferta (Título)
      *
      * @var string
      * @Gedmo\Sluggable
@@ -108,11 +139,10 @@ class Deal
      * @ODM\UniqueIndex
      * @ODM\String
      */
-    
     protected $slug;
     
     /**
-     * Visualizações do pedido
+     * Visualizações da oferta
      *
      * @var int
      * @ODM\Int
@@ -120,15 +150,15 @@ class Deal
     protected $views = 0;
     
     /**
-     * Verifica se a oferta está correta
+     * Verifica se a oferta foi verificada
      *
      * @var boolean
      * @ODM\Boolean
      */
-    protected $checked;
+    protected $checked = false;
     
     /**
-     * Verifica se a oferta é destaque
+     * Oferta em destaque?
      *
      * @var boolean
      * @ODM\Boolean
@@ -137,7 +167,7 @@ class Deal
     protected $special;
     
     /**
-     * Data de edição da oferta
+     * Data de última atualização da oferta
      *
      * @var date
      * @ODM\Date
@@ -153,63 +183,6 @@ class Deal
      */
     protected $createdAt;
     
-    /** @ODM\PrePersist */
-    public function doPrePersist()
-    {
-        $this->setCreatedAt(new \DateTime);
-        $count1 = $this->getPrice() / $this->getSource()->getPrice();
-        $count2 = $count1 * 100;
-        $count3 = 100 - $count2;
-        $count = number_format($count3, 0);
-        $this->setDiscount($count);
-    }
-    /** @ODM\PrePersist
-    /** @ODM\PreUpdate
-     */
-    public function doPrePersistUpdateTags()
-    {
-        $walk = function($v){
-            // Remove os caracteres (),$%.*!+
-            $v = preg_replace('/[(),$%.*!+]/', '', $v);
-            if(strlen($v) < 2 || is_numeric($v)){
-                // Se $v for número ou tiver menos de 2 caracteres, retorna nulo
-                return null;
-            }else{
-                // Retorna $v minúsculo
-                return strtolower($v);
-            }
-        };
-        // Separa o label por espaços
-        $tags = explode(' ', $this->getLabel());
-        // Adiciona nas tags o mesmo label sem acento
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $this->getLabel());
-        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-        $clean = strtolower(trim($clean, '-'));
-        $clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
-        $tags2 = explode('-', $clean);
-        // Junta o label sem acento com o label com acento
-        $tags = array_merge($tags, $tags2);
-        // Roda a função walk nas tags
-        $tags = array_map($walk, $tags);
-        // Remove itens repetidos das tags
-        $tags = array_unique($tags);
-        // Remove itens nulos das tags
-        $tags = array_filter($tags, 'strlen');
-        // Salva as tags
-        $this->setTags($tags);
-    }
-
-    /** @ODM\PreUpdate */
-    public function doPreUpdate()
-    {
-        $this->setUpdatedAt(new \DateTime);
-        $count1 = $this->getPrice() / $this->getSource()->getPrice();
-        $count2 = $count1 * 100;
-        $count3 = 100 - $count2;
-        $count = number_format($count3, 0);
-        $this->setDiscount($count);
-    }
-
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -246,6 +219,46 @@ class Deal
     }
 
     /**
+     * Set source
+     *
+     * @param Reurbano\DealBundle\Document\Source $source
+     */
+    public function setSource(\Reurbano\DealBundle\Document\Source $source)
+    {
+        $this->source = $source;
+    }
+
+    /**
+     * Get source
+     *
+     * @return Reurbano\DealBundle\Document\Source $source
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Set comission
+     *
+     * @param Reurbano\DealBundle\Document\Comission $comission
+     */
+    public function setComission(\Reurbano\DealBundle\Document\Comission $comission)
+    {
+        $this->comission = $comission;
+    }
+
+    /**
+     * Get comission
+     *
+     * @return Reurbano\DealBundle\Document\Comission $comission
+     */
+    public function getComission()
+    {
+        return $this->comission;
+    }
+
+    /**
      * Set price
      *
      * @param float $price
@@ -262,27 +275,27 @@ class Deal
      */
     public function getPrice()
     {
-            return $this->price;
+        return $this->price;
     }
 
     /**
-     * Set slug
+     * Set discount
      *
-     * @param string $slug
+     * @param int $discount
      */
-    public function setSlug($slug)
+    public function setDiscount($discount)
     {
-        $this->slug = $slug;
+        $this->discount = $discount;
     }
 
     /**
-     * Get slug
+     * Get discount
      *
-     * @return string $slug
+     * @return int $discount
      */
-    public function getSlug()
+    public function getDiscount()
     {
-        return $this->slug;
+        return $this->discount;
     }
 
     /**
@@ -390,6 +403,26 @@ class Deal
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string $slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set views
      *
      * @param int $views
@@ -492,44 +525,67 @@ class Deal
     {
         return $this->createdAt;
     }
-
-    /**
-     * Set source
-     *
-     * @param Reurbano\DealBundle\Document\Source $source
-     */
-    public function setSource(\Reurbano\DealBundle\Document\Source $source)
+    /** @ODM\PrePersist */
+    public function doPrePersist()
     {
-        $this->source = $source;
+        // Seta data de criação
+        $this->setCreatedAt(new \DateTime);
+        // Seta o desconto
+        $count1 = $this->getPrice() / $this->getSource()->getPrice();
+        $count2 = $count1 * 100;
+        $count3 = 100 - $count2;
+        $count = number_format($count3, 0);
+        $this->setDiscount($count);
+        // Gera as tags
+        $this->generateTags();
     }
-
-    /**
-     * Get source
-     *
-     * @return Reurbano\DealBundle\Document\Source $source
-     */
-    public function getSource()
+    
+    /** @ODM\PreUpdate */
+    public function doPreUpdate()
     {
-        return $this->source;
+        // Seta data de atualização
+        $this->setUpdatedAt(new \DateTime);
+        // Reseta o desconto
+        $count1 = $this->getPrice() / $this->getSource()->getPrice();
+        $count2 = $count1 * 100;
+        $count3 = 100 - $count2;
+        $count = number_format($count3, 0);
+        $this->setDiscount($count);
+        // Gera as tags
+        $this->generateTags();
     }
-
-    /**
-     * Set discount
-     *
-     * @param int $discount
-     */
-    public function setDiscount($discount)
+    protected function generateTags()
     {
-        $this->discount = $discount;
+        ###  ATENÇÃO!  No código abaixo há mágica de mana preto.  ###
+        
+        // Separa o label por espaços
+        $tags = explode(' ', $this->getLabel());
+        // Adiciona nas tags o mesmo label sem acento
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $this->getLabel());
+        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
+        $tags2 = explode('-', $clean);
+        // Junta o label sem acento com o label com acento
+        $tags = array_merge($tags, $tags2);
+        // Roda a função cleanTags nas tags
+        $tags = array_map(array(&$this, "cleanTag"), $tags);
+        // Remove itens repetidos das tags
+        $tags = array_unique($tags);
+        // Remove itens nulos das tags
+        $tags = array_filter($tags, 'strlen');
+        // Salva as tags
+        $this->setTags($tags);
     }
-
-    /**
-     * Get discount
-     *
-     * @return int $discount
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
+    static function cleanTag($tag){
+        # Remove os caracteres (),$%.*!+
+        $v = preg_replace('/[(),$%.*!+]/', '', $tag);
+        if(strlen($v) < 3 || is_numeric($v)){
+            # Se $v for número ou tiver menos de 3 caracteres, retorna nulo
+            return null;
+        }else{
+            # Retorna $v minúsculo
+            return strtolower($v);
+        }
     }
 }

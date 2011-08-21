@@ -81,21 +81,21 @@ class Order
     protected $statusLog;
     
     /**
-     * Mostra a quantidade de cumpons no pedido
+     * Referência para a Oferta vendida
      * 
      * @var object
-     * @ODM\Hash
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Deal")
      */
-    protected $deal = array();
+    protected $deal;
     
     /**
-     * Para quem vai o dinheiro de comissão
-     * 
-     * @var array
-     * @ODM\Hash
+     * Quantidade vendida
+     *
+     * @var int
+     * @ODM\Int
      */
-    protected $commission;
-
+    protected $quantity;
+    
     /**
      * Comentários
      *
@@ -120,11 +120,19 @@ class Order
      */
     protected $seo;
 
+    /** 
+     * @ODM\PrePersist 
+     */
+    public function doPrePersist()
+    {
+        $this->setCreated(new \DateTime);
+    }
     public function __construct()
     {
-       $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->statusLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Set id
      *
@@ -288,9 +296,9 @@ class Order
     /**
      * Set deal
      *
-     * @param hash $deal
+     * @param Reurbano\DealBundle\Document\Deal $deal
      */
-    public function setDeal($deal)
+    public function setDeal(\Reurbano\DealBundle\Document\Deal $deal)
     {
         $this->deal = $deal;
     }
@@ -298,7 +306,7 @@ class Order
     /**
      * Get deal
      *
-     * @return hash $deal
+     * @return Reurbano\DealBundle\Document\Deal $deal
      */
     public function getDeal()
     {
@@ -306,23 +314,23 @@ class Order
     }
 
     /**
-     * Set commission
+     * Set quantity
      *
-     * @param hash $commission
+     * @param int $quantity
      */
-    public function setCommission($commission)
+    public function setQuantity($quantity)
     {
-        $this->commission = $commission;
+        $this->quantity = $quantity;
     }
 
     /**
-     * Get commission
+     * Get quantity
      *
-     * @return hash $commission
+     * @return int $quantity
      */
-    public function getCommission()
+    public function getQuantity()
     {
-        return $this->commission;
+        return $this->quantity;
     }
 
     /**
