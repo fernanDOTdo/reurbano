@@ -9,11 +9,13 @@
 {% endblock %}
 
 {% block content %}
+        <div class="content box grid_12">
+        <h1>{{"Venda seu cupom de compra coletiva aqui"|trans}}</h1>
     <form action="{{ path('deal_sell_details') }}" method="post" {{form_enctype(form)}}>
         <div>
             {{ form_label(form.site) }}
             {{ form_errors(form.site) }}
-            {{ form_widget(form.site) }}
+            {{ form_widget(form.site, { 'empty_value': '' }) }}
         </div>
         <div class="hidden cupom">
             {{ form_label(form.cupom) }}
@@ -22,8 +24,11 @@
         </div>
         
         {{ form_rest(form) }}
-        <input type="submit" value="Enviar"/>
+        <div class='push_4'>
+            <button class='button green' type="submit">{{ "Enviar"|trans }}</button>
+        </div>
     </form>
+        </div>
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>

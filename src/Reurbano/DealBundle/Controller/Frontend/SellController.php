@@ -75,7 +75,7 @@ class SellController extends BaseController
                         ->getQuery()->execute();
                 $data = '';
                 foreach($source as $k => $v){
-                    $data .= $v->getTitle();
+                    $data .= "<table><tr><td><img src='".$v->getThumb()."' width='80' height='60' /></td><td>".$v->getTitle()."</td></tr></table>";
                     $data .= '|';
                     $data .= $v->getId();
                     $data .= " \n";

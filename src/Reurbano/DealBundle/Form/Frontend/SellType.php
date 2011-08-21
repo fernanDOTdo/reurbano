@@ -11,13 +11,14 @@ class SellType extends AbstractType {
         $builder->add('site', 'document',array(
                     'class' => 'Reurbano\\DealBundle\\Document\\Site',
                     'property'=>'name',
+                    'label' =>"Qual o site original do Cupom",
                     'attr'    => array(
                         'class' => 'chzn-select',
                         'data-placeholder' => 'Escolha um site', 
                         'style'=> 'width: 200px;',
                     )
                 ))
-                ->add('cupom', 'text')
+                ->add('cupom', 'text',array('label'=>"Digite o nome do cupom", 'attr' => array('class'=>'big')))
                 ->add('cupomId', 'hidden');
     }
 
