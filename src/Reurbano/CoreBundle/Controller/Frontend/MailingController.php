@@ -33,6 +33,7 @@ class MailingController extends BaseController
         $dm->persist($mailing);
         $dm->flush();
         $this->setCookie('hideNL', 1);
+        $this->get('session')->setFlash('ok', $this->trans('E-mail cadastrado com sucesso!'));
         return $this->redirect($this->generateUrl('_home'));
     }
 }
