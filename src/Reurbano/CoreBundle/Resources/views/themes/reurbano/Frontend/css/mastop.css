@@ -382,6 +382,28 @@ div.blockContent div.dealTitle a{
 input.errorField {
     border-color: #F00 !important;
 }
+input, textarea{
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 3px 0;
+    width: 200px;
+}
+input.idleField, textarea.idleField{
+    color: #999;
+    border: 1px solid #d9d9d9;
+    padding: 3px 3px 3px 5px;
+    background: #f6f6f6;
+}
+input.focusField, textarea.focusField{
+    color: #666;
+    border: 2px solid #d9d9d9;
+    padding: 2px 2px 2px 4px;
+    background: #FFF;
+}
+input.small, textarea.small{width: 50px;}
+input.medium, textarea.medium{width: 350px;}
+input.big, textarea.big{width: 460px;} /* O suficiente para caber em um grid_6 */
 
 /* Página do Deal */
 #dealTitle{font-size: 22px; margin-bottom: 0;}
