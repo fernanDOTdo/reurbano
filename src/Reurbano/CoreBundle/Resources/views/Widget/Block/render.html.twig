@@ -7,7 +7,7 @@
     {%endif%}
     <div class="blockContent">
     {%if block.content is defined%}
-        {{block.content}}   
+        {{block.content|raw}}   
     {%endif%}
     {%if block.widget is defined%}
         {%if block.opts%}
