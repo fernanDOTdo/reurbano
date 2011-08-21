@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block stylesheets %}
-    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/tabs/jquery.tools.min.css' filter='?yui_css' output='reurbano/corebundle/css/tabs.css' %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/jquery.tools.min.css' filter='?yui_css' output='reurbano/corebundle/css/tabs.css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
@@ -22,9 +22,10 @@
 
         <!-- tab "panes" -->
         <div class="panes">
-            {% for panes in panes %}
+            {% for pane in panes %}
                 <div>
-                    {% render panes  %}
+                    {% render pane %}
+                    <div class='clear'></div>
                 </div>
             {% endfor %}
         </div>

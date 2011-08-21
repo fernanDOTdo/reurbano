@@ -40,6 +40,12 @@ class DealRepository extends BaseRepository
         
     }
     
+    public function findByUser($id){
+        
+        return $this->findBy(array('user.$id'=>new \MongoId($id)));
+        
+    }
+    
     public function findBySource($id){
         
         return $this->findBy(array('source.id'=>new \MongoId($id)));
