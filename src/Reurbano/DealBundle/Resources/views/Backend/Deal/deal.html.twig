@@ -1,25 +1,27 @@
 {% extends '::backend.html.twig' %}
-        
+
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ path('admin_deal_script') }}"></script>
-    
+<script type="text/javascript" src="{{ path('admin_deal_script') }}"></script>
+
     {% javascripts output='bundles/dealbundle/js/deal.js' 
         '@ReurbanoDealBundle/Resources/public/js/Backend/deal.js'
         '@ReurbanoDealBundle/Resources/public/js/Backend/jquery.price_format.1.3.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
 {% set vars = deal.getId() ? {'id': deal.getId()} : {} %}
 
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-<form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
+<div class="content box grid_12 round_all">
+    <div class="block">
+        <form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 
-    <input type="submit" value="{{"Enviar"|trans}}" />
-</form>
+            <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+        </form>
+    </div>
+</div>
 {% endblock %}

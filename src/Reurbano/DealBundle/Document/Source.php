@@ -196,9 +196,13 @@ class Source
      *
      * @return string $title
      */
-    public function getTitle()
+    public function getTitle($limit=0)
     {
-        return $this->title;
+        if($limit>0){
+            return substr($this->title,0,$limit).(strlen($this->title)>$limit?"...":"");
+        }else{
+            return $this->title;
+        }
     }
 
     /**
@@ -298,7 +302,7 @@ class Source
      */
     public function getPriceOffer()
     {
-        return $this->priceOffer;
+            return $this->priceOffer;
     }
 
     /**

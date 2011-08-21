@@ -48,7 +48,7 @@ class DealController extends BaseController
         if($id){
             $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
             if (!$deal) {
-                throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
+                throw $this->createNotFoundException($this->trans('Nenhuma oferta encontrada com o ID %id%'), array("%id%"=>$id));
             }
         }else{
             $deal = new Deal();
@@ -95,7 +95,7 @@ class DealController extends BaseController
             'form'    => $form->createView(),
             'deal'    => $deal,
             'title'   =>  $title,
-            'current' => 'admin_deal_deal_index',);
+            'current' => 'admin_deal_deal_index');
     }
     /**
      * @Route("/deletar", name="admin_deal_deal_delete")
