@@ -46,4 +46,9 @@ class OrderRepository extends BaseRepository
         $order->setId($id);
         return $order;
     }
+    public function findByUser($id){
+        
+        return $this->findBy(array('user.$id' => new \MongoId($id)));
+        
+    }
 }

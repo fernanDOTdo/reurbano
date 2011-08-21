@@ -13,6 +13,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *   collection="source",
  *   repositoryClass="Reurbano\DealBundle\Document\SourceRepository"
  * )
+ * @ODM\Index(keys={"coordinates"="2d"})
  */
 class Source
 {
@@ -146,21 +147,8 @@ class Source
      */
     protected $businessCep;
     
-    /**
-     * Latitude da empresa
-     *
-     * @var int
-     * @ODM\Int
-     */
-    protected $businessLatitude;
-    
-    /**
-     * Longitude da empresa
-     *
-     * @var int
-     * @ODM\Int
-     */
-    protected $businessLongitude;
+    /** @ODM\EmbedOne(targetDocument="Reurbano\CoreBundle\Document\Coordinates") */
+    protected $coordinates;
     
     /**
      * Data de expiração da oferta
@@ -466,46 +454,6 @@ class Source
     }
 
     /**
-     * Set businessLatitude
-     *
-     * @param int $businessLatitude
-     */
-    public function setBusinessLatitude($businessLatitude)
-    {
-        $this->businessLatitude = $businessLatitude;
-    }
-
-    /**
-     * Get businessLatitude
-     *
-     * @return int $businessLatitude
-     */
-    public function getBusinessLatitude()
-    {
-        return $this->businessLatitude;
-    }
-
-    /**
-     * Set businessLongitude
-     *
-     * @param int $businessLongitude
-     */
-    public function setBusinessLongitude($businessLongitude)
-    {
-        $this->businessLongitude = $businessLongitude;
-    }
-
-    /**
-     * Get businessLongitude
-     *
-     * @return int $businessLongitude
-     */
-    public function getBusinessLongitude()
-    {
-        return $this->businessLongitude;
-    }
-
-    /**
      * Set expiresAt
      *
      * @param date $expiresAt
@@ -548,5 +496,25 @@ class Source
     public function getThumb()
     {
         return $this->thumb;
+    }
+
+    /**
+     * Set coordinates
+     *
+     * @param Reurbano\CoreBundle\Document\Coordinates $coordinates
+     */
+    public function setCoordinates(\Reurbano\CoreBundle\Document\Coordinates $coordinates)
+    {
+        $this->coordinates = $coordinates;
+    }
+
+    /**
+     * Get coordinates
+     *
+     * @return Reurbano\CoreBundle\Document\Coordinates $coordinates
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
     }
 }

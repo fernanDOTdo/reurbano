@@ -1,0 +1,141 @@
+/* root element for tabs  */
+ul.tabs { 
+	list-style:none; 
+	margin:0 !important; 
+	padding:0;	
+	border-bottom:1px solid #7A9D24;	
+	height:30px;
+}
+
+/* single tab */
+ul.tabs li { 
+	float:left;	 
+	text-indent:0;
+	padding:0;
+	margin:0 !important;
+	list-style-image:none !important; 
+}
+
+/* link inside the tab. uses a background image */
+ul.tabs a { 
+	/*background: url(/bundles/reurbanocore/js/tabs/blue.png) no-repeat -420px 0;*/
+	font-size:14px;
+	display:block;
+	height: 16px;  
+	line-height:30px;
+	width: 134px;
+	text-align:center;	
+	text-decoration:none;
+	color:#333;
+	padding:0px;
+	margin:0px;	
+	position:relative;
+	top:1px;
+}
+
+
+/* when mouse enters the tab move the background image */
+
+/* active tab uses a class name "current". its highlight is also done by moving the background image. */
+ul.tabs a.current, ul.tabs a.current:hover, ul.tabs li.current a {
+	cursor:default !important; 
+	color:#000 !important;
+}
+
+/* Different widths for tabs: use a class name: w1, w2, w3 or w2 */
+
+
+/* width 1 */
+ul.tabs a.s 			{ background-position: -553px 0; width:81px; }
+ul.tabs a.s:hover 	{ background-position: -553px -31px; }
+ul.tabs a.s.current  { background-position: -553px -62px; }
+
+/* width 2 */
+ul.tabs a.l 			{ background-position: -248px -0px; width:174px; }
+ul.tabs a.l:hover 	{ background-position: -248px -31px; }
+ul.tabs a.l.current  { background-position: -248px -62px; }
+
+
+/* width 3 */
+ul.tabs a.xl 			{ background-position: 0 -0px; width:248px; }
+ul.tabs a.xl:hover 	{ background-position: 0 -31px; }
+ul.tabs a.xl.current { background-position: 0 -62px; }
+
+
+/* initially all panes are hidden */ 
+.panes .pane {
+	display:none;		
+}
+
+/* tab pane styling */
+.panes div {
+        display:none;		
+        padding:15px 10px;
+        border:1px solid #7A9D24;
+        border-top:0;
+        font-size:14px;
+        background-color:#fff;
+}
+
+ul.tabs a {
+    position: relative; 
+    overflow: visible; 
+    display: inline-block; 
+    padding: 0.5em 1em; 
+    border: 1px solid #d1d1d1;
+    border-bottom: #7A9D24;
+    margin: 0;
+    text-decoration: none; 
+    text-shadow: 1px 1px 0 #fff; 
+    font:12px/normal sans-serif; 
+    color: #666666; 
+    white-space: nowrap; 
+    cursor: pointer; 
+    outline: none; 
+    background-color: #ffffff;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
+    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
+    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
+    background-image: linear-gradient(#ffffff, #e4e4e4);
+    -webkit-background-clip: padding;
+    -moz-background-clip: padding;
+    -o-background-clip: padding-box; 
+    /*background-clip: padding-box;*/ /* commented out due to Opera 11.10 bug */
+    -webkit-border-top-left-radius: 2px;
+    -webkit-border-top-right-radius: 2px;
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    /* IE hacks */
+    zoom: 1; 
+}
+
+/* mouseover state */
+ul.tabs a:hover {
+    color: #FFF;
+    border-color: #666;
+    /*border-bottom-color: #666;*/
+    background-color: #666;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#999999', endColorstr='#666666');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#999), to(#666));
+    background-image: -moz-linear-gradient(#999, #666);
+    background-image: -o-linear-gradient(#999, #666);
+    background-image: linear-gradient(#999, #666); 
+}
+
+/* active tab */
+ul.tabs a.current {
+    color: #FFF;
+    border-color: #587906;
+    border-bottom-color: #587906;
+    background-color: #587906;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7A9D24', endColorstr='#587906');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7A9D24), to(#587906));
+    background-image: -moz-linear-gradient(#7A9D24, #587906);
+    background-image: -o-linear-gradient(#7A9D24, #587906);
+    background-image: linear-gradient(#7A9D24, #587906);   
+}

@@ -1,1 +1,40 @@
-Twig do MyOrders
+<div>
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Descrição"|trans }}</th> 
+                <th>{{ "Data da Compra"|trans }}</th> 
+                <th>{{ "Preço"|trans }}</th> 
+                <th>{{ "Validade"|trans }}</th> 
+                <th>{{ "Pedido"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for order in order %}
+        <tr>
+            <td>
+                Descrição do produto
+            {# order.getName() #}
+            </td>
+            <td>
+            {{ order.getCreated().getTimestamp()|date("d/m/Y")  }}
+            </td>
+            <td>
+            R$ 999,99
+            </td>
+            <td>
+            11/10/2012
+            </td>
+            <td>
+                {{ order.getId() }}
+            </td>
+            <td class="center">
+                <a class="button button-set-start small white" href="{{ path('admin_order_order_status', {'id': order.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_order_order_status', {'id': order.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            </td>
+        </tr>
+  {% else %}
+        <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
+</div>

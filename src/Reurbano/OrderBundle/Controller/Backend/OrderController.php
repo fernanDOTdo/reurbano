@@ -137,12 +137,14 @@ class OrderController extends BaseController
     public function newAction()
     {
         $dm = $this->dm();
+        $user = $this->get('security.context')->getToken()->getUser();
         $order = $this->mongo('ReurbanoOrderBundle:Order')->createOrder();
         $status = $this->mongo('ReurbanoOrderBundle:Status')->findOneById(1);
         $statusLog = new StatusLog();
         $statusLog->setStatus($status);
         $order->setStatus($status);
         $order->addStatusLog($statusLog);
+        $order->setUser($user);
         $dm->persist($order);
         $dm->flush();
         return $this->redirect($this->generateUrl('admin_order_order_index'));

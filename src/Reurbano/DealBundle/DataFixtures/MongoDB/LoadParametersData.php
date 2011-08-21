@@ -23,7 +23,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $param->setTitle('Ofertas');
         $param->setDesc('Configurações para o módulo de ofertas');
         $param->setBundle('deal');
-        $param->setOrder(2);
+        $param->setOrder(3);
 
         $child = new Children();
         $child->setName('perpage');
@@ -41,6 +41,38 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setFieldtype('choice');
         $child->setOpts(array('choices' => array('sortNew' => 'Mais Novos', 'sortCheap' => 'Mais Baratos', 'sortExpires' => 'Vencimento', 'sortDiscount' => 'Maior Desconto')));
         $child->setOrder(1);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('comsellpercent');
+        $child->setTitle('Comissão Vendedor %');
+        $child->setDesc('Comissão a cobrar do vendedor em %');
+        $child->setValue(10);
+        $child->setOrder(2);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('comsellreal');
+        $child->setTitle('Comissão Vendedor R$');
+        $child->setDesc('Comissão a cobrar do vendedor em R$');
+        $child->setValue(1);
+        $child->setOrder(3);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('combuypercent');
+        $child->setTitle('Comissão Comprador %');
+        $child->setDesc('Comissão a cobrar do comprador em %');
+        $child->setValue(10);
+        $child->setOrder(4);
+        $param->addChildren($child);
+        
+        $child = new Children();
+        $child->setName('combuyreal');
+        $child->setTitle('Comissão Comprador R$');
+        $child->setDesc('Comissão a cobrar do comprador em R$');
+        $child->setValue('0');
+        $child->setOrder(5);
         $param->addChildren($child);
         
         $manager->persist($param);
