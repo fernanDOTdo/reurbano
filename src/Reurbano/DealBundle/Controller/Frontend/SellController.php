@@ -101,7 +101,9 @@ class SellController extends BaseController
         if($request->getMethod() == 'POST'){
             $data = $this->get('request')->request->get($form->getName());
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['cupomId']);
-            $sourceForm = $this->createForm(new DealType());
+            $deal=new Deal();
+            $deal->setPrice($source->getPriceOffer());
+            $sourceForm = $this->createForm(new DealType(),$deal);
         }
         return array(
             'title'  => $title,
