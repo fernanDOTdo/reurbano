@@ -78,11 +78,11 @@ class SiteController extends BaseController {
             
         }
         return array(
-            'form'    => $form->createView(),
-            'site'    => $site,
-            'title'   => $title,
-            'breadcrumbs'=>array(1=>array('name'=>$this->trans('Sites'),'url'=>$this->generateUrl('admin_deal_site_index'))),
-            'current' => 'admin_deal_deal_index',
+            'form'        => $form->createView(),
+            'site'        => $site,
+            'title'       => $title,
+            'breadcrumbs' =>array(1=>array('name'=>$this->trans('Sites'),'url'=>$this->generateUrl('admin_deal_site_index'))),
+            'current'     => 'admin_deal_deal_index',
         );
     }
     

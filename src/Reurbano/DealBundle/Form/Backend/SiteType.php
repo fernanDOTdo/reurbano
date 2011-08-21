@@ -23,7 +23,7 @@ class SiteType extends AbstractType {
     public function getDefaultOptions(array $options) {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Site',
-            'intention' => 'status_creation',
+            'intention' => 'site_creation',
         );
     }
 

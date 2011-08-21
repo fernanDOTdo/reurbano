@@ -30,7 +30,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
                 $child->setRole('ROLE_ADMIN');
                 $child->setUrl('admin_order_order_index');
                 $child->setRoute(true);
-                $child->setOrder(2);
+                $child->setOrder(7);
                 
                 $menu->addChildren($child);
                 $manager->persist($menu);
