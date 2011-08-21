@@ -4,6 +4,7 @@ namespace Reurbano\DealBundle\Form\Backend;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Reurbano\DealBundle\Form\Backend\ComissionType;
 
 class DealType extends AbstractType {
 
@@ -15,6 +16,7 @@ class DealType extends AbstractType {
                 ->add('active', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Ativo'))
                 ->add('special', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Destaque'))
                 ->add('checked', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Conferido'))
+                ->add('comission', new ComissionType(), array('label'=>'Comissão'))
 //                ->add('voucher0', 'file', array ('label' => "Voucher" ,'required' => false, 'property_path' => false))
                 //->add('voucher', 'document', array('label'=>'Voucher', 'class' => 'Reurbano\\DealBundle\\Document\\Voucher', 'property'=>'title' ))
             ;

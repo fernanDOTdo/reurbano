@@ -50,10 +50,15 @@
             {{ form_label(form.checked) }}
             {{ form_errors(form.checked) }}
             {{ form_widget(form.checked) }}
+            
+            <div class="comission">
+                {{ form_row(form.comission) }}
+            </div>
 
             <div class='clear'></div>
 
             <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+            <button class='button red' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
         </form>
     </div>
 </div>

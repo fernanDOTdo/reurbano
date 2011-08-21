@@ -22,7 +22,7 @@
  * under the License.
  */
 
-namespace Reurbano\DealBundle\Form;
+namespace Reurbano\DealBundle\Form\Backend;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -30,10 +30,10 @@ use Symfony\Component\Form\FormBuilder;
 class ComissionType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
-        $builder->add('sellerpercent', 'text', array('label'=>'Comissão a cobrar do vendedor %'));
-        $builder->add('sellerreal', 'text', array('label'=>'Comissão a cobrar do vendedor R$'));
-        $builder->add('buyerpercent', 'text', array('label'=>'Comissão a cobrar do comprador %'));
-        $builder->add('buyerreal', 'text', array('label'=>'Comissão a cobrar do comprador R$'));
+        $builder->add('sellerpercent', 'text', array('label'=>'Comissão a cobrar do vendedor %','attr'=>array('class'=>"small")));
+        $builder->add('sellerreal', 'text', array('label'=>'Comissão a cobrar do vendedor R$','attr'=>array('class'=>"small")));
+        $builder->add('buyerpercent', 'text', array('label'=>'Comissão a cobrar do comprador %','attr'=>array('class'=>"small")));
+        $builder->add('buyerreal', 'text', array('label'=>'Comissão a cobrar do comprador R$','attr'=>array('class'=>"small")));
     }
 
     public function getDefaultOptions(array $options) {
