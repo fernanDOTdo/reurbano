@@ -8,6 +8,10 @@ mailing_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/MailingController.php"
     type: annotation
     prefix:   /mailing
+mailing_backend:
+    resource: "@ReurbanoCoreBundle/Controller/Backend/MailingController.php"
+    type: annotation
+    prefix:   admin/mailing
 city_backend:
     resource: "@ReurbanoCoreBundle/Controller/Backend/CityController.php"
     type: annotation

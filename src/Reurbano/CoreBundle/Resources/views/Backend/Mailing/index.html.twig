@@ -1,0 +1,36 @@
+{% extends '::backend.html.twig' %}
+{% block title %}{{title|trans}}{% endblock %}
+{% block content %}
+<div class="content box grid_12 round_all">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "E-mail"|trans }}</th> 
+                <th>{{ "Cidade"|trans }}</th> 
+                <th>{{ "Data"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for mailing in mailing %}
+        <tr>
+            <td>
+                {{ mailing.getMail() }}
+            </td>
+            <td>
+                {{ mailing.getCity() }}
+            </td>
+            <td>
+                {{ mailing.getCreatedAt().getTimestamp()|date("d/m/Y") }}
+            </td>
+            <td class="center">
+                <a class="button small red" href="{{ path('admin_deal_category_delete', {'id': mailing.getId()}) }}" title="{{"Deletar"|trans}}" ><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            </td>
+        </tr>
+  {% else %}
+        <tr><td colspan="4">{{"Nenhum e-mail encontrado"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
+    <button onclick="window.location='{{path('admin_core_mailing_export')}}'" title="{{ "Exportar E-mails"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-email-go"></span> {{ "Exportar E-mails"|trans }}</button>
+</div>
+{% endblock %}

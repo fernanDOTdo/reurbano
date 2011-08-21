@@ -46,6 +46,19 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
                 $manager->persist($menu);
                 $manager->flush();
             }
+            $menuItem2 = $repo->getChildrenByCode($menu, 'email');
+            if(!$menuItem2){
+                $child = new MenuItem();
+                $child->setCode('email');
+                $child->setName('E-mails');
+                $child->setRole('ROLE_ADMIN');
+                $child->setUrl('admin_core_mailing_index');
+                $child->setRoute(true);
+                $child->setOrder(2);
+                $menu->addChildren($child);
+                $manager->persist($menu);
+                $manager->flush(); 
+            }
         }
     }
 

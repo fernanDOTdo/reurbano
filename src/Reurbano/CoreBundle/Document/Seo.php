@@ -19,5 +19,3 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Seo {
     
 }
-
-?>
