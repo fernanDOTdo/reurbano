@@ -17,10 +17,48 @@
 {% block content %}
 <div class="content box grid_12 round_all">
     <div class="block">
+        <h1>{{"Edição de Oferta"|trans }}</h1>
+        <h2>{{"Site: %site%"|trans({"%site%":deal.getsource.getSite.getName()}) }}</h2>
+        <h3>{{ deal.getLabel() }}</h3>
+        <h3>{{"Usuário: %user%"|trans({"%user%":deal.getUser.getName()}) }}</h3>
+        <h3>{{"Visualizações: %views%"|trans({"%views%":deal.getViews()}) }}</h3>
         <form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
+
+            {{ form_errors(form.id) }}
+            {{ form_widget(form.id) }}
+
+            {{ form_label(form.label) }}
+            {{ form_errors(form.label) }}
+            {{ form_widget(form.label) }}
+
+            {{ form_label(form.price) }}
+            {{ form_errors(form.price) }}
+            {{ form_widget(form.price) }}
+
+            {{ form_label(form.quantity) }}
+            {{ form_errors(form.quantity) }}
+            {{ form_widget(form.quantity) }}
+
+            {{ form_label(form.active) }}
+            {{ form_errors(form.active) }}
+            {{ form_widget(form.active) }}
+
+            {{ form_label(form.special) }}
+            {{ form_errors(form.special) }}
+            {{ form_widget(form.special) }}
+
+            {{ form_label(form.checked) }}
+            {{ form_errors(form.checked) }}
+            {{ form_widget(form.checked) }}
+            
+            <div class="comission">
+                {{ form_row(form.comission) }}
+            </div>
+
+            <div class='clear'></div>
 
             <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+            <button class='button red' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
         </form>
     </div>
 </div>

@@ -103,6 +103,7 @@ class SellController extends BaseController
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['cupomId']);
             $deal=new Deal();
             $deal->setPrice($source->getPriceOffer());
+            $deal->setQuantity(1);
             $sourceForm = $this->createForm(new DealType(),$deal);
         }
         return array(
@@ -152,6 +153,8 @@ class SellController extends BaseController
             
             $deal->setUser($user);
             $deal->setPrice($price);
+            $deal->setChecked(false);
+            $deal->setSpecial(false);
             $deal->setQuantity($quantity);
             $deal->setActive(true);
             $deal->setLabel($source->getTitle());
