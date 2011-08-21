@@ -12,7 +12,7 @@
                 <th class="center nowrap">{{ "Valor"|trans }}</th> 
                 <th class="center">{{ "Categoria"|trans }}</th> 
                 <th class="center">{{ "Cidade"|trans }}</th> 
-                <th class="center">{{ "Especial"|trans }}</th> 
+                <th class="center">{{ "Destaque"|trans }}</th> 
                 <th class="center">{{ "Data"|trans }}</th> 
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
@@ -40,5 +40,5 @@
         <tr><td colspan='9'>{{"Nenhuma oferta encontrada"|trans}}</td></tr>
   {% endfor %} 
     </table>
-    <button onclick="window.location='{{path('admin_deal_source_new')}}'" title="{{ "Inserir nova oferta"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Nova Oferta"|trans }}</button>
+    <button onclick="window.location='{{path('deal_sell_index')}}'" title="{{ "Inserir nova oferta"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Nova Oferta"|trans }}</button>
 {% endblock %} 
