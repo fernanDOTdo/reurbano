@@ -11,6 +11,7 @@ use Reurbano\DealBundle\Document\Site;
 use Reurbano\DealBundle\Document\Source;
 use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
+use Reurbano\DealBundle\Document\Comission;
 
 use Reurbano\DealBundle\Util\Upload;
 
@@ -159,6 +160,13 @@ class SellController extends BaseController
             $deal->setActive(true);
             $deal->setLabel($source->getTitle());
             
+            // Comissão
+            $comission = new Comission();
+            $comission->setSellerpercent($this->get('mastop')->param('deal.all.comsellpercent'));
+            $comission->setSellerreal($this->get('mastop')->param('deal.all.comsellreal'));
+            $comission->setBuyerpercent($this->get('mastop')->param('deal.all.combuypercent'));
+            $comission->setBuyerreal($this->get('mastop')->param('deal.all.combuyreal'));
+            $deal->setComission($comission);
             $dm->persist($deal);
             $dm->flush();
             
