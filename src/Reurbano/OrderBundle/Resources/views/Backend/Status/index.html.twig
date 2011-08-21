@@ -2,15 +2,17 @@
 {% block title %}{{title|trans}}{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all">
-    <table class="static"> 
+    <table class="display datatable"> 
         <thead> 
             <tr> 
                 <th>{{ "ID"|trans }}</th> 
                 <th>{{ "Título"|trans }}</th> 
                 <th class="nowrap">{{ "Ordem"|trans }}</th> 
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
-            </tr> 
+            </tr>  
         </thead> 
+        <tbody> 
+
         {% for stat in status %}
             <tr>
                 <td>{{ stat.getId() }} </td>
@@ -22,8 +24,13 @@
         {% else %}
             <tr><td colspan="4">{{"Nenhum status encontrado"|trans}}</td></tr>
         {% endfor %} 
+        </tbody> 
     </table>
     <div class='clear'></div>
-<button onclick="window.location='{{path('admin_order_status_new')}}'" title="{{ "Inserir novo status"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar status"|trans }}</button>
+    <button onclick="window.location='{{path('admin_order_status_new')}}'" title="{{ "Inserir novo status"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar status"|trans }}</button>
 </div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

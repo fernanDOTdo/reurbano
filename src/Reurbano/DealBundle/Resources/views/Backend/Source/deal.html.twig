@@ -6,6 +6,8 @@
 {% block content %}
 <div class="content box grid_12 round_all">
         <div class="block">
+            <h1>{{"Edição do Banco de Oferta"|trans}}</h1>
+            <h2>{{deal.getTitle()}}</h2>
             <form action="{{ path('admin_deal_source_save', vars) }}" method="post" {{ form_enctype(form) }}>
             {{ form_widget(form) }}
 
