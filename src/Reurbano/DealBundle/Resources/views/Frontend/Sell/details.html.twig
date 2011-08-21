@@ -3,14 +3,20 @@
 {% block title %}{{title|trans}}{% endblock %}
 
 {% block content %}
+<div class="content box grid_8">
+    <h1>{{"Informe os detalhes de sua oferta"|trans}}</h1>
     <form action="{{ path('deal_sell_save') }}" method="post" {{ form_enctype(form) }} >
         <b>Titulo</b><br />
         {{ source.getTitle() }}<br />
         <b>Site</b><br />
         {{ source.getSite.getName }}<br />
-        
+
         {{ form_widget(form) }}
         <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
-        <input type="submit" value="Enviar"/>
+         <button class='button green big push_3' type="submit">{{ "Anunciar"|trans }}</button>
     </form>
+</div>
+<div class="grid_4">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'sell'} %}
+</div>
 {% endblock %}

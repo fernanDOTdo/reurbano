@@ -9,11 +9,13 @@
 {% endblock %}
 
 {% block content %}
+        <div class="content box grid_8">
+        <h1>{{"Venda seu cupom de compra coletiva aqui"|trans}}</h1>
     <form action="{{ path('deal_sell_details') }}" method="post" {{form_enctype(form)}}>
         <div>
             {{ form_label(form.site) }}
             {{ form_errors(form.site) }}
-            {{ form_widget(form.site) }}
+            {{ form_widget(form.site, { 'empty_value': '' }) }}
         </div>
         <div class="hidden cupom">
             {{ form_label(form.cupom) }}
@@ -22,8 +24,14 @@
         </div>
         
         {{ form_rest(form) }}
-        <input type="submit" value="Enviar"/>
+        <div class='push_4'>
+            <button style='display:none' id='sellContinue' class='button green big' type="submit">{{ "Continuar"|trans }}</button>
+        </div>
     </form>
+        </div>
+        <div class="grid_4">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'sell'} %}
+</div>
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>

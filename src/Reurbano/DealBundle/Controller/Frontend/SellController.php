@@ -67,15 +67,15 @@ class SellController extends BaseController
                 $cupom = $this->get('request')->query->get('q');
                 $siteId = $this->get('request')->query->get('siteid');
                 $regexp = new \MongoRegex('/' . $cupom . '/i');
-                $source = $this->mongo('ReurbanoDealBundle:Source')
-                        ->createQueryBuilder()
-                        ->sort('createdAt', 'ASC')
+                $qb = $this->mongo('ReurbanoDealBundle:Source')->createQueryBuilder();
+                $source = $qb->sort('createdAt', 'ASC')
                         ->field('site.$id')->equals((int)$siteId)
-                        ->field('title')->equals($regexp)
+                        ->field('expiresAt')->gt(new \DateTime())
+                        ->addOr($qb->expr()->field('url')->equals($regexp))->addOr($qb->expr()->field('title')->equals($regexp))
                         ->getQuery()->execute();
                 $data = '';
                 foreach($source as $k => $v){
-                    $data .= $v->getTitle();
+                    $data .= "<table><tr><td><div style='margin:3px'><img src='".$v->getThumb()."' width='80' height='60' /></div></td><td>|".$v->getTitle()."|</td></tr></table>";
                     $data .= '|';
                     $data .= $v->getId();
                     $data .= " \n";
