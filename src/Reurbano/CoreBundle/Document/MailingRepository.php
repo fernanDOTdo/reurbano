@@ -14,6 +14,6 @@ class MailingRepository extends BaseRepository
      **/
     public function findAllByOrder()
     {
-        return $this->findBy(array(), array('order'=>'asc'));
+        return $this->findBy(array(), array('createdAt'=>'desc'));
     }
 }
