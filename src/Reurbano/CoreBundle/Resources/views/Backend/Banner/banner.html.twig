@@ -1,0 +1,14 @@
+{% extends '::backend.html.twig' %}
+
+{% block title %}{{title|trans}}{% endblock %}
+{% set vars = banner.getId() ? {'id': banner.getId()} : {} %}
+
+{% block content %}
+<div class="content box grid_12 round_all">
+    <form action="{{ path('admin_core_banner_save', vars) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+        <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends '::backend.html.twig' %}
+{% block title %}{{title|trans}}{% endblock %}
+{% block content %}
+<div class="content box grid_12 round_all">
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th class="nowrap">{{ "Imagem"|trans }}</th> 
+                <th class="nowrap center">{{ "Titulo"|trans }}</th> 
+                <th class="nowrap center">{{ "URL"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for banner in banner %}
+        <tr>
+            <td>
+                {{ banner.getTitle() }}
+            </td>
+            <td>
+                {{ banner.getTitle() }}
+            </td>
+            <td class='center'>
+                {{ banner.getUrl() }}
+            </td>
+            <td class="nowrap center">
+                <a class="button button-set-start small white" href="{{ path('admin_core_banner_edit', {'id': banner.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_core_banner_delete', {'id': banner.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            </td>
+  {% else %}
+        <tr><td colspan='2'>{{"Nenhum banner encontrado"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
+    <button onclick="window.location='{{path('admin_core_banner_new')}}'" title="{{ "Inserir novo banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar banner"|trans }}</button>
+</div>
+{% endblock %}
