@@ -1,1 +1,45 @@
-Twig do MyDeals
+    <table class="static"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Descrição"|trans }}</th> 
+                <th>{{ "Validade"|trans }}</th> 
+                <th>{{ "Preço"|trans }}</th> 
+                <th>{{ "Quantidade"|trans }}</th> 
+                <th>{{ "Publicação"|trans }}</th> 
+                <th>{{ "Ativo"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for deal in deal %}
+        <tr>
+            <td>
+            {{ deal.source.getTitle() }}
+            </td>
+            <td>
+            {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}
+            </td>
+            <td>
+            {{ deal.getPrice()  }}
+            </td>
+            <td>
+            {{ deal.getQuantity() }}
+            </td>
+            <td>
+            {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
+            </td>
+            <td>
+                {% if deal.getActive() %}
+                    Sim
+                {% else %}
+                    Não
+                {% endif %}
+            </td>
+            <td class="center">
+                <a class="button button-set-start small white" href="{{ path('_home', {'id': deal.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('_home', {'id': deal.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            </td>
+        </tr>
+  {% else %}
+        <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
