@@ -30,6 +30,9 @@
             {{ form_label(form.label) }}
             {{ form_errors(form.label) }}
             {{ form_widget(form.label) }}
+            
+            <input type='hidden' name='deal[source]' value='{{deal.getSource.getId()}}' />
+            
 
             {{ form_label(form.price) }}
             {{ form_errors(form.price) }}
@@ -54,11 +57,11 @@
             <div class="comission">
                 {{ form_row(form.comission) }}
             </div>
-
             <div class='clear'></div>
+            {{ form_widget(form._token) }}
 
-            <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
-            <button class='button red' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
+            <button class="button green" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+            <button class='button red ' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
         </form>
     </div>
 </div>
