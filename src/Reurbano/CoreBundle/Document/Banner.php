@@ -57,6 +57,13 @@ class Banner
      */
     protected $order;
 
+    /**
+     * Ativo
+     * 
+     * @var Int
+     * @ODM\Int
+     */
+    protected $active;
 
     /**
      * Nome do Arquivo

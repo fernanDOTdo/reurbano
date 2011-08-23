@@ -14,7 +14,7 @@
 {% for banner in banner %}
         <tr>
             <td>
-                {{ banner.getTitle() }}
+                <img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}" width="160px" height="60px"/>
             </td>
             <td>
                 {{ banner.getTitle() }}
