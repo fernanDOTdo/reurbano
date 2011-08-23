@@ -2,7 +2,7 @@
 {% block title %}{{title|trans}}{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all">
-    <table class="static"> 
+    <table class="display datatable"> 
         <thead> 
             <tr> 
                 <th class="nowrap">{{ "Site"|trans }}</th> 
@@ -10,22 +10,29 @@
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
+        <tbody> 
+
 {% for site in site %}
-        <tr>
-            <td>
+            <tr>
+                <td>
         {{ site.getName() }}
-            </td>
-            <td class='center'>
+                </td>
+                <td class='center'>
         {{ site.getUrl() }}
-            </td>
-            <td class="nowrap center">
-            <a class="button button-set-start small white" href="{{ path('admin_deal_site_edit', {'id': site.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_deal_site_delete', {'id': site.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
-            </td>
+                </td>
+                <td class="nowrap center">
+                    <a class="button button-set-start small white" href="{{ path('admin_deal_site_edit', {'id': site.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_deal_site_delete', {'id': site.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                </td>
   {% else %}
-        <tr><td colspan='2'>{{"Nenhum site encontrado"|trans}}</td></tr>
+            <tr><td colspan='2'>{{"Nenhum site encontrado"|trans}}</td></tr>
 {% endfor %} 
+        </tbody> 
     </table>
     <div class='clear'></div>
     <button onclick="window.location='{{path('admin_deal_site_new')}}'" title="{{ "Inserir novo site"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar site"|trans }}</button>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

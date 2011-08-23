@@ -2,7 +2,7 @@
 {% block title %}{{title|trans}}{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all">
-    <table class="static"> 
+    <table class="display datatable"> 
         <thead> 
             <tr> 
                 <th>{{ "Categoria"|trans }}</th> 
@@ -11,26 +11,32 @@
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
+        <tbody> 
 {% for cat in categorias %}
-        <tr>
-            <td>
+            <tr>
+                <td>
             {{ cat.getName() }}
-            </td>
-            <td>
+                </td>
+                <td>
             {{ cat.getSlug() }}
-            </td>
-            <td>
+                </td>
+                <td>
                 {{ cat.getOrder() }}
-            </td>
-            <td class="center">
-                <a class="button button-set-start small white" href="{{ path('admin_deal_category_edit', {'slug': cat.getSlug()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_deal_category_delete', {'id': cat.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
-            </td>
-        </tr>
+                </td>
+                <td class="center">
+                    <a class="button button-set-start small white" href="{{ path('admin_deal_category_edit', {'slug': cat.getSlug()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_deal_category_delete', {'id': cat.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                </td>
+            </tr>
   {% else %}
-        <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
+            <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
 {% endfor %} 
+        <tbody> 
     </table>
     <div class='clear'></div>
     <button onclick="window.location='{{path('admin_deal_category_new')}}'" title="{{ "Inserir nova categoria"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar categoria"|trans }}</button>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

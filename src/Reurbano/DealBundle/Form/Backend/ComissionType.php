@@ -31,9 +31,9 @@ class ComissionType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('sellerpercent', 'text', array('label'=>'Comissão a cobrar do vendedor %','attr'=>array('class'=>"small")));
-        $builder->add('sellerreal', 'text', array('label'=>'Comissão a cobrar do vendedor R$','attr'=>array('class'=>"small")));
+        $builder->add('sellerreal', 'money', array('currency' => 'BRL','label'=>'Comissão a cobrar do vendedor R$','attr'=>array('class'=>"small")));
         $builder->add('buyerpercent', 'text', array('label'=>'Comissão a cobrar do comprador %','attr'=>array('class'=>"small")));
-        $builder->add('buyerreal', 'text', array('label'=>'Comissão a cobrar do comprador R$','attr'=>array('class'=>"small")));
+        $builder->add('buyerreal', 'money', array('currency' => 'BRL','label'=>'Comissão a cobrar do comprador R$','attr'=>array('class'=>"small")));
     }
 
     public function getDefaultOptions(array $options) {

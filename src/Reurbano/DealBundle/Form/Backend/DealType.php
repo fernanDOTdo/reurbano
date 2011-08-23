@@ -11,8 +11,9 @@ class DealType extends AbstractType {
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden')
                 ->add('label', 'text', array('label'=>'Título','attr'=>array('class'=>'large')))
-                ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
-                ->add('quantity', 'integer', array('label'=>'Quantidade disponível'))
+                ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL','attr'=>array('class'=>'small')))
+                ->add('source', 'document', array('label'=>'Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Source', 'property'=>'titleFormat', 'property_path' => false, 'attr' => array('style' => 'width: 400px;') ))
+                ->add('quantity', 'integer', array('label'=>'Quantidade disponível','attr'=>array('class'=>'small')))
                 ->add('active', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Ativo'))
                 ->add('special', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Destaque'))
                 ->add('checked', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Conferido'))
