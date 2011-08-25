@@ -90,6 +90,11 @@ class DealController extends BaseController
         if($deal->getSource()->getCity()->getSlug() != $city || $deal->getSource()->getCategory()->getSlug() != $category){
             throw $this->createNotFoundException('Oferta não encontrada.');
         }
+        // Incrementa views se o user não for admin e se for o primeiro acesso do user à oferta
+        if(!$this->hasRole('ROLE_ADMIN') && !$this->get('session')->has('offer_'.$deal->getId())){
+            $this->mongo('ReurbanoDealBundle:Deal')->incViews($deal->getId());
+            $this->get('session')->set('offer_'.$deal->getId(), 1);
+        }
         $title = $deal->getLabel();
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCity()->getName(), 'url' => $this->generateUrl('core_city_index', array('slug' => $deal->getSource()->getCity()->getSlug())));
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCategory()->getName(), 'url' => $this->generateUrl('deal_category_index', array('city' => $deal->getSource()->getCity()->getSlug(), 'slug'=>$deal->getSource()->getCategory()->getSlug())));

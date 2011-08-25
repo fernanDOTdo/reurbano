@@ -1,0 +1,35 @@
+{% extends '::backend.html.twig' %}
+{% block content %}
+    <div class="content box grid_12 round_all">
+        <table class="display datatable"> 
+            <thead> 
+                <tr> 
+                    <th>{{ "Título"|trans }}</th> 
+                    <th>{{ "Slug"|trans }}</th> 
+                    <th class="nowrap">{{ "Data Criação"|trans }}</th> 
+                    <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+                </tr> 
+            </thead> 
+            <tbody> 
+{% for content in contents %}
+                <tr>
+                    <td class="nowrap">{{ content.getTitle }}</td>
+                    <td class="nowrap">{{ content.getSlug }}</td>
+                    <td>{{ content.getCreated|date('d/m/Y') }}</td>
+                    <td class="center nowrap">
+                        <a class="button button-set-start small white" href="{{ path('admin_core_content_form', {'slug': content.getSlug()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</a></span><a class="button button-set-finish small red" href="{{ path('admin_core_content_delete', {'id': content.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                    </td>
+                </tr>
+  {% else %}
+                <tr><td colspan="5">{{ "Nenhuma página encontrada!"|trans }}</td></tr>
+  {% endfor %} 
+            <tbody>
+        </table>
+        <div class='clear'></div>
+        <button onclick="window.location='{{path('admin_core_content_form')}}'" title="{{ "Inserir nova página"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar página"|trans }}</button>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
+{% endblock %}

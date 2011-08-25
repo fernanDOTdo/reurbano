@@ -1,0 +1,32 @@
+{% extends '::backend.html.twig' %}
+
+{% set vars = content.getId ? {'slug': content.getSlug()} : {} %}
+
+{% block content %}
+    <form class="block" action="{{ path('admin_core_content_form', vars) }}" method="post" {{ form_enctype(form) }}>
+        <div class="box grid_12 tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+            <ul class="tab_header grad_colour clearfix ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-1">Página</a></li>
+            <li class="ui-state-default ui-corner-top ui-tabs-selected"><a href="#tabs-2">SEO</a></li>
+            </ul>
+            <div class="toggle_container">
+        <div class="block ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-1" style="">
+            <div class="content">
+            {{ form_row(form.title) }}
+            {{ form_row(form.content) }}
+            </div>
+	</div>
+        <div class="block ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-2" style="">
+            <div class="content">
+            {{ form_row(form.seoTitle) }}
+            {{ form_row(form.seoKeywords) }}
+            {{ form_row(form.seoDescription) }}
+            </div>
+	</div>
+        {{ form_rest(form) }}
+            <div class="block"><button class="button green m10"><span>Salvar</span></button> <a class="button red" href="javascript:history.go(-1);">Cancelar</a></div>
+            </div>    
+        </div>
+    </form>
+
+{% endblock %}

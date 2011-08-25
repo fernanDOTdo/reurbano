@@ -18,7 +18,7 @@
                 
 <link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
 
-<title>{% block title "Administração" %} - {{ mastop_param('system.site.name') }}</title>
+<title>{% block title title|default("Administração")|trans %} - {{ mastop_param('system.site.name') }}</title>
 
 
 <!-- Create an icon and splash screen for iPhone and iPad -->
@@ -152,7 +152,7 @@
 {% block javascripts %}{% endblock %}
 {#/Javascripts #}
 <div id="loading_overlay">
-    <div class="loading_message round_bottom">Aguarde ...</div>
+    <div class="loading_message round_bottom"><img  src="{{ asset('/bundles/mastopsystem/images/load.gif') }}" />&nbsp;&nbsp;&nbsp;Aguarde ...</div>
 </div>
     
 <script type="text/javascript" src="{{ asset('themes/reurbano/admin/js/tipsy/jquery.tipsy.js') }}"></script>

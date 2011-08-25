@@ -11,7 +11,6 @@
     <meta property="og:image" content="{{asset(deal.getSource.getThumb)}}" />
 {% endblock %}
 
-{% block title %}{{title}}{% endblock %}
 {% block content %}
 <div class="grid_8">
     {# Título e Share #}
@@ -88,6 +87,10 @@
     <div class="grid_8 alpha omega" id="dealComments">
     <fb:comments href="{{dealLink}}" num_posts="10" width="620"></fb:comments>
     </div>
+    {%if is_granted('ROLE_ADMIN') %}
+    <div class="clear"></div>
+    <div class="info m10"><a href="{{path('admin_deal_deal_edit', {'id': deal.getId})}}" class="button green" title="Editar {{deal.getLabel}}">Editar</a></div>
+    {%endif%}
 </div>
 <div class="grid_4">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat, 'id': deal.getId}} %}

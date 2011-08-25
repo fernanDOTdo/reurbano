@@ -1,8 +1,5 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}{{title|trans}}{% endblock %}
-
-
 {% block content %}
 <h1>{{title|trans}}</h1>
     <form action="{{ path('admin_order_order_comment', {'id': id}) }}" method="post" {{form_enctype(form)}}>
