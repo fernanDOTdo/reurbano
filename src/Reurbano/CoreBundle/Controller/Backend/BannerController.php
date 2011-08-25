@@ -6,7 +6,9 @@ use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\CoreBundle\Form\BannerType;
+use Reurbano\CoreBundle\Form\BannerOfferType;
 use Reurbano\CoreBundle\Document\Banner;
+use Reurbano\DealBundle\Document\Deal;
 use Reurbano\CoreBundle\Util\Upload;
 
 /**
@@ -28,35 +30,45 @@ class BannerController extends BaseController
         return array(
             'banner'    => $banner,
             'title'   => $title,
-            'current' => 'admin_deal_deal_index',);
+            'current' => 'admin_core_banner_index',);
     }
     
     /**
      * Adiciona um novo, edita um já criado e salva ambos
+     * offer = false Banner normal
+     * offer = true Oferta
      * 
-     * @Route("/novo", name="admin_core_banner_new")
+     * @Route("/novo/{control}", name="admin_core_banner_new", defaults={"control" = false})
      * @Route("/editar/{id}", name="admin_core_banner_edit")
      * @Route("/salvar/{id}", name="admin_core_banner_save", defaults={"id" = null})
      * @Template()
      */
-    public function bannerAction($id = null)
+    public function bannerAction($id = null, $control = false)
     {
         $dm = $this->dm();
         $title = ($id) ? "Editar Banner" : "Novo Banner";
         if($id){
-            $banner = $this->mongo('ReurbanoDealBundle:Banner')->find((int)$id);
-            if(!$banner) throw $this->createNotFoundException ('Nenhum banner encontrado com o ID' . $id);
+            $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
+            $banner->setOffer($request->request->get('offer'));
+            if(!$banner) throw $this->createNotFoundException ('Nenhum banner encontrado com o ID: "' . $id . '"');
         }else{
             $banner = new Banner();
+            $banner->setUrl('http://');
         }
-        $form = $this->createForm(new BannerType(), $banner);
+        $formType = (!$control) ? new BannerType() : new BannerOfferType();
+        $form = $this->createForm($formType, $banner);
         $request = $this->get('request');
         if('POST' == $request->getMethod()){
             $form->bindRequest($request);
+            $query = $request->request->get($form->getName());
+            $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($query['offer']);
+            $banner->setOffer($deal);
             $data = $request->request->get($form->getName());
             $fileData = $request->files->get($form->getName());
-            
             if($fileData['logo'] != null){
+                if($id){
+                    @unlink($banner->getPath() . "/" . $banner->getFileName());
+                }
                 $file = new Upload($fileData['logo']);
                 $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanocore");
                 $fileUploaded = $file->upload();
@@ -68,7 +80,6 @@ class BannerController extends BaseController
                     $banner->setPath($fileUploaded->getDeafaultPath());
                 }
             }
-            
             $dm->persist($banner);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans(($id) ? "Banner Editado" : "Banner Criado" ));
@@ -97,6 +108,7 @@ class BannerController extends BaseController
         $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
         if($request->getMethod() == 'POST'){
             if(!$banner) throw $this->createNotFoundException ('Nenhum banner encontrado com o ID' . $id);
+            @unlink($banner->getPath() . "/" . $banner->getFileName());
             $dm->remove($banner);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans('Banner deletado'));

@@ -12,6 +12,9 @@
             </tr> 
         </thead> 
 {% for banner in banner %}
+        {% if banner.getOffer() != "" %}
+        
+        {% endif %}
         <tr>
             <td>
                 <img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}" width="160px" height="60px"/>
@@ -30,6 +33,7 @@
 {% endfor %} 
     </table>
     <div class='clear'></div>
-    <button onclick="window.location='{{path('admin_core_banner_new')}}'" title="{{ "Inserir novo banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar banner"|trans }}</button>
+    <button onclick="window.location='{{path('admin_core_banner_new', {'control': false })}}'" title="{{ "Inserir novo banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar banner"|trans }}</button>
+    <button onclick="window.location='{{path('admin_core_banner_new', {'control': true })}}'" title="{{ "Inserir nova oferta como banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar oferta"|trans }}</button>
 </div>
 {% endblock %}

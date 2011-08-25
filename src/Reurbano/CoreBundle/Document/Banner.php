@@ -60,11 +60,19 @@ class Banner
     /**
      * Ativo
      * 
-     * @var Int
-     * @ODM\Int
+     * @var string
+     * @ODM\Boolean
      */
-    protected $active;
+    protected $active = false;
 
+    /**
+     * A oferta que será o banner
+     *
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Deal")
+     */
+    protected $offer;
+    
     /**
      * Nome do Arquivo
      *
@@ -160,6 +168,46 @@ class Banner
     }
 
     /**
+     * Set order
+     *
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * Get order
+     *
+     * @return int $order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean $active
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Set filename
      *
      * @param string $filename
@@ -220,22 +268,22 @@ class Banner
     }
 
     /**
-     * Set order
+     * Set offer
      *
-     * @param int $order
+     * @param Reurbano\DealBundle\Document\Deal $offer
      */
-    public function setOrder($order)
+    public function setOffer(\Reurbano\DealBundle\Document\Deal $offer)
     {
-        $this->order = $order;
+        $this->offer = $offer;
     }
 
     /**
-     * Get order
+     * Get offer
      *
-     * @return int $order
+     * @return Reurbano\DealBundle\Document\Deal $offer
      */
-    public function getOrder()
+    public function getOffer()
     {
-        return $this->order;
+        return $this->offer;
     }
 }

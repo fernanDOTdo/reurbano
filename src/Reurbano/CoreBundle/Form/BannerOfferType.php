@@ -30,12 +30,15 @@ namespace Reurbano\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
-class BannerType extends AbstractType {
+class BannerOfferType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('title', 'text');
-        $builder->add('url', 'url');
+        $builder->add('offer', 'document',array(
+                    'class' => 'Reurbano\\DealBundle\\Document\\Deal',
+                    'property'=>'source.title',
+                    'label' =>"Qual a oferta do banner?",
+                ));
         $builder->add('active', 'checkbox', array(
             'label'    => 'Ativo?',
             'required' => false,
@@ -45,11 +48,6 @@ class BannerType extends AbstractType {
             'required' => false,
         ));
         $builder->add('order', 'integer');
-        $builder->add('logo', 'file', array (
-            'label'         => "imagem",
-            'required'      => false,
-            'property_path' => false
-            ));
     }
 
     public function getDefaultOptions(array $options) {
