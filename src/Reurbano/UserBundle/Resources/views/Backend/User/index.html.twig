@@ -40,6 +40,6 @@
 <button onclick="window.location='{{path('admin_user_user_new')}}'" title="{{ "Inserir novo usuário"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar usuário"|trans }}</button>
 {% endblock content %}  
 {% block javascripts %}
-<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
-<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

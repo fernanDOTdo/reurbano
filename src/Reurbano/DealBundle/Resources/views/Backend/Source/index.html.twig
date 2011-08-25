@@ -1,5 +1,5 @@
 {% extends '::backend.html.twig' %}
-{% block title %}{{title|trans}}{% endblock %}
+
 {% block content %}
 <div class="content box grid_12 round_all" style="padding:0">
     <table class="display datatable"> 
@@ -33,8 +33,9 @@
         </tbody> 
     </table>
     <button onclick="window.location='{{path('admin_deal_source_new')}}'" title="{{ "Inserir novo item ao banco de ofertas"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Novo Banco de Ofertas"|trans }}</button>
+</div>
 {% endblock %}
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

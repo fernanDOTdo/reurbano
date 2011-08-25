@@ -1,5 +1,4 @@
 {% extends '::backend.html.twig' %}
-{% block title %}{{title|trans}}{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all" style="padding:0">
     <table class="display datatable"> 
@@ -22,7 +21,7 @@
             <tr>
                 <td class='center'>
                     <a target="_blank" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}">
-                        <img width="140" height="100" src="{{ deal.getSource().getThumb() }}" title="{{ deal.getSource().getTitle() }}" alt="{{ deal.getSource().getTitle() }}" />
+                        <img width="80" height="60" src="{{ deal.getSource().getThumb() }}" title="{{ deal.getSource().getTitle() }}" alt="{{ deal.getSource().getTitle() }}" />
                     </a>
                 </td>
                 <td>{{ deal.getLabel(50) }}</td>
@@ -47,6 +46,6 @@
 </div>
 {% endblock %} 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

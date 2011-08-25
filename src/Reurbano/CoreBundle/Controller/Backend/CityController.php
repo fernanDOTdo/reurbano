@@ -35,6 +35,7 @@ class CityController extends BaseController
     {
         $dm = $this->dm();
         $title = ($city) ? "Editar Cidade" : "Nova Cidade";
+        $msg = ($city) ? "Cidade Alterada" : "Cidade Criada";
         if(!$city){
             $city = new City();
         }
@@ -45,11 +46,10 @@ class CityController extends BaseController
             if ($form->isValid()) {
                 $dm->persist($city);
                 $dm->flush();
-                $this->get('session')->setFlash('ok', 'Cidade Criada!');
-                return $this->redirect($this->generateUrl('admin_core_city_index'));
+                return $this->redirectFlash($this->generateUrl('admin_core_city_index'), $msg);
             }
         }
-        return array('form' => $form->createView(), 'city' => $city, 'title'=>$title);
+        return array('form' => $form->createView(), 'city' => $city, 'title'=>$title, 'current'=>'admin_core_city_index');
     }
     /**
      * Exibe um pre delete e deleta se for confirmado
@@ -62,8 +62,7 @@ class CityController extends BaseController
         if($this->get('request')->getMethod() == 'POST'){
             $this->dm()->remove($city);
             $this->dm()->flush();
-            $this->get('session')->setFlash('ok', 'Cidade Deletada!');
-            return $this->redirect($this->generateUrl('admin_core_city_index'));
+            return $this->redirectFlash($this->generateUrl('admin_core_city_index'), 'Cidade Deletada!');
         }
         return $this->confirm('Tem certeza de que deseja remover a cidade "' . $city->getName() . '"?', array('id' => $city->getId()));
     }
