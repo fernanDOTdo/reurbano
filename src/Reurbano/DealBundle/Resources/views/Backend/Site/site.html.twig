@@ -1,6 +1,5 @@
 {% extends '::backend.html.twig' %}
 
-{% block title %}{{title|trans}}{% endblock %}
 {% set vars = site.getId() ? {'id': site.getId()} : {} %}
 
 {% block content %}

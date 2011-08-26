@@ -1,5 +1,5 @@
 {% extends '::backend.html.twig' %}
-{% block title %}{{title|trans}}{% endblock %}
+
 {% block content %}
 <div class="content box grid_12 round_all">
     <table class="display datatable"> 
@@ -31,6 +31,6 @@
 </div>
 {% endblock %}
 {% block javascripts %}
-<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/DataTables/jquery.dataTables.js') }}"></script>
-<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_datatables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

@@ -86,6 +86,8 @@ class BlockController extends BaseController {
                 break;
             case 'search': // Página de busca
                 break;
+            case 'content': // Página de conteúdo
+                break;
             case 'deal': // Página de oferta
                 if (isset($opts['cat']) && isset ($opts['id'])) {
                     $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true, 'special', 'desc', $opts['id']);

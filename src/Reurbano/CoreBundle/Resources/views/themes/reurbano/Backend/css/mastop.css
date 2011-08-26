@@ -15,13 +15,17 @@ span.close{
 }
 
 .box .block input, .box .block textarea{width: 35%;}
+.box .block textarea.large{width:60%; height:250px;}
 
 table.static tbody tr:hover td {background-color: #FFFFE2;}
 table.static tbody tr td {min-height: 28px;}
 table tr .nowrap{white-space: nowrap;}
 .center{text-align: center !important;}
 
+#nav_top > ul > li.has_dropdown > a { cursor: pointer}
 
+
+#loading_overlay .loading_message {width: 130px; margin-left: -66px;}
 /* Botões */
 /* button 
 ---------------------------------------------- */

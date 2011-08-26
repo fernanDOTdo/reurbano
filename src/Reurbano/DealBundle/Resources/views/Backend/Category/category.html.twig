@@ -1,5 +1,5 @@
 {% extends '::backend.html.twig' %}
-{% block title %}{{title|trans}}{% endblock %}
+
 {% set vars = cat.getId() ? {'slug': cat.getSlug()} : {} %}
 {% block content %}
 <div class="content box grid_12 round_all">

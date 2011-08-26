@@ -71,7 +71,7 @@ class Banner
      * @var object
      * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Deal")
      */
-    protected $offer;
+    protected $deal;
     
     /**
      * Nome do Arquivo
@@ -208,6 +208,26 @@ class Banner
     }
 
     /**
+     * Set deal
+     *
+     * @param Reurbano\DealBundle\Document\Deal $deal
+     */
+    public function setDeal(\Reurbano\DealBundle\Document\Deal $deal)
+    {
+        $this->deal = $deal;
+    }
+
+    /**
+     * Get deal
+     *
+     * @return Reurbano\DealBundle\Document\Deal $deal
+     */
+    public function getDeal()
+    {
+        return $this->deal;
+    }
+
+    /**
      * Set filename
      *
      * @param string $filename
@@ -265,25 +285,5 @@ class Banner
     public function getPath()
     {
         return $this->path;
-    }
-
-    /**
-     * Set offer
-     *
-     * @param Reurbano\DealBundle\Document\Deal $offer
-     */
-    public function setOffer(\Reurbano\DealBundle\Document\Deal $offer)
-    {
-        $this->offer = $offer;
-    }
-
-    /**
-     * Get offer
-     *
-     * @return Reurbano\DealBundle\Document\Deal $offer
-     */
-    public function getOffer()
-    {
-        return $this->offer;
     }
 }

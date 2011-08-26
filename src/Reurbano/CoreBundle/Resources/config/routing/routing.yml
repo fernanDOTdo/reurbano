@@ -4,6 +4,9 @@ core_frontend:
 city_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/CityController.php"
     type: annotation
+content_frontend:
+    resource: "@ReurbanoCoreBundle/Controller/Frontend/ContentController.php"
+    type: annotation
 mailing_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/MailingController.php"
     type: annotation
@@ -20,6 +23,10 @@ city_backend:
     resource: "@ReurbanoCoreBundle/Controller/Backend/CityController.php"
     type: annotation
     prefix:   /admin/cidade
+content_backend:
+    resource: "@ReurbanoCoreBundle/Controller/Backend/ContentController.php"
+    type: annotation
+    prefix:   /admin/paginas
 html_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/HtmlController.php"
     type: annotation

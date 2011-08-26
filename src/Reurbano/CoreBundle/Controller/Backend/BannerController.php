@@ -35,11 +35,11 @@ class BannerController extends BaseController
     
     /**
      * Adiciona um novo, edita um já criado e salva ambos
-     * offer = false Banner normal
-     * offer = true Oferta
+     * control = false Banner normal
+     * control = true Oferta
      * 
      * @Route("/novo/{control}", name="admin_core_banner_new", defaults={"control" = false})
-     * @Route("/editar/{id}", name="admin_core_banner_edit")
+     * @Route("/editar/{id}/{control}", name="admin_core_banner_edit", defaults={"control" = false})
      * @Route("/salvar/{id}", name="admin_core_banner_save", defaults={"id" = null})
      * @Template()
      */
@@ -49,7 +49,6 @@ class BannerController extends BaseController
         $title = ($id) ? "Editar Banner" : "Novo Banner";
         if($id){
             $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
-            $banner->setOffer($request->request->get('offer'));
             if(!$banner) throw $this->createNotFoundException ('Nenhum banner encontrado com o ID: "' . $id . '"');
         }else{
             $banner = new Banner();
@@ -61,8 +60,10 @@ class BannerController extends BaseController
         if('POST' == $request->getMethod()){
             $form->bindRequest($request);
             $query = $request->request->get($form->getName());
-            $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($query['offer']);
-            $banner->setOffer($deal);
+            if(isset($query['deal'])){
+                $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($query['deal']);
+                $banner->setDeal($deal);
+            }
             $data = $request->request->get($form->getName());
             $fileData = $request->files->get($form->getName());
             if($fileData['logo'] != null){
@@ -119,5 +120,19 @@ class BannerController extends BaseController
             'id'      => $banner->getId(),
             'current' => 'admin_core_banner_index',
         );
+    }
+    
+    /**
+     * Ativa e Desativa um banner
+     * 
+     * @Route("/ativar/{id}/{active}", name="admin_core_banner_active", defaults={"active" = false})
+     */
+    public function activeAction($id, $active = false){
+        $dm = $this->dm();
+        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
+        ($active) ? $banner->setActive(true) : $banner->setActive(false);
+        $dm->persist($banner);
+        $dm->flush();
+        return $this->redirect($this->generateUrl('admin_core_banner_index'));
     }
 }

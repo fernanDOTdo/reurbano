@@ -1,14 +1,13 @@
 {% extends '::backend.html.twig' %}
 
-{% block title %}{{title|trans}}{% endblock %}
 {% set vars = city.getId() ? {'slug': city.getSlug()} : {} %}
 
 {% block content %}
 <div class="content box grid_12 round_all">
-    <form action="{{ path('admin_core_city_form', vars) }}" method="post" {{ form_enctype(form) }}>
+    <form class="block" action="{{ path('admin_core_city_form', vars) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 
-        <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+        <div class="block"><button class="button green m10"><span>Salvar</span></button> <a class="button red" href="javascript:history.go(-1);">Cancelar</a></div>
     </form>
 </div>
 {% endblock %}

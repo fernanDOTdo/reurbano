@@ -1,14 +1,13 @@
 <?php
-
 /**
- * Reurbano/Corebundle/Form/BannerType.php
+ * Reurbano/CoreBundle/Form/ContentType.php
  *
- * Cria o formulario para um novo banner
+ * Formulário para páginas estáticas.
  *  
  * 
  * @copyright 2011 Mastop Internet Development.
  * @link http://www.mastop.com.br
- * @author Rafael Basquens <rafael@basquens.com>
+ * @author Fernando Santos <o@fernan.do>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -23,42 +22,30 @@
  * under the License.
  */
 
-
-
 namespace Reurbano\CoreBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
-class BannerOfferType extends AbstractType {
+class ContentType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('deal', 'document',array(
-                    'class' => 'Reurbano\\DealBundle\\Document\\Deal',
-                    'property'=>'source.title',
-                    'label' =>"Qual a oferta do banner?",
-                ));
-        $builder->add('active', 'checkbox', array(
-            'label'    => 'Ativo?',
-            'required' => false,
-        ));
-        $builder->add('newWindow', 'checkbox', array(
-            'label'    => 'Abrir em nova janela?',
-            'required' => false,
-        ));
-        $builder->add('order', 'integer');
+        $builder->add('title', 'text', array('label'=>'Título da Página'));
+        $builder->add('seoTitle', 'text', array('label'=>'Título da Janela', 'required'=>false));
+        $builder->add('seoKeywords', 'text', array('label'=>'Meta Keywords', 'required'=>false));
+        $builder->add('seoDescription', 'textarea', array('label'=>'Meta Description', 'required'=>false));
+        $builder->add('content', 'textarea', array('label'=>'Conteúdo', 'attr'=>array('class'=>'large')));
     }
 
     public function getDefaultOptions(array $options) {
         return array(
-            'data_class' => 'Reurbano\CoreBundle\Document\Banner',
-            'intention' => 'banner_creation',
+            'data_class' => 'Reurbano\CoreBundle\Document\Content',
+            'intention' => 'content_creation',
         );
     }
 
     public function getName() {
-        return 'banner';
+        return 'content';
     }
-
 }

@@ -8,26 +8,62 @@
                 <th class="nowrap">{{ "Imagem"|trans }}</th> 
                 <th class="nowrap center">{{ "Titulo"|trans }}</th> 
                 <th class="nowrap center">{{ "URL"|trans }}</th> 
+                <th class="nowrap center"> {{ "Ordem"|trans }} </th>
+                <th class="nowrap center"> {{ "Ativo"|trans }} </th>
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
 {% for banner in banner %}
-        {% if banner.getOffer() != "" %}
-        
+        {% if banner.getDeal != "" %}
+         {% set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
+            <tr>
+                <td class="center">
+                    <img src='{{ banner.getDeal.getSource.getThumb }}' width='80' height='60' alt="Concerta ai manolo"/>
+                </td>
+                <td class="nowrap center" >
+                    {{ banner.getDeal.getLabel(50) }}
+                </td>
+                <td class='center'>
+                    <a href="{{ dealLink }}" title="{{ dealLink }}">URL</a>
+                </td>
+                <td class='center'>
+                    {{ banner.getOrder }}
+                </td>
+                <td class='center'>
+                    {% if banner.getActive %}
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': false})}}'" title="{{ "Ativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
+                    {% else %}
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': true})}}'" title="{{ "Inativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-stop"></span></button>
+                    {% endif %}
+                </td>
+                <td class="nowrap center">
+                    <a class="button button-set-start small white" href="{{ path('admin_core_banner_edit', {'id': banner.getId, 'control': true}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_core_banner_delete', {'id': banner.getId}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                </td>
+        {% else %}
+            <tr>
+                <td class="center">
+                    <img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename) }}" alt="{{ banner.getTitle }}" width="160px" height="60px"/>
+                </td>
+                <td  class='center'>
+                    {{ banner.getTitle }}
+                </td>
+                <td class='center'>
+                    <a href="{{ banner.getUrl }}" title="{{ banner.getUrl }}">URL</a>
+                </td>
+                <td class='center'>
+                    {{ banner.getOrder }}
+                </td>
+                <td class='center'>
+                    {% if banner.getActive %}
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': false})}}'" title="{{ "Ativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
+                    {% else %}
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': true})}}'" title="{{ "Inativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-stop"></span></button>
+                    {% endif %}
+                </td>
+                <td class="nowrap center">
+                    <a class="button button-set-start small white" href="{{ path('admin_core_banner_edit', {'id': banner.getId}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_core_banner_delete', {'id': banner.getId}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                </td>
         {% endif %}
-        <tr>
-            <td>
-                <img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}" width="160px" height="60px"/>
-            </td>
-            <td>
-                {{ banner.getTitle() }}
-            </td>
-            <td class='center'>
-                {{ banner.getUrl() }}
-            </td>
-            <td class="nowrap center">
-                <a class="button button-set-start small white" href="{{ path('admin_core_banner_edit', {'id': banner.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_core_banner_delete', {'id': banner.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
-            </td>
   {% else %}
         <tr><td colspan='2'>{{"Nenhum banner encontrado"|trans}}</td></tr>
 {% endfor %} 
