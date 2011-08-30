@@ -1,7 +1,63 @@
 {% extends '::frontend.html.twig' %}
-
-{% block title %}Teste{% endblock %}
-
+{% block title %}Comprar {{deal.getLabel}}{% endblock %}
+{%set dealComission = (deal.getComission.getBuyerreal > 0) ? deal.getPrice*(deal.getComission.getBuyerpercent/100) + deal.getComission.getBuyerreal : deal.getPrice*(deal.getComission.getBuyerpercent/100) %}
+{% block javascriptsHead %}
+<script type="text/javascript">
+Number.prototype.formatMoney = function(c, d, t){
+var n = this, c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "," : d, t = t == undefined ? "." : t, s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+$(function(){
+$('#dealQtd').change(function() {
+  var comPercent = {{deal.getComission.getBuyerpercent}};
+  var comReal = {{deal.getComission.getBuyerreal}};
+  var dealPrice = {{deal.getPrice}} * $(this).val();
+  $('#dealSubTotal').html('R$ '+dealPrice.formatMoney(2, ',', ''));
+  if(comPercent > 0){
+      var dealCom = dealPrice * (comPercent / 100) + comReal;
+      $('#dealComission').html('R$ '+dealCom.formatMoney(2, ',', ''));   
+  }else{
+      var dealCom = 0;
+  }
+  var dealTotal = dealPrice + dealCom;
+  $('#dealTotal').html('R$ '+dealTotal.formatMoney(2, ',', ''));   
+});
+});
+</script>
+{% endblock %}
 {% block content %}
-Teste!
+<h1>Seu pedido</h1>
+<table id="dealCart">
+    <tr>
+        <th colspan="2">Oferta</th>
+        <th>Quantidade</th>
+        <th>Valor Unitário</th>
+        <th>Sub-Total</th>
+    </tr>
+    <tr>
+        <td><div style="position:relative"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></div></td>
+        <td style="width: 450px">{{deal.getLabel}}</td>
+        <td class="aC">
+            <select name="qtd" id="dealQtd">
+            {% for i in 1..deal.getQuantity%}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+            </select>
+        </td>
+        <td class="aC">{{deal.getPrice|money}}</td>
+        <td class="aC" id="dealSubTotal">{{deal.getPrice|money}}</td>
+    </tr>
+    <tr>
+        <td colspan="4" class="aR">Despesas administrativas ({{deal.getComission.getBuyerpercent}}%{%if deal.getComission.getBuyerreal > 0%} + {{deal.getComission.getBuyerreal|money}}{%endif%})</td>
+        <td class="aC" id="dealComission">{{dealComission|money}}</td>
+    </tr>
+    <tr>
+        <td colspan="4" class="aR" style="font-weight: 700">Total</td>
+        <td class="aC" id="dealTotal" style="font-weight: 700; font-size: 1.3em;">{{(dealComission+deal.getPrice)|money}}</td>
+    </tr>
+    <tr>
+        <td colspan="3" class="aL"><button class='button red icon arrowleft' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button></td>
+        <td colspan="2" class="aR"><button class="button big primary green" type='submit'><span>{{ "Confirmar e Pagar"|trans }}</span></button></td>
+    </tr>
+</table>
 {% endblock %}

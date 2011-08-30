@@ -30,6 +30,23 @@ use Mastop\SystemBundle\Document\BaseRepository;
 class DealRepository extends BaseRepository
 {
     /**
+     * Retorna uma outra oferta do mesmo Source, ordenado por Destaque e Views
+     *
+     * @param object $deal
+     * @return object or null
+     */
+    public function findRelated($deal){
+        return $this->createQueryBuilder()
+                ->field('id')->notEqual($deal->getId())
+                ->field('active')->equals(true)
+                ->field('quantity')->gt(0)
+                ->field('source._id')->equals(new \MongoId($deal->getSource()->getId()))
+                ->sort('special', 'desc')
+                ->sort('views', 'desc')
+                ->getQuery()
+                ->getSingleResult();
+    }
+    /**
      * Adiciona +1 nos views
      */
     public function incViews($id){
@@ -40,10 +57,23 @@ class DealRepository extends BaseRepository
                 ->getQuery()
                 ->execute();
     }
+    
+    /**
+     * Retorna uma oferta de mesma Cidade e Categoria
+     *
+     * @param string $city Id da cidade
+     * @param string $cat Id da categoria
+     * @param bool $special Apenas destaques?
+     * @param string $sort Campo para ordenação
+     * @param string $order Asc ou Desc
+     * @param string $notId Se definido, certifica-se de que a Oferta retornada é diferente do Id fornecido aqui
+     * @return object or null
+     */
     public function findOneByCityCat($city, $cat = null, $special = false, $sort = 'special', $order = 'desc', $notId = null){
         $deal = $this->createQueryBuilder()
                 ->field('source.city.$id')->equals(new \MongoId($city))
-                ->field('active')->equals(true);
+                ->field('active')->equals(true)
+                ->field('quantity')->gt(0);
         if($cat){
             $deal->field('source.category.$id')->equals(new \MongoId($cat));
         }
@@ -51,7 +81,7 @@ class DealRepository extends BaseRepository
             $deal->field('special')->equals(true);
         }
         if($notId){
-            $deal->field('id')->notEqual(new \MongoId($notId));
+            $deal->field('id')->notEqual($notId);
         }
         $deal->sort($sort, $order);
         return $deal->getQuery()
@@ -67,35 +97,18 @@ class DealRepository extends BaseRepository
         return $this->findBy(array(), array('createdAt'=>'desc'));
     }
     
-    public function findByCity($id){
-        
-        return $this->findBy(array('source.city.$id'=>new \MongoId($id)));
-        
-    }
     
     public function findByUser($id){
         
-        return $this->findBy(array('user.$id'=>new \MongoId($id)));
+        return $this->findBy(array('user.id'=>$id));
         
-    }
-    
-    public function findBySource($id){
-        
-        return $this->findBy(array('source.id'=>new \MongoId($id)));
-        
-    }
-    
-    public function findByCategory($category, $city = true){
-        $city = $this->createQueryBuilder('ReurbanoDealControler:Category')
-                ->field('slug')->equals($category)
-                ->getQuery()->execute();
     }
     
     /*
      * Retorna o Slug do deal
      */
     public function findBySlug($slug){
-        return $this->findOneBy(array('slug' => $slug), array());
+        return $this->findOneBy(array('slug' => $slug));
     }
     
 }
