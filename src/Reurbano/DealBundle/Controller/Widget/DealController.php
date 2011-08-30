@@ -44,7 +44,7 @@ class DealController extends BaseController {
             $cityNacionalId = $this->get('session')->get('reurbano.user.nacional');
             $dealQuery->field('source.city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacionalId)));
         }
-        $dealQuery->field('active')->equals(true);
+        $dealQuery->field('active')->equals(true)->field('quantity')->gt(0); // Ofertas ativas e com quantidade maior que zero
         if ($cat) {
             $dealQuery->field('source.category.$id')->equals(new \MongoId($cat));
         }
@@ -78,7 +78,6 @@ class DealController extends BaseController {
         } else {
             $totalPages = 1;
         }
-        //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findByCategory($categoria);
         return $this->render(
                         'ReurbanoDealBundle:Widget/Deal:' . $template . '.html.twig', array(
                     'orderBy' => $orderBy,
