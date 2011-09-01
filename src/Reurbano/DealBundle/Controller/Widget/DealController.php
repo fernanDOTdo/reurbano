@@ -106,5 +106,16 @@ class DealController extends BaseController {
                         )
         );
     }
+    /**
+     * Widget que renderiza uma oferta no bloco Topo
+     * @param object $deal
+     */
+    public function blockTopAction($deal) {
+        return $this->render(
+                        'ReurbanoDealBundle:Widget/Deal:blockTop.html.twig', array(
+                        'deal' => $deal,
+                        )
+        );
+    }
 
 }

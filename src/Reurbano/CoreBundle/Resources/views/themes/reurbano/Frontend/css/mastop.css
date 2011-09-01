@@ -136,7 +136,7 @@ td{padding: 3px;}
 #breadcrumbs div{float: left; margin-right: 5px;}
 #breadcrumbs div span{font-weight: 700; font-size: 1.1em;}
 #breadcrumbs div a span{font-weight: 400;}
-#bannerHome{height: 335px; margin-top: 35px;}
+#bannerHome{height: 335px; margin-top: 25px;}
 
 #menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
@@ -277,10 +277,10 @@ td{padding: 3px;}
 
 /*Lista de Deals*/
 .dealBox{}
-.dealBox hr{height:1px; border-width:0; background-color:#0069AC; width: 100%; margin: 10px auto;}
+.dealBox hr{height:1px; border-width:0; background-color:#D4D4D4; width: 100%; margin: 10px auto;}
 .deal{margin:5px 0;}
 .deal .dealTitle { margin-top: 3px}
-.deal .dealTitle a{font-size: 14px; font-weight: 700; line-height: 17px;}
+.deal .dealTitle a{font-size: 15px; font-weight: 700; line-height: 18px;}
 .deal .dealTitle a:hover{text-decoration: none;}
 .deal .dealThumb {position: relative;}
 .deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
@@ -384,6 +384,69 @@ div.blockContent span.discount{
 div.blockContent div.dealTitle a{
     font-weight: 400;
     font-size: 0.9em;
+}
+/* Blocos Topo */
+div.blockTop{
+    -moz-box-shadow: 0 0 5px #D4D4D4;
+    -webkit-box-shadow: 0 0 5px #D4D4D4;
+    box-shadow: 0 0 5px #D4D4D4;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin-bottom: 25px;
+}
+div.blockTopTitle{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 5px;
+    background-color: #ffffff;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
+    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
+    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
+    background-image: linear-gradient(#ffffff, #e4e4e4);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+}
+div.blockTopContent{
+    margin: 5px 3px;
+}
+div.blockTopContent div.deal{
+    margin: 5px;
+}
+div.blockTopContent div.dealThumb a{
+    margin: 0 10px 10px 0;
+}
+div.blockTopContent div.price strong{
+    font-size: 2em;
+}
+div.blockTopContent div.price, div.blockTopContent div.priceSource{
+    text-align: left;
+}
+div.blockTopContent div.buyNow a{
+    font-size: 1.5em;
+}
+div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.dealQtd{
+    font-size: 1em;
+}
+div.blockTopContent div.dealThumb a img, div.blockTopContent div.dealThumb a{
+    height: 110px;
+    width: 150px;
+}
+div.blockTopContent span.discount{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 3px 4px;
+}
+div.blockTopContent div.dealTitle a{
+    font-weight: 400;
+    font-size: 1.2em;
+    line-height: 21px;
 }
 
 /*Bloco Facebook*/

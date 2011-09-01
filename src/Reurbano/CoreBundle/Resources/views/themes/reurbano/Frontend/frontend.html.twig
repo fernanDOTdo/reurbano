@@ -27,7 +27,7 @@ var facebookUrl="{{url("user_user_facebook")}}";
 {% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.color.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.pulse.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-{%if app.request.attributes.get('_route') == '_home' %}
+{%if app.request.attributes.get('_route') == '_home' or  app.request.attributes.get('_route') == 'core_city_index' %}
 {% javascripts '@ReurbanoCoreBundle/Resources/public/js/slidejs/slides.min.jquery.js' filter='yui_js' output='reurbano/js/slidejs/slides.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 <script type="text/javascript">
@@ -164,8 +164,8 @@ $(function(){
         {%endfor%}
         </div>
         {%endif%}
-        {%if app.request.attributes.get('_route') == '_home'%}
-        {# Só exibe o banner se estiver na home #}
+        {%if app.request.attributes.get('_route') == '_home' or app.request.attributes.get('_route') == 'core_city_index' %}
+        {# Só exibe o banner se estiver na home ou na página da cidade #}
         <div class="clear"></div>   
         <div class="grid_12" id="bannerHome">
             <div id="bannerSlides">
@@ -182,7 +182,6 @@ $(function(){
 				<a href="#" class="prev"><img src="{{ asset('themes/reurbano/images/slides/arrow-prev.png') }}" width="19" height="21" alt="Arrow Prev"></a>
 				<a href="#" class="next"><img src="{{ asset('themes/reurbano/images/slides/arrow-next.png') }}" width="19" height="21" alt="Arrow Next"></a>
 			</div>
-                            <img src="{{ asset('themes/reurbano/images/slides/frame.png') }}" width="900" height="361" alt="Frame" id="frame" />                            
 		</div>
         </div>
         {%endif%}

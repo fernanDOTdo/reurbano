@@ -14,30 +14,41 @@ class BlockController extends BaseController {
 
     /**
      * Widget que renderiza o bloco lateral
-     * 
+     * @Template()
      */
     public function renderAction($area = 'home', $opts = array()) {
         $session = $this->get('session');
         $ret = array();
         $c = 0;
         switch ($area) {
-            case 'city': // Home de cada cidade
+            case 'topL':
                 $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true);
                 $blockSpecialId = null;
                 if ($blockSpecial) {
                     $blockSpecialId = $blockSpecial->getId();
                     $ret[$c]['title'] = 'Oferta em Destaque';
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:blockTop';
                     $ret[$c]['opts'] = array('deal' => $blockSpecial);
                     $c++;
                 }
-                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc');
-                if ($blockCheap && $blockCheap->getId() != $blockSpecialId) { // Evita 2 ofertas iguais em blocos diferentes
+                return array('blocks' => $ret, 'area' => $area);
+                break;
+            case 'topR':
+                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true);
+                $blockSpecialId = null;
+                if ($blockSpecial) {
+                    $blockSpecialId = $blockSpecial->getId();
+                }
+                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc', $blockSpecialId);
+                if ($blockCheap) {
                     $ret[$c]['title'] = 'Mais Barato de '.$session->get('reurbano.user.cityName');
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:blockTop';
                     $ret[$c]['opts'] = array('deal' => $blockCheap);
                     $c++;
                 }
+                return array('blocks' => $ret, 'area' => $area);
+                break;
+            case 'city': // Home de cada cidade
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                     $nacionalId = $session->get('reurbano.user.nacional');
                     if ($nacionalId) {
@@ -126,22 +137,6 @@ class BlockController extends BaseController {
                 break;
             case 'home':
             default :
-                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true);
-                $blockSpecialId = null;
-                if ($blockSpecial) {
-                    $blockSpecialId = $blockSpecial->getId();
-                    $ret[$c]['title'] = 'Oferta em Destaque';
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
-                    $ret[$c]['opts'] = array('deal' => $blockSpecial);
-                    $c++;
-                }
-                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc');
-                if ($blockCheap && $blockCheap->getId() != $blockSpecialId) { // Evita 2 ofertas iguais em blocos diferentes
-                    $ret[$c]['title'] = 'Mais Barato de '.$session->get('reurbano.user.cityName');
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
-                    $ret[$c]['opts'] = array('deal' => $blockCheap);
-                    $c++;
-                }
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                     $nacionalId = $session->get('reurbano.user.nacional');
                     if ($nacionalId) {
@@ -163,11 +158,7 @@ class BlockController extends BaseController {
         $ret[$c]['opts'] = array('profile' => '188401247891549', 'url' => 'http://www.facebook.com/recompracoletiva', 'css' => 'http://www.mastop.com.br/fernando/css/facebook.css');
         //$ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';
         //$ret[$c]['opts'] = array('url' => 'http://www.facebook.com/recompracoletiva', 'width' => '292', 'border' => '#FFFFFF');
-        return $this->render(
-                        'ReurbanoCoreBundle:Widget/Block:render.html.twig', array(
-                    'blocks' => $ret
-                        )
-        );
+        return array('blocks' => $ret, 'area' => $area);
     }
 
     /**
