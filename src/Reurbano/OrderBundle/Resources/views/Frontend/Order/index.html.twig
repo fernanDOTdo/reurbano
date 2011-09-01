@@ -27,6 +27,7 @@ $('#dealQtd').change(function() {
 {% endblock %}
 {% block content %}
 <h1>Seu pedido</h1>
+<form action="" method="post">
 <table id="dealCart">
     <tr>
         <th colspan="2">Oferta</th>
@@ -35,7 +36,7 @@ $('#dealQtd').change(function() {
         <th>Sub-Total</th>
     </tr>
     <tr>
-        <td><div style="position:relative"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></div></td>
+        <td><div style="position:relative"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></div></td>
         <td style="width: 450px">{{deal.getLabel}}</td>
         <td class="aC">
             <select name="qtd" id="dealQtd">
@@ -56,8 +57,9 @@ $('#dealQtd').change(function() {
         <td class="aC" id="dealTotal" style="font-weight: 700; font-size: 1.3em;">{{(dealComission+deal.getPrice)|money}}</td>
     </tr>
     <tr>
-        <td colspan="3" class="aL"><button class='button red icon arrowleft' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button></td>
-        <td colspan="2" class="aR"><button class="button big primary green" type='submit'><span>{{ "Confirmar e Pagar"|trans }}</span></button></td>
+        <td colspan="3" class="aL"><a class='button red' onclick='javascript:history.go(-1)' href="#">{{"Voltar"|trans}}</a></td>
+        <td colspan="2" class="aR"><button class="button big primary {{deal.getDiscountType }}" type='submit'><span>{{ "Confirmar e Pagar"|trans }}</span></button></td>
     </tr>
 </table>
+</form>
 {% endblock %}

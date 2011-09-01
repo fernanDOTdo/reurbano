@@ -1,11 +1,11 @@
 {%for block in blocks%}
 {%if block.title is defined %}
-<div class="block">
+<div class="block{%if area == 'topL' or area == 'topR'%}Top{%endif%}">
 {%endif%}
     {%if block.title is defined %}
-        <div class="blockTitle">{{block.title|raw}}</div>
+        <div class="block{%if area == 'topL' or area == 'topR'%}Top{%endif%}Title">{{block.title|raw}}</div>
     {%endif%}
-    <div class="blockContent">
+    <div class="block{%if area == 'topL' or area == 'topR'%}Top{%endif%}Content">
     {%if block.content is defined%}
         {{block.content|raw}}   
     {%endif%}

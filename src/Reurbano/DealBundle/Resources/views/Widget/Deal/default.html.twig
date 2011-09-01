@@ -16,10 +16,10 @@
     {# Encontrados: {{found}} de {{total}} #}
 {%for deal in deals%}
 {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
-<div class="deal">
+<div class="deal {{deal.getDiscountType }}">
     <div class="grid_2 alpha dealThumb">
     {#Imagem#}
-            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
     </div>
     <div class="grid_4 dealTitle">
     {#Conteúdo#}
@@ -34,7 +34,7 @@
     {#Preços#}
             <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
             <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-            <div class="buyNow"><a rel="nofollow" class="button big orange primary pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+            <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} primary pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
     </div>
     <div class="clear"></div>
     <div class="grid_2 alpha dealSource">

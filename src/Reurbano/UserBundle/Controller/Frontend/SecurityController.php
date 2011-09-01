@@ -24,8 +24,9 @@ class SecurityController extends BaseController {
         } else {
             $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
-
-
+        if($error){
+            $this->get('session')->setFlash('error', $error->getMessage());
+        }
         $factory = $this->get('form.factory');
         $titulo = $this->trans("Novo membro");
         $form = $factory->create(new UserForm());
@@ -33,7 +34,6 @@ class SecurityController extends BaseController {
         return array(
             // last username entered by the user
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error' => $error,
             'form' => $form->createView(), 'titulo' => $titulo
         );
     }
