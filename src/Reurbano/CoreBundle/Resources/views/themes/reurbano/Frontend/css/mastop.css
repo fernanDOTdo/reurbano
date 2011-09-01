@@ -38,6 +38,7 @@ h1, h2, h3
     color: #FFF;
     height: 40px;
     display: none;
+    font-size: 1.2em;
 }
 .alert div.container_12 {
     height: 26px;

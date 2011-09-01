@@ -2,6 +2,9 @@ services:
     mastop.user:
         class: Reurbano\UserBundle\Security\DocumentUserProvider
         arguments: [@doctrine.odm.mongodb.security.user.document_manager, Reurbano\UserBundle\Document\User]
+    mastop.user.success_handler:
+        class: Reurbano\UserBundle\Security\SuccessHandler
+        arguments: [@router]
     mastop.user.security.interactive_login_listener:
         class: Reurbano\UserBundle\Security\InteractiveLoginListener
         arguments: [@mastop.user]
@@ -34,6 +37,7 @@ security:
             form_login:
                 check_path: /login_check
                 login_path: /login
+                success_handler: mastop.user.success_handler
                 remember_me: true
                 username_parameter: _umail
             remember_me:

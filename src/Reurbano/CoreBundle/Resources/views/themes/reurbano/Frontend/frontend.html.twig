@@ -52,7 +52,7 @@ $(function(){
 <div class="alert alert_error">
     <div class="container_12">
         <div class="grid_10">
-            <strong>Erro: </strong> {{ app.session.flash('error')|raw }}
+            <strong>Erro: </strong> {{ app.session.flash('error')|raw|trans }}
         </div>
         <div class="grid_2">
             <a class="closeAlert" href="#">Fechar</a>
