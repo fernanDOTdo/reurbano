@@ -1,8 +1,8 @@
 {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
-<div class="deal">
+<div class="deal {{deal.getDiscountType }}">
 {#Imagem#}
 <div class="dealThumb">
-<a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+<a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
 </div>
 {#Título#}
 <div class="dealTitle">
@@ -21,7 +21,7 @@
         {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
         {% endtranschoice %}
     </div> 
-    <div class="buyNow"><a rel="nofollow" class="button orange pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }} pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
 </div>
 <div class="clear"></div>
 {%if deal.getSource.getBusinessAddress is not null%}

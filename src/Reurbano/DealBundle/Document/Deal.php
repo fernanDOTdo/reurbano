@@ -297,6 +297,24 @@ class Deal
     {
         return $this->discount;
     }
+    /**
+     * Pega o tipo de desconto (para class no css)
+     *
+     * @return string
+     */
+    public function getDiscountType()
+    {
+        $discount = $this->discount;
+        if($discount >= 85){
+            return 'orange'; // desconto alto
+        }  elseif ($discount >= 60) {
+            return 'green'; // desconto médio
+        }  elseif ($discount >= 46) {
+            return 'blue'; // desconto baixo
+        }else{
+            return 'gray'; // desconto muito baixo
+        }
+    }
 
     /**
      * Set quantity

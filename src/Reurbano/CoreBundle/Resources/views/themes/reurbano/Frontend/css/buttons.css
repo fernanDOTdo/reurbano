@@ -691,12 +691,12 @@ http://github.com/necolas/css3-github-buttons
 .button-group.minor-group .button:hover,
 .button-group.minor-group .button:focus,
 .button-group.minor-group .button:active {
-    background-color: #ED7E00;
+    background-color: #666;
 }
 
 .button-group.minor-group .button:active,
 .button-group.minor-group .button.active {
-    background-color: #D87D08;
+    background-color: #333;
 }
 
 .button-group.minor-group .button.icon:before {

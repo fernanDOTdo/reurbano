@@ -148,7 +148,7 @@ td{padding: 3px;}
 
 #search{height: 83px; background: url(../images/header/search.png) no-repeat;}
 #search form{margin-left: 45px; height: 65px; padding-top: 18px;}
-#search #q{width: 390px; padding-left: 10px; height: 28px;
+#search #q{width: 380px; padding-left: 10px; height: 28px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -279,15 +279,14 @@ td{padding: 3px;}
 .dealBox{}
 .dealBox hr{height:1px; border-width:0; background-color:#0069AC; width: 100%; margin: 10px auto;}
 .deal{margin:5px 0;}
-.deal.over{background-color: #DEF0FC;}
 .deal .dealTitle { margin-top: 3px}
-.deal .dealTitle a{color:#15567F; font-size: 14px; font-weight: 700; line-height: 17px;}
-.deal .dealTitle a:hover{text-decoration: none; color: #0076c1}
+.deal .dealTitle a{font-size: 14px; font-weight: 700; line-height: 17px;}
+.deal .dealTitle a:hover{text-decoration: none;}
 .deal .dealThumb {position: relative;}
 .deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
 .deal .dealThumb a img{width: 140px; height: 100px;}
+
 span.discount{
-    background: #8bb919;
     color: #FFF;
     font-weight: 700;
     left: 0;
@@ -298,8 +297,29 @@ span.discount{
     -moz-border-radius-bottomright: 7px;
     border-bottom-right-radius: 7px;
 }
-span.discount.high{background: #0069ac;}
-span.discount.medium{background: #f37200;}
+span.discount.gray{background: #999;}
+span.discount.blue{background: #15567F;}
+span.discount.green{background: #587906;}
+span.discount.orange{background: #D87D08;}
+
+div.deal.gray .dealTitle a{color: #999}
+div.deal.gray .dealTitle a:hover{color: #888}
+div.deal.blue .dealTitle a{color: #15567F}
+div.deal.blue .dealTitle a:hover{color: #114566}
+div.deal.green .dealTitle a{color: #587906}
+div.deal.green .dealTitle a:hover{color: #4C6805}
+div.deal.orange .dealTitle a{color: #D87D08}
+div.deal.orange .dealTitle a:hover{color: #BF6C07}
+
+div.gray .price strong{color: #999}
+div.blue .price strong{color: #15567F}
+div.green .price strong{color: #587906}
+div.orange .price strong{color: #D87D08}
+
+div.deal.gray.over{background-color: #EDEDED;}
+div.deal.blue.over{background-color: #DEF0FC}
+div.deal.green.over{background-color: #DEF9E2}
+div.deal.orange.over{background-color: #F9F2DE}
 
 div.priceSource{text-align: right; margin: 3px 10px 0 0}
 div.priceSource strong{text-decoration: line-through}
