@@ -27,6 +27,7 @@ $('#dealQtd').change(function() {
 {% endblock %}
 {% block content %}
 <h1>Seu pedido</h1>
+<form action="" method="post">
 <table id="dealCart">
     <tr>
         <th colspan="2">Oferta</th>
@@ -60,4 +61,5 @@ $('#dealQtd').change(function() {
         <td colspan="2" class="aR"><button class="button big primary green" type='submit'><span>{{ "Confirmar e Pagar"|trans }}</span></button></td>
     </tr>
 </table>
+</form>
 {% endblock %}
