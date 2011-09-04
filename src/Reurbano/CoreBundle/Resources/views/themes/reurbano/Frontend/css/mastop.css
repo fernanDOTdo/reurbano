@@ -30,6 +30,7 @@ em
 h1, h2, h3
 {
     color: #666;
+    margin-top: 10px;
 }
 #closeNL{margin-top:6px;}
 .closeAlert, #closeNL{float: right; background: url('../images/sprite.png') no-repeat -4px -26px; width: 30px; height: 30px; text-indent: -9999em; overflow: hidden; outline: none;}
@@ -76,6 +77,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 .aC{text-align: center;}
 .aL{text-align: left;}
 .aR{text-align: right;}
+.strong{font-weight: 700;}
 
 /* Tabelas */
 table{width: 100%;}
@@ -167,10 +169,10 @@ td{padding: 3px;}
     padding: 1px 1px 1px 9px;
     background: #FFF;
 }
-.twLoginBtn, .fbLoginBtn{margin: 5px 0 0 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
+.twLoginBtn, .fbLoginBtn{margin-top: 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
 .twLoginBtn{background-position: -181px -31px;}
 .twLoginBtn:hover{background-position: -181px -4px;}
-.fbLoginBtn{background-position: -41px -31px;}
+.fbLoginBtn{background-position: -41px -31px; margin-left: 5px;}
 .fbLoginBtn:hover{background-position: -41px -4px;}
 
 /* Lista e Combo de Cidades */
@@ -327,7 +329,7 @@ div.priceSource strong{text-decoration: line-through}
 div.price{text-align: right; margin: 0 10px 0 0}
 div.price strong{font-size: 1.7em; color:#7A9D24;}
 div.expires{font-size: 0.9em;}
-div.buyNow{text-align: right; margin: 0 10px 0 0}
+div.buyNow{text-align: right; margin: 3px 10px 0 0}
 div.dealSource, div.dealCity, div.dealExpires, div.dealQtd{font-size: 11px;}
 div.dealQtd{text-align: right; margin: 0 10px 0 0}
 div.dealSource{text-align: center;}
@@ -388,66 +390,65 @@ div.blockContent div.dealTitle a{
 }
 /* Blocos Topo */
 div.blockTop{
-    -moz-box-shadow: 0 0 5px #D4D4D4;
-    -webkit-box-shadow: 0 0 5px #D4D4D4;
-    box-shadow: 0 0 5px #D4D4D4;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+    -moz-box-shadow:inset 0 0 5px #D4D4D4;
+    -webkit-box-shadow:inset 0 0 5px #D4D4D4;
+    box-shadow:inset 0 0 5px #D4D4D4;
     margin-bottom: 25px;
 }
 div.blockTopTitle{
     font-weight: 700;
     font-size: 1.2em;
-    padding: 5px;
-    background-color: #ffffff;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
-    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
-    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
-    background-image: linear-gradient(#ffffff, #e4e4e4);
+    padding: 10px 0 3px 10px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    
 }
 div.blockTopContent{
-    margin: 5px 3px;
-}
-div.blockTopContent div.deal{
     margin: 5px;
+}
+div.blockTopContent div.dealTitle{
+    margin-bottom: 10px;
+}
+
+div.blockTopContent div.deal{
+    padding: 5px;
 }
 div.blockTopContent div.dealThumb a{
     margin: 0 10px 10px 0;
+}
+div.blockTopContent div.dealInfos{
+    margin-right: 20px;
+    float: right;
+    margin-top: 10px;
 }
 div.blockTopContent div.price strong{
     font-size: 2em;
 }
 div.blockTopContent div.price, div.blockTopContent div.priceSource{
-    text-align: left;
+    text-align: center;
 }
 div.blockTopContent div.buyNow a{
     font-size: 1.5em;
 }
+div.blockTopContent div.buyNow{margin-top: 10px}
 div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.dealQtd{
     font-size: 1em;
+    text-align: center;
 }
 div.blockTopContent div.dealThumb a img, div.blockTopContent div.dealThumb a{
-    height: 110px;
-    width: 150px;
+    width: 250px;
+    height: 179px;
 }
 div.blockTopContent span.discount{
     font-weight: 700;
     font-size: 1.2em;
     padding: 3px 4px;
 }
-div.blockTopContent div.dealTitle a{
-    font-weight: 400;
-    font-size: 1.2em;
-    line-height: 21px;
+div.blockTopContent div.dealExpires{
+    text-align: right;
 }
 
 /*Bloco Facebook*/
@@ -475,7 +476,10 @@ div.blockTopContent div.dealTitle a{
 input.errorField {
     border-color: #F00 !important;
 }
-input, textarea{
+input[type="search"] {
+  -webkit-appearance: textfield;
+}
+input[type="text"],input[type="password"],input[type="email"],input[type="number"],textarea{
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -497,9 +501,23 @@ input.focusField, textarea.focusField{
 input.small, textarea.small{width: 50px;}
 input.medium, textarea.medium{width: 350px;}
 input.big, textarea.big{width: 460px;} /* O suficiente para caber em um grid_6 */
+label{
+    font-weight: 700;
+    display: block;
+    margin: 3px 0;
+}
+label small{
+    font-weight: 400;
+    display: block;
+    font-size: 0.9em;
+}
+label input{
+    float: left;
+    margin-top: 1px;
+}
 
 /* Página do Deal */
-#dealTitle{font-size: 22px; margin-bottom: 0;}
+#dealTitle{font-size: 20px; margin: 0; line-height: 1.1em;}
 #dealShare{text-align: right; margin-bottom: 15px;}
 #dealThumb{position: relative;}
 #dealThumb img{width: 380px;}
@@ -538,6 +556,11 @@ table#dealCart{
 }
 table#dealCart td{
     vertical-align: middle;
+}
+/* Login e Register Boxes*/
+#login_register_box{
+    border-left: 1px solid #D4D4D4;
+    padding-left: 80px;
 }
 /* /Body */
 

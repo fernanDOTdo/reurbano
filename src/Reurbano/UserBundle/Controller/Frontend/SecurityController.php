@@ -28,7 +28,7 @@ class SecurityController extends BaseController {
             $this->get('session')->setFlash('error', $error->getMessage());
         }
         $factory = $this->get('form.factory');
-        $titulo = $this->trans("Novo membro");
+        $titulo = $this->trans("Cadastre-se");
         $form = $factory->create(new UserForm());
         
         return array(

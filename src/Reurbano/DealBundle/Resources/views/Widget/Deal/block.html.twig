@@ -21,7 +21,7 @@
         {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
         {% endtranschoice %}
     </div> 
-    <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }} pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
 </div>
 <div class="clear"></div>
 {%if deal.getSource.getBusinessAddress is not null%}
