@@ -9,10 +9,11 @@
                 <th>{{ "Usuário"|trans }}</th> 
                 <th class="nowrap">{{ "Qtde"|trans }}</th> 
                 <th class="center nowrap">{{ "Valor"|trans }}</th> 
-                <th class="center">{{ "Categoria"|trans }}</th> 
+                <th class="center">{{ "Cat."|trans }}</th> 
                 <th class="center">{{ "Cidade"|trans }}</th> 
-                <th class="center">{{ "Destaque"|trans }}</th> 
+                <th class="center">{{ "Dest."|trans }}</th> 
                 <th class="center">{{ "Data"|trans }}</th> 
+                <th class="center">{{ "Ativo"|trans }}</th> 
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
@@ -32,6 +33,13 @@
                 <td>{{  deal.getSource().getCity().getName() }}</td>
                 <td>{{ deal.getSpecial(true) }}</td>
                 <td>{{ deal.getCreatedAt()|date('d/m/Y') }}</td>
+                <td class="center">
+                    {% if deal.getActive %}
+                        <button onclick="window.location='{{path('admin_deal_deal_active', {'id': deal.getId, 'active': false})}}'" title="{{ "Desativar"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
+                    {% else %}
+                        <button onclick="window.location='{{path('admin_deal_deal_active', {'id': deal.getId, 'active': true})}}'" title="{{ "Ativar"|trans }}" class="button white small"><span class="ui-silk ui-silk-stop"></span></button>
+                    {% endif %}
+                </td>
                 <td class="center nowrap">
                     <a target="_blank" class="button button-set-start small white" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}"><span class="ui-silk ui-silk ui-silk-eye">{{ "Visualizar"|trans }}</span></a><a class="button button-set small white" href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
                 </td>
