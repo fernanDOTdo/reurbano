@@ -5,7 +5,7 @@
     <table class="static"> 
         <thead> 
             <tr> 
-                <th class="nowrap">{{ "Imagem"|trans }}</th> 
+                <th class="nowrap center">{{ "Imagem"|trans }}</th> 
                 <th class="nowrap center">{{ "Titulo"|trans }}</th> 
                 <th class="nowrap center">{{ "URL"|trans }}</th> 
                 <th class="nowrap center"> {{ "Ordem"|trans }} </th>
@@ -15,7 +15,7 @@
         </thead> 
 {% for banner in banner %}
         {% if banner.getDeal != "" %}
-         {% set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
+            {% set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
             <tr>
                 <td class="center">
                     <img src='{{ banner.getDeal.getSource.getThumb }}' width='80' height='60' alt="Concerta ai manolo"/>

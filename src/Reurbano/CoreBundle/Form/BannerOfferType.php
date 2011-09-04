@@ -34,17 +34,15 @@ class BannerOfferType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('deal', 'document',array(
-                    'class' => 'Reurbano\\DealBundle\\Document\\Deal',
-                    'property'=>'source.title',
-                    'label' =>"Qual a oferta do banner?",
-                ));
+        $builder->add('user', 'text', array(
+            'property_path' => false, 
+            'required'      => false,
+            'label'         => 'Nome ou e-mail do usuário',
+            'attr'          => array(
+                'style' => 'width: 500px;'
+            )));
         $builder->add('active', 'checkbox', array(
             'label'    => 'Ativo?',
-            'required' => false,
-        ));
-        $builder->add('newWindow', 'checkbox', array(
-            'label'    => 'Abrir em nova janela?',
             'required' => false,
         ));
         $builder->add('order', 'integer');
