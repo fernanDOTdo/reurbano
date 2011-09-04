@@ -102,10 +102,15 @@ class SellController extends BaseController
         if($request->getMethod() == 'POST'){
             $data = $this->get('request')->request->get($form->getName());
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['cupomId']);
+            if(!$source){
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Oferta não encontrada', 'error');
+            }
             $deal=new Deal();
             $deal->setPrice($source->getPriceOffer());
             $deal->setQuantity(1);
             $sourceForm = $this->createForm(new DealType(),$deal);
+        }else{
+            return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Selecione uma oferta', 'notice');
         }
         return array(
             'title'  => $title,
@@ -130,6 +135,9 @@ class SellController extends BaseController
             $deal = new Deal();
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['sourceId']);
             $formDataResult = $request->files->get($form->getName());
+            if(count($formDataResult) != $data['quantity']){
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'É preciso enviar '.$data['quantity'].' vouchers', 'error');
+            }
             foreach ($formDataResult as $kFile => $vFile){
                 if ($vFile){
                     $file = new Upload($formDataResult[$kFile]);

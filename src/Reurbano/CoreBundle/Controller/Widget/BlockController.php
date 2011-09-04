@@ -132,7 +132,7 @@ class BlockController extends BaseController {
                 break;
             case 'sell': // Página de venda
                 $ret[$c]['title'] = 'Não encontrou sua oferta?';
-                $ret[$c]['content'] = "<button title='".$this->trans("Entre em contato se não encontrar a sua oferta em nosso site")."' class='button push_1 orange' type='button'>Fale com ".$this->get('mastop')->param('system.site.name')."</button>";
+                $ret[$c]['content'] = "<a title='".$this->trans("Entre em contato se não encontrar a sua oferta em nosso site")."' class='button push_1 orange' href='".$this->generateUrl('core_html_contact')."'>Fale com ".$this->get('mastop')->param('system.site.name')."</a>";
                 $c++;
                 break;
             case 'home':
