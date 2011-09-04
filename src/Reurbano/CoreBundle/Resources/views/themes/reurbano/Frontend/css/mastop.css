@@ -38,6 +38,7 @@ h1, h2, h3
     color: #FFF;
     height: 40px;
     display: none;
+    font-size: 1.2em;
 }
 .alert div.container_12 {
     height: 26px;
@@ -72,6 +73,14 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 .m10{margin: 10px;}
 .mT10{margin-top: 10px;}
 .mB10{margin-bottom: 10px;}
+.aC{text-align: center;}
+.aL{text-align: left;}
+.aR{text-align: right;}
+
+/* Tabelas */
+table{width: 100%;}
+th{padding: 5px; font-weight: 700; border-bottom: 2px solid #878787; text-align: center; white-space: nowrap;}
+td{padding: 3px;}
 
 /*/Geral */
 
@@ -97,6 +106,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
     font-size: 15px;
     margin-left: 5px;
     height: 23px;
+    margin-top: -5px;
 }
 #mailNL.idleField{
     color: #999;
@@ -127,7 +137,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 #breadcrumbs div{float: left; margin-right: 5px;}
 #breadcrumbs div span{font-weight: 700; font-size: 1.1em;}
 #breadcrumbs div a span{font-weight: 400;}
-#bannerHome{height: 335px; margin-top: 35px;}
+#bannerHome{height: 335px; margin-top: 25px;}
 
 #menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
@@ -139,7 +149,7 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 #search{height: 83px; background: url(../images/header/search.png) no-repeat;}
 #search form{margin-left: 45px; height: 65px; padding-top: 18px;}
-#search #q{width: 390px; padding-left: 10px; height: 28px;
+#search #q{width: 380px; padding-left: 10px; height: 28px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -268,17 +278,16 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 /*Lista de Deals*/
 .dealBox{}
-.dealBox hr{height:1px; border-width:0; background-color:#0069AC; width: 100%; margin: 10px auto;}
+.dealBox hr{height:1px; border-width:0; background-color:#D4D4D4; width: 100%; margin: 10px auto;}
 .deal{margin:5px 0;}
-.deal.over{background-color: #DEF0FC;}
 .deal .dealTitle { margin-top: 3px}
-.deal .dealTitle a{color:#15567F; font-size: 14px; font-weight: 700; line-height: 17px;}
-.deal .dealTitle a:hover{text-decoration: none; color: #0076c1}
+.deal .dealTitle a{font-size: 15px; font-weight: 700; line-height: 18px;}
+.deal .dealTitle a:hover{text-decoration: none;}
 .deal .dealThumb {position: relative;}
 .deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
 .deal .dealThumb a img{width: 140px; height: 100px;}
+
 span.discount{
-    background: #8bb919;
     color: #FFF;
     font-weight: 700;
     left: 0;
@@ -289,8 +298,29 @@ span.discount{
     -moz-border-radius-bottomright: 7px;
     border-bottom-right-radius: 7px;
 }
-span.discount.high{background: #0069ac;}
-span.discount.medium{background: #f37200;}
+span.discount.gray{background: #999;}
+span.discount.blue{background: #15567F;}
+span.discount.green{background: #587906;}
+span.discount.orange{background: #D87D08;}
+
+div.deal.gray .dealTitle a{color: #999}
+div.deal.gray .dealTitle a:hover{color: #888}
+div.deal.blue .dealTitle a{color: #15567F}
+div.deal.blue .dealTitle a:hover{color: #114566}
+div.deal.green .dealTitle a{color: #587906}
+div.deal.green .dealTitle a:hover{color: #4C6805}
+div.deal.orange .dealTitle a{color: #D87D08}
+div.deal.orange .dealTitle a:hover{color: #BF6C07}
+
+div.gray .price strong{color: #999}
+div.blue .price strong{color: #15567F}
+div.green .price strong{color: #587906}
+div.orange .price strong{color: #D87D08}
+
+div.deal.gray.over{background-color: #EDEDED;}
+div.deal.blue.over{background-color: #DEF0FC}
+div.deal.green.over{background-color: #DEF9E2}
+div.deal.orange.over{background-color: #F9F2DE}
 
 div.priceSource{text-align: right; margin: 3px 10px 0 0}
 div.priceSource strong{text-decoration: line-through}
@@ -355,6 +385,69 @@ div.blockContent span.discount{
 div.blockContent div.dealTitle a{
     font-weight: 400;
     font-size: 0.9em;
+}
+/* Blocos Topo */
+div.blockTop{
+    -moz-box-shadow: 0 0 5px #D4D4D4;
+    -webkit-box-shadow: 0 0 5px #D4D4D4;
+    box-shadow: 0 0 5px #D4D4D4;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin-bottom: 25px;
+}
+div.blockTopTitle{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 5px;
+    background-color: #ffffff;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
+    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
+    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
+    background-image: linear-gradient(#ffffff, #e4e4e4);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+}
+div.blockTopContent{
+    margin: 5px 3px;
+}
+div.blockTopContent div.deal{
+    margin: 5px;
+}
+div.blockTopContent div.dealThumb a{
+    margin: 0 10px 10px 0;
+}
+div.blockTopContent div.price strong{
+    font-size: 2em;
+}
+div.blockTopContent div.price, div.blockTopContent div.priceSource{
+    text-align: left;
+}
+div.blockTopContent div.buyNow a{
+    font-size: 1.5em;
+}
+div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.dealQtd{
+    font-size: 1em;
+}
+div.blockTopContent div.dealThumb a img, div.blockTopContent div.dealThumb a{
+    height: 110px;
+    width: 150px;
+}
+div.blockTopContent span.discount{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 3px 4px;
+}
+div.blockTopContent div.dealTitle a{
+    font-weight: 400;
+    font-size: 1.2em;
+    line-height: 21px;
 }
 
 /*Bloco Facebook*/
@@ -437,6 +530,14 @@ input.big, textarea.big{width: 460px;} /* O suficiente para caber em um grid_6 *
 }
 #dealDetails h3{
     font-size: 13px;
+}
+/* Cart */
+table#dealCart{
+    width: 90%;
+    margin: 0 auto;
+}
+table#dealCart td{
+    vertical-align: middle;
 }
 /* /Body */
 

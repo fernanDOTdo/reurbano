@@ -33,15 +33,19 @@
     <div class="grid_5 alpha">
         {# Foto #}
         <div id="dealThumb">
-            <img src="{{asset(deal.getSource.getFilename)}}" alt="{{deal.getLabel}}" /> <span class="discount {% if deal.getDiscount > 80 %}high{% elseif deal.getDiscount > 60%}medium{%endif%}">{{deal.getDiscount}}% OFF</span></a>
+            <img src="{{asset(deal.getSource.getFilename)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
         </div>
     </div>
     <div class="grid_3 omega">
         {# Preços #}
-        <div id="dealPrices">
+        <div id="dealPrices" class="{{deal.getDiscountType }}">
             <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
             <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-            <div class="buyNow"><a rel="nofollow" class="button big orange primary" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+            {%if deal.getQuantity > 0%}
+            <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} primary" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+            {%else%}
+            <div class="buyNow"><a rel="nofollow" class="button big gray primary disable" href="#" style="cursor:default;">Vendido</a></div>
+            {%endif%}
         </div>
         <div id="dealInfos">
             {# Quantidade #}

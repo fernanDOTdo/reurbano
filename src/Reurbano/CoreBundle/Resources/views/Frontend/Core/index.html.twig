@@ -1,6 +1,13 @@
 {% extends '::frontend.html.twig' %}
 
 {% block content %}
+<div class="grid_6">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with {'area': 'topL'} %}
+</div>
+<div class="grid_6">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with {'area': 'topR'} %}
+</div>
+<div class="clear"></div>
 <div class="grid_8">
 {% render 'ReurbanoDealBundle:Widget\\Deal:render' with{'limit': mastop_param('deal.all.perpage'), 'orderBy': app.request.cookies.get('dealsort')|default(mastop_param('deal.all.dealsort'))} %}
 </div>

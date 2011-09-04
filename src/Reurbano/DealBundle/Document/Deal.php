@@ -34,8 +34,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   repositoryClass="Reurbano\DealBundle\Document\DealRepository"
  * )
  * @ODM\Indexes({
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "special"="desc"}),
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "tags"="desc"})
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "special"="desc"}),
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "tags"="desc"})
  * })
  */
 class Deal
@@ -296,6 +296,24 @@ class Deal
     public function getDiscount()
     {
         return $this->discount;
+    }
+    /**
+     * Pega o tipo de desconto (para class no css)
+     *
+     * @return string
+     */
+    public function getDiscountType()
+    {
+        $discount = $this->discount;
+        if($discount >= 85){
+            return 'orange'; // desconto alto
+        }  elseif ($discount >= 60) {
+            return 'green'; // desconto médio
+        }  elseif ($discount >= 46) {
+            return 'blue'; // desconto baixo
+        }else{
+            return 'gray'; // desconto muito baixo
+        }
     }
 
     /**

@@ -90,6 +90,12 @@ class DealController extends BaseController
         if($deal->getSource()->getCity()->getSlug() != $city || $deal->getSource()->getCategory()->getSlug() != $category){
             throw $this->createNotFoundException('Oferta não encontrada.');
         }
+        // Se o Deal está vendido ou inativo, procura outro deal semelhante e redireciona
+        if($deal->getQuantity() < 1 || $deal->getActive() == false){
+            if($dealRelated = $this->mongo('ReurbanoDealBundle:Deal')->findRelated($deal)){
+                return $this->redirect($this->generateUrl('deal_deal_show', array('city'=>$city, 'category'=>$category, 'slug'=>$dealRelated->getSlug())), 302);
+            }
+        }
         // Incrementa views se o user não for admin e se for o primeiro acesso do user à oferta
         if(!$this->hasRole('ROLE_ADMIN') && !$this->get('session')->has('offer_'.$deal->getId())){
             $this->mongo('ReurbanoDealBundle:Deal')->incViews($deal->getId());

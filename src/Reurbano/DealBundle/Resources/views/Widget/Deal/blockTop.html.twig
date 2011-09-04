@@ -11,17 +11,17 @@
 </div>
 <div class="clear"></div>       
 {#Preços#}
-<div class="dp50 mT5">
+<div class="dp50 mT5 mB5">
     <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
     <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
 </div>
-<div class="dp50 mT10">
+<div class="dp50 mT10 mB10">
      <div class="dealQtd">
         {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
-        {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+             {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
         {% endtranschoice %}
     </div> 
-    <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }} pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
 </div>
 <div class="clear"></div>
 {%if deal.getSource.getBusinessAddress is not null%}
@@ -31,3 +31,4 @@
 </div>        
 {%endif%}
 </div>
+<div class="clear"></div>
