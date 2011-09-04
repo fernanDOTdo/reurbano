@@ -127,6 +127,13 @@ class Order
     {
         $this->setCreated(new \DateTime);
     }
+    /** 
+     * @ODM\PreUpdate
+     */
+    public function doPreUpdate()
+    {
+        $this->setUpdated(new \DateTime);
+    }
     public function __construct()
     {
         $this->statusLog = new \Doctrine\Common\Collections\ArrayCollection();

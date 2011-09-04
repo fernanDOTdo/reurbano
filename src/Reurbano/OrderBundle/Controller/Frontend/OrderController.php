@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\OrderBundle\Document\Order;
+use Reurbano\OrderBundle\Document\StatusLog;
 use Reurbano\DealBundle\Document\Deal;
 
 /**
@@ -61,10 +62,70 @@ class OrderController extends BaseController
      * Action fechar pedido
      * 
      * @Route("/pagar", name="order_order_finish")
+     * @Secure(roles="ROLE_USER")
      * @Template()
      */
     public function finishAction()
     {
+        $request = $this->getRequest();
+        $post = $request->request;
+        $deal = $this->mongo('ReurbanoDealBundle:Deal')->findOneById($post->get('deal'));
+        $qtd = $post->get('qtd');
+        if(!$deal){
+            // Se a oferta não foi encontrada
+            throw $this->createNotFoundException('Oferta não encontrada');
+        }elseif($deal->getActive() == false){
+            // Se a oferta está inativa
+            return $this->redirectFlash($this->generateUrl('_home'), 'A oferta escolhida já foi vendida. Seu pedido não foi gerado.', 'error');
+        }elseif($deal->getQuantity() < $qtd){
+            // Se a quantidade for menor que a disponível
+            return $this->redirectFlash($this->generateUrl('_home'), 'A quantidade escolhida não está mais disponível para esta oferta.', 'notice');
+        }
+        $newQtd = $deal->getQuantity() - $qtd;
+        $dm = $this->dm();
+        $user = $this->get('security.context')->getToken()->getUser();
+        $order = $this->mongo('ReurbanoOrderBundle:Order')->createOrder();
+        $status = $this->mongo('ReurbanoOrderBundle:Status')->findOneById(1);
+        $statusLog = new StatusLog();
+        $statusLog->setStatus($status);
+        $order->setStatus($status);
+        $order->addStatusLog($statusLog);
+        $order->setUser($user);
+        $order->setDeal($deal);
+        $order->setQuantity($qtd);
+        // Seta o valor total
+        $comPercent = $deal->getComission()->getBuyerpercent();
+        $comReal = $deal->getComission()->getBuyerreal();
+        $dealPrice = $deal->getPrice() * $qtd;
+        if($comPercent > 0){
+            $dealCom = $dealPrice * ($comPercent / 100) + $comReal;
+        }else{
+            $dealCom = 0;
+        }
+        $dealTotal = $dealPrice + $dealCom;
+        $order->setTotal($dealTotal);
+        $dm->persist($order);
+        $dm->flush();
+        // Define a nova quantidade da Oferta
+        $this->mongo('ReurbanoDealBundle:Deal')->updateQuantity($deal->getId(), $newQtd);
+        if($newQtd == 0){
+            // Se a quantidade restante da oferta for 0, desativa a oferta
+            $this->mongo('ReurbanoDealBundle:Deal')->updateActive($deal->getId());
+        }
+        // Seta os vouchers
+        $vouchers = $deal->getVoucher();
+        $vCount = 0;
+        foreach ($vouchers as $k => $voucher) {
+            if($vCount < $qtd){
+                if($voucher->getOrder() == null){
+                    $voucher->setOrder($order);
+                    $vCount++;
+                }
+            }
+        }
+        $dm->persist($deal);
+        $dm->flush();
+        exit(var_dump($post));
         return array();
     }
 }

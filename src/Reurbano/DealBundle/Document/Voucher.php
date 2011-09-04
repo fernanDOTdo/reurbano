@@ -52,6 +52,14 @@ class Voucher
      * @ODM\Date
      */
     protected $createdAt;
+    
+    /**
+     * Pedido do Voucher
+     * 
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\OrderBundle\Document\Order")
+     */
+    protected $order;
 
 
     /**
@@ -152,5 +160,25 @@ class Voucher
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set order
+     *
+     * @param Reurbano\OrderBundle\Document\Order $order
+     */
+    public function setOrder(\Reurbano\OrderBundle\Document\Order $order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * Get order
+     *
+     * @return Reurbano\OrderBundle\Document\Order $order
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

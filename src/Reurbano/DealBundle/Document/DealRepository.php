@@ -57,6 +57,29 @@ class DealRepository extends BaseRepository
                 ->getQuery()
                 ->execute();
     }
+    /**
+     * Atualiza a quantidade
+     */
+    public function updateQuantity($id, $qtd){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('quantity')->set($qtd)
+                ->getQuery()
+                ->execute();
+    }
+    /**
+     * Ativa / Desativa a Oferta
+     */
+    public function updateActive($id, $active = false){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('active')->set($active)
+                ->getQuery()
+                ->execute();
+    }
+    
     
     /**
      * Retorna uma oferta de mesma Cidade e Categoria
