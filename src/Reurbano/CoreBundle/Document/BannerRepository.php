@@ -35,9 +35,12 @@ class BannerRepository extends BaseRepository
      *
      * @return City ou null
      **/
-    public function findAllByOrder()
+    public function findAllActiveByOrder()
     {
-        return $this->findBy(array(), array('order'=>'asc'));
+        return $this->findBy(array(), array(
+            'order'  => 'asc',
+            'active' => 1,
+            ));
     }
 
     public function findBySlug($slug){
@@ -53,7 +56,6 @@ class BannerRepository extends BaseRepository
     public function findAll()
     {
         return $this->createQueryBuilder()
-                ->sort('special', 'desc')
                 ->sort('order', 'asc')
                 ->sort('name', 'asc')
                 ->getQuery()->execute();

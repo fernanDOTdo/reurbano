@@ -30,26 +30,22 @@ namespace Reurbano\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
-class BannerType extends AbstractType {
+class BannerOfferType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('title', 'text');
-        $builder->add('url', 'url');
+        $builder->add('user', 'text', array(
+            'property_path' => false, 
+            'required'      => false,
+            'label'         => 'Nome ou e-mail do usuário',
+            'attr'          => array(
+                'style' => 'width: 500px;'
+            )));
         $builder->add('active', 'checkbox', array(
             'label'    => 'Ativo?',
             'required' => false,
         ));
-        $builder->add('newWindow', 'checkbox', array(
-            'label'    => 'Abrir em nova janela?',
-            'required' => false,
-        ));
         $builder->add('order', 'integer');
-        $builder->add('logo', 'file', array (
-            'label'         => "imagem",
-            'required'      => false,
-            'property_path' => false
-            ));
     }
 
     public function getDefaultOptions(array $options) {

@@ -1,0 +1,23 @@
+ <div id="bannerSlides">
+    <img src="/themes/reurbano/images/slides/new-ribbon.png" width="112" height="112" alt="New Ribbon" id="ribbon">
+    <div id="slides">
+        <div class="slides_container">
+{% for banner in banner %}
+            <a href="{{ banner.getUrl() }}" title="{{ banner.getTitle() }}" ><img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}"/></a>
+        </div>
+        <a href="#" class="prev"><img src="/themes/reurbano/images/slides/arrow-prev.png" width="19" height="21" alt="Arrow Prev"></a>
+        <a href="#" class="next"><img src="/themes/reurbano/images/slides/arrow-next.png" width="19" height="21" alt="Arrow Next"></a>
+    </div>
+{% else %}
+            <a href="#" title="Slide 1" target="_blank"><img src="/themes/reurbano/images/slides/slide-1.png" alt="Slide 1" /></a>
+            <a href="#" title="Slide 2" target="_blank"><img src="/themes/reurbano/images/slides/slide-2.png" alt="Slide 2" /></a>
+            <a href="#" title="Slide 3" target="_blank"><img src="/themes/reurbano/images/slides/slide-3.png" alt="Slide 3" /></a>
+            <a href="#" title="Slide 4" target="_blank"><img src="/themes/reurbano/images/slides/slide-4.png" alt="Slide 4" /></a>
+            <a href="#" title="Slide 5" target="_blank"><img src="/themes/reurbano/images/slides/slide-5.png" alt="Slide 5" /></a>
+
+            <a href="#" title="Slide 6" target="_blank"><img src="/themes/reurbano/images/slides/slide-6.png" alt="Slide 6" /></a>
+        </div>
+        <a href="#" class="prev"><img src="/themes/reurbano/images/slides/arrow-prev.png" width="19" height="21" alt="Arrow Prev"></a>
+        <a href="#" class="next"><img src="/themes/reurbano/images/slides/arrow-next.png" width="19" height="21" alt="Arrow Next"></a>
+    </div>
+{% endfor %}

@@ -5,6 +5,7 @@ namespace Reurbano\CoreBundle\Controller\Widget;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mastop\SystemBundle\Controller\BaseController;
+use Reurbano\CoreBundle\Document\Banner;
 
 /*
  * Controller para os Widgets de Blocos
@@ -183,6 +184,18 @@ class BlockController extends BaseController {
      */
     public function facebookFansAction($profile, $url, $width = 300, $height = 330, $connections = 36, $css = null, $stream = 'false', $header = 'false') {
         return array('profile' => $profile, 'url' => $url, 'width' => $width, 'height' => $height, 'connections' => $connections, 'css' => $css, 'stream' => $stream, 'header' => $header);
+    }
+    /**
+     * Lista todas os Banners
+     * 
+     * @Template()
+     */
+    public function bannerAction()
+    {
+        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->findAll();
+        return array(
+            'banner' => $banner,
+        );
     }
 
 }
