@@ -20,7 +20,7 @@ class MyDataController extends BaseController
     public function dashboardAction($userId = null){
         $user = $this->get('security.context')->getToken()->getUser();
         return array(
-            'user' => $user,
+            'usuario' => $user,
         );
     }
 }

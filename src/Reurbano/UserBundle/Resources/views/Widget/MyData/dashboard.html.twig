@@ -1,1 +1,16 @@
-{{ user.getEmail }}
+    {{ "<b>Nome: </b>"}} {{ usuario.getName }}
+    <br />
+    {{ "<b>Email: </b>"}} {{ usuario.getEmail }}    
+    <br />
+    {{ "<b>Data de cadastro: </b>"}} {{ usuario.getCreated }}    
+    <br />
+    {{ "<b>Último login: </b>"}}
+    {% if  usuario.getLastLogin== 0 %}
+        {{ "Nunca"|trans }}
+    {% else %}
+        {{ usuario.getLastLogin }}
+    {% endif %}
+    <br />
+    <br />
+    <a class="button small white" href="{{ path('user_user_edit', {'username': usuario.getUsername()}) }}">{{"Editar"|trans}}</a>
+    <a class="button small white" href="{{ path('user_user_recovery', {'username': usuario.getUsername()}) }}">{{"Trocar a Senha"|trans}}</a>
