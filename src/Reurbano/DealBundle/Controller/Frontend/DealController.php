@@ -114,4 +114,10 @@ class DealController extends BaseController
         $ret['keywords'] = implode(', ', explode(' ', $deal->getLabel()));
         return $ret;
     }
+    
+    /*
+     * Action para o usuário editar uma oferta
+     * 
+     * @Route("minha-conta/editar")
+     */
 }

@@ -1,31 +1,34 @@
     <table class="static"> 
         <thead> 
             <tr> 
-                <th>{{ "Descrição"|trans }}</th> 
+                <th colspan="2">{{ "Descrição"|trans }}</th> 
                 <th>{{ "Validade"|trans }}</th> 
                 <th>{{ "Preço"|trans }}</th> 
                 <th>{{ "Quantidade"|trans }}</th> 
                 <th>{{ "Publicação"|trans }}</th> 
                 <th>{{ "Ativo"|trans }}</th> 
-                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+                <th class="last center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
 {% for deal in deal %}
         <tr>
             <td>
-            {{ deal.source.getTitle() }}
+                <img src='{{ deal.getSource.getThumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
+            </td>
+            <td style="width: 315px;">
+                {{ deal.source.getTitle(80) }}
             </td>
             <td>
-            {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}
+                {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}
             </td>
             <td>
-            {{ deal.getPrice()  }}
+                {{ deal.getPrice()  }}
             </td>
             <td>
-            {{ deal.getQuantity() }}
+                {{ deal.getQuantity() }}
             </td>
             <td>
-            {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
+                {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
             </td>
             <td>
                 {% if deal.getActive() %}
@@ -34,8 +37,8 @@
                     Não
                 {% endif %}
             </td>
-            <td class="center">
-                <a class="button button-set-start small white" href="{{ path('_home', {'id': deal.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('_home', {'id': deal.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+            <td class="center" nowrap="nowrap">
+                <a class="button small white" href="{{ path('_home', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a><a class="button small danger" href="{{ path('_home', {'id': deal.getId()}) }}">{{"Deletar"|trans}}</a>
             </td>
         </tr>
   {% else %}

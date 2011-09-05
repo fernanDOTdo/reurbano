@@ -15,7 +15,7 @@ class DashboardController extends BaseController
     /**
      * Index do Dasboard
      * 
-     * @Route("/", name="user_dashboard_index")
+     * @Route("minha-conta/", name="user_dashboard_index")
      * @Secure(roles="ROLE_USER")
      * @Template()
      */
