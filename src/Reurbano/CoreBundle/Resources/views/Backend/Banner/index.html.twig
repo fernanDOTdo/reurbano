@@ -18,7 +18,7 @@
             {% set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
             <tr>
                 <td class="center">
-                    <img src='{{ banner.getDeal.getSource.getThumb }}' width='80' height='60' alt="Concerta ai manolo"/>
+                    <img src='{{ banner.getDeal.getSource.getThumb }}' width='80' height='60' alt="{{ banner.getDeal.getLabel(50) }}"/>
                 </td>
                 <td class="nowrap center" >
                     {{ banner.getDeal.getLabel(50) }}
