@@ -57,7 +57,22 @@ class Banner
      */
     protected $order;
 
+    /**
+     * Ativo
+     * 
+     * @var string
+     * @ODM\Boolean
+     */
+    protected $active = false;
 
+    /**
+     * A oferta que será o banner
+     *
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Deal")
+     */
+    protected $deal;
+    
     /**
      * Nome do Arquivo
      *
@@ -153,6 +168,66 @@ class Banner
     }
 
     /**
+     * Set order
+     *
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * Get order
+     *
+     * @return int $order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean $active
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set deal
+     *
+     * @param Reurbano\DealBundle\Document\Deal $deal
+     */
+    public function setDeal(\Reurbano\DealBundle\Document\Deal $deal)
+    {
+        $this->deal = $deal;
+    }
+
+    /**
+     * Get deal
+     *
+     * @return Reurbano\DealBundle\Document\Deal $deal
+     */
+    public function getDeal()
+    {
+        return $this->deal;
+    }
+
+    /**
      * Set filename
      *
      * @param string $filename
@@ -210,25 +285,5 @@ class Banner
     public function getPath()
     {
         return $this->path;
-    }
-
-    /**
-     * Set order
-     *
-     * @param int $order
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    }
-
-    /**
-     * Get order
-     *
-     * @return int $order
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 }

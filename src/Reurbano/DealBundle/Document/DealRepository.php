@@ -57,6 +57,29 @@ class DealRepository extends BaseRepository
                 ->getQuery()
                 ->execute();
     }
+    /**
+     * Atualiza a quantidade
+     */
+    public function updateQuantity($id, $qtd){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('quantity')->set($qtd)
+                ->getQuery()
+                ->execute();
+    }
+    /**
+     * Ativa / Desativa a Oferta
+     */
+    public function updateActive($id, $active = false){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('active')->set($active)
+                ->getQuery()
+                ->execute();
+    }
+    
     
     /**
      * Retorna uma oferta de mesma Cidade e Categoria
@@ -97,11 +120,30 @@ class DealRepository extends BaseRepository
         return $this->findBy(array(), array('createdAt'=>'desc'));
     }
     
+    /**
+     * Procura os deals de um user, com opções de ativo(sim/não) quantidade(Maior que 0 ou não)
+     * 
+     * @param mongoID $id
+     * @param bool $active
+     * @param bool $quantity
+     * @return object
+     */
+    public function findByUser($id, $active = false, $quantity = false){
+        
+        $deal = $this->createQueryBuilder()
+                ->field('user.id')->equals($id);
+        if($active){
+            $deal->field('active')->equals(true);
+        }
+        if($quantity){
+            $deal->field('quantity')->gt(1);
+        }
+        return $deal->getQuery()->execute();
+    }
     
-    public function findByUser($id){
+    public function findBySource($id){
         
-        return $this->findBy(array('user.id'=>$id));
-        
+        return $this->findBy(array('source.id'=>new \MongoId($id)));
     }
     
     /*

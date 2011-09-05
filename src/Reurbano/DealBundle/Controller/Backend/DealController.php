@@ -156,5 +156,19 @@ class DealController extends BaseController {
             }
         }
     }
+    
+    /**
+     * Ativa e Desativa uma oferta
+     * 
+     * @Route("/ativar/{id}/{active}", name="admin_deal_deal_active", defaults={"active" = false})
+     */
+    public function activeAction($id, $active = false){
+        $dm = $this->dm();
+        $banner = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
+        ($active) ? $banner->setActive(true) : $banner->setActive(false);
+        $dm->persist($banner);
+        $dm->flush();
+        return $this->redirect($this->generateUrl('admin_deal_deal_index'));
+    }
 
 }

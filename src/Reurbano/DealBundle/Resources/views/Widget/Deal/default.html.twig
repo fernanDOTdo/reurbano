@@ -34,7 +34,7 @@
     {#Preços#}
             <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
             <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-            <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} primary pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+            <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
     </div>
     <div class="clear"></div>
     <div class="grid_2 alpha dealSource">

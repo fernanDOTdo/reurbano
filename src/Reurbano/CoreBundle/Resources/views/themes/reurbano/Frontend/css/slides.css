@@ -1,5 +1,5 @@
 #bannerSlides {
-	width:729px;
+	width:800px;
 	height:302px;
 	position:relative;
         margin: auto;
@@ -29,6 +29,8 @@
 #slides {
 	position:absolute;
 	z-index:100;
+        background: #FFF;
+        border: 1px solid #e9e9e9;
 }
 
 /*
@@ -39,7 +41,7 @@
 */
 
 .slides_container {
-	width:729px;
+	width:800px;
 	overflow:hidden;
 	position:relative;
 	display:none;
@@ -54,7 +56,7 @@
 */
 
 .slides_container a {
-	width:729px;
+	width:800px;
 	height:270px;
 	display:block;
 }
@@ -79,7 +81,7 @@
 }
 
 #slides .next {
-	left:731px;
+	left:802px;
 }
 
 /*

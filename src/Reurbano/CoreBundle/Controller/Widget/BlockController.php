@@ -5,6 +5,7 @@ namespace Reurbano\CoreBundle\Controller\Widget;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mastop\SystemBundle\Controller\BaseController;
+use Reurbano\CoreBundle\Document\Banner;
 
 /*
  * Controller para os Widgets de Blocos
@@ -132,7 +133,7 @@ class BlockController extends BaseController {
                 break;
             case 'sell': // Página de venda
                 $ret[$c]['title'] = 'Não encontrou sua oferta?';
-                $ret[$c]['content'] = "<button title='".$this->trans("Entre em contato se não encontrar a sua oferta em nosso site")."' class='button push_1 orange' type='button'>Fale com ".$this->get('mastop')->param('system.site.name')."</button>";
+                $ret[$c]['content'] = "<a title='".$this->trans("Entre em contato se não encontrar a sua oferta em nosso site")."' class='button push_1 orange' href='".$this->generateUrl('core_html_contact')."'>Fale com ".$this->get('mastop')->param('system.site.name')."</a>";
                 $c++;
                 break;
             case 'home':
@@ -183,6 +184,18 @@ class BlockController extends BaseController {
      */
     public function facebookFansAction($profile, $url, $width = 300, $height = 330, $connections = 36, $css = null, $stream = 'false', $header = 'false') {
         return array('profile' => $profile, 'url' => $url, 'width' => $width, 'height' => $height, 'connections' => $connections, 'css' => $css, 'stream' => $stream, 'header' => $header);
+    }
+    /**
+     * Lista todas os Banners
+     * 
+     * @Template()
+     */
+    public function bannerAction()
+    {
+        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->findAll();
+        return array(
+            'banner' => $banner,
+        );
     }
 
 }

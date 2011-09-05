@@ -23,7 +23,7 @@
         
         {{ form_rest(form) }}
         <div class='push_4'>
-            <button style='display:none' id='sellContinue' class='button green big' type="submit">{{ "Continuar"|trans }}</button>
+            <button id='sellContinue' class='button green big hidden' type="submit">{{ "Continuar"|trans }}</button>
         </div>
     </form>
         </div>
@@ -33,7 +33,7 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>
-    {% javascripts output='bundles/dealbundle/js/sell.js'
+    {% javascripts output='bundles/dealbundle/js/sell.pack.js'
                    '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
                    '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
                    %}

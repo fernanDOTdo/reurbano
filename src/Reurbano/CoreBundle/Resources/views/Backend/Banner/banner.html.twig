@@ -3,12 +3,38 @@
 {% block title %}{{title|trans}}{% endblock %}
 {% set vars = banner.getId() ? {'id': banner.getId()} : {} %}
 
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.css' filter='?yui_css' output='reurbano/dealbundle/css/pack.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block content %}
 <div class="content box grid_12 round_all">
-    <form action="{{ path('admin_core_banner_save', vars) }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-
-        <button class="button_colour" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+    <form class="block" action="{{ path('admin_core_banner_save', vars) }}" method="post" {{ form_enctype(form) }}>
+        {% if control == "1" %}
+            <div>
+                {{ form_label(form.user)  }}
+                {{ form_errors(form.user) }}
+                {{ form_widget(form.user) }}
+            </div>
+            <h3 id="userName">&nbsp;</h3>
+            <div class="hidden" id="userDeal">
+            </div>
+            {{ form_rest(form) }}
+        {% else %}
+            {{ form_widget(form) }}
+        {% endif %}
+        <button id="bannerEnviar" class="button_colour hidden" type='submit'><span>{{ "Enviar"|trans }}</span></button>
     </form>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ url('admin_core_banner_script') }}"></script>
+    {% javascripts output='bundles/dealbundle/js/banner.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/banner.js'
+                   %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

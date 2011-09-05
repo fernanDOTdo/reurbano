@@ -4,7 +4,6 @@ user_frontend:
 user_dashboard_frontend:
     resource: "@ReurbanoUserBundle/Controller/Frontend/DashboardController.php"
     type: annotation
-    prefix:   /usuario/minha-conta
 user_backend:
     resource: "@ReurbanoUserBundle/Controller/Backend/UserController.php"
     type: annotation
