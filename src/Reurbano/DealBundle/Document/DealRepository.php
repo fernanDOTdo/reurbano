@@ -108,14 +108,14 @@ class DealRepository extends BaseRepository
     public function findByUser($id, $active = false, $quantity = false){
         
         $deal = $this->createQueryBuilder()
-                ->field(array('user.$id'=>new \MongoId($id)));
+                ->field('user.id')->equals($id);
         if($active){
             $deal->field('active')->equals(true);
         }
         if($quantity){
             $deal->field('quantity')->gt(1);
         }
-        return $deal->getQuery();
+        return $deal->getQuery()->execute();
     }
     
     public function findBySource($id){
