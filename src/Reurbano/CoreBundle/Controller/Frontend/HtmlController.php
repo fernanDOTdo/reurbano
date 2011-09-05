@@ -12,13 +12,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class HtmlController extends BaseController {
 
     /**
-     * @Route("/termos-e-condicoes-de-uso", name="core_html_terms")
+     * Action do Formulário de contato
+     * @Route("/fale-conosco", name="core_html_contact")
      * @Template()
      */
-    public function termsAction() {
+    public function contactAction() {
         $request = $this->getRequest();
         return array(
-            'titulo' => $this->trans('Termos e Codições de Uso %sitename%',array("%sitename%"=>$this->get('mastop')->param('system.site.name'))),
+            'title' => $this->trans('Fale com o %sitename%',array("%sitename%"=>$this->get('mastop')->param('system.site.name'))),
         );
     }
 

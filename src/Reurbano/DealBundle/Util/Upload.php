@@ -15,8 +15,8 @@ class Upload
     
     public $validExtensions = array(
         'jpeg',
-        'pdf',
         'jpg',
+        'pdf',
         'gif',
         'png',
      );
@@ -54,7 +54,7 @@ class Upload
     public function upload(){
         
         if (!$this->fileUploaded instanceof UploadedFile){
-            throw new NotFoundHttpException("Please, set a file to be uploaded");
+            throw new NotFoundHttpException("Selecione um arquivo para enviar");
         }
         
         $fileName = uniqid(rand(), true) . '.' . $this->getFileExtension();;
@@ -65,7 +65,7 @@ class Upload
             }
             $this->getFileUploaded()->move($this->getPath(), $fileName);
         }else {
-            throw new \Exception("Please, set a FolderPath");
+            throw new \Exception("Selecione um FolderPath");
         }
         
         $this->setFileName($fileName);
@@ -77,7 +77,7 @@ class Upload
     private function getFileExtension(){
         
         if (!$this->fileUploaded instanceof UploadedFile){
-            throw new NotFoundHttpException("Please, set a file to be uploaded");
+            throw new NotFoundHttpException("Selecione um arquivo para enviar");
         }
         
         $fileMimeType = $this->getFileUploaded()->getClientMimeType();
@@ -91,7 +91,7 @@ class Upload
         if (in_array($extMimeType, $this->validExtensions) || in_array($extFile, $this->validExtensions) ){
             return $extFile;
         }else {
-            throw new NotFoundHttpException("The archive '". $this->getFileUploaded()->getClientOriginalName() ."' has an invalid file format. Allowed types: " . implode(', ', $this->validExtensions));
+            throw new NotFoundHttpException("O arquivo '". $this->getFileUploaded()->getClientOriginalName() ."' está em um formato inválido. Tipos permitidos: " . implode(', ', $this->validExtensions));
         }
         
     }

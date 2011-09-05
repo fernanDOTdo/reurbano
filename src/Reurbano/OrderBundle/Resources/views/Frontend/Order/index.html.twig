@@ -27,7 +27,11 @@ $('#dealQtd').change(function() {
 {% endblock %}
 {% block content %}
 <h1>Seu pedido</h1>
-<form action="" method="post">
+<p>Este cupom deverá ser resgatado até <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>. Programe-se para usá-lo dentro deste prazo.<br />
+    Caso queira ver todos os detalhes desta oferta, <a rel="nofollow" href="{{deal.getSource.getUrl}}" target="_blank" title="Veja a página da oferta no {{deal.getSource.getSite.getName}}">clique aqui</a> para abrir a página original da oferta no <strong>{{deal.getSource.getSite.getName}}</strong> (o link abrirá em uma nova janela).
+</p>
+<form action="{{path('order_order_finish')}}" method="post">
+    <input type="hidden" name="deal" value="{{deal.getId()}}" />
 <table id="dealCart">
     <tr>
         <th colspan="2">Oferta</th>

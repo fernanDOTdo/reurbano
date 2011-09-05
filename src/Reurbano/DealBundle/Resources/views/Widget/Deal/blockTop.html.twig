@@ -1,34 +1,37 @@
 {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
 <div class="deal {{deal.getDiscountType }}">
+{#Título#}
+<div class="dealTitle">
+{#Conteúdo#}
+        <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel}}</a>
+</div>
 {#Imagem#}
 <div class="dealThumb">
 <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
 </div>
-{#Título#}
-<div class="dealTitle">
-{#Conteúdo#}
-        <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><strong>{{deal.getSource.getSite.getName}}:</strong> {{deal.getLabel}}</a>
-</div>
-<div class="clear"></div>       
-{#Preços#}
-<div class="dp50 mT5 mB5">
+<div class="dealInfos">
     <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
     <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-</div>
-<div class="dp50 mT10 mB10">
-     <div class="dealQtd">
-        {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
-             {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
-        {% endtranschoice %}
+    <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    <div class="dealQtd">
+       {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
+            {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+       {% endtranschoice %}
     </div> 
-    <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} pill" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    
 </div>
+{#Preços#}
 <div class="clear"></div>
 {%if deal.getSource.getBusinessAddress is not null%}
 {#Endereço#}
-<div class="dealAddress">
+<div class="dealAddress dp50">
     {{deal.getSource.getBusinessAddress}}
-</div>        
+</div>
+{#Data Validade#}
+<div class="dealExpires dp50">
+            Expira em <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
+</div>
+<div class="clear"></div>
 {%endif%}
 </div>
 <div class="clear"></div>

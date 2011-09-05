@@ -144,7 +144,7 @@ class UserController extends BaseController {
             }
 
             $factory = $this->get('form.factory');
-            $titulo = $this->trans("Novo membro");
+            $titulo = $this->trans("Cadastre-se");
             $form = $factory->create(new UserForm());
             return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
                         'form' => $form->createView(), 'titulo' => $titulo,
