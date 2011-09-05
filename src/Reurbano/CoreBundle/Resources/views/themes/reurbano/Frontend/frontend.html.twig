@@ -124,7 +124,7 @@ $(function(){
             </div>
             <div id="search">
                 {% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
-                <form action="{{ path('deal_deal_search') }}" method="get" id="searchForm"> <input type="search" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%endif%}" placeholder="Encontre cupons de compra coletiva"  /> <button type="submit" class="button primary big silver">Pega!</button></form>
+                    <form action="{{ path('deal_deal_search') }}" method="get" id="searchForm"> <div id="searchDiv"><input type="search" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%endif%}" placeholder="Encontre cupons de compra coletiva"  /> <button type="submit" class="button primary silver">Pega!</button></div></form>
             </div>
         </div>
         

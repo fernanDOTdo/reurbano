@@ -550,15 +550,15 @@ http://github.com/necolas/css3-github-buttons
 .button.silver:active,
 .button.silver.active {
 	color: #FFF;
-    border-color: #aaaaaa;
-    border-bottom-color: #aaaaaa;
-    background-color: #aaaaaa;
+    border-color: #D87D08;
+    border-bottom-color: #D87D08;
+    background-color: #D87D08;
     text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dbdbdb', endColorstr='#aaaaaa');
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dbdbdb), to(#aaaaaa));
-    background-image: -moz-linear-gradient(#dbdbdb, #aaaaaa);
-    background-image: -o-linear-gradient(#dbdbdb, #aaaaaa);
-    background-image: linear-gradient(#dbdbdb, #aaaaaa);   
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9c00', endColorstr='#D87D08');
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9c00), to(#D87D08));
+    background-image: -moz-linear-gradient(#ff9c00, #D87D08);
+    background-image: -o-linear-gradient(#ff9c00, #D87D08);
+    background-image: linear-gradient(#ff9c00, #D87D08);  
 }
 
 .button.silver:active,
@@ -637,7 +637,7 @@ http://github.com/necolas/css3-github-buttons
 .button + .button-group,
 .button-group + .button,
 .button-group + .button-group {
-    margin-left: 15px;
+    margin-left: 5px;
 }
 
 .button-group li {

@@ -9,7 +9,7 @@ body {
 }
 
 a {
-  color: #029116;
+  color: #2072A5;
   text-decoration: none;
 }
 
@@ -143,15 +143,17 @@ td{padding: 3px;}
 
 #menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
-#menuTop ul li a{color: #D87D08; border: 0;}
+#menuTop ul li a{color: #2072a5; border: 0;}
 #menuTop ul li.current a{color: #7A9D24; text-decoration: none;}
-#menuTop ul li a:hover{color: #2072a5; text-decoration: none; background: transparent;}
+#menuTop ul li a:hover{color: #D87D08; text-decoration: none; background: transparent;}
 #headUser{text-align: right; margin-top: 5px; height: 32px;}
 #headUser span{margin-right: 5px}
 
-#search{height: 83px; background: url(../images/header/search.png) no-repeat;}
+#search{height: 83px;}
 #search form{margin-left: 45px; height: 65px; padding-top: 18px;}
-#search #q{width: 380px; padding-left: 10px; height: 28px;
+#searchDiv{float: right; position: relative; width: 400px;}
+#searchDiv button{position: absolute; right: 3px; top: 3px;}
+#search #q{width: 317px; padding-left: 10px; height: 29px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -160,13 +162,13 @@ td{padding: 3px;}
 #search #q.idleField{
     color: #999;
     border: 1px solid #d9d9d9;
-    padding: 2px 2px 2px 10px;
+    padding: 2px 72px 2px 10px;
     background: #f6f6f6;
 }
 #search #q.focusField{
     color: #666;
     border: 2px solid #d9d9d9;
-    padding: 1px 1px 1px 9px;
+    padding: 1px 71px 1px 9px;
     background: #FFF;
 }
 .twLoginBtn, .fbLoginBtn{margin-top: 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
@@ -321,8 +323,8 @@ div.orange .price strong{color: #D87D08}
 
 div.deal.gray.over{background-color: #EDEDED;}
 div.deal.blue.over{background-color: #DEF0FC}
-div.deal.green.over{background-color: #DEF9E2}
-div.deal.orange.over{background-color: #F9F2DE}
+div.deal.green.over{background-color: #f5fce2}
+div.deal.orange.over{background-color: #fff4e3}
 
 div.priceSource{text-align: right; margin: 3px 10px 0 0}
 div.priceSource strong{text-decoration: line-through}
