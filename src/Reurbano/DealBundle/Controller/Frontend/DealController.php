@@ -115,9 +115,15 @@ class DealController extends BaseController
         return $ret;
     }
     
-    /*
-     * Action para o usuário editar uma oferta
+    /**
+     * Edita uma oferta no frontend
      * 
-     * @Route("minha-conta/editar")
+     * @Route("/minha-conta/editar/oferta/{id}", name="deal_deal_edit")
+     * @Template()
      */
+    public function editAction(Deal $deal){
+        return array(
+            'deal' => $deal,
+        );
+    }
 }
