@@ -155,6 +155,8 @@ class BlockController extends BaseController {
                 $c++;
                 break;
         }
+        $ret[$c]['content'] = '<a id="twitterBlock" href="http://twitter.com/ReurbanoBrasil" target="_blank" title="Siga o Reurbano no Twitter!">Siga o Reurbano no Twitter!</a>';
+        $c++;
         $ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebookFans';
         $ret[$c]['opts'] = array('profile' => '188401247891549', 'url' => 'http://www.facebook.com/recompracoletiva', 'css' => 'http://www.mastop.com.br/fernando/css/facebook.css');
         //$ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';

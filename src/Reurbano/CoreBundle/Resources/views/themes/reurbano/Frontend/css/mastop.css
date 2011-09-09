@@ -472,8 +472,15 @@ div.blockTopContent div.dealExpires{
 #facemask:hover {
 	background-color: rgba(255, 255, 255, 0.5);
 }
-
-
+/*Bloco do Twitter*/
+#twitterBlock{
+    width: 300px;
+    height: 137px;
+    display: block;
+    text-indent: -999em;
+    background: url(../images/twitter-bloco.gif) no-repeat;
+    overflow: hidden;
+}
 /* Forms */
 input.errorField {
     border-color: #F00 !important;
