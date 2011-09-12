@@ -32,32 +32,45 @@ class OrderController extends BaseController
         return array('deal'=>$deal);
     }
     /**
-     * Action incluir oferta no carrinho de compras
+     * Action para redirecionamento pós pagamento
      * 
-     * @Route("/adicionar/{oferta}", name="order_order_inc")
+     * @Route("/retorno/{gateway}/{status}", name="order_order_return")
+     * @Secure(roles="ROLE_USER")
      */
-    public function incAction($oferta)
+    public function returnAction($gateway, $status)
     {
-        return array();
+        $gateway = 'Reurbano\OrderBundle\Payment\\'.$gateway;
+        if(class_exists($gateway)){
+            $orderId = $gateway::getOrderId($this->getRequest());
+            $order = $this->mongo('ReurbanoOrderBundle:Order')->findOneById((int) $orderId);
+            if($order && $this->get('security.context')->getToken()->getUser()->getId() == $order->getUser()->getId()){ // Pedido encontrado e pertence ao user atual
+                $payment = new $gateway($order, $this->container);
+                $ret = $payment->checkStatus();
+                if($ret){
+                    $pay = $order->getPayment();
+                    $pay['data'] = $payment->getData();
+                    $order->setPayment($pay);
+                    $dm = $this->dm();
+                    $dm->persist($order);
+                    $dm->flush();
+                    return $this->redirectFlash($this->generateUrl('_home'), $ret['msg'], $ret['type']);
+                }
+            }else{
+                throw $this->createNotFoundException('Você não tem permissão para acessar esta página.'); 
+            }
+        }
+        throw $this->createNotFoundException('Compra não encontrada'); 
     }
     /**
-     * Action remover oferta do carrinho de compras
+     * Action para POST de notificação de mudança de status
      * 
-     * @Route("/remover/{oferta}", name="order_order_del")
+     * @Route("/status/{gateway}", name="order_order_status")
      */
-    public function delAction($oferta)
+    public function statusAction($gateway)
     {
         return array();
     }
-    /**
-     * Action atualizar oferta no carrinho de compras (mudando quantidade)
-     * 
-     * @Route("/atualizar", name="order_order_upd")
-     */
-    public function updAction()
-    {
-        return array();
-    }
+    
     /**
      * Action fechar pedido
      * 
@@ -100,10 +113,16 @@ class OrderController extends BaseController
         if($comPercent > 0){
             $dealCom = $dealPrice * ($comPercent / 100) + $comReal;
         }else{
-            $dealCom = 0;
+            $dealCom = $comReal;
         }
         $dealTotal = $dealPrice + $dealCom;
         $order->setTotal($dealTotal);
+        
+        // Forma de pagamento
+        $gateway = 'Reurbano\OrderBundle\Payment\\'.$this->mastop()->param('order.all.gateway');
+        $payment = new $gateway($order, $this->container);
+        $pay['params'] = $payment->getParams();
+        $order->setPayment($pay);
         $dm->persist($order);
         $dm->flush();
         // Define a nova quantidade da Oferta
@@ -125,7 +144,9 @@ class OrderController extends BaseController
         }
         $dm->persist($deal);
         $dm->flush();
-        exit(var_dump($post));
-        return array();
+        // @TODO: Enviar e-mails com notificação de criação de pedido
+        $ret['title'] = 'Compra '.$order->getId();
+        $ret['content'] = $payment->process();
+        return $ret;
     }
 }
