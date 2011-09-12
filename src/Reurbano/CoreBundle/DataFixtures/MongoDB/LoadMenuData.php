@@ -63,7 +63,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
             if(!$menuItem3){
                 $child = new MenuItem();
                 $child->setCode('banner');
-                $child->setName('Banner');
+                $child->setName('Banners');
                 $child->setRole('ROLE_ADMIN');
                 $child->setUrl('admin_core_banner_index');
                 $child->setRoute(true);

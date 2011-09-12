@@ -35,7 +35,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ODM\Indexes({
  *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "special"="desc"}),
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "tags"="desc"})
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "tags"="desc"}),
+ *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "source.category.$id"="desc", "special"="desc"})
  * })
  */
 class Deal

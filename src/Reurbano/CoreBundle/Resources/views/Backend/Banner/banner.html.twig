@@ -25,7 +25,7 @@
         {% else %}
             {{ form_widget(form) }}
         {% endif %}
-        <button id="bannerEnviar" class="button_colour hidden" type='submit'><span>{{ "Enviar"|trans }}</span></button>
+        <div class="block"><button class="button green m10 {%if control %}hidden{% endif %}" id="bannerEnviar"><span>Salvar</span></button> <a href="javascript:history.go(-1);" class="button red">Cancelar</a></div>
     </form>
 </div>
 {% endblock %}

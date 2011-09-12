@@ -23,6 +23,7 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $param->setTitle('Usuários');
         $param->setDesc('Configurações para usuários do site');
         $param->setBundle('user');
+        $param->setRole('ROLE_ADMIN');
         $param->setOrder(1);
 
         $child = new Children();

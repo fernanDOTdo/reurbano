@@ -59,11 +59,12 @@ class BannerController extends BaseController
         $form = $this->createForm($formType, $banner);
         $request = $this->get('request');
         if('POST' == $request->getMethod()){
-            if(!$id) $form->bindRequest($request);
+            $form->bindRequest($request);
             $query = $request->request->get($form->getName());
             if(isset($query['deal'])){
                 $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($query['deal']);
                 $banner->setDeal($deal);
+                $banner->setCity($deal->getSource()->getCity());
             }
             $data = $request->request->get($form->getName());
             $fileData = $request->files->get($form->getName());
@@ -94,7 +95,6 @@ class BannerController extends BaseController
             'banner'   => $banner,
             'title'    => $title,
             'current'  => 'admin_core_banner_index',
-            'breadcrumbs' =>array(1=>array('name'=>$this->trans('Banner'),'url'=>$this->generateUrl('admin_core_banner_index'))),
         );
     }
     
@@ -194,9 +194,14 @@ class BannerController extends BaseController
         $dm = $this->dm();
         $deal = $this->mongo('ReurbanoDealBundle:Deal')->findByUser($user, true, true);
         $radios = '';
-        foreach($deal as $k => $v){
-            $radios .= '<label><input type="radio" name="banner[deal]" class="radioDeal" id="banner_deal_' . $v->getId() . '" value="' . $v->getId() . '" style="float:left; margin-right:5px;" /> ' . $v->getSource()->getTitle(70) . "/" . $v->getActive() . "</label><br />";
+        if($deal && count($deal) > 0){
+            foreach($deal as $k => $v){
+                $radios .= '<label><input type="radio" name="banner[deal]" class="radioDeal" id="banner_deal_' . $v->getId() . '" value="' . $v->getId() . '" style="float:left; margin-right:5px;" /> ' . $v->getSource()->getTitle(70) . "</label><br />";
+            }    
+        }else{
+            $radios .= '<div class="alert alert_red">Este usuário não possui nenhuma oferta ativa. Selecione outro usuário.</div><div class="clearfix"></div>';
         }
+        
         return new Response($radios);
     }
 }

@@ -1,4 +1,27 @@
 <?php
+/**
+ * Reurbano/OrderBundle/Controller/Frontend/OrderController.php
+ *
+ * Controller para as ações de vendas
+ *  
+ * 
+ * @copyright 2011 Mastop Internet Development.
+ * @link http://www.mastop.com.br
+ * @author Fernando Santos <o@fernan.do>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 namespace Reurbano\OrderBundle\Controller\Frontend;
 
 use Mastop\SystemBundle\Controller\BaseController;
@@ -32,32 +55,45 @@ class OrderController extends BaseController
         return array('deal'=>$deal);
     }
     /**
-     * Action incluir oferta no carrinho de compras
+     * Action para redirecionamento pós pagamento
      * 
-     * @Route("/adicionar/{oferta}", name="order_order_inc")
+     * @Route("/retorno/{gateway}/{status}", name="order_order_return")
+     * @Secure(roles="ROLE_USER")
      */
-    public function incAction($oferta)
+    public function returnAction($gateway, $status)
     {
-        return array();
+        $gateway = 'Reurbano\OrderBundle\Payment\\'.$gateway;
+        if(class_exists($gateway)){
+            $orderId = $gateway::getOrderId($this->getRequest());
+            $order = $this->mongo('ReurbanoOrderBundle:Order')->findOneById((int) $orderId);
+            if($order && $this->get('security.context')->getToken()->getUser()->getId() == $order->getUser()->getId()){ // Pedido encontrado e pertence ao user atual
+                $payment = new $gateway($order, $this->container);
+                $ret = $payment->checkStatus();
+                if($ret){
+                    $pay = $order->getPayment();
+                    $pay['data'] = $payment->getData();
+                    $order->setPayment($pay);
+                    $dm = $this->dm();
+                    $dm->persist($order);
+                    $dm->flush();
+                    return $this->redirectFlash($this->generateUrl('_home'), $ret['msg'], $ret['type']);
+                }
+            }else{
+                throw $this->createNotFoundException('Você não tem permissão para acessar esta página.'); 
+            }
+        }
+        throw $this->createNotFoundException('Compra não encontrada'); 
     }
     /**
-     * Action remover oferta do carrinho de compras
+     * Action para POST de notificação de mudança de status
      * 
-     * @Route("/remover/{oferta}", name="order_order_del")
+     * @Route("/status/{gateway}", name="order_order_status")
      */
-    public function delAction($oferta)
+    public function statusAction($gateway)
     {
         return array();
     }
-    /**
-     * Action atualizar oferta no carrinho de compras (mudando quantidade)
-     * 
-     * @Route("/atualizar", name="order_order_upd")
-     */
-    public function updAction()
-    {
-        return array();
-    }
+    
     /**
      * Action fechar pedido
      * 
@@ -100,10 +136,16 @@ class OrderController extends BaseController
         if($comPercent > 0){
             $dealCom = $dealPrice * ($comPercent / 100) + $comReal;
         }else{
-            $dealCom = 0;
+            $dealCom = $comReal;
         }
         $dealTotal = $dealPrice + $dealCom;
         $order->setTotal($dealTotal);
+        
+        // Forma de pagamento
+        $gateway = 'Reurbano\OrderBundle\Payment\\'.$this->mastop()->param('order.all.gateway');
+        $payment = new $gateway($order, $this->container);
+        $pay['params'] = $payment->getParams();
+        $order->setPayment($pay);
         $dm->persist($order);
         $dm->flush();
         // Define a nova quantidade da Oferta
@@ -111,6 +153,8 @@ class OrderController extends BaseController
         if($newQtd == 0){
             // Se a quantidade restante da oferta for 0, desativa a oferta
             $this->mongo('ReurbanoDealBundle:Deal')->updateActive($deal->getId());
+            // ... e desativa o banner desta oferta
+            $this->mongo('ReurbanoCoreBundle:Banner')->updateActiveByDeal($deal->getId());
         }
         // Seta os vouchers
         $vouchers = $deal->getVoucher();
@@ -125,7 +169,9 @@ class OrderController extends BaseController
         }
         $dm->persist($deal);
         $dm->flush();
-        exit(var_dump($post));
-        return array();
+        // @TODO: Enviar e-mails com notificação de criação de pedido
+        $ret['title'] = 'Compra '.$order->getId();
+        $ret['content'] = $payment->process();
+        return $ret;
     }
 }

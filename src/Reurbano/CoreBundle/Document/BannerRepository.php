@@ -31,24 +31,7 @@ class BannerRepository extends BaseRepository
 {
 
     /**
-     * Pega todos ordenado por ORDER
-     *
-     * @return City ou null
-     **/
-    public function findAllActiveByOrder()
-    {
-        return $this->findBy(array(), array(
-            'order'  => 'asc',
-            'active' => 1,
-            ));
-    }
-
-    public function findBySlug($slug){
-        return $this->findOneBy(array('slug' => $slug), array());
-    }
-    
-    /**
-     * Retorna todas as cidades ordenadas pelo parâmetro "special", "order" e "name"
+     * Retorna todos os banners ordenados pelo parâmetro "order" e "name"
      *
      * @param string $id
      * @return bool
@@ -59,5 +42,34 @@ class BannerRepository extends BaseRepository
                 ->sort('order', 'asc')
                 ->sort('name', 'asc')
                 ->getQuery()->execute();
+    }
+    
+    /**
+     * Ativa / Desativa um banner à partir de um ID de Oferta
+     */
+    public function updateActiveByDeal($dealid, $active = false){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('deal.id')->equals($dealid)
+                ->field('active')->set($active)
+                ->getQuery()
+                ->execute();
+    }
+    
+    /**
+     * Retorna um número específico de banners ativos por cidade
+     *
+     * @param int $limit quantidade de banners
+     * @param string $city Id da cidade
+     * @return object or null
+     */
+    public function findByCity($limit, $city){
+        $banner = $this->createQueryBuilder()
+                ->field('active')->equals(true);
+        $banner->addOr($banner->expr()->field('city')->exists(false))->addOr($banner->expr()->field('city.$id')->equals(new \MongoId($city)));
+        $banner->limit($limit);
+        $banner->sort('order', 'asc');
+        return $banner->getQuery()
+                ->execute();
     }
 }

@@ -63,7 +63,7 @@ class Banner
      * @var string
      * @ODM\Boolean
      */
-    protected $active = false;
+    protected $active = true;
 
     /**
      * A oferta que será o banner
@@ -72,6 +72,14 @@ class Banner
      * @ODM\ReferenceOne(targetDocument="Reurbano\DealBundle\Document\Deal")
      */
     protected $deal;
+    
+    /**
+     * Cidade do Banner
+     *
+     * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
+     * @ODM\Index
+     */
+    protected $city;
     
     /**
      * Nome do Arquivo
@@ -225,6 +233,26 @@ class Banner
     public function getDeal()
     {
         return $this->deal;
+    }
+    
+    /**
+     * Set city
+     *
+     * @param Reurbano\CoreBundle\Document\City $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * Get city
+     *
+     * @return Reurbano\CoreBundle\Document\City $city
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 
     /**

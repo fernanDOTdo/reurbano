@@ -100,9 +100,7 @@ class DealRepository extends BaseRepository
         if($cat){
             $deal->field('source.category.$id')->equals(new \MongoId($cat));
         }
-        if($special){
-            $deal->field('special')->equals(true);
-        }
+        $deal->field('special')->equals($special);
         if($notId){
             $deal->field('id')->notEqual($notId);
         }
@@ -136,7 +134,7 @@ class DealRepository extends BaseRepository
             $deal->field('active')->equals(true);
         }
         if($quantity){
-            $deal->field('quantity')->gt(1);
+            $deal->field('quantity')->gt(0);
         }
         return $deal->getQuery()->execute();
     }
