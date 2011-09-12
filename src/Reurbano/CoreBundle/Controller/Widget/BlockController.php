@@ -23,7 +23,7 @@ class BlockController extends BaseController {
         $c = 0;
         switch ($area) {
             case 'topL':
-                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true);
+                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true, 'source.totalcoupons');
                 $blockSpecialId = null;
                 if ($blockSpecial) {
                     $blockSpecialId = $blockSpecial->getId();
@@ -35,14 +35,14 @@ class BlockController extends BaseController {
                 return array('blocks' => $ret, 'area' => $area);
                 break;
             case 'topR':
-                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true);
+                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true, 'source.totalcoupons');
                 $blockSpecialId = null;
                 if ($blockSpecial) {
                     $blockSpecialId = $blockSpecial->getId();
                 }
-                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc', $blockSpecialId);
+                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'source.totalcoupons', 'desc', $blockSpecialId);
                 if ($blockCheap) {
-                    $ret[$c]['title'] = 'Mais Barato de '.$session->get('reurbano.user.cityName');
+                    $ret[$c]['title'] = 'Mais Procurado em '.$session->get('reurbano.user.cityName');
                     $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:blockTop';
                     $ret[$c]['opts'] = array('deal' => $blockCheap);
                     $c++;
@@ -53,7 +53,7 @@ class BlockController extends BaseController {
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                     $nacionalId = $session->get('reurbano.user.nacional');
                     if ($nacionalId) {
-                        $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, null, true);
+                        $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, null, true, 'source.totalcoupons');
                         if ($blockSpecialNacional) {
                             $ret[$c]['title'] = 'Oferta Nacional <span class="brFlag floatR"> &nbsp; </span>';
                             $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
@@ -65,7 +65,7 @@ class BlockController extends BaseController {
                 break;
             case 'category': // Home de cada categoria
                 if (isset($opts['cat'])) {
-                    $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true);
+                    $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true, 'source.totalcoupons');
                     $catSpecialId = null;
                     if ($catSpecial) {
                         $catSpecialId = $catSpecial->getId();
@@ -84,7 +84,7 @@ class BlockController extends BaseController {
                     if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                         $nacionalId = $session->get('reurbano.user.nacional');
                         if ($nacionalId) {
-                            $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, $opts['cat']->getId(), true);
+                            $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, $opts['cat']->getId(), true, 'source.totalcoupons');
                             if ($blockSpecialNacional) {
                                 $ret[$c]['title'] = $opts['cat']->getName().' em Oferta Nacional <span class="brFlag floatR"> &nbsp; </span>';
                                 $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
@@ -101,7 +101,7 @@ class BlockController extends BaseController {
                 break;
             case 'deal': // Página de oferta
                 if (isset($opts['cat']) && isset ($opts['id'])) {
-                    $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true, 'special', 'desc', $opts['id']);
+                    $catSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), true, 'source.totalcoupons', 'desc', $opts['id']);
                     $catSpecialId = null;
                     if ($catSpecial) {
                         $catSpecialId = $catSpecial->getId();
@@ -120,7 +120,7 @@ class BlockController extends BaseController {
                     if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                         $nacionalId = $session->get('reurbano.user.nacional');
                         if ($nacionalId) {
-                            $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, $opts['cat']->getId(), true);
+                            $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, $opts['cat']->getId(), true, 'source.totalcoupons');
                             if ($blockSpecialNacional) {
                                 $ret[$c]['title'] = $opts['cat']->getName().' em Oferta Nacional <span class="brFlag floatR"> &nbsp; </span>';
                                 $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
@@ -138,10 +138,17 @@ class BlockController extends BaseController {
                 break;
             case 'home':
             default :
+                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc');
+                if ($blockCheap) {
+                    $ret[$c]['title'] = 'Mais Barato de '.$session->get('reurbano.user.cityName');
+                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
+                    $ret[$c]['opts'] = array('deal' => $blockCheap);
+                    $c++;
+                }
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                     $nacionalId = $session->get('reurbano.user.nacional');
                     if ($nacionalId) {
-                        $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, null, true);
+                        $blockSpecialNacional = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($nacionalId, null, true, 'source.totalcoupons');
                         if ($blockSpecialNacional) {
                             $ret[$c]['title'] = 'Oferta Nacional <span class="brFlag floatR"> &nbsp; </span>';
                             $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
