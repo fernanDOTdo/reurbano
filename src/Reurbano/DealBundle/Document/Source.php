@@ -156,8 +156,23 @@ class Source
      * @var date
      * @ODM\Date
      */
-    protected $expiresAt;    
-
+    protected $expiresAt;
+    
+    /**
+     * Total de cupons vendidos
+     *
+     * @var int
+     * @ODM\Int
+     */
+    protected $totalcoupons = 0;
+    
+    /**
+     * Valor total vendido
+     *
+     * @var float
+     * @ODM\Float
+     */
+    protected $totalsell = 0;
 
     /**
      * Get id
@@ -516,5 +531,45 @@ class Source
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    /**
+     * Set totalcoupons
+     *
+     * @param int $totalcoupons
+     */
+    public function setTotalcoupons($totalcoupons)
+    {
+        $this->totalcoupons = $totalcoupons;
+    }
+
+    /**
+     * Get totalcoupons
+     *
+     * @return int $totalcoupons
+     */
+    public function getTotalcoupons()
+    {
+        return $this->totalcoupons;
+    }
+
+    /**
+     * Set totalsell
+     *
+     * @param float $totalsell
+     */
+    public function setTotalsell($totalsell)
+    {
+        $this->totalsell = $totalsell;
+    }
+
+    /**
+     * Get totalsell
+     *
+     * @return float $totalsell
+     */
+    public function getTotalsell()
+    {
+        return $this->totalsell;
     }
 }
