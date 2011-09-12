@@ -201,10 +201,14 @@ class BlockController extends BaseController {
      */
     public function bannerAction()
     {
-        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->findAll();
-        return array(
+        $session = $this->get('session');
+        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->findByCity($this->mastop()->param('core.banner.loadnum'), $session->get('reurbano.user.cityId'));
+        if($banner && count($banner) > 0){
+            return array(
             'banner' => $banner,
-        );
+            );
+        }
+        return array();
     }
 
 }

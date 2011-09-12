@@ -134,7 +134,7 @@ class DealRepository extends BaseRepository
             $deal->field('active')->equals(true);
         }
         if($quantity){
-            $deal->field('quantity')->gt(1);
+            $deal->field('quantity')->gt(0);
         }
         return $deal->getQuery()->execute();
     }
