@@ -52,10 +52,12 @@ $('#dealQtd').change(function() {
         <td class="aC">{{deal.getPrice|money}}</td>
         <td class="aC" id="dealSubTotal">{{deal.getPrice|money}}</td>
     </tr>
+    {%if deal.getComission.getBuyerpercent > 0 or deal.getComission.getBuyerreal > 0%}
     <tr>
         <td colspan="4" class="aR">Despesas administrativas ({{deal.getComission.getBuyerpercent}}%{%if deal.getComission.getBuyerreal > 0%} + {{deal.getComission.getBuyerreal|money}}{%endif%})</td>
         <td class="aC" id="dealComission">{{dealComission|money}}</td>
     </tr>
+    {%endif%}
     <tr>
         <td colspan="4" class="aR" style="font-weight: 700">Total</td>
         <td class="aC" id="dealTotal" style="font-weight: 700; font-size: 1.3em;">{{(dealComission+deal.getPrice)|money}}</td>

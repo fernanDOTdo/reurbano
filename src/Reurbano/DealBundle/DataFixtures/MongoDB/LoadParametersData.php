@@ -23,6 +23,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $param->setTitle('Ofertas');
         $param->setDesc('Configurações para o módulo de ofertas');
         $param->setBundle('deal');
+        $param->setRole('ROLE_ADMIN');
         $param->setOrder(3);
 
         $child = new Children();
