@@ -11,9 +11,9 @@
     <div class="grid_12">
         <!-- the tabs -->
         <ul class="tabs">
-            {% for tabs in tabs %}
+            {% for k, tabs in tabs %}
                 <li>
-                    <a href="#">{{tabs}}</a>
+                    <a href="#{{k}}">{{tabs}}</a>
                 </li>
             {% endfor %}
         </ul>

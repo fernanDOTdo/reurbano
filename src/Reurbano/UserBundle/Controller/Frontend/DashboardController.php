@@ -22,11 +22,11 @@ class DashboardController extends BaseController
     public function indexAction(){
         $title = 'Minha Conta';
         $tabs = array(
-            'Meus Dados',
-            'Minhas Compras',
-            'Minhas Ofertas',
-            'Minhas Vendas',
-            'Meu Financeiro',
+            'mydata' => 'Meus Dados',
+            'myorders' => 'Minhas Compras',
+            'mydeals' => 'Minhas Ofertas',
+            'mysell' => 'Minhas Vendas',
+            'mybalance' => 'Meu Financeiro',
         );
         $panes = array(
             'ReurbanoUserBundle:Widget\\MyData:dashboard',

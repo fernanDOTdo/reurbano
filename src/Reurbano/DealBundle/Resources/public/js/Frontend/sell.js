@@ -5,6 +5,21 @@ $(function(){
     function formatItem(row) {
         return row[0] +  row[1] ;
     }
+    function addVoucher(){
+        var qtd = parseInt($("#deal_quantity").val());
+        if(qtd < 1 || isNaN(qtd)){
+            alert('Digite a quantidade de cupons.');
+            $("#deal_quantity").val(1);
+            alert();
+            return $("#deal_quantity").focus();
+        }
+        var voucher = '';
+        for (i = 0 ; i < qtd ; i++) {
+            voucher = voucher + '<label for="deal_voucher'+i+'">Voucher '+(i+1)+'</label><input id="deal_voucher'+i+'" name="deal[voucher'+i+']" value="" type="file" required="required" />';
+        }
+        $('#sellVoucher').html(voucher);
+    }
+    addVoucher();
     $("#sell_site").chosen().change(function(){
         $('#sell_cupom').val(null);
         $('#sell_cupomId').val('');
@@ -35,7 +50,8 @@ $(function(){
         }
     });
     $("#deal_quantity").blur(function(){
-        var qtd = parseInt($(this).val());
+        addVoucher();
+        /*var qtd = parseInt($(this).val());
         if(qtd < 1 || isNaN(qtd)){
             alert('Digite a quantidade de cupons.');
             $(this).val(1);
@@ -46,7 +62,7 @@ $(function(){
         for (i = 0 ; i < qtd ; i++) {
             voucher = voucher + '<label for="deal_voucher'+i+'">Voucher '+(i+1)+'</label><input id="deal_voucher'+i+'" name="deal[voucher'+i+']" value="" type="file" required="required" />';
         }
-        $('#sellVoucher').html(voucher);
+        $('#sellVoucher').html(voucher);*/
     });
     $("#sellDetails").submit(function (e) { 
         var vouchers = $('input:file');

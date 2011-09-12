@@ -6,7 +6,6 @@
                 <th>{{ "Preço"|trans }}</th> 
                 <th class="center">{{ "Quantidade"|trans }}</th> 
                 <th>{{ "Publicação"|trans }}</th> 
-                <th>{{ "Ativo"|trans }}</th> 
                 <th class="last center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
@@ -30,15 +29,13 @@
             <td>
                 {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
             </td>
-            <td>
-                {% if deal.getActive() %}
-                    Sim
-                {% else %}
-                    Não
-                {% endif %}
-            </td>
             <td class="center" nowrap="nowrap">
-                <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a><a class="button small danger" href="{{ path('_home', {'id': deal.getId()}) }}">{{"Deletar"|trans}}</a>
+                <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a>
+                {% if deal.getActive() %}
+                    <a class="button small danger" href="{{ path('deal_deal_active', {'id': deal.getId()}) }}">{{"Desativar"|trans}}</a>
+                {% else %}
+                    <a class="button small white" href="{{ path('deal_deal_active', {'id': deal.getId(), 'active': true}) }}">{{"Ativar"|trans}}</a>
+                {% endif %}
             </td>
         </tr>
   {% else %}
