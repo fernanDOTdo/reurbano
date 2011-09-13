@@ -30,4 +30,3 @@ content_backend:
 html_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/HtmlController.php"
     type: annotation
-    prefix:   /conteudo
