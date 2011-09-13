@@ -55,9 +55,10 @@
 	Set to display block
 */
 
-.slides_container a {
+.slides_container .slide {
 	width:800px;
 	height:270px;
+        cursor: pointer;
 	display:block;
 }
 
@@ -116,4 +117,116 @@
 }
 .pagination li.current a:active, .pagination li.current a:focus {
 	outline: none;
+}
+
+/* Banner de Oferta */
+div.bannerDeal div.dealThumb{
+    width: 377px;
+    height: 270px;
+    float: left;
+    position: relative;
+}
+div.bannerDeal div.dealThumb img{
+    width: 377px;
+    height: 270px;
+}
+div.bannerDeal span.discount{
+    right: 0;
+    -webkit-border-bottom-left-radius: 7px;
+    -moz-border-radius-bottomleft: 7px;
+    border-bottom-left-radius: 7px;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    border-bottom-right-radius: 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    padding: 5px;
+    left: inherit;
+}
+div.bannerDeal h2{
+    float: right;
+    width: 400px;
+    margin: 5px 10px;
+    text-align: center;
+    font-size: 1.4em;
+}
+
+div.bannerDeal h2.gray{color: #999}
+div.bannerDeal h2.blue{color: #15567F}
+div.bannerDeal h2.green{color: #587906}
+div.bannerDeal h2.orange{color: #D87D08}
+
+div.bannerDeal div.dealInfos{
+    float: right;
+    width: 400px;
+    margin-top: 10px;
+}
+
+div.bannerDeal div.priceSource, div.bannerDeal div.price, div.bannerDeal div.buyNow, div.bannerDeal div.dealQtd{
+    text-align: center;
+}
+div.bannerDeal div.price strong{
+    font-size: 2em;
+}
+div.bannerDeal div.buyNow{
+    margin-top: 20px;
+}
+div.bannerDeal div.buyNow a{
+    font-size: 1.6em;
+}
+
+div.blockTopTitle{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 10px 0 3px 10px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+div.blockTopContent{
+    margin: 5px;
+}
+div.blockTopContent div.dealTitle{
+    margin-bottom: 10px;
+}
+
+div.blockTopContent div.deal{
+    padding: 5px;
+}
+div.blockTopContent div.dealThumb a{
+    margin: 0 10px 10px 0;
+}
+div.blockTopContent div.dealInfos{
+    margin-right: 20px;
+    float: right;
+    margin-top: 10px;
+}
+div.blockTopContent div.price strong{
+    font-size: 2em;
+}
+div.blockTopContent div.price, div.blockTopContent div.priceSource{
+    text-align: center;
+}
+div.blockTopContent div.buyNow a{
+    font-size: 1.5em;
+}
+div.blockTopContent div.buyNow{margin-top: 10px}
+div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.buyNow, div.blockTopContent div.dealQtd{
+    font-size: 1em;
+    text-align: center;
+}
+div.blockTopContent div.dealThumb a img, div.blockTopContent div.dealThumb a{
+    width: 250px;
+    height: 179px;
+}
+div.blockTopContent span.discount{
+    font-weight: 700;
+    font-size: 1.2em;
+    padding: 3px 4px;
+}
+div.blockTopContent div.dealExpires{
+    text-align: right;
 }

@@ -35,6 +35,8 @@ class LoadSourceData extends AbstractFixture implements OrderedFixtureInterface,
         $source->setPriceOffer(89.9);
         $source->setCity($citySP);
         $source->setCategory($catProdutos);
+        $source->setTotalcoupons(370);
+        $source->setTotalsell(33263);
         $source->setRules('Limite de 1 groupon para você
     Você deve validar sua compra no site www.produtosoff.com.br. Acesse seu painel de usuário no ProdutosOff, insira os dados para envio e o código do seu Groupon
     Seu groupon só poderá ser utilizado 2 dias úteis após o seu recebimento
@@ -68,6 +70,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setPriceOffer(99);
         $source->setCity($citySP);
         $source->setCategory($catServicos);
+        $source->setTotalcoupons(17);
+        $source->setTotalsell(1683);
         $source->setRules('Validade: 16 de agosto, 2011 a 16 de fevereiro, 2012
     Limite de uso de 2 cupons por pessoa
     O cupom estará disponível na sua conta do Peixe Urbano em até 24 horas após o encerramento da oferta
@@ -106,6 +110,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setPriceOffer(179);
         $source->setCity($cityRJ);
         $source->setCategory($catServicos);
+        $source->setTotalcoupons(189);
+        $source->setTotalsell(33831);
         $source->setRules('Validade: 16 de agosto, 2011 a 16 de fevereiro, 2012
     Limite de uso de 2 cupons por pessoa
     O cupom estará disponível na sua conta do Peixe Urbano em até 24 horas após o encerramento da oferta
@@ -144,6 +150,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setPriceOffer(199);
         $source->setCity($cityNacional);
         $source->setCategory($catProdutos);
+        $source->setTotalcoupons(176);
+        $source->setTotalsell(35024);
         $source->setRules('1 groupon por pessoa
     Vale por 1 mês
     Frete grátis, com entrega em até 12 dias úteis

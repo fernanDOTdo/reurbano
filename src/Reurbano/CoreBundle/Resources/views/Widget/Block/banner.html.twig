@@ -1,23 +1,35 @@
- <div id="bannerSlides">
-    <img src="/themes/reurbano/images/slides/new-ribbon.png" width="112" height="112" alt="New Ribbon" id="ribbon">
+{%if banner is defined%}
+<div id="bannerSlides">
+    <img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/new-ribbon.png') }}" width="112" height="112" alt="Novo!" id="ribbon">
     <div id="slides">
-        <div class="slides_container">
-{% for banner in banner %}
-            <a href="{{ banner.getUrl() }}" title="{{ banner.getTitle() }}" ><img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}"/></a>
-        </div>
-        <a href="#" class="prev"><img src="/themes/reurbano/images/slides/arrow-prev.png" width="19" height="21" alt="Arrow Prev"></a>
-        <a href="#" class="next"><img src="/themes/reurbano/images/slides/arrow-next.png" width="19" height="21" alt="Arrow Next"></a>
-    </div>
-{% else %}
-            <a href="#" title="Slide 1" target="_blank"><img src="/themes/reurbano/images/slides/slide-1.png" alt="Slide 1" /></a>
-            <a href="#" title="Slide 2" target="_blank"><img src="/themes/reurbano/images/slides/slide-2.png" alt="Slide 2" /></a>
-            <a href="#" title="Slide 3" target="_blank"><img src="/themes/reurbano/images/slides/slide-3.png" alt="Slide 3" /></a>
-            <a href="#" title="Slide 4" target="_blank"><img src="/themes/reurbano/images/slides/slide-4.png" alt="Slide 4" /></a>
-            <a href="#" title="Slide 5" target="_blank"><img src="/themes/reurbano/images/slides/slide-5.png" alt="Slide 5" /></a>
+            <div class="slides_container">
+                {% for banner in banner %}
+                    {%if banner.getDeal is not null%}
+                    {%set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
+                    <div class="slide bannerDeal" onclick="document.location.href = '{{dealLink}}';return">
+                        <div class="dealThumb">
+                        <img src="{{asset(banner.getDeal.getSource.getFilename)}}" alt="{{banner.getDeal.getLabel}}" /> <span class="discount {{banner.getDeal.getDiscountType }}">{{banner.getDeal.getDiscount}}% OFF</span>
+                        </div>
+                            <h2 class="{{banner.getDeal.getDiscountType }}">{{banner.getDeal.getLabel}}</h2>
+                        <div class="dealInfos {{banner.getDeal.getDiscountType }}">
+                            <div class="priceSource">De: <strong>{{banner.getDeal.getSource.getPrice|money}}</strong></div>
+                            <div class="price">Por: <strong>{{banner.getDeal.getPrice|money}}</strong></div>
+                            <div class="buyNow"><a rel="nofollow" class="button primary pill big {{banner.getDeal.getDiscountType }}" href="{{dealLink}}">Confira esta Oferta</a></div>
+                            <div class="dealQtd">
+                               {% transchoice banner.getDeal.getQuantity with {'%count%' : banner.getDeal.getQuantity} %}
+                                    {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+                               {% endtranschoice %}
+                            </div> 
 
-            <a href="#" title="Slide 6" target="_blank"><img src="/themes/reurbano/images/slides/slide-6.png" alt="Slide 6" /></a>
-        </div>
-        <a href="#" class="prev"><img src="/themes/reurbano/images/slides/arrow-prev.png" width="19" height="21" alt="Arrow Prev"></a>
-        <a href="#" class="next"><img src="/themes/reurbano/images/slides/arrow-next.png" width="19" height="21" alt="Arrow Next"></a>
+                        </div>
+                    </div>
+                    {%else%}
+                    <div class="slide"><a href="{{ banner.getUrl() }}" title="{{ banner.getTitle() }}" {%if banner.getNewWindow%}target="_blank"{%endif%}><img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}"/></a></div>
+                    {%endif%}
+                {% endfor %}
+            </div>
+            <a href="#" class="prev"><img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/arrow-prev.png') }}" width="19" height="21" alt="Arrow Prev"></a>
+            <a href="#" class="next"><img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/arrow-next.png') }}" width="19" height="21" alt="Arrow Next"></a>
     </div>
-{% endfor %}
+</div>
+{%endif%}

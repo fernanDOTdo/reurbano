@@ -6,6 +6,7 @@
         <thead> 
             <tr> 
                 <th class="nowrap center">{{ "Imagem"|trans }}</th> 
+                <th class="nowrap center">{{ "Cidade"|trans }}</th> 
                 <th class="nowrap center">{{ "Titulo"|trans }}</th> 
                 <th class="nowrap center">{{ "URL"|trans }}</th> 
                 <th class="nowrap center"> {{ "Ordem"|trans }} </th>
@@ -19,6 +20,9 @@
             <tr>
                 <td class="center">
                     <img src='{{ banner.getDeal.getSource.getThumb }}' width='80' height='60' alt="{{ banner.getDeal.getLabel(50) }}"/>
+                </td>
+                <td  class='center'>
+                    {{ banner.getCity.getName|default('Todas') }}
                 </td>
                 <td class="nowrap center" >
                     {{ banner.getDeal.getLabel(50) }}
@@ -43,6 +47,9 @@
             <tr>
                 <td class="center">
                     <img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename) }}" alt="{{ banner.getTitle }}" width="160px" height="60px"/>
+                </td>
+                <td  class='center'>
+                    {{ banner.getCity.getName|default('Todas') }}
                 </td>
                 <td  class='center'>
                     {{ banner.getTitle }}

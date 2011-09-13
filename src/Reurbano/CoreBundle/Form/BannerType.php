@@ -34,7 +34,8 @@ class BannerType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden');
-        $builder->add('title', 'text');
+        $builder->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name', 'required' => false, 'empty_value' => 'Todas' ));
+        $builder->add('title', 'text', array('label' => 'Título'));
         $builder->add('url', 'url');
         $builder->add('active', 'checkbox', array(
             'label'    => 'Ativo?',
@@ -44,9 +45,9 @@ class BannerType extends AbstractType {
             'label'    => 'Abrir em nova janela?',
             'required' => false,
         ));
-        $builder->add('order', 'integer');
+        $builder->add('order', 'integer', array('label' => 'Ordem'));
         $builder->add('logo', 'file', array (
-            'label'         => "imagem",
+            'label'         => "Imagem",
             'required'      => false,
             'property_path' => false
             ));

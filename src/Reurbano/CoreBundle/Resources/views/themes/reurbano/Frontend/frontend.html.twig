@@ -117,7 +117,7 @@ $(function(){
         </div>
         <div class="grid_7">
             <div id="login">
-                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span>{%endif%}
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span> <a href="{{path('user_dashboard_index')}}" class="button small blue">Meu {{mastop_param('system.site.name')}}</a>{%endif%}
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
@@ -171,21 +171,7 @@ $(function(){
         {# Só exibe o banner se estiver na home ou na página da cidade #}
         <div class="clear"></div>   
         <div class="grid_12" id="bannerHome">
-            <div id="bannerSlides">
-			<img src="{{ asset('themes/reurbano/images/slides/new-ribbon.png') }}" width="112" height="112" alt="New Ribbon" id="ribbon">
-			<div id="slides">
-				<div class="slides_container">
-					<a href="#" title="Slide 1" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-1.png') }}" alt="Slide 1" /></a>
-					<a href="#" title="Slide 2" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-2.png') }}" alt="Slide 2" /></a>
-					<a href="#" title="Slide 3" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-3.png') }}" alt="Slide 3" /></a>
-					<a href="#" title="Slide 4" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-4.png') }}" alt="Slide 4" /></a>
-					<a href="#" title="Slide 5" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-5.png') }}" alt="Slide 5" /></a>
-					<a href="#" title="Slide 6" target="_blank"><img src="{{ asset('themes/reurbano/images/slides/slide-6.png') }}" alt="Slide 6" /></a>
-				</div>
-				<a href="#" class="prev"><img src="{{ asset('themes/reurbano/images/slides/arrow-prev.png') }}" width="19" height="21" alt="Arrow Prev"></a>
-				<a href="#" class="next"><img src="{{ asset('themes/reurbano/images/slides/arrow-next.png') }}" width="19" height="21" alt="Arrow Next"></a>
-			</div>
-		</div>
+            {% render 'ReurbanoCoreBundle:Widget\\Block:banner'%}
         </div>
         {%endif%}
         <div class="clear"></div>

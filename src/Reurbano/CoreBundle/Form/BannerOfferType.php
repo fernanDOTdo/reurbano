@@ -45,7 +45,7 @@ class BannerOfferType extends AbstractType {
             'label'    => 'Ativo?',
             'required' => false,
         ));
-        $builder->add('order', 'integer');
+        $builder->add('order', 'integer', array('label'=>'Ordem'));
     }
 
     public function getDefaultOptions(array $options) {
