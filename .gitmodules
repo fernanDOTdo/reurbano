@@ -76,3 +76,12 @@
 [submodule "vendor/twitteroauth"]
 	path = vendor/twitteroauth
 	url = git://github.com/kertz/twitteroauth.git
+[submodule "vendor/cg-library"]
+	path = vendor/cg-library
+	url = https://github.com/schmittjoh/cg-library.git
+[submodule "vendor/bundles/JMS/AopBundle"]
+	path = vendor/bundles/JMS/AopBundle
+	url = https://github.com/schmittjoh/JMSAopBundle.git
+[submodule "vendor/bundles/JMS/DiExtraBundle"]
+	path = vendor/bundles/JMS/DiExtraBundle
+	url = https://github.com/schmittjoh/JMSDiExtraBundle.git

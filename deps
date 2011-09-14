@@ -1,14 +1,13 @@
 [symfony]
     git=http://github.com/symfony/symfony.git
-    version=origin/2.0
 
 [twig]
     git=http://github.com/fabpot/Twig.git
-    version=v1.1.2
+    version=v1.2.0
 
 [monolog]
     git=http://github.com/Seldaek/monolog.git
-    version=1.0.0
+    version=1.0.1
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
@@ -24,18 +23,17 @@
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
-    version=v4.1.1
+    version=v4.1.2
 
 [assetic]
     git=http://github.com/kriswallsmith/assetic.git
-    version=v1.0.1
+    version=v1.0.2
 
 [twig-extensions]
     git=http://github.com/fabpot/Twig-extensions.git
 
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
-    version=origin/1.0.x
 
 [SensioFrameworkExtraBundle]
     git=http://github.com/sensio/SensioFrameworkExtraBundle.git
@@ -56,7 +54,6 @@
 [AsseticBundle]
     git=http://github.com/symfony/AsseticBundle.git
     target=/bundles/Symfony/Bundle/AsseticBundle
-    version=v1.0.0
 
 [doctrine-mongodb]
     git=http://github.com/doctrine/mongodb.git
@@ -95,3 +92,14 @@
 [MastopBundles]
     git=git@github.com:mastop/MastopBundles.git
     target=/bundles/Mastop
+
+[JMSAopBundle]
+    git=https://github.com/schmittjoh/JMSAopBundle.git
+    target=/bundles/JMS/AopBundle
+
+[DiExtraBundle]
+    git=https://github.com/schmittjoh/JMSDiExtraBundle.git
+    target=/bundles/JMS/DiExtraBundle
+
+[cg-library]
+    git=https://github.com/schmittjoh/cg-library.git
