@@ -18,6 +18,10 @@ class SecurityController extends BaseController {
      * @Template()
      */
     public function loginAction() {
+        $userLogado = $this->get('security.context')->getToken()->getUser();
+        if(is_object($userLogado)){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você já está cadastrado e logado como <strong>'.$userLogado->getName().' ('.$userLogado->getEmail().')</strong>.', 'error');
+        }
         // get the login error if there is one
         if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);

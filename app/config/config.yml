@@ -115,3 +115,9 @@ reurbano_core:
     quova:
       apikey: 100.hrh7drfjbhx87nt8avnz 
       secret: Qp9HKWZU
+      
+services:
+  text.twig.extension:
+    class: Twig_Extensions_Extension_Text
+    tags:
+      -  { name: twig.extension } 

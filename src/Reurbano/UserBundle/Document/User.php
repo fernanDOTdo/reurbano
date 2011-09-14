@@ -95,6 +95,9 @@ class User implements UserInterface {
 
     /** @ODM\String */
     protected $twSecret;
+    
+    /** @ODM\EmbedOne(targetDocument="Reurbano\UserBundle\Document\BankData") */
+    protected $bankData;
 
     public function getTwitter() {
         return $this->twitter;
@@ -234,7 +237,7 @@ class User implements UserInterface {
     }
 
     public function getLastLogin() {
-        if ($this->lastLogin->getTimestamp() > 0) {
+        if ($this->lastLogin != '' && $this->lastLogin->getTimestamp() > 0) {
             return date('d/m/Y', $this->lastLogin->getTimestamp());
         } else {
             return 0;
@@ -356,6 +359,26 @@ class User implements UserInterface {
 
     public function setNewsletters($newsletters) {
         $this->newsletters = $newsletters;
+    }
+    
+    /**
+     * Set bankData
+     *
+     * @param Reurbano\UserBundle\Document\BankData $bankData
+     */
+    public function setBankData(\Reurbano\UserBundle\Document\BankData $bankData)
+    {
+        $this->bankData = $bankData;
+    }
+
+    /**
+     * Get bankData
+     *
+     * @return Reurbano\UserBundle\Document\BankData $bankData
+     */
+    public function getBankData()
+    {
+        return $this->bankData;
     }
 
     /**

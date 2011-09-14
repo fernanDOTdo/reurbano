@@ -55,7 +55,7 @@ $(function(){
 <div class="alert alert_error">
     <div class="container_12">
         <div class="grid_10">
-            <strong>Erro: </strong> {{ app.session.flash('error')|raw|trans }}
+            <strong>Erro: </strong> {{ app.session.flash('error')|trans|raw }}
         </div>
         <div class="grid_2">
             <a class="closeAlert" href="#">Fechar</a>
@@ -67,7 +67,7 @@ $(function(){
 <div class="alert alert_success">
     <div class="container_12">
         <div class="grid_10">
-            {{ app.session.flash('ok')|raw }}
+            {{ app.session.flash('ok')|trans|raw }}
         </div>
         <div class="grid_2">
             <a class="closeAlert" href="#">Fechar</a>
@@ -79,7 +79,7 @@ $(function(){
 <div class="alert alert_notice">
     <div class="container_12">
         <div class="grid_10">
-            <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+            <strong>Aviso: </strong> {{ app.session.flash('notice')|trans|raw }}
         </div>
         <div class="grid_2">
             <a class="closeAlert" href="#">Fechar</a>

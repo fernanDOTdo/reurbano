@@ -2,7 +2,7 @@
 {% block title %}{{ "Detalhes do usuário %username%"|trans({'%username%' : usuario.getUsername()}) }}{% endblock %}
 {% block content %}
 <div class="grid_12">
-    <h1>{{ "Detalhes do usuário %username%"|trans({'%username%' : usuario.getUsername()}) }}</h1>
+    <h1>{{ "Detalhes do usuário %email%"|trans({'%email%' : usuario.getEmail()}) }}</h1>
     {{ "<b>Nome: </b>"}} {{ usuario.getName() }}
     <br />
     {{ "<b>Email: </b>"}} {{ usuario.getEmail() }}    
