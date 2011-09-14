@@ -30,7 +30,7 @@ em
 h1, h2, h3
 {
     color: #666;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 h1 span, h2 span, h3 span{color:#000;}
 #closeNL{margin-top:6px;}
@@ -79,6 +79,19 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 .aL{text-align: left;}
 .aR{text-align: right;}
 .strong{font-weight: 700;}
+
+.info{
+    background: #f2f2f2 url('../images/info.png') 5px center no-repeat;
+    padding: 3px 3px 3px 30px;
+    font-size: 12px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border: 1px solid #dfdfdf;
+    margin-bottom: 10px;
+    
+
+}
 
 /* Tabelas */
 table{width: 100%;}

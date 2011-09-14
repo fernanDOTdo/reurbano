@@ -68,12 +68,11 @@ ul.tabs a.xl.current { background-position: 0 -62px; }
 }
 
 /* tab pane styling */
-.panes div {
-        display:none;		
+.panes > div {
+        display: none;
         padding:15px 10px;
         border:1px solid #7A9D24;
         border-top:0;
-        font-size:14px;
         background-color:#fff;
 }
 

@@ -57,14 +57,12 @@ $(function(){
     .focus(function() {
         $(this).removeClass("idleField").addClass("focusField");
         if (this.value == this.defaultValue){
-            this.value = '';
-        }
-        if(this.value != this.defaultValue){
             this.select();
         }
+
     })
     .blur(function() {
-        if ($.trim(this.value) == ''){
+        if ($.trim(this.value) == this.defaultValue){
             this.value = (this.defaultValue ? this.defaultValue : '');
             $(this).removeClass("focusField").addClass("idleField");
         }
