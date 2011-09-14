@@ -19,13 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-/**
- * @Route("/usuario", requirements={"_scheme" = "https"})
- */
+
 class UserController extends BaseController {
 
     /**
-     * @Route("/script.js", name="user_user_script")
+     * @Route("/usuario/script.js", name="user_user_script")
      */
     public function scriptAction() {
 
@@ -38,7 +36,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/check", name="user_user_check")
+     * @Route("/usuario/check", name="user_user_check")
      */
     public function checkAction() {
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -61,7 +59,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/check2", name="user_user_check2")
+     * @Route("/usuario/check2", name="user_user_check2")
      */
     public function check2Action() {
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -86,7 +84,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/confirmacao/{username}", name="user_user_confirmation")
+     * @Route("/usuario/confirmacao/{username}", name="user_user_confirmation")
      * @Template()
      */
     function confirmationOkAction($username) {
@@ -106,8 +104,8 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novo", name="user_user_new")
-     * @Route("/editar/{username}", name="user_user_edit")
+     * @Route("/usuario/novo", name="user_user_new")
+     * @Route("/meusdados/editar/{username}", name="user_user_edit")
      * @Template()
      */
     public function newAction($username = false) {
@@ -156,7 +154,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/ativar/{actkey}", name="user_user_active")
+     * @Route("/usuario/ativar/{actkey}", name="user_user_active")
      * @Template()
      */
     public function activeAction($actkey) {
@@ -187,7 +185,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviar", name="user_user_resend")
+     * @Route("/usuario/reenviar", name="user_user_resend")
      * @Template()
      */
     public function resendAction() {
@@ -287,7 +285,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviarOk", name="user_user_resendOk")
+     * @Route("/usuario/reenviarOk", name="user_user_resendOk")
      * @Template()
      */
     public function resendOkAction() {
@@ -332,7 +330,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/detalhes/{username}", name="user_user_details")
+     * @Route("/usuario/detalhes/{username}", name="user_user_details")
      * @Secure(roles="ROLE_USER")
      * @Template()
      */
@@ -354,7 +352,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvar/{id}", name="user_user_save", defaults={"id" = null})
+     * @Route("/usuario/salvar/{id}", name="user_user_save", defaults={"id" = null})
      * @Template()
      */
     public function saveAction($id=null) {
@@ -513,7 +511,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})
+     * @Route("/usuario/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})
      * @Template()
      */
     public function recoveryAction($username=null) {
@@ -525,7 +523,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/recuperaok", name="user_user_recoverypost")
+     * @Route("/usuario/recuperaok", name="user_user_recoverypost")
      * @Template()
      */
     public function recuveryPostAction() {
@@ -546,7 +544,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacao/{actkey}", name="user_user_recovering")
+     * @Route("/usuario/senha/recuperacao/{actkey}", name="user_user_recovering")
      * @Template()
      */
     public function recoveringAction($actkey) {
@@ -565,7 +563,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacaook/{actkey}", name="user_user_recoveringok")
+     * @Route("/usuario/senha/recuperacaook/{actkey}", name="user_user_recoveringok")
      * @Template()
      */
     public function recoveringOkAction($actkey) {
@@ -596,7 +594,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novoemail/{edited}/{email}", name="user_user_newemail")
+     * @Route("/usuario/novoemail/{edited}/{email}", name="user_user_newemail")
      * @Template()
      */
     public function newEmailAction($edited, $email) {
@@ -626,7 +624,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/facebook", name="user_user_facebook")
+     * @Route("/usuario/facebook", name="user_user_facebook")
      * @Template()
      */
     public function facebookAction() {
@@ -750,7 +748,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/conect", name="user_user_twitterconect")
+     * @Route("/usuario/twitter/conect", name="user_user_twitterconect")
      * @Template()
      */
     function twitterConectAction() {
@@ -759,7 +757,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/back", name="user_user_twitterback")
+     * @Route("/usuario/twitter/back", name="user_user_twitterback")
      * @Template()
      */
     function twitterBackAction() {
@@ -808,7 +806,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/salvar", name="user_user_twittersave")
+     * @Route("/usuario/twitter/salvar", name="user_user_twittersave")
      * @Template()
      */
     function twitterNewAction() {
