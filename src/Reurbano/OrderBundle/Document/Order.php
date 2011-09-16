@@ -31,6 +31,14 @@ class Order
      * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
      */
     protected $user;
+
+    /**
+     * Vendedor
+     *
+     * @var object
+     * @ODM\ReferenceOne(targetDocument="Reurbano\UserBundle\Document\User")
+     */
+    protected $seller;
     
     /**
      * Array com as informações sobre o pagamento
@@ -178,6 +186,26 @@ class Order
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set seller
+     *
+     * @param Reurbano\UserBundle\Document\User $seller
+     */
+    public function setSeller(\Reurbano\UserBundle\Document\User $seller)
+    {
+        $this->seller = $seller;
+    }
+
+    /**
+     * Get seller
+     *
+     * @return Reurbano\UserBundle\Document\User $seller
+     */
+    public function getSeller()
+    {
+        return $this->seller;
     }
 
     /**
