@@ -1,42 +1,77 @@
 <?php
 
+/**
+ * Reurbano/OrderBundle/Document/OrderRepository.php
+ *
+ * Repositório de compras
+ *  
+ * 
+ * @copyright 2011 Mastop Internet Development.
+ * @link http://www.mastop.com.br
+ * @author Fernando Santos <o@fernan.do>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 namespace Reurbano\OrderBundle\Document;
 
 use Mastop\SystemBundle\Document\BaseRepository;
 
-class OrderRepository extends BaseRepository
-{
+class OrderRepository extends BaseRepository {
+
+    /**
+     *
+     * @param type $user
+     * @return Reurbano\OrderBundle\Document\Order $order
+     */
+    public function findLastOrder($user = null) {
+        $query = $this->createQueryBuilder();
+        if ($user) {
+            $query->field('user.id')->equals($user);
+        }
+        return $query->sort('created', 'desc')
+                        ->getQuery()
+                        ->getSingleResult();
+    }
 
     /**
      * Pega todos ordenado por CREATED
      *
      * @return Order ou null
-     **/
-    public function findAllByCreated()
-    {
-        return $this->findBy(array(), array('created'=>'asc'));
+     * */
+    public function findAllByCreated() {
+        return $this->findBy(array(), array('created' => 'desc'));
     }
-    
+
     /**
      * Cria um novo pedido e setar um id para o pedido
      * 
      * @return Object order
      */
-    public function createOrder()
-    {
+    public function createOrder() {
         $control = true;
         $count = 0;
-        while ($control){
-            if($count < 3){
+        while ($control) {
+            if ($count < 3) {
                 $id = round(abs(crc32(uniqid(rand(), true)) / 1000));
-                if(!$this->hasId($id)){
+                if (!$this->hasId($id)) {
                     $control = false;
-                }else{
+                } else {
                     $count++;
                 }
-            }else{
+            } else {
                 $id = round(abs(crc32(uniqid(rand(), true))));
-                while($this->hasId($id)){
+                while ($this->hasId($id)) {
                     $id = round(abs(crc32(uniqid(rand(), true))));
                 }
                 $control = false;
@@ -46,9 +81,10 @@ class OrderRepository extends BaseRepository
         $order->setId($id);
         return $order;
     }
-    public function findByUser($id){
-        
-        return $this->findBy(array('user.$id' => new \MongoId($id)));
-        
+
+    public function findByUser($id) {
+
+        return $this->findBy(array('user.id' => $id), array('created' => 'desc'));
     }
+
 }

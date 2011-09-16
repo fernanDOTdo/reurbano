@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block stylesheets %}
-    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/jquery.tools.min.css' filter='?yui_css' output='reurbano/corebundle/css/tabs.css' %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/user/*' filter='?yui_css' output='css/user.css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}

@@ -16,7 +16,7 @@
 <meta name="generator" content="Mastop Internet Development" />
 <link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
 <title>{% block title title|default(mastop_param('system.site.name'))|trans %} - {%if app.request.attributes.get('_route') == '_home'%}{{mastop_param('system.site.slogan')}}{%else%}{{mastop_param('system.site.name')}}{%endif%}</title>
-{% stylesheets 'reurbano/Frontend/css/*.css' filter='?yui_css' output='themes/reurbano/css/pack.css' %}
+{% stylesheets 'reurbano/Frontend/css/system/*.css' filter='?yui_css' output='themes/reurbano/css/pack.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
 {% endstylesheets %}
 {% block stylesheets %}{% endblock %}
