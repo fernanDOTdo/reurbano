@@ -38,10 +38,12 @@ class ContactType extends AbstractType {
         $builder->add('mail', 'text', array('label' => 'E-mail:', 'attr' => array('style' => 'width: 450px;')));
         $builder->add('msg', 'textarea', array('label' => 'Mensagem:', 'attr' => array('style' => 'width: 450px;', 'rows' => '8')));
         $builder->add('email', 'text', array(
+            'required' => false,
             'attr' => array(
                 'class' => 'hidden'
             )));
         $builder->add('coment', 'textarea', array(
+            'required' => false,
             'attr' => array(
                 'class' => 'hidden'
             )));
@@ -49,8 +51,8 @@ class ContactType extends AbstractType {
 
     public function getDefaultOptions(array $options) {
         return array(
-            'data_class' => 'Reurbano\CoreBundle\Document\Banner',
-            'intention' => 'banner_creation',
+            'data_class' => 'Reurbano\CoreBundle\Document\Contact',
+            'intention' => 'contact_creation',
         );
     }
 

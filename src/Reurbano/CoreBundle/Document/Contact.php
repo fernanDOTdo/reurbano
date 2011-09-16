@@ -70,4 +70,112 @@ class Contact
     {
         $this->setCreatedAt(new \DateTime);
     }
+    
+    /**
+     * Get Id
+     * 
+     * @return id $id
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Set Id
+     *
+     * @param id $id 
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * Get Name
+     *
+     * @return string $name
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Set Name
+     *
+     * @param string $name 
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    /**
+     * Get Phone
+     *
+     * @return string $phone
+     */
+    public function getPhone() {
+        return $this->phone;
+    }
+
+    /**
+     * Set Phone
+     *
+     * @param string $phone
+     */
+    public function setPhone($phone) {
+        $this->phone = $phone;
+    }
+
+    /**
+     * Get Mail
+     *
+     * @return string $mail
+     */
+    public function getMail() {
+        return $this->mail;
+    }
+
+    /**
+     * Set Mail
+     *
+     * @param string $mail 
+     */
+    public function setMail($mail) {
+        $this->mail = $mail;
+    }
+
+    /**
+     * Get Mail
+     *
+     * @return string $msg
+     */
+    public function getMsg() {
+        return $this->msg;
+    }
+
+    /**
+     * Set Msg
+     *
+     * @param string $msg 
+     */
+    public function setMsg($msg) {
+        $this->msg = $msg;
+    }
+
+    /**
+     * Get CreatedAt
+     *
+     * @return date $createdAt
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set $createdAt
+     *
+     * @param date $createdAt 
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
 }
