@@ -68,7 +68,7 @@ class DealController extends BaseController {
                 foreach ($formDataResult as $kFile => $vFile) {
                     if ($vFile) {
                         $file = new Upload($formDataResult[$kFile]);
-                        $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal");
+                        $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal/voucher");
                         $fileUploaded = $file->upload();
                         $voucher = new Voucher();
                         $voucher->setFilename($fileUploaded->getFileName());

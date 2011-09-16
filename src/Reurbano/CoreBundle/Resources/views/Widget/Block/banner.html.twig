@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     {%else%}
-                    <div class="slide"><a href="{{ banner.getUrl() }}" title="{{ banner.getTitle() }}" {%if banner.getNewWindow%}target="_blank"{%endif%}><img src="{{ asset("/uploads/reurbanocore/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}"/></a></div>
+                    <div class="slide"><a href="{{ banner.getUrl() }}" title="{{ banner.getTitle() }}" {%if banner.getNewWindow%}target="_blank"{%endif%}><img src="{{ asset("/uploads/reurbanocore/banner/" ~ banner.getFilename()) }}" alt="{{ banner.getTitle() }}"/></a></div>
                     {%endif%}
                 {% endfor %}
             </div>
