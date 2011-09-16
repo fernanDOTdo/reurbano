@@ -1,1 +1,41 @@
-{{ user.getEmail }}
+<div class="dp50">
+    <h2>Cadastro</h2>
+    {{ "<b>Nome: </b>"}} {{ usuario.getName }}
+    <br />
+    {{ "<b>Email: </b>"}} {{ usuario.getEmail }}    
+    <br />
+    {{ "<b>Data de cadastro: </b>"}} {{ usuario.getCreated }}    
+    <br />
+    {{ "<b>Último login: </b>"}}
+    {% if  usuario.getLastLogin== 0 %}
+        {{ "Nunca"|trans }}
+    {% else %}
+        {{ usuario.getLastLogin }}
+    {% endif %}
+    <br />
+    <br />
+    <a class="button" href="{{ path('user_user_edit') }}">{{"Editar"|trans}}</a>
+    <a class="button" href="{{ path('user_user_recovery', {'username': usuario.getUsername()}) }}">{{"Trocar a Senha"|trans}}</a>
+</div>
+<div class="dp50">
+    <h2>Informações Bancárias</h2>
+    <div class="info">Dados necessários para solicitar um pagamento, caso queira <strong>vender</strong> uma oferta, ou reembolso caso queira cancelar uma <strong>compra</strong>.</div>
+    {% set bankData = usuario.getBankData %}
+    {%if bankData is null%}
+    Você ainda não forneceu seus dados bancários.<br />
+    <a href="{{path('user_user_bank')}}" class="button big orange">Cadastrar informações bancárias</a>
+    {%else%}
+    {{ "<b>Banco: </b>"}} {{ bankData.getName }}
+    <br />
+    {{ "<b>Agência: </b>"}} {{ bankData.getAgency }}
+    <br />
+    {{ "<b>Conta: </b>"}} {{ bankData.getAccount }}
+    <br />
+    {{ "<b>Tipo: </b>"}} {{ (bankData.getType == 1) ? 'Conta Corrente' : 'Conta Poupança'}}
+    <br />
+    {{ "<b>Obs: </b>"}}<br />
+    <div class="mB10">{{ bankData.getObs|nl2br }}</div>
+    <a class="button" href="{{ path('user_user_bank') }}">{{"Editar Informações Bancárias"|trans}}</a>
+    {%endif%}
+   
+</div>

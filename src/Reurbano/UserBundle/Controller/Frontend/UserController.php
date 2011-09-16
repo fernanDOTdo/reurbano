@@ -14,18 +14,18 @@ use Reurbano\UserBundle\Form\Frontend\UserFormEdit;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Form\Frontend\ReenviarForm;
 use Reurbano\UserBundle\Form\Frontend\ChangePassForm;
+use Reurbano\UserBundle\Form\Frontend\BankDataType;
 use Reurbano\UserBundle\Document\User;
+use Reurbano\UserBundle\Document\BankData;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-/**
- * @Route("/usuario", requirements={"_scheme" = "https"})
- */
+
 class UserController extends BaseController {
 
     /**
-     * @Route("/script.js", name="user_user_script")
+     * @Route("/usuario/script.js", name="user_user_script")
      */
     public function scriptAction() {
 
@@ -38,7 +38,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/check", name="user_user_check")
+     * @Route("/usuario/check", name="user_user_check")
      */
     public function checkAction() {
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -61,7 +61,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/check2", name="user_user_check2")
+     * @Route("/usuario/check2", name="user_user_check2")
      */
     public function check2Action() {
         if ($this->get('request')->isXmlHttpRequest()) {
@@ -86,7 +86,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/confirmacao/{username}", name="user_user_confirmation")
+     * @Route("/usuario/confirmacao/{username}", name="user_user_confirmation")
      * @Template()
      */
     function confirmationOkAction($username) {
@@ -106,57 +106,51 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novo", name="user_user_new")
-     * @Route("/editar/{username}", name="user_user_edit")
+     * @Route("/usuario/novo", name="user_user_new")
      * @Template()
      */
-    public function newAction($username = false) {
+    public function newAction() {
         $userLogado = $this->get('security.context')->getToken()->getUser();
-        $error = array();
-        if ($username) {
-            $rep = $this->mongo('ReurbanoUserBundle:User');
-            $query = $rep->findByField('username', $username);
-            if (count($query) == 1) {
-                if ($this->get('security.context')->isGranted('ROLE_ADMIN') || ($query->getId() == $userLogado->getId())) {
-                    $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $query->getName()));
-                    $form = $this->createForm(new UserFormEdit(), $query);
-                    return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
-                                'form' => $form->createView(), 'titulo' => $titulo,
-                                'usuario' => $query,
-                                'error' => $error,
-                                'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
-                            ));
-                } else {
-                    $msg = $this->trans('Você não tem permissão para editar o usuário.');
-                    $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('_home'));
-                }
-            } else {
-                $msg = $this->trans('Não existe o usuário %username%', array("%username%" => $username));
-                $this->get('session')->setFlash('error', $msg);
-                return $this->redirect($this->generateUrl('_home'));
-            }
-        } else {
-            if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-                $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-            } else {
-                $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
-            }
-
-            $factory = $this->get('form.factory');
-            $titulo = $this->trans("Cadastre-se");
-            $form = $factory->create(new UserForm());
-            return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
-                        'form' => $form->createView(), 'titulo' => $titulo,
-                        'usuario' => null,
-                        'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
-                        'error' => $error,
-                    ));
+        if(is_object($userLogado)){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você já está cadastrado e logado como <strong>'.$userLogado->getName().' ('.$userLogado->getEmail().')</strong>.', 'error');
         }
+        if ($this->get('request')->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $this->get('request')->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $this->get('request')->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
+        }
+        if($error){
+            $this->get('session')->setFlash('error', $error->getMessage());
+        }
+
+        $factory = $this->get('form.factory');
+        $titulo = $this->trans("Cadastre-se");
+        $form = $factory->create(new UserForm());
+        return $this->render('ReurbanoUserBundle:Frontend/User:novo.html.twig', array(
+                    'form' => $form->createView(), 'titulo' => $titulo,
+                    'usuario' => null,
+                    'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
+                ));
+    }
+    /**
+     * @Route("/usuario/editar", name="user_user_edit")
+     * @Template()
+     */
+    public function editAction() {
+        $userLogado = $this->get('security.context')->getToken()->getUser();
+        if(!$this->hasRole('ROLE_USER')){
+            return $this->redirectFlash($this->generateUrl('_login'), 'É preciso estar logado para acessar esta página.', 'error');
+        }
+        $titulo = $this->trans("Edição do usuário %name%", array("%name%" => $userLogado->getName()));
+        $form = $this->createForm(new UserFormEdit(), $userLogado);
+        return $this->render('ReurbanoUserBundle:Frontend/User:editar.html.twig', array(
+                    'form' => $form->createView(), 'titulo' => $titulo,
+                    'usuario' => $userLogado,
+                ));
     }
 
     /**
-     * @Route("/ativar/{actkey}", name="user_user_active")
+     * @Route("/usuario/ativar/{actkey}", name="user_user_active")
      * @Template()
      */
     public function activeAction($actkey) {
@@ -187,7 +181,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviar", name="user_user_resend")
+     * @Route("/usuario/reenviar", name="user_user_resend")
      * @Template()
      */
     public function resendAction() {
@@ -287,7 +281,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/reenviarOk", name="user_user_resendOk")
+     * @Route("/usuario/reenviarOk", name="user_user_resendOk")
      * @Template()
      */
     public function resendOkAction() {
@@ -332,7 +326,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/detalhes/{username}", name="user_user_details")
+     * @Route("/usuario/detalhes/{username}", name="user_user_details")
      * @Secure(roles="ROLE_USER")
      * @Template()
      */
@@ -354,7 +348,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/salvar/{id}", name="user_user_save", defaults={"id" = null})
+     * @Route("/usuario/salvar/{id}", name="user_user_save", defaults={"id" = null})
      * @Template()
      */
     public function saveAction($id=null) {
@@ -372,16 +366,6 @@ class UserController extends BaseController {
         if ($form->isValid()) {
             if ($id) {
                 $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
-                //validar se o username inserido não existe ou se é o dele mesmo
-                $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
-                        ->field('username')->equals(str_replace(".", "", str_replace("@", "", $dadosPost['email'])))
-                        ->field('id')->notEqual($dadosPost['id'])
-                        ->getQuery()
-                        ->execute();
-                if (($result->count() > 0)) {
-                    $erro[] = $this->trans('Já existe o usuário <b>%name%</b>. Utilize outro', array("%name%" => $dadosPost['username']));
-                }
-                // /validar se o username inserido não existe ou se é o dele mesmo
                 //validando se o email já não existe
                 $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                         ->field('email')->equals($dadosPost['email'])
@@ -389,7 +373,7 @@ class UserController extends BaseController {
                         ->getQuery()
                         ->execute();
                 if (($result->count() > 0)) {
-                    $erro[] = $this->trans('O endereço de email <b>%email%</b> já foi utilizado. Escolha outro email.', array('%email%' => $dadosPost['email']));
+                    $erro[] = $this->trans('O endereço de email <b>%email%</b> já é utilizado. Escolha outro email.', array('%email%' => $dadosPost['email']));
                 }
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
@@ -405,14 +389,14 @@ class UserController extends BaseController {
                     }
                     $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name']));
                     $this->get('session')->setFlash('ok', $msg . $msgAux);
-                    return $this->redirect($this->generateUrl('user_user_details', array('username' => $user->getUsername())));
+                    return $this->redirect($this->generateUrl('user_dashboard_index'));
                 } else {
                     $msg = "";
                     foreach ($erro as $eItem) {
                         $msg.=$eItem . " <br />";
                     }
                     $this->get('session')->setFlash('error', $msg);
-                    return $this->redirect($this->generateUrl('user_user_details', array('username' => $user->getUsername())));
+                    return $this->redirect($this->generateUrl('user_user_edit'));
                 }
             } else {
                 $modoCadastro = $this->get('mastop')->param('user.all.autoactive');
@@ -513,7 +497,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})
+     * @Route("/usuario/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})
      * @Template()
      */
     public function recoveryAction($username=null) {
@@ -525,7 +509,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/recuperaok", name="user_user_recoverypost")
+     * @Route("/usuario/recuperaok", name="user_user_recoverypost")
      * @Template()
      */
     public function recuveryPostAction() {
@@ -546,7 +530,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacao/{actkey}", name="user_user_recovering")
+     * @Route("/usuario/senha/recuperacao/{actkey}", name="user_user_recovering")
      * @Template()
      */
     public function recoveringAction($actkey) {
@@ -565,7 +549,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/senha/recuperacaook/{actkey}", name="user_user_recoveringok")
+     * @Route("/usuario/senha/recuperacaook/{actkey}", name="user_user_recoveringok")
      * @Template()
      */
     public function recoveringOkAction($actkey) {
@@ -596,7 +580,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/novoemail/{edited}/{email}", name="user_user_newemail")
+     * @Route("/usuario/novoemail/{edited}/{email}", name="user_user_newemail")
      * @Template()
      */
     public function newEmailAction($edited, $email) {
@@ -626,7 +610,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/facebook", name="user_user_facebook")
+     * @Route("/usuario/facebook", name="user_user_facebook")
      * @Template()
      */
     public function facebookAction() {
@@ -750,7 +734,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/conect", name="user_user_twitterconect")
+     * @Route("/usuario/twitter/conect", name="user_user_twitterconect")
      * @Template()
      */
     function twitterConectAction() {
@@ -759,7 +743,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/back", name="user_user_twitterback")
+     * @Route("/usuario/twitter/back", name="user_user_twitterback")
      * @Template()
      */
     function twitterBackAction() {
@@ -808,7 +792,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/twitter/salvar", name="user_user_twittersave")
+     * @Route("/usuario/twitter/salvar", name="user_user_twittersave")
      * @Template()
      */
     function twitterNewAction() {
@@ -913,6 +897,43 @@ class UserController extends BaseController {
             $session->setFlash('error', $msg);
             return $this->redirect($this->generateUrl('user_user_twitterback'));
         }
+    }
+    
+    /**
+     * @Route("/usuario/banco", name="user_user_bank")
+     * @Secure(roles="ROLE_USER")
+     * @Template()
+     */
+    public function bankAction() {
+        $userLogado = $this->get('security.context')->getToken()->getUser();
+        $bankData = $userLogado->getBankData();
+        $form = $this->createForm(new BankDataType(), $bankData);
+        $ret['title'] = 'Informações Bancárias';
+        $ret['form'] = $form->createView();
+        return $ret;
+    }
+    
+    /**
+     * @Route("/usuario/banco/salvar", name="user_user_banksave")
+     * @Secure(roles="ROLE_USER")
+     * @Template()
+     */
+    public function bankSaveAction() {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $bankData = $user->getBankData();
+        $form = $this->createForm(new BankDataType(), $bankData);
+        $request = $this->get('request');
+        $dm = $this->dm();
+        if ('POST' == $request->getMethod()) {
+            $form->bindRequest($request);
+            if ($form->isValid()) {
+                $user->setBankData($form->getData());
+                $dm->persist($user);
+                $dm->flush();
+                return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Informações bancárias atualizadas');
+            }
+        }
+        return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Ocorreu um erro ao processar suas informações bancárias.', 'error');
     }
 
 }
