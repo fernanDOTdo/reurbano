@@ -22,7 +22,7 @@
                 {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}
             </td>
             <td>
-                {{ deal.getPrice()  }}
+                {{ deal.getPrice()|money  }}
             </td>
             <td>
                 {{ deal.getQuantity() }}
@@ -42,7 +42,7 @@
             </td>
         </tr>
   {% else %}
-        <tr><td colspan="4">{{"Nenhuma categoria encontrada"|trans}}</td></tr>
+        <tr><td colspan="4">{{"Nenhuma oferta encontrada"|trans}}</td></tr>
 {% endfor %} 
     </table>
     <div class='clear'></div>

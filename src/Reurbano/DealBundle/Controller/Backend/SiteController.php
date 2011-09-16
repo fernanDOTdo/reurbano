@@ -59,7 +59,7 @@ class SiteController extends BaseController {
             
             if($fileData['logo'] != null){
                 $file = new Upload($fileData['logo']);
-                $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal");
+                $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal/site");
                 $fileUploaded = $file->upload();
                 $site->setFilename($fileUploaded->getFileName());
                 $site->setFilesize($fileUploaded->getFileUploaded()->getClientSize());

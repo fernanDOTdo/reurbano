@@ -64,7 +64,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setName('combuypercent');
         $child->setTitle('Comissão Comprador %');
         $child->setDesc('Comissão a cobrar do comprador em %');
-        $child->setValue(10);
+        $child->setValue(0);
         $child->setOrder(4);
         $param->addChildren($child);
         

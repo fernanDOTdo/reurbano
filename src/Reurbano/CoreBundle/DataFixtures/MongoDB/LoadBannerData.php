@@ -17,7 +17,7 @@ class LoadBannerData extends AbstractFixture implements OrderedFixtureInterface,
     }
 
     public function load($manager) {
-        $path = $this->container->get('kernel')->getRootDir() . "/../web/uploads/reurbanocore";
+        $path = $this->container->get('kernel')->getRootDir() . "/../web/uploads/reurbanocore/banner";
         for($i = 1; $i <= 6; $i++){
             $banner = new Banner();
             $banner->setTitle('Banner '.$i);

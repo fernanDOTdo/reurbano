@@ -1,0 +1,102 @@
+#lastOrderTitle strong{
+    color: #000;
+    font-size: 1.1em;
+}
+#lastOrder div.dealThumb{
+    position: relative;
+    float: left;
+}
+#lastOrder div.dealThumb img{
+    width: 250px;
+    height: 179px;
+}
+#lastOrder div.dealThumb span{
+    font-weight: 700;
+    font-size: 2em;
+    padding: 3px 4px;
+}
+#lastOrder div.orderLabel{
+    float: left;
+    width: 330px;
+    margin-left: 15px;
+}
+#lastOrder div.orderLabel form{
+    float: right;
+    margin-right: 50px;
+}
+#lastOrder div.orderLabel p{
+    margin-bottom: 10px;
+}
+
+p.orderStatus{
+    font-weight: 700;
+    border:1px solid #000;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background: #333;
+    padding: 8px;
+    color: #FFF;
+    font-size: 1.3em;
+    width: 80%;
+    text-align: center;
+}
+p.orderStatus.cancelado, p.orderStatus.problemas{
+    border:1px solid #8D0000;
+    background: #8D0000;
+    color: #FFF;
+}
+p.orderStatus.aprovado, p.orderStatus.finalizado{
+    border:1px solid #587906;
+    background: #587906;
+    color: #FFF;
+}
+
+#lastOrder div.orderInfo{
+    float: left;
+    width: 600px;
+}
+#lastOrder div.orderComments{
+    float: left;
+    width: 310px;
+}
+
+div.orderComments h3{
+    margin: 0 0 5px;
+}
+div.orderComments{
+    height: 250px;
+    margin-top: -50px;
+    position: relative;
+}
+div.orderComments form{
+    position: absolute;
+    bottom: 0;
+}
+div.orderComments textarea{
+    width: 240px;
+    height: 45px;
+}
+div.orderComments button{
+    float: right;
+    margin-top: 13px;
+    margin-left: 3px;
+}
+div.orderCommentsDiv{
+    height: 190px;
+    overflow: auto;
+}
+div.orderComment{
+    padding: 3px;
+    border:1px solid #D9D9D9;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin: 0 5px 5px 0;
+}
+div.orderComment.seller{
+    background: #FFFDDB;
+}
+div.orderComment.admin{
+    background: #EDFFF0;
+}

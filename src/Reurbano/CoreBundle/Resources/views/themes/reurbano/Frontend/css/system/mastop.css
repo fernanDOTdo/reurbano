@@ -166,7 +166,7 @@ td{padding: 3px;}
 #search{height: 83px;}
 #search form{margin-left: 45px; height: 65px; padding-top: 18px;}
 #searchDiv{float: right; position: relative; width: 400px;}
-#searchDiv button{position: absolute; right: 3px; top: 3px;}
+#searchDiv button{position: absolute; right: 3px; margin-top: 6px;}
 #search #q{width: 317px; padding-left: 10px; height: 29px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
