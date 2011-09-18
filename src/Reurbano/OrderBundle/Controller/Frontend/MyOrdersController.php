@@ -48,6 +48,9 @@ class MyOrdersController extends BaseController
         if($user->getId() != $order->getUser()->getId()){
             return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você não tem permissão para acessar esta página.', 'error');
         }
+        if($this->getRequest()->request->get('message') == null){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Digite uma mensagem para enviar um comentário no pedido.', 'error');
+        }
         $dm = $this->dm();
         $comment = new Comment();
         $comment->setUser($user);
