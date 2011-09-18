@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Reurbano/OrderBundle/Controller/Widget/MyOrdersController.php
  *
@@ -32,26 +33,25 @@ use Reurbano\OrderBundle\Document\Order;
 /**
  * Controller que será os dados dentro da aba "Minhas Compras" no minha-conta
  */
+class MyOrdersController extends BaseController {
 
-class MyOrdersController extends BaseController
-{
     /**
      * Dashboard do MyOrders
      * 
      * @Template()
      */
-    public function dashboardAction()
-    {
+    public function dashboardAction() {
         $user = $this->get('security.context')->getToken()->getUser();
         $orders = $this->mongo('ReurbanoOrderBundle:Order')->findByUser($user->getId());
         $lastOrder = $this->mongo('ReurbanoOrderBundle:Order')->findLastOrder($user->getId());
-        $pay = $lastOrder->getPayment();
-        if(!isset ($pay['data'])){
-            $gateway = 'Reurbano\OrderBundle\Payment\\'.$pay['gateway'];
-            $payment = new $gateway($lastOrder, $this->container);
-            $payButton = $payment->renderPaymentButton();
-        }else{
-            $payButton = null;
+        $payButton = null;
+        if ($lastOrder) {
+            $pay = $lastOrder->getPayment();
+            if (!isset($pay['data'])) {
+                $gateway = 'Reurbano\OrderBundle\Payment\\' . $pay['gateway'];
+                $payment = new $gateway($lastOrder, $this->container);
+                $payButton = $payment->renderPaymentButton();
+            }
         }
         return array(
             'user' => $user,
@@ -60,4 +60,5 @@ class MyOrdersController extends BaseController
             'orders' => $orders,
         );
     }
+
 }
