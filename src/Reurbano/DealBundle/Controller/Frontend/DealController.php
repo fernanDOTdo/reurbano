@@ -136,6 +136,9 @@ class DealController extends BaseController
         $form = $this->createForm(new DealType(), $deal);
         $data = $this->get('request')->request->get($form->getName());
         $user = $this->get('security.context')->getToken()->getUser();
+        if($user->getId() != $deal->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
         if($request->getMethod() == 'POST'){
             $form->bindRequest($request);
             $formDataResult = $request->files->get($form->getName());
@@ -199,6 +202,10 @@ class DealController extends BaseController
      * @Route("/minha-conta/ativar/oferta/{id}/{active}", name="deal_deal_active", defaults={"active" = false})
      */
     public function activeAction(Deal $deal, $active = false){
+        $user = $this->get('security.context')->getToken()->getUser();
+        if($user->getId() != $deal->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
         $dm = $this->dm();
         ($active) ? $deal->setActive(true) : $deal->setActive(false);
         $dm->persist($deal);

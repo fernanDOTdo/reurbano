@@ -73,7 +73,7 @@ class BannerController extends BaseController
                     @unlink($banner->getPath() . "/" . $banner->getFileName());
                 }
                 $file = new Upload($fileData['logo']);
-                $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanocore");
+                $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanocore/banner");
                 $fileUploaded = $file->upload();
                 $banner->setFilename($fileUploaded->getFileName());
                 $banner->setFilesize($fileUploaded->getFileUploaded()->getClientSize());

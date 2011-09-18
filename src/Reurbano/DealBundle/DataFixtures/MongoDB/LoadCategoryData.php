@@ -16,7 +16,9 @@ class LoadCategoryData implements FixtureInterface, ContainerAwareInterface {
     }
 
     public function load($manager) {
-        $categorias = array('Beleza e Saúde', 'Hotéis e Viagens', 'Diversão e Esportes', 'Restaurantes e Bares', 'Serviços', 'Produtos', 'Cursos e Aulas', 'Outros');
+        // Categorias originais (comentado porque pediram para mudar)
+        //$categorias = array('Beleza e Saúde', 'Hotéis e Viagens', 'Diversão e Esportes', 'Restaurantes e Bares', 'Serviços', 'Produtos', 'Cursos e Aulas', 'Outros');
+        $categorias = array('Bares & Restaurantes', 'Beleza & Saúde', 'Hotéis & Viagens', 'Lazer', 'Produtos', 'Serviços', 'Outros');
         foreach ($categorias as $cat) {
             $Category = new Category();
             $Category->setName($cat);

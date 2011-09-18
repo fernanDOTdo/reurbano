@@ -127,6 +127,7 @@ class OrderController extends BaseController
         $order->setStatus($status);
         $order->addStatusLog($statusLog);
         $order->setUser($user);
+        $order->setSeller($deal->getUser());
         $order->setDeal($deal);
         $order->setQuantity($qtd);
         // Seta o valor total
@@ -145,6 +146,7 @@ class OrderController extends BaseController
         $gateway = 'Reurbano\OrderBundle\Payment\\'.$this->mastop()->param('order.all.gateway');
         $payment = new $gateway($order, $this->container);
         $pay['params'] = $payment->getParams();
+        $pay['gateway'] = $this->mastop()->param('order.all.gateway');
         $order->setPayment($pay);
         $dm->persist($order);
         $dm->flush();

@@ -141,7 +141,7 @@ class SellController extends BaseController
             foreach ($formDataResult as $kFile => $vFile){
                 if ($vFile){
                     $file = new Upload($formDataResult[$kFile]);
-                    $path = $this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal";
+                    $path = $this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal/voucher";
                     $file->setPath($path);
                     $fileUploaded = $file->upload();
                     $voucher = new Voucher();

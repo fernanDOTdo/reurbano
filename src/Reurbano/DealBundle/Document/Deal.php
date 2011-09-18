@@ -553,7 +553,7 @@ class Deal
         $count1 = $this->getPrice() / $this->getSource()->getPrice();
         $count2 = $count1 * 100;
         $count3 = 100 - $count2;
-        $count = number_format($count3, 0);
+        $count = floor($count3);
         $this->setDiscount($count);
         // Gera as tags
         $this->generateTags();
@@ -568,7 +568,7 @@ class Deal
         $count1 = $this->getPrice() / $this->getSource()->getPrice();
         $count2 = $count1 * 100;
         $count3 = 100 - $count2;
-        $count = number_format($count3, 0);
+        $count = floor($count3);
         $this->setDiscount($count);
         // Gera as tags
         $this->generateTags();

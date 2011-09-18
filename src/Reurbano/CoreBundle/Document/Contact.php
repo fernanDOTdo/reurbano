@@ -75,8 +75,7 @@ class Contact
     protected $createdAt;
     
     /** 
-     * @ODM\PreUpdate 
-     * @ToDo Não está fazendo o pre persist 
+     * @ODM\PrePersist 
      */
     public function doPreUpdate()
     {

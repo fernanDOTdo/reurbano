@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Reurbano/Corebundle/Form/BannerType.php
+ * Reurbano/Corebundle/Form/ContactType.php
  *
- * Cria o formulario para um novo banner
+ * Cria o formulario para um novo contato
  *  
  * 
  * @copyright 2011 Mastop Internet Development.
@@ -34,7 +34,7 @@ class ContactType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('name', 'text', array('label' => 'Nome:', 'attr' => array('style' => 'width: 450px;')));
-        $builder->add('phone', 'text', array('label' => 'Telefone:', 'attr' => array('style' => 'width: 450px;')));
+        $builder->add('phone', 'text', array('required' => false, 'label' => 'Telefone:', 'attr' => array('style' => 'width: 450px;')));
         $builder->add('mail', 'text', array('label' => 'E-mail:', 'attr' => array('style' => 'width: 450px;')));
         $builder->add('msg', 'textarea', array('label' => 'Mensagem:', 'attr' => array('style' => 'width: 450px;', 'rows' => '8')));
         $builder->add('email', 'text', array(

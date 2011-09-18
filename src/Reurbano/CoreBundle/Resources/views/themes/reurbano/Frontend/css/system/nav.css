@@ -5,7 +5,7 @@
 
 #nav {
   margin: 0;
-  padding: 7px 6px 0;
+  padding: 7px 40px 0;
   line-height: 100%;
   border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -23,11 +23,15 @@
   border: solid 1px #999;
 }
 #nav li {
-  margin: 0 5px;
+  margin: 0 4% 0 0;
   padding: 0 0 6px;
   float: left;
   position: relative;
   list-style: none;
+}
+#nav li.last {
+  margin: 0;
+  float: right;
 }
 #nav a {
   border: none;

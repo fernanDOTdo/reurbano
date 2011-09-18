@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block stylesheets %}
-    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.css' filter='?yui_css' output='reurbano/dealbundle/css/pack.css' %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/deal/*' filter='?yui_css' output='css/deal.css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
