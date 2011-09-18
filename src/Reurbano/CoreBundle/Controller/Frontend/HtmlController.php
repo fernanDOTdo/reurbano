@@ -26,11 +26,31 @@ class HtmlController extends BaseController {
         $cont = new Contact();
         $form = $this->createForm(new ContactType());
         $request = $this->getRequest();
+        $result = $request->request->get($form->getName());
         if($request->getMethod() == 'POST'){
-            $result = $request->request->get($form->getName());
-            var_dump($result['name']);
+            if($result['email'] || $result['coment']){
+                return $this->redirect($this->generateUrl('_home'));
+            }
+            $cont->setName($result['name']);
+            $cont->setPhone($result['phone']);
+            $cont->setMail($result['mail']);
+            $cont->setMsg($result['msg']);
+            $cont->setIp($_SERVER['REMOTE_ADDR']);
             $dm->persist($cont);
             $dm->flush();
+            
+            $message = \Swift_Message::newInstance()
+                        ->setSubject($this->trans('Formulário de contato'))
+                        ->setFrom($cont->getMail())
+                        ->setTo($this->get('mastop')->param('system.site.adminmail'))
+                        ->setBody($this->renderView('ReurbanoCoreBundle:Frontend/Html:email.html.twig', array(
+                            'cont' => $cont,
+                            'date' => date('d/m/y G:i:s'))))
+            ;
+            if(!($this->get('mailer')->send($message))){
+                echo "Something went wrong";
+                exit();
+            }
             return $this->redirectFlash($this->generateUrl('_home'), 'Mensagem enviada com sucesso.');
         }
         return array(

@@ -10,8 +10,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @author   Rafael Basquens <rafael@basquens.com>
  *
- * @ODM\Document (
- * collection="contact",
+ * @ODM\Document(
+ * collection="contact"
  * ) 
  */
 class Contact
@@ -57,6 +57,15 @@ class Contact
     protected $msg;
     
     /**
+     * Ip do usuário
+     * 
+     * @var string
+     * @ODM\String
+     */
+    protected $ip;
+
+
+    /**
      * Data de criação da oferta
      *
      * @var date
@@ -65,7 +74,10 @@ class Contact
      */
     protected $createdAt;
     
-    /** @ODM\PreUpdate */
+    /** 
+     * @ODM\PreUpdate 
+     * @ToDo Não está fazendo o pre persist 
+     */
     public function doPreUpdate()
     {
         $this->setCreatedAt(new \DateTime);
@@ -160,7 +172,26 @@ class Contact
     public function setMsg($msg) {
         $this->msg = $msg;
     }
+    
+    /**
+     * Get Ip
+     *
+     * @return string $ip
+     */
+    public function getIp() {
+        return $this->ip;
+    }
 
+    /**
+     * Set Ip
+     * 
+     * @param string $ip 
+     */
+    public function setIp($ip) {
+        $this->ip = $ip;
+    }
+
+    
     /**
      * Get CreatedAt
      *
