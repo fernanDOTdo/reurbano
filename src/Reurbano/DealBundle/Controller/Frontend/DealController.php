@@ -29,7 +29,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use Reurbano\DealBundle\Document\Deal;
+use Reurbano\DealBundle\Document\Voucher;
+use Reurbano\DealBundle\Document\Comission;
+
+use Reurbano\DealBundle\Form\Frontend\DealType;
+
+use Reurbano\DealBundle\Util\Upload;
 
 class DealController extends BaseController
 {
@@ -115,9 +122,94 @@ class DealController extends BaseController
         return $ret;
     }
     
-    /*
-     * Action para o usuário editar uma oferta
+    /**
+     * Edita uma oferta no frontend
      * 
-     * @Route("minha-conta/editar")
+     * @Route("/minha-conta/editar/oferta/{id}", name="deal_deal_edit")
+     * @Template()
      */
+    public function editAction(Deal $deal)
+    {
+        $dm = $this->dm();
+        $title = "Editar Oferta";
+        $request = $this->get('request');
+        $form = $this->createForm(new DealType(), $deal);
+        $data = $this->get('request')->request->get($form->getName());
+        $user = $this->get('security.context')->getToken()->getUser();
+        if($user->getId() != $deal->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
+        if($request->getMethod() == 'POST'){
+            $form->bindRequest($request);
+            $formDataResult = $request->files->get($form->getName());
+            $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['sourceId']);
+            $formDataResult = $request->files->get($form->getName());
+            if(count($formDataResult) != $data['quantity']){
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'É preciso enviar '.$data['quantity'].' vouchers', 'error');
+            }
+            foreach ($formDataResult as $kFile => $vFile){
+                if ($vFile){
+                    $file = new Upload($formDataResult[$kFile]);
+                    $path = $this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal";
+                    $file->setPath($path);
+                    $fileUploaded = $file->upload();
+                    $voucher = new Voucher();
+                    $voucher->setFilename($fileUploaded->getFileName());
+                    $voucher->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
+                    if ($file->getPath() != ""){
+                        $voucher->setPath($fileUploaded->getPath());
+                    }else {
+                        $voucher->setPath($fileUploaded->getDeafaultPath());
+                    }
+                    $deal->addVoucher($voucher);
+                }
+            }
+            $deal->setSource($source);
+            $price = $data['price'];
+            $quantity = $data['quantity'];
+            
+            
+            $deal->setUser($user);
+            $deal->setPrice($price);
+            $deal->setChecked(false);
+            $deal->setSpecial(false);
+            $deal->setQuantity($quantity);
+            $deal->setActive(true);
+            $deal->setLabel($source->getTitle());
+            
+            // Comissão
+            $comission = new Comission();
+            $comission->setSellerpercent($this->get('mastop')->param('deal.all.comsellpercent'));
+            $comission->setSellerreal($this->get('mastop')->param('deal.all.comsellreal'));
+            $comission->setBuyerpercent($this->get('mastop')->param('deal.all.combuypercent'));
+            $comission->setBuyerreal($this->get('mastop')->param('deal.all.combuyreal'));
+            $deal->setComission($comission);
+            $dm->persist($deal);
+            $dm->flush();
+            
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), $this->trans('Oferta editada com sucesso!'));
+        }
+        return array(
+            'form'  => $form->createView(),
+            'deal' => $deal,
+            'title' => $title,
+        );
+    }
+    
+    /**
+     * Ativa e Desativa uma oferta
+     * 
+     * @Route("/minha-conta/ativar/oferta/{id}/{active}", name="deal_deal_active", defaults={"active" = false})
+     */
+    public function activeAction(Deal $deal, $active = false){
+        $user = $this->get('security.context')->getToken()->getUser();
+        if($user->getId() != $deal->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
+        $dm = $this->dm();
+        ($active) ? $deal->setActive(true) : $deal->setActive(false);
+        $dm->persist($deal);
+        $dm->flush();
+        return $this->redirect($this->generateUrl('user_dashboard_index')."#mydeals");
+    }
 }
