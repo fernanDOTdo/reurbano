@@ -18,7 +18,7 @@ class DealType extends AbstractType {
                 ->add('special', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Destaque'))
                 ->add('checked', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Conferido'))
                 ->add('comission', new ComissionType(), array('label'=>'Comissão'))
-//                ->add('voucher0', 'file', array ('label' => "Voucher" ,'required' => false, 'property_path' => false))
+                //->add('voucher0', 'file', array ('label' => "Voucher" ,'required' => false, 'property_path' => false))
                 //->add('voucher', 'document', array('label'=>'Voucher', 'class' => 'Reurbano\\DealBundle\\Document\\Voucher', 'property'=>'title' ))
             ;
     
