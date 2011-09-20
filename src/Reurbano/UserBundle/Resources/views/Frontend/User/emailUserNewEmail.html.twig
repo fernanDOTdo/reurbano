@@ -1,8 +1,0 @@
-{{ "Olá %name%, seus dados cadastrais foram alterados em nosso site, contudo foi solicitado a troca de seu email de %emailOld% para %email%."|trans({"%name%":usuario.getName(),"%email%":newEmail,"%emailOld%":usuario.getEmail()}) }}
-<br />
-{{ "Para confirmar este novo email favor clicar no link abaixo:"|trans }}
-<br />
-<h1>
-    <a href="{{ url('user_user_newemail', {"edited":usuario.getEdited(true),'email':newEmail}) }}" title="{{ "Clique aqui para confirmar a troca de seu email"|trans}}">{{ url('user_user_newemail', {"edited":usuario.getEdited(true),'email':newEmail}) }}</a>
-</h1>
-<b>{{ "Endereço IP: %ip%."|trans({'%ip%':ip}) }}</b>

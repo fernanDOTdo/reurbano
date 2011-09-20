@@ -1,6 +1,6 @@
 {%if lastOrder%}
 <h2 id="lastOrderTitle">Última Compra - Data: <strong>{{ lastOrder.created.timestamp|date("d/m/Y")  }}</strong> - Total: <strong>{{lastOrder.total|money}}</strong></h2>
-<div id="lastOrder">
+<div id="myOrder">
     <div class="orderInfo">
         <div class="dealThumb">
             <img src="{{asset(lastOrder.deal.source.thumb)}}" alt="{{lastOrder.deal.label}}" />
@@ -8,8 +8,8 @@
         </div>
         <div class="orderLabel">
             <p>{{ lastOrder.deal.label }}</p>
-            <p class="orderStatus {{ lastOrder.status.name|lower }}">Pedido {{ lastOrder.status.name }}</p>
-            {{payButton|raw}}<p><a class="button {{lastOrder.deal.discountType }}" href="{{path('order_order_index', {'id': lastOrder.id})}}">Ver Pedido</a></p>
+            <p class="orderStatus {{ lastOrder.status.name|lower }}">Status: {{ lastOrder.status.name }}</p>
+            {{payButton|raw}}<p><a class="button {{lastOrder.deal.discountType }}" href="{{path('order_myorders_view', {'id': lastOrder.id})}}">Ver Compra</a></p>
         </div>
     </div>
     <div class="orderComments">
@@ -67,7 +67,7 @@
             {{ order.deal.source.expiresAt|date("d/m/Y")  }}
             </td>
             <td class="center">
-                <a class="button button-set-start small white" href="{{ path('admin_order_order_status', {'id': order.getId()}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{"Editar"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_order_order_status', {'id': order.getId()}) }}"><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                <a class="button button-set-start small white" href="{{ path('order_myorders_view', {'id': order.getId()}) }}">{{"Ver Compra"|trans}}</a>
             </td>
         </tr>
   {% else %}

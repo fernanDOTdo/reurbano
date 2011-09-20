@@ -1,7 +1,62 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Teste{% endblock %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/order/*' filter='?yui_css' output='css/order.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
 
 {% block content %}
-Teste!
+<h1 id="myOrderTitle">{{title}}</h1>
+<div id="myOrder">
+    <div class="orderInfo">
+        <div class="dealThumb">
+            <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" />
+            <span class="discount {{order.deal.discountType }}">Cód. {{order.id}}</span>
+        </div>
+        <div class="orderLabel">
+            <p>{{ order.deal.label }}</p>
+            <p class="orderStatus {{ order.status.name|lower }}">Status: {{ order.status.name }}</p>
+            {{payButton|raw}}
+        </div>
+    </div>
+    <div class="orderDetails">
+        <h4>Informações da Compra</h4>
+        <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+        <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
+        <p>Total: <strong>{{ order.total|money}}</strong></p>
+        <h4>Informações da Operadora de Pagamento</h4>
+        {%for pay in payment.renderInfo()%}
+        <p>{{pay|raw}}</p>
+        {%else%}
+                <div class="info">Esta compra ainda não foi paga.</div>
+        {%endfor%}
+    </div>
+    <div class="clear"></div>
+    <div class="orderComments m10">
+        <h4>Comentários</h4>
+        <div class="orderCommentsDiv">
+          {%for comment in order.comments|reverse%}
+                <div class="orderComment {%if comment.user.id == order.user.id%}customer{%elseif comment.user.id == order.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == order.user.id%}Cliente{%elseif comment.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y h:i")}}</em><br />{{comment.message|nl2br}}</div>
+          {%else%}
+                <div class="info">Não há comentários nesta compra.</div>
+          {%endfor%}
+        </div>
+        <form method="post" action="{{path('order_myorders_comment', {'id':order.id})}}">
+            <textarea name="message" placeholder="Deixe um comentário neste pedido"></textarea><button type="submit" class="button primary big {{order.deal.discountType }}">OK</button>
+        </form>
+    </div>
+    <div class="orderStatusLog m10">
+        <h4>Histórico</h4>
+        <div class="orderStatusLogDiv">
+          {%for status in order.statusLog|reverse%}
+                <div class="orderStatusLogItem {{ status.status.name|lower }}">{{ status.status.name }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
+          {%else%}
+                <div class="info">Não há histórico nesta compra.</div>
+          {%endfor%}
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
 {% endblock %}

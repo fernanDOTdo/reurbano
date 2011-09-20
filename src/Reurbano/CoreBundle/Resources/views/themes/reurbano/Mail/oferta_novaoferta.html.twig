@@ -1,0 +1,15 @@
+{# E-mail de confirmação de envio de oferta #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua oferta foi enviada para o {{mastop_param('system.site.name')}}!</h1><br/><br/>
+<h3>Dados da Oferta Cadastrada:</h3>
+<b>Oferta: </b> {{deal.label}} <br /><br />
+<b>Valor: </b> De <strong>{{deal.source.price|money}}</strong> - Por: <strong>{{deal.price|money}}</strong> ({{deal.discount}}% de desconto)<br /><br />
+<b>Quantidade: </b> {{deal.quantity}} <br /><br />
+<b>Link: </b> <a href="{{dealLink}}" target="_blank">{{dealLink}}</a><br /><br /><br /><br />
+
+<span style="margin:0;font-size:11px;">
+Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
+</span><br/><br/>
+{% endblock %}

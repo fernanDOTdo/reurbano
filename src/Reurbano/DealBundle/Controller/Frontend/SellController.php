@@ -1,4 +1,37 @@
 <?php
+/**
+ *                                              ,d                              
+ *                                              88                              
+ * 88,dPYba,,adPYba,   ,adPPYYba,  ,adPPYba,  MM88MMM  ,adPPYba,   8b,dPPYba,   
+ * 88P'   "88"    "8a  ""     `Y8  I8[    ""    88    a8"     "8a  88P'    "8a  
+ * 88      88      88  ,adPPPPP88   `"Y8ba,     88    8b       d8  88       d8  
+ * 88      88      88  88,    ,88  aa    ]8I    88,   "8a,   ,a8"  88b,   ,a8"  
+ * 88      88      88  `"8bbdP"Y8  `"YbbdP"'    "Y888  `"YbbdP"'   88`YbbdP"'   
+ *                                                                 88           
+ *                                                                 88           
+ * 
+ * Reurbano/DealBundle/Controller/Frontend/SellController.php
+ *
+ * Controller para venda de cupom
+ *  
+ * 
+ * @copyright 2011 Mastop Internet Development.
+ * @link http://www.mastop.com.br
+ * @author Fernando Santos <o@fernan.do>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 namespace Reurbano\DealBundle\Controller\Frontend;
 
 use Mastop\SystemBundle\Controller\BaseController;
@@ -177,6 +210,15 @@ class SellController extends BaseController
             $deal->setComission($comission);
             $dm->persist($deal);
             $dm->flush();
+            
+            // Envia notificações por e-mail
+            $dealLink = $this->generateUrl('deal_deal_show', array('city'=>$deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug()), true);
+            $mail = $this->get('mastop.mailer');
+            $mail->to($user)
+             ->subject('Sua oferta foi cadastrada')
+             ->template('oferta_novaoferta', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Confirmação de Oferta'))
+             ->send();
+            $mail->notify('Aviso de nova oferta', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou a seguinte oferta: <br />'.$quantity.'x - '.$deal->getLabel().'<br /> Preço: R$ '.  number_format($price, 2, ',', '').'<br /><a href="'.$dealLink.'">'.$dealLink.'</a>');
             
             $this->get('session')->setFlash('ok', $this->trans('Oferta cadastrada com sucesso!'));
             return $this->redirect($this->generateUrl('_home'));

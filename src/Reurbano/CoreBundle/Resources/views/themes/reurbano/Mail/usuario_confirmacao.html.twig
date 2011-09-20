@@ -1,0 +1,9 @@
+{# E-mail de confirmação de usuário #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+Olá <b>{{name}}</b>!<br />
+Agora falta pouco para você ativar seu cadastro no {{mastop_param('system.site.name')}}.<br />
+Basta clicar no link abaixo ou copiar e colar em seu navegador:<br />
+<b><a href='{{linkAct}}' target="_blank">{{linkAct}}</a></b>
+{% endblock %}
