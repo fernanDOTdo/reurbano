@@ -38,10 +38,13 @@ class OrderController extends BaseController
      * @Route("/ver/{id}", name="admin_order_order_view")
      * @Template()
      */
-    public function viewAction($id)
+    public function viewAction(Order $order)
     {
         $title = "Visualizar Pedido";
-        return array('title'=>  $title);
+        return array(
+            'title' => $title,
+            'order' => $order,
+            );
     }
     /**
      * Action para mudar o status do pedido.
