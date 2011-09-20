@@ -39,18 +39,12 @@ class HtmlController extends BaseController {
             $dm->persist($cont);
             $dm->flush();
             
-            $message = \Swift_Message::newInstance()
-                        ->setSubject($this->trans('Formulário de contato'))
-                        ->setFrom($cont->getMail())
-                        ->setTo($this->get('mastop')->param('system.site.adminmail'))
-                        ->setBody($this->renderView('ReurbanoCoreBundle:Frontend/Html:email.html.twig', array(
-                            'cont' => $cont,
-                            'date' => date('d/m/y G:i:s'))))
-            ;
-            if(!($this->get('mailer')->send($message))){
-                echo "Something went wrong";
-                exit();
-            }
+            $mail = $this->get('mastop.mailer');
+            $mail->to($this->get('mastop')->param('system.site.adminmail'))
+                    ->replyTo($cont->getMail())
+                    ->subject($this->trans('Formulário de contato'))
+                    ->template('contato', array('cont' => $cont, 'date' => date('d/m/y G:i:s'), 'title' => $this->trans('Novo Formulário de contato')))
+                    ->send();
             return $this->redirectFlash($this->generateUrl('_home'), 'Mensagem enviada com sucesso.');
         }
         return array(

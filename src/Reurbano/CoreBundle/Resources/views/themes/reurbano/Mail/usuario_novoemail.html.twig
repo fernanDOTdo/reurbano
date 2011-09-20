@@ -1,0 +1,17 @@
+{# E-mail de solicitação de troca de e-mail #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+Olá <b>{{user.name}}</b>!<br />
+Seus dados cadastrais foram alterados em nosso site, contudo foi solicitado a troca de seu email de <b>{{user.email}}</b> para <b>{{newEmail}}</b>.
+<br />
+Foi solicitado em nosso site a troca de sua senha.
+<br />
+Para confirmar a troca de e-mail, clique no link abaixo ou cope e cole em seu navegador:
+<br />
+<h2>
+    <a href="{{ url('user_user_newemail', {"edited":user.getEdited(true),'email':newEmail}) }}" title="Clique aqui para confirmar a troca de seu email">{{ url('user_user_newemail', {"edited":user.getEdited(true),'email':newEmail}) }}</a>
+</h2>
+<br />
+<b>Endereço IP: {{ip}}.</b>
+{% endblock %}

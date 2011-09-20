@@ -1,0 +1,131 @@
+{% set url = url('_home') ~ 'themes/reurbano/mail' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title title|default(mastop_param('system.site.name')) %}</title>
+<style>
+a {
+  color: #2072A5;
+  text-decoration: none;
+  font-weight: 700;
+}
+a:hover {
+  color: #D87D08;
+}
+b {color: #666;}
+body {
+  font-family: Arial, Verdana;
+  color: #666;
+}
+</style>
+</head>
+<body>
+<center>
+<table style="margin:0px auto auto auto">
+<tbody>
+    <tr>
+        <td width="300">
+                <a href="{{url('_home')}}" name="header_logo" title="{{mastop_param('system.site.name')}} - {{mastop_param('system.site.slogan')}}"><img src="{{asset(url~'/images/logo.png')}}" alt="{{mastop_param('system.site.name')}}" style="border:0px;"/></a></td>
+        <td width="360">
+                <h1 style="color:#7a9e24;font-size:18pt;padding-top:40px; margin: 0 0 30px 10px; font-family: Arial, Verdana">
+                        {{title|default(mastop_param('system.site.slogan'))}}</h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="background-color:#7A9D24">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                <td style="background-color:White; padding: 15px; color: #666">
+                                        {#Conteúdo#}
+                                        {% block content null %}
+                                        {#/Conteúdo#}
+                                </td>
+                                <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+    {%if dealSpecial is defined %}
+    <tr>
+        <td colspan="2" style="background-color:#d87d08">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                    <td colspan="4" style="height:10px; font-size:2pt;">&nbsp;
+                                            </td>
+                            </tr>
+                            <tr>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                    <td style="background-color:White; padding: 15px;">
+                                            OFERTA 1
+                                    </td>
+                                    <td style="background-color:White; padding: 15px;">
+                                            OFERTA 2
+                                    </td>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td colspan="4" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td colspan="2" style="background-color:#15567e">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                    <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                    <td style="background-color:White; padding: 15px; text-align: center;">
+                                            {% render 'ReurbanoDealBundle:Widget\\Mail:category'%}
+                                            <br />
+                                            <br />
+                                            <b style="color:#666;">Siga o {{mastop_param('system.site.name')}}</b><br /> <a target="_blank" href="http://www.facebook.com/recompracoletiva"><img src="{{asset(url~'/images/facebook.png')}}" alt="Facebook" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                            <a target="_blank" href="http://twitter.com/ReurbanoBrasil"><img src="{{asset(url~'/images/twitter.png')}}" alt="Twitter" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                    </td>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+</tbody>
+</table>
+<br />
+<table cellpadding="0" style="border-top:1px solid #e4e4e4; text-align:center; font-family: Arial, Verdana; font-size:12px;" cellspacing="0" width="600">
+<tr>
+	<td height="2" style="border-bottom:1px solid #e4e4e4;">
+	<div style="line-height: 0px; font-size: 1px; position: absolute;">&nbsp;</div>
+	</td>
+</tr>
+<tr>
+	<td style="font-family: Arial, Verdana; font-size:12px;">
+	<br />
+        <span style="color:#666666;padding-top:10px; margin: 0 0 30px 10px; font-family: Arial, Verdana">
+                        Equipe {{mastop_param('system.site.name')}}</span>
+	<br />
+	</td>
+</tr>
+</table>
+
+</center>
+</body>
+</html>

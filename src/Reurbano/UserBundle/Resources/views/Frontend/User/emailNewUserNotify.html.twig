@@ -1,7 +1,0 @@
-{{ "O usuário <b>%name%</b> se cadastrou no site.<br />
-Dados do usuário:<b><br />
-<b>Nome: </b> %name% <br />
-<b>Usuário: </b> %username% <br />
-<b>Status: </b> %status% <br />
-<b>Email: </b> %email% <br />
-"|trans({"%name%":usuario.getName(),"%username%":usuario.getUsername(),"%status%":usuario.getStatus(true),"%email%":usuario.getEmail()}) }}
