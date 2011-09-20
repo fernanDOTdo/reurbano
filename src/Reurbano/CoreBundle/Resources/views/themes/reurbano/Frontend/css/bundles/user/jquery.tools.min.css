@@ -39,7 +39,8 @@ ul.tabs a {
 /* active tab uses a class name "current". its highlight is also done by moving the background image. */
 ul.tabs a.current, ul.tabs a.current:hover, ul.tabs li.current a {
 	cursor:default !important; 
-	color:#000 !important;
+	color:#FFF !important;
+        font-weight: 700;
 }
 
 /* Different widths for tabs: use a class name: w1, w2, w3 or w2 */

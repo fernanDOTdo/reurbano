@@ -1,0 +1,11 @@
+{# E-mail de confirmação de nova senha #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+Olá <b>{{user.name}}</b>!<br />
+Sua senha foi alterada com sucesso em nosso site.
+<br />
+De agora em diante você pode fazer o login em nosso site com sua nova senha.
+<br />
+<b>Endereço IP: {{ip}}.</b>
+{% endblock %}

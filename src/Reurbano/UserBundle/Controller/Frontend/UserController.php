@@ -199,13 +199,11 @@ class UserController extends BaseController {
      * @param string $actkey 
      */
     private function emailActKey($email, $nome, $actkey) {
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans('Confirmação de cadastro no site'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($email)
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserConfirmation.html.twig', array('name' => $nome, 'linkAct' => $this->generateUrl('user_user_active', array('actkey' => $actkey), true))), 'text/html');
-        ;
-        $this->get('mailer')->send($message);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($email)
+             ->subject('Confirmação de cadastro')
+             ->template('usuario_confirmacao', array('title'=>'Ative seu cadastro', 'name' => $nome, 'linkAct' => $this->generateUrl('user_user_active', array('actkey' => $actkey), true)))
+             ->send();
     }
 
     /**
@@ -218,13 +216,12 @@ class UserController extends BaseController {
             $this->dm()->persist($user);
             $this->dm()->flush();
         }
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans('Solicitação de troca de senha'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($user->getEmail())
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewPass.html.twig', array('usuario' => $user)), 'text/html');
-        ;
-        $this->get('mailer')->send($message);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($user)
+             ->subject('Solicitação de troca de senha')
+             ->template('usuario_novasenha', array('user' => $user, 'title' => 'Troca de Senha'))
+             ->send();
+        $mail->notify('Aviso de solicitação de troca de senha', 'O usuário '.$user->getName().' ('.$user->getEmail().') solicitou troca de senha no site.');
     }
 
     /**
@@ -233,13 +230,12 @@ class UserController extends BaseController {
      *  @param string $newEmail
      */
     private function emailTrocaEmail($user, $newEmail) {
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans('Confirmação de troca de email'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($newEmail)
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewEmail.html.twig', array('usuario' => $user, 'newEmail' => $newEmail, 'ip' => $_SERVER['REMOTE_ADDR'])), 'text/html');
-        ;
-        $this->get('mailer')->send($message);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($user)
+             ->subject('Confirmação de troca de email')
+             ->template('usuario_novoemail', array('title'=>'Solicitação de Troca de E-mail', 'user' => $user, 'newEmail' => $newEmail, 'ip' => $_SERVER['REMOTE_ADDR']))
+             ->send();
+        $mail->notify('Aviso de solicitação de troca de e-mail', 'O usuário '.$user->getName().' ('.$user->getEmail().') solicitou troca de e-mail para '.$newEmail.'.');
     }
 
     /**
@@ -247,13 +243,12 @@ class UserController extends BaseController {
      *  @param objeto $user
      */
     private function emailNewPass($user) {
-        $message = \Swift_Message::newInstance()
-                ->setSubject($this->trans('Sua senha foi trocada em nosso site'))
-                ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                ->setTo($user->getEmail())
-                ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailUserNewPassOk.html.twig', array('usuario' => $user, 'ip' => $_SERVER['REMOTE_ADDR'])), 'text/html');
-        ;
-        $this->get('mailer')->send($message);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($user)
+             ->subject('Sua senha foi alterada')
+             ->template('usuario_novasenha_ok', array('user' => $user, 'ip' => $_SERVER['REMOTE_ADDR'], 'title' => 'Confirmação de Troca de Senha'))
+             ->send();
+        $mail->notify('Aviso de confirmação de troca de senha', 'O usuário '.$user->getName().' ('.$user->getEmail().') confirmou a troca de senha no site.');
     }
 
     /**
@@ -263,21 +258,18 @@ class UserController extends BaseController {
      */
     private function newUserEmail($email, $user) {
         $userStatus = $user->getStatus();
-        if ($email != false) {
-            $message = \Swift_Message::newInstance()
-                    ->setSubject($this->trans($userStatus == 4 ? "Novo usuário no site aguardando aprovação" : 'Novo usuário no site'))
-                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                    ->setTo($email)
-                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
-            ;
-        } else {
-            $message = \Swift_Message::newInstance()
-                    ->setSubject($this->trans("Seu cadastro no site " . $this->get('mastop')->param('system.site.name') . " foi efetuado"))
-                    ->setFrom($this->get('mastop')->param('system.site.adminmail'))
-                    ->setTo($user->getEmail())
-                    ->setBody($this->renderView('ReurbanoUserBundle:Frontend/User:emailNewUserNotify.html.twig', array('usuario' => $user)), 'text/html');
+        $mail = $this->get('mastop.mailer');
+        if ($email) { // Envia notificação administrativa de novo usuário
+            $mail->to($email)
+             ->subject($userStatus == 4 ? "Novo usuário aguardando aprovação" : 'Cadastro de novo usuário')
+             ->template('usuario_novo', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
+             ->send();
+        } else { // Envia e-mail de boas vindas para o usuário
+            $mail->to($user)
+             ->subject('Seja bem vindo')
+             ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
+             ->send();
         }
-        $this->get('mailer')->send($message);
     }
 
     /**

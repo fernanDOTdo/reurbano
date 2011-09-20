@@ -1,0 +1,10 @@
+{# E-mail de notificação de novo usuário #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h3>Dados do usuário:</h3>
+<b>Nome: </b> {{user.name}} <br />
+<b>Usuário: </b> {{user.username}} <br />
+<b>Status: </b> {{user.getStatus(true)}} <br />
+<b>Email: </b> {{user.email}} <br />
+{% endblock %}

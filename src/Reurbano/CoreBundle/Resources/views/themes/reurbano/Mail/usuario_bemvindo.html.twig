@@ -1,0 +1,35 @@
+{# E-mail de boas vindas de novo usuário #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">Obrigado por criar sua conta no {{mastop_param('system.site.name')}}!</h1><br/><br/>
+<p style="margin:0;font-size:12px;">A partir de agora você pode:</p><br/><br/>
+<ul style="margin:0;font-size:12px;">
+<li>Vender seus cupons não usados de sites de compra coletiva.</li>
+<li>Aproveitar ofertas de cupons com os maiores descontos do mercado.</li>
+<li>Encontrar aquela oferta que você viu em algum site de compra coletiva, mas não chegou a tempo.</li>
+</ul><br/><br/>
+
+<p style="margin:0;">
+O <a href="{{url('_home')}}">{{mastop_param('system.site.name')}}</a> é constantemente atualizado com as melhores ofertas dos maiores sites de compra coletiva da Internet. Boas compras!
+</p><br/><br/>
+<p style="margin:0;">
+Aproveite que você já está cadastrado para:
+</p><br/>
+<ul style="margin:0;font-size:12px;">
+    <li><a href="{{url('deal_sell_index')}}" target="_blank">Vender seus cupons de sites de compras coletivas</a></li>
+    <li><a href="{{url('user_user_bank')}}" target="_blank">Cadastrar suas informações bancárias</a></li>
+    <li><a href="{{url('_home')}}" target="_blank">Comprar cupons de compras coletivas</a></li>
+</ul><br/><br/>
+
+<h3>Seus Dados no {{mastop_param('system.site.name')}}:</h3>
+<b>Nome: </b> {{user.name}} <br /><br />
+<b>Email: </b> {{user.email}} <br /><br /><br /><br />
+<span style="margin:0;font-size:11px;">
+Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
+</span><br/><br/>
+
+<span style="margin:0;font-size:11px; color: #999">
+Enviamos-lhe este e-mail pois você criou uma conta no {{mastop_param('system.site.name')}}. Caso tenha mudado de ideia, você pode anular sua inscrição a todo o momento. Caso você não tenha feito seu cadastro, queira avisar-nos deste problema por e-mail <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> para que possamos suprimir a sua conta. 
+</span><br/>
+{% endblock %}

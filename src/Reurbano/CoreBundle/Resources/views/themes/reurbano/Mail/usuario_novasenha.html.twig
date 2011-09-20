@@ -1,0 +1,15 @@
+{# E-mail de solicitação de nova senha #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+Olá <b>{{user.name}}</b>!<br />
+Foi solicitado em nosso site a troca de sua senha.
+<br />
+Para trocar a sua senha, basta clicar no link abaixo ou copiar e colar em seu navegador:
+<br />
+<h2>
+    <a href="{{ url('user_user_recovering', {'actkey':user.actkey}) }}" title="Clique para trocar sua senha">{{ url('user_user_recovering',{'actkey':user.actkey}) }}</a>
+</h2>
+<br />
+<b>Se não foi você quem solicitou a troca de senha, basta ignorar este email.</b>
+{% endblock %}
