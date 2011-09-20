@@ -24,6 +24,7 @@
  */
 
 namespace Reurbano\OrderBundle\Payment;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Reurbano\OrderBundle\Document\Order;
@@ -37,7 +38,7 @@ class MercadoPago implements PaymentInterface {
     //protected $url = 'http://www.mastop.com.br/fernando/post.php';
     protected $sonda_url = 'https://www.mercadopago.com/mlb/sonda';
     protected $sonda_key = 'zG9TysmxKLzviqLRsKE0CXrhxww%3D';
-    
+
     /**
      * Construtor.
      *
@@ -52,9 +53,9 @@ class MercadoPago implements PaymentInterface {
         } else {
             $this->setParam('acc_id', '26474029');
             $this->setParam('enc', 'pyQC9zG%2FjM71lL2%2FTIyHstsATM0%3D');
-            $this->setParam('url_sucessfull', $container->get('router')->generate('order_order_return', array('gateway'=>'MercadoPago', 'status'=>'sucesso'), true));
-            $this->setParam('url_process', $container->get('router')->generate('order_order_return', array('gateway'=>'MercadoPago', 'status'=>'analise'), true));
-            $this->setParam('url_cancel', $container->get('router')->generate('order_order_return', array('gateway'=>'MercadoPago', 'status'=>'nao-autorizado'), true));
+            $this->setParam('url_sucessfull', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'sucesso'), true));
+            $this->setParam('url_process', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'analise'), true));
+            $this->setParam('url_cancel', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'nao-autorizado'), true));
             $this->setParam('seller_op_id', $order->getId());
             $this->setParam('extra_part', $order->getId());
             $this->setParam('item_id', $order->getDeal()->getId());
@@ -70,11 +71,11 @@ class MercadoPago implements PaymentInterface {
             }
             $this->setParam('cart_email', $user->getEmail());
         }
-        if(isset($payment['data'])){
+        if (isset($payment['data'])) {
             $this->setData($payment['data']);
         }
     }
-    
+
     /**
      * Seta um parâmetro.
      *
@@ -84,7 +85,7 @@ class MercadoPago implements PaymentInterface {
     public function setParam($name, $val) {
         $this->params[$name] = $val;
     }
-    
+
     /**
      * Retorna um parâmetro específico, null se o parâmetro não existir.
      *
@@ -98,7 +99,7 @@ class MercadoPago implements PaymentInterface {
             return null;
         }
     }
-    
+
     /**
      * Retorna um array contendo todos os parâmetros deste pagamento.
      *
@@ -107,18 +108,16 @@ class MercadoPago implements PaymentInterface {
     public function getParams() {
         return $this->params;
     }
-    
+
     /**
      * Seta o array com os dados específicos deste pagamento.
      *
      * @param array $data 
      */
-    
-    public function setData(array $data){
+    public function setData(array $data) {
         $this->data = $data;
     }
-    
-    
+
     /**
      * Retorna o array com os dados específicos deste pagamento.
      *
@@ -127,7 +126,7 @@ class MercadoPago implements PaymentInterface {
     public function getData() {
         return $this->data;
     }
-    
+
     /**
      * Valida a forma de pagamento atual.
      *
@@ -136,7 +135,7 @@ class MercadoPago implements PaymentInterface {
     public function validate() {
         return true;
     }
-    
+
     /**
      * Retorna o botão para efetuar o pagamento.
      * O botão geralmente será em um formulário.
@@ -144,7 +143,7 @@ class MercadoPago implements PaymentInterface {
      * @return string 
      */
     public function renderPaymentButton($text = 'Pagar') {
-        $ret = '<form action="' . $this->url . '" method="post"><input type="submit" value="'.$text.'" class="button '.$this->order->getDeal()->getDiscountType().'">';
+        $ret = '<form action="' . $this->url . '" method="post"><input type="submit" value="' . $text . '" class="button ' . $this->order->getDeal()->getDiscountType() . '">';
 
         foreach ($this->getParams() as $name => $value) {
             $ret .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
@@ -153,7 +152,7 @@ class MercadoPago implements PaymentInterface {
 
         return $ret;
     }
-    
+
     /**
      * Processa o pagamento, ou retorna formulário para o processamento.
      * @TODO: Talvez será preciso outra função para trabalhar os dados quando a implementação for por webservice.
@@ -162,10 +161,10 @@ class MercadoPago implements PaymentInterface {
      */
     public function process() {
         $ret = '<form id="paymentForm" action="' . $this->url . '" method="post">
-         <h2>Sua compra foi criada com o código <span>'.$this->order->getId().'</span> e você será redirecionado para a tela de pagamento.</h2>
+         <h2>Sua compra foi criada com o código <span>' . $this->order->getId() . '</span> e você será redirecionado para a tela de pagamento.</h2>
          <img src="/bundles/mastopsystem/images/load.gif" alt="Carregando" />
          <div class="info mT10 mB10">Se você não for redirecionado em 10 segundos, clique no botão abaixo para pagar sua compra.</div>
-         <input type="submit" class="button big '.$this->order->getDeal()->getDiscountType().'" value="Ir para tela de pagamento">';
+         <input type="submit" class="button big ' . $this->order->getDeal()->getDiscountType() . '" value="Ir para tela de pagamento">';
 
         foreach ($this->getParams() as $name => $value) {
             $ret .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
@@ -178,16 +177,49 @@ class MercadoPago implements PaymentInterface {
             </script>';
         return $ret;
     }
-    
+
     /**
      * Retorna as informações deste pagamento renderizadas em HTML.
      *
-     * @return string
+     * @return array
      */
     public function renderInfo() {
-        return null;
+        $data = $this->getData();
+        $ret = array();
+        if (isset($data['status'])) {
+            switch ($data['status']) {
+                case 'A':
+                    $ret[] = 'Status do Pagamento: <strong>Aprovado</strong>';
+                    break;
+                case 'C':
+                    $ret[] = 'Status do Pagamento: <strong>Recusado</strong>';
+                    break;
+                case 'P':
+                default:
+                    $ret[] = 'Status do Pagamento: <strong>Aguardando Aprovação</strong>';
+                    break;
+            }
+        }
+        if (isset($data['payment_method'])) {
+            switch ($data['payment_method']) {
+                case 'CC':
+                    $ret[] = 'Forma de Pagamento: <strong>Cartão de Crédito</strong>';
+                    break;
+                case 'BTR':
+                    $ret[] = 'Forma de Pagamento: <strong>Transferência Bancária</strong>';
+                    break;
+                case 'BTI':
+                default:
+                    $ret[] = 'Forma de Pagamento: <strong>Boleto Bancário</strong>';
+                    break;
+            }
+            if(isset ($data['total_amount'])){
+                $ret[] = 'Total: <strong>R$ '.  number_format($data['total_amount'], 2, ',', '').'</strong>';
+            }
+        }
+        return $ret;
     }
-    
+
     /**
      * Verifica o status do pedido na operadora.
      *
@@ -196,8 +228,8 @@ class MercadoPago implements PaymentInterface {
     public function checkStatus() {
         $url = $this->sonda_url;
         $postData = array("acc_id" => $this->getParam('acc_id'),
-        "sonda_key" => $this->sonda_key,
-        "seller_op_id" => $this->getParam('seller_op_id'));
+            "sonda_key" => $this->sonda_key,
+            "seller_op_id" => $this->getParam('seller_op_id'));
         //"seller_op_id" => '4e6b0933940cfe3c62000047');
         $elements = array();
         foreach ($postData as $name => $value) {
@@ -209,9 +241,9 @@ class MercadoPago implements PaymentInterface {
         curl_setopt($handler, CURLOPT_URL, $url);
         curl_setopt($handler, CURLOPT_POST, true);
         curl_setopt($handler, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($handler, CURLOPT_FAILONERROR,1);
-        curl_setopt($handler, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($handler, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($handler, CURLOPT_FAILONERROR, 1);
+        curl_setopt($handler, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($handler, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($handler);
         curl_close($handler);
@@ -219,27 +251,27 @@ class MercadoPago implements PaymentInterface {
 
         $XML = new \SimpleXMLElement((string) $response);
         $json = json_encode($XML);
-        $array = json_decode($json,TRUE);
-        if(isset($array['message']) && $array['message'] == 'OK'){
-            if(isset($array['operation'])){
+        $array = json_decode($json, TRUE);
+        if (isset($array['message']) && $array['message'] == 'OK') {
+            if (isset($array['operation'])) {
                 $this->setData($array['operation']);
                 switch ($array['operation']['status']) {
                     case 'A':
-                        return array('type' =>'ok', 'msg' => 'Pagamento efetuado e aprovado com sucesso!');
+                        return array('type' => 'ok', 'msg' => 'Pagamento efetuado e aprovado com sucesso!');
                         break;
                     case 'C':
-                        return array('type' =>'error', 'msg' => 'Pagamento recusado. Acesse a área de compras e tente pagar novamente.');
+                        return array('type' => 'error', 'msg' => 'Pagamento recusado. Acesse a área de compras e tente pagar novamente.');
                         break;
                     case 'P':
                     default:
-                        return array('type' =>'notice', 'msg' => 'Seu pagamento está pendente ou aguardando aprovação da instituição financeira.');
+                        return array('type' => 'notice', 'msg' => 'Seu pagamento está pendente ou aguardando aprovação da instituição financeira.');
                         break;
                 }
             }
         }
         return false;
     }
-    
+
     /**
      * Processamento de troca de status
      *
@@ -249,7 +281,7 @@ class MercadoPago implements PaymentInterface {
     public function changeStatus(Request $request) {
         return false;
     }
-    
+
     /**
      * Pega o ID do pedido baseado em algo passado por request (que varia em cada gateway).
      * Retorna nulo se não encontrar o ID do pedido.
@@ -258,8 +290,8 @@ class MercadoPago implements PaymentInterface {
      * @param Request $request
      * @return string|null
      */
-    public static function getOrderId(Request $request){
-        if($request->query->get('extra_part') != ''){
+    public static function getOrderId(Request $request) {
+        if ($request->query->get('extra_part') != '') {
             return $request->query->get('extra_part');
         }
         return null;

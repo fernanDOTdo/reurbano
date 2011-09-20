@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {%set dealLink = url('deal_deal_show', {'city': city, 'category': cat.getSlug, 'slug': deal.getSlug}) %}
 {% block metaKeywords keywords %}
-{% block metaDescription  title~" - De: "~deal.getSource.getPrice|money~" por apenas "~deal.getPrice|money~" com "~deal.getDiscount~" OFF!" %}
+{% block metaDescription  title~" - De: "~deal.getSource.getPrice|money~" por apenas "~deal.getPrice|money~" com "~deal.getDiscount~"% OFF!" %}
 {% block javascriptsHead %}
     {# AppId e AppAdmins pode-se colocar na parte de "scripts" das preferências #}
     <meta property="og:title" content="{{title}}" />
