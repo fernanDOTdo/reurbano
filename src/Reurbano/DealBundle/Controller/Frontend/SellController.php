@@ -216,7 +216,7 @@ class SellController extends BaseController
             $mail = $this->get('mastop.mailer');
             $mail->to($user)
              ->subject('Sua oferta foi cadastrada')
-             ->template('oferta_novo', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Confirmação de Oferta'))
+             ->template('oferta_novaoferta', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Confirmação de Oferta'))
              ->send();
             $mail->notify('Aviso de nova oferta', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou a seguinte oferta: <br />'.$quantity.'x - '.$deal->getLabel().'<br /> Preço: R$ '.  number_format($price, 2, ',', '').'<br /><a href="'.$dealLink.'">'.$dealLink.'</a>');
             

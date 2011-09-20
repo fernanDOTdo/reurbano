@@ -1,4 +1,4 @@
-#lastOrderTitle strong{
+#myOrderTitle strong{
     color: #000;
     font-size: 1.1em;
 }
@@ -21,8 +21,10 @@
     margin-left: 15px;
 }
 #myOrder div.orderLabel form{
-    float: right;
-    margin-right: 50px;
+    float: left;
+}
+#myOrder div.orderLabel form input{
+    font-size: 1.7em;
 }
 #myOrder div.orderLabel p{
     margin-bottom: 10px;
@@ -56,7 +58,7 @@ p.orderStatus.aprovado, p.orderStatus.finalizado{
     float: left;
     width: 600px;
 }
-#myOrder div.orderComments{
+#myOrder div.orderComments, #myOrder div.orderStatusLog{
     float: left;
     width: 310px;
 }
@@ -65,13 +67,10 @@ div.orderComments h3{
     margin: 0 0 5px;
 }
 div.orderComments{
-    height: 250px;
-    margin-top: -50px;
     position: relative;
 }
 div.orderComments form{
-    position: absolute;
-    bottom: 0;
+
 }
 div.orderComments textarea{
     width: 240px;
@@ -83,8 +82,7 @@ div.orderComments button{
     margin-left: 3px;
 }
 div.orderCommentsDiv{
-    height: 190px;
-    overflow: auto;
+
 }
 div.orderComment{
     padding: 3px;
@@ -99,4 +97,40 @@ div.orderComment.seller{
 }
 div.orderComment.admin{
     background: #EDFFF0;
+}
+
+div.orderDetails{
+    float: left;
+    width: 310px;
+}
+
+div.orderDetails p{
+    margin-bottom: 5px;
+}
+div.orderDetails h4{
+    margin-bottom: 10px;
+}
+
+div.orderStatusLogItem{
+    font-weight: 700;
+    border:1px solid #000;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background: #333;
+    padding: 8px;
+    color: #FFF;
+    margin: 5px;
+    text-align: center;
+}
+
+div.orderStatusLogItem.cancelado, div.orderStatusLogItem.problemas{
+    border:1px solid #8D0000;
+    background: #8D0000;
+    color: #FFF;
+}
+div.orderStatusLogItem.aprovado, div.orderStatusLogItem.finalizado{
+    border:1px solid #587906;
+    background: #587906;
+    color: #FFF;
 }

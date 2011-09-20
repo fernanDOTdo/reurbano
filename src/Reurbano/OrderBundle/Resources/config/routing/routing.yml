@@ -4,19 +4,19 @@ order_frontend:
 order_checkout_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/CheckoutController.php"
     type: annotation
-    prefix:   /minhaconta/financeiro
+    prefix:   /minha-conta/financeiro
 order_myorders_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/MyOrdersController.php"
     type: annotation
-    prefix:   /minhaconta/compras
+    prefix:   /minha-conta/compras
 order_mysales_frontend:
     resource: "@ReurbanoOrderBundle/Controller/Frontend/MySalesController.php"
     type: annotation
-    prefix:   /minhaconta/vendas
+    prefix:   /minha-conta/vendas
 order_backend:
     resource: "@ReurbanoOrderBundle/Controller/Backend/OrderController.php"
     type: annotation
-    prefix:   /admin/pedidos
+    prefix:   /admin/vendas
 order_status_backend:
     resource: "@ReurbanoOrderBundle/Controller/Backend/StatusController.php"
     type: annotation

@@ -31,9 +31,24 @@ class MyOrdersController extends BaseController
      * @Route("/ver/{id}", name="order_myorders_view")
      * @Template()
      */
-    public function viewAction()
+    public function viewAction(Order $order)
     {
-        return array();
+        $user = $this->getUser();
+        if($user->getId() != $order->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
+        $pay = $order->getPayment();
+        $payButton = null;
+        $gateway = 'Reurbano\OrderBundle\Payment\\' . $pay['gateway'];
+        $payment = new $gateway($order, $this->container);
+        if (!isset($pay['data']) || $order->getStatus()->getId() == 1) {
+            $payButton = $payment->renderPaymentButton();
+        }
+        $ret['title'] = 'Informações da Compra';
+        $ret['order'] = $order;
+        $ret['payment'] = $payment;
+        $ret['payButton'] = $payButton;
+        return $ret;
     }
     /**
      * Action que permite ao comprador enviar comentários
@@ -44,7 +59,7 @@ class MyOrdersController extends BaseController
      */
     public function commentAction(Order $order)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         if($user->getId() != $order->getUser()->getId()){
             return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você não tem permissão para acessar esta página.', 'error');
         }
@@ -58,7 +73,15 @@ class MyOrdersController extends BaseController
         $order->addComments($comment);
         $dm->persist($order);
         $dm->flush();
-        // @TODO: Enviar e-mail de notificação de novo comentário
+        // Enviar e-mail de notificação de novo comentário
+        $orderLink = $this->generateUrl('deal_mysales_view', array('id'=>$order->getId()), true);
+        $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($order->getSeller())
+             ->subject('Novo comentário no pedido '.$order->getId())
+             ->template('oferta_novocomentario', array('user' => $order->getSeller(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Novo Comentário'))
+             ->send();
+            $mail->notify('Aviso de novo comentário', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou o seguinte comentário no pedido '.$order->getId().': <br />'.nl2br($comment->getMessage()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
         return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Comentário adicionado no pedido '.$order->getId());
     }
     /**
