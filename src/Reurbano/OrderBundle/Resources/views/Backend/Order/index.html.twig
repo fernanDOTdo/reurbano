@@ -1,15 +1,50 @@
 {% extends '::backend.html.twig' %}
-        
+{% block title %}{{title|trans}}{% endblock %}
 {% block content %}
-<h1>{{title|trans}}</h1>
-<ul>
-  {% for key in order|keys %}
-    <li>{{ key }}</li>
-  {% endfor %}
-</ul>
-{% for order in order %}
-    {{ order.getId() }} - {{ order.getStatus().getName() }} - <a href="{{ path('admin_order_order_view', {'id': order.getId()}) }}">{{"Visualizar"|trans}}</a> - <a href="{{ path('admin_order_order_status', {'id': order.getId()}) }}">{{"Status"|trans}}</a> - <a href="{{ path('admin_order_order_comment', {'id': order.getId()}) }}">{{"Comentar"|trans}}</a><br />
-  {% else %}
-   {{"Nenhum pedido encontrado"|trans}}
-  {% endfor %} 
+<div class="content box grid_12 round_all">
+    <h1>{{ title|trans }}</h1>
+    <table class="static">
+        <thead>
+            <tr>
+                <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
+                <th class="nowrap center">{{ "Oferta"|trans }}</th>
+                <th class="nowrap center">{{ "Qtd."|trans }}</th>
+                <th class="nowrap center">{{ "Data"|trans }}</th>
+                <th class="nowrap center">{{ "Total"|trans }}</th>
+                <th class="nowrap center">{{ "Status"|trans }}</th>
+                <th class="nowrap center">{{ "Ações"|trans }}</th>
+            </tr>
+        </thead>
+        {% for order in order %}
+            <tr>
+                <td>
+                    {{ order.id }}
+                </td>
+                <td>
+                    <img src='{{ order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+                </td>
+                <td style="width: 315px;">
+                    {{ order.deal.label(80) }}
+                </td>
+                <td>
+                    {{ order.quantity }}
+                </td>
+                <td>
+                    {{ order.created.timestamp|date("d/m/Y") }}
+                </td>
+                <td>
+                    {{ order.total|money }}
+                </td>
+                <td>
+                    {{ order.status.name }}
+                </td>
+                <td>
+                    <a class="button small white" href="{{ path('admin_order_order_view', {'id': order.getId}) }}" title="Visualizar Pedido"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Visualizar"|trans}}</span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="8">{{ "Nenhuma venda encontrada"|trans }}</td></tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
