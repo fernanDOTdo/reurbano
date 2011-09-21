@@ -30,7 +30,7 @@ Mastop Internet Development                          http://www.mastop.com.br
 <meta name="generator" content="Mastop Internet Development" />
 <link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
 <title>{% block title title|default(mastop_param('system.site.name'))|trans %} - {%if app.request.attributes.get('_route') == '_home'%}{{mastop_param('system.site.slogan')}}{%else%}{{mastop_param('system.site.name')}}{%endif%}</title>
-{% stylesheets 'reurbano/Frontend/css/system/*.css' filter='?yui_css' output='themes/reurbano/css/pack.css' %}
+{% stylesheets 'reurbano/Frontend/css/system/*.css' filter='?yui_css' output='themes/reurbano/css/packed/system.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
 {% endstylesheets %}
 {% block stylesheets %}{% endblock %}
@@ -41,11 +41,11 @@ var facebookRedir="{{ app.session.get('_security.target_path')|default(mastop_cu
 var facebookAppId="{{ mastop_param('user.all.faceappid') }}";
 var facebookUrl="{{url("user_user_facebook")}}";
 </script>
-{% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.color.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.pulse.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='reurbano/js/reurbano.packed.js' %}
+{% javascripts '@ReurbanoUserBundle/Resources/public/js/Frontend/facebookScripts.js' '@ReurbanoCoreBundle/Resources/public/js/chosen/chosen.jquery.min.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.color.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.pulse.js' '@ReurbanoCoreBundle/Resources/public/js/jquery.cookie.js' '@ReurbanoCoreBundle/Resources/public/js/core.js' filter='yui_js' output='themes/reurbano/js/reurbano.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {%if app.request.attributes.get('_route') == '_home' or  app.request.attributes.get('_route') == 'core_city_index' %}
-{% javascripts '@ReurbanoCoreBundle/Resources/public/js/slidejs/slides.min.jquery.js' filter='yui_js' output='reurbano/js/slidejs/slides.packed.js' %}
+{% javascripts '@ReurbanoCoreBundle/Resources/public/js/slidejs/slides.min.jquery.js' filter='yui_js' output='themes/reurbano/js/slidejs/slides.packed.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 <script type="text/javascript">
 $(function(){
