@@ -40,19 +40,19 @@ Mastop Internet Development                          http://www.mastop.com.br
 <link rel="apple-touch-startup-image" href="{{ asset('themes/reurbano/admin/images/iOS_startup.png') }}" />
     
 
-{% stylesheets 'reurbano/Frontend/silk/silk-sprite.css' filter='?yui_css' output='themes/reurbano/silk/silk-sprite.css' %}
+{% stylesheets 'reurbano/Frontend/silk/silk-sprite.css' filter='?yui_css' output='static/admin/silk/silk-sprite.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
 {% endstylesheets %}
 
-{% stylesheets 'reurbano/Backend/css/all.css' 'reurbano/Backend/css/layout_fixed.css' 'reurbano/Backend/css/header_top.css' filter='?yui_css' output='themes/reurbano/admin/css/pack.css' %}
+{% stylesheets 'reurbano/Backend/css/all.css' 'reurbano/Backend/css/layout_fixed.css' 'reurbano/Backend/css/header_top.css' filter='?yui_css' output='static/admin/packed/css/all.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
 {% endstylesheets %}
 
-{% stylesheets 'reurbano/Backend/css/theme/theme_blue.css' 'reurbano/Backend/css/theme/bg_dark_wood.css' filter='?yui_css' output='themes/reurbano/admin/css/theme/pack.css' %}
+{% stylesheets 'reurbano/Backend/css/theme/theme_blue.css' 'reurbano/Backend/css/theme/bg_dark_wood.css' filter='?yui_css' output='static/admin/packed/css/theme/all.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
 {% endstylesheets %}
 
-{% stylesheets 'reurbano/Backend/css/mastop.css' filter='?yui_css' output='themes/reurbano/admin/css/mastop.css' %}
+{% stylesheets 'reurbano/Backend/css/mastop.css' filter='?yui_css' output='static/admin/packed/css/mastop.css' %}
 <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
 {% endstylesheets %}
 {#

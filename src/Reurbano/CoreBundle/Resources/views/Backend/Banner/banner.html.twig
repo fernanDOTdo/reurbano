@@ -4,7 +4,7 @@
 {% set vars = banner.getId() ? {'id': banner.getId()} : {} %}
 
 {% block stylesheets %}
-    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.css' filter='?yui_css' output='reurbano/dealbundle/css/pack.css' %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.css' filter='?yui_css' output='static/admin/banner/autocomplete.css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
@@ -31,7 +31,7 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ url('admin_core_banner_script') }}"></script>
-    {% javascripts output='bundles/dealbundle/js/banner.js'
+    {% javascripts output='static/admin/js/banner.js'
                    '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
                    '@ReurbanoCoreBundle/Resources/public/js/banner.js'
                    %}

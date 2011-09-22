@@ -25,7 +25,7 @@ twig:
 assetic:
     debug: %kernel.debug%
     read_from:      %themes_dir%
-    write_to: %kernel.root_dir%/../web/static
+    write_to: %kernel.root_dir%/../web
     use_controller: false
 #    assets:
 #        teste: css/text.css
