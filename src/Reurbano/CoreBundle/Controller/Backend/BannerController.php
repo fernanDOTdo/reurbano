@@ -141,7 +141,7 @@ class BannerController extends BaseController
     /**
      * Url dinamica do script
      * 
-     * @Route("/script.js", name="admin_core_banner_script")
+     * @Route("/scriptjs", name="admin_core_banner_script")
      */
     public function scriptAction() {
         $script = '
