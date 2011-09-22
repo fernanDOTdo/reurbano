@@ -80,7 +80,7 @@ class SellController extends BaseController
     /**
      * Url dinamica do script
      * 
-     * @Route("/script.js", name="deal_sell_script")
+     * @Route("/scriptjs", name="deal_sell_script")
      */
     public function scriptAction() {
         $script = "
