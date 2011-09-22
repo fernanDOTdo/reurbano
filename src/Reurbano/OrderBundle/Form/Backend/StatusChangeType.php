@@ -12,7 +12,11 @@ class StatusChangeType extends AbstractType {
                          'class' => 'Reurbano\\OrderBundle\\Document\\Status',
                          'property'=>'name',
                 ))
-                ->add('obs', 'text', array('label'=>'Observação'));
+                ->add('obs', 'textarea', array(
+                    'label' => 'Observação',
+                    'attr'  => array(
+                        'style' => 'width: 100%;',
+                    )));
     }
 
     public function getDefaultOptions(array $options) {

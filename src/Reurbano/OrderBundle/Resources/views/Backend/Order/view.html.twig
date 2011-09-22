@@ -1,8 +1,75 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}Teste{% endblock %}
-
+{% block title %}{{ title|trans }}{% endblock %}
 
 {% block content %}
-<h1>Teste!</h1>
+<div class="content box grid_12 round_all">
+    <div class="grid_12">
+        <h1 class="h1Order">{{ title|trans }} - {{ order.id }}</h1>
+        <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
+        <h2>{{ order.deal.label }}</h2>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="grid_6 borderStatus alpha blockLeft">
+        <div class="subTitulo" >Status</div>
+        <div>
+            <form class="block" action="{{ path('admin_order_order_status', {'id':order.id}) }}" method="POST">
+                {{ form_widget(statusForm) }}
+
+                <input type="submit" value="Alterar" class="blockButton" />
+            </form>
+        </div>
+        <div class="orderLists">
+            <div class="orderListTable">
+                <table class="orderListTable static">
+                    <tr style="border-botton: 1px solid #ccc">
+                        <th> Status </th>
+                        <th> Observação </th>
+                    </tr>
+                    {% for sLog in order.statusLog|reverse %}
+                        <tr>
+                            <td> {{ sLog.status.name }} </td>
+                            {% if sLog.obs %}
+                                <td> {{ sLog.obs }} </td>
+                            {% else %}
+                                <td> Sem observação </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="grid_6 borderStatus beta blockRigtht">
+        <div class="subTitulo" >Comentarios</div>
+        <div id="comentForm">
+            <form class="block formComment" action="{{ path('admin_order_order_comment', {'id':order.id}) }}" method="POST">
+                {{ form_widget(commentForm) }}
+
+                <input type="submit" value="Comentar" class="blockButton" />
+            </form>
+        </div>
+        <div class="orderLists">
+            <div class="orderListTable">
+                <table class="orderListTable static">
+                    <tr style="border-botton: 1px solid #ccc">
+                        <th> Nome </th>
+                        <th> Comentário </th>
+                    </tr>
+                    {% for com in order.comments|reverse %}
+                        <tr>
+                            <td> <strong>{%if com.user.id == order.user.id%}Cliente{%elseif com.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong><br /><em>{{com.created.timestamp|date("d/m/Y h:i")}}</em> </td>
+                            <td> {{ com.message|nl2br }} </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="center" >Nenhnum Comentário</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
