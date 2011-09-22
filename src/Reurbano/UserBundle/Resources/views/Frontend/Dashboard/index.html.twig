@@ -1,7 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block stylesheets %}
-    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/user/*' filter='?yui_css' output='css/user.css' %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/user/*' filter='?yui_css' output='static/system/css/user.all.css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 {% endblock %}
@@ -31,7 +31,7 @@
 
 {% endblock %}
 {% block javascriptsHead %}
-    {% javascripts output='bundles/corebundle/js/abas.js'
+    {% javascripts output='static/system/js/core.abas.js'
                    '@ReurbanoCoreBundle/Resources/public/js/tabs/jquery.tools.min.js'
                    '@ReurbanoUserBundle/Resources/public/js/Frontend/dashboard.js'
                    %}
