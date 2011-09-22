@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class UserController extends BaseController {
 
     /**
-     * @Route("/usuario/script.js", name="user_user_script")
+     * @Route("/usuario/scriptjs", name="user_user_script")
      */
     public function scriptAction() {
 

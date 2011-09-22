@@ -123,7 +123,7 @@ class DealController extends BaseController {
     }
 
     /**
-     * @Route("/deal.js", name="admin_deal_script")
+     * @Route("/dealjs", name="admin_deal_script")
      */
     public function scriptAction() {
 
