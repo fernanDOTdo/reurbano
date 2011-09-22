@@ -309,3 +309,49 @@ a.small, button.small {
 .m5{margin:5px;}
 /* /Margin */
 .hidden{display: none;}
+.imgOrder{
+    float: left;
+    margin: 0 5px 10px 0;
+}
+.subTitulo{
+    font-weight: 700;
+    font-size: 1.4em;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.borderStatus{
+    border: 1px solid #ccc;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.blockLeft{
+    margin-left: 7px;
+}
+.blockRigtht{
+    margin-rigth: 7px;
+    margin-left: 7px;
+}
+#comentForm{
+    margin-top: 51px;
+}
+.blockButton{
+    float: right;
+}
+.h1Order{
+    margin-top: 8px;
+}
+.orderLists{
+    padding: 8px;
+}
+div .orderListTable{
+    border: 2px solid #ccc;
+    height: 190px;
+    overflow: auto;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.orderListTable{
+    width: 417px;
+}

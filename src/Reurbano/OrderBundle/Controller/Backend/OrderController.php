@@ -4,11 +4,14 @@ namespace Reurbano\OrderBundle\Controller\Backend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
+use Reurbano\OrderBundle\Form\Backend\CommentType;
+
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
 use Reurbano\OrderBundle\Document\Comment;
 use Reurbano\UserBundle\Document\User;
-use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
 
 /**
  * Controller para administrar (CRUD) os pedidos
@@ -40,10 +43,18 @@ class OrderController extends BaseController
      */
     public function viewAction(Order $order)
     {
-        $title = "Visualizar Pedido";
+        $title = "Pedido";
+        
+        $status = $order->getStatus();
+        
+        $statusForm = $this->createForm(new StatusChangeType());
+        $commentForm = $this->createForm(new CommentType());
+        
         return array(
             'title' => $title,
             'order' => $order,
+            'statusForm' => $statusForm->createView(),
+            'commentForm' => $commentForm->createView(),
             );
     }
     /**
@@ -52,16 +63,15 @@ class OrderController extends BaseController
      * @Route("/status/{id}", name="admin_order_order_status")
      * @Template()
      */
-    public function statusAction($id)
+    public function statusAction(Order $order, $id)
     {
         $title = "Alterar status do pedido";
         $dm = $this->dm();
         $request = $this->get('request');
-        $order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
+        //$order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
         $form = $this->createForm(new StatusChangeType());
         if($request->getMethod() == 'POST'){
             $user = $this->get('security.context')->getToken()->getUser();
-            $form = 
             $data = $request->request->get($form->getName());
             $status = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$data['status']);
             $statusLog = new StatusLog();
@@ -75,8 +85,7 @@ class OrderController extends BaseController
             $dm->persist($order);
             $dm->flush();
             
-            $this->get('session')->setFlash('ok', $this->trans('Status atualizado com sucesso!'));
-            return $this->redirect($this->generateUrl('admin_order_order_index'));
+            return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Status atualizado com sucesso!'));
         }
         $form = $this->createForm(new StatusChangeType());
         return array(
@@ -92,19 +101,20 @@ class OrderController extends BaseController
      * @Route("/comentar/{id}", name="admin_order_order_comment")
      * @Template()
      */
-    public function commentAction($id)
+    public function commentAction(Order $order, $id)
     {
         $title = 'Cometário';
         $request = $this->get('request');
         $dm = $this->dm();
-        $order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
+        //$order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
+        $form = $this->createForm(new commentType());
         if($request->getMethod() == 'POST'){
             $comment = new Comment();
             $user = $this->get('security.context')->getToken()->getUser();
-            $data = $request->request->get('form');
+            $data = $request->request->get($form->getName());
             $special = isset($data['Especial'])? true : false;
             
-            $comment->setMessage($data['Comentario']);
+            $comment->setMessage($data['comment']);
             $comment->setUser($user);
             $comment->setSpecial($special);
             
@@ -112,8 +122,7 @@ class OrderController extends BaseController
             $dm->persist($order);
             $dm->flush();
             
-            $this->get('session')->setFlash('ok', $this->trans('Comentado com sucesso!'));
-            return $this->redirect($this->generateUrl('admin_order_order_index'));
+            return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Comentado com sucesso!'));
             
         }
         $form = $this->createFormBuilder()

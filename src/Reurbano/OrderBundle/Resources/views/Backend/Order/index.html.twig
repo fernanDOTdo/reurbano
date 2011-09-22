@@ -7,6 +7,7 @@
         <thead>
             <tr>
                 <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
+                <th class="nowrap center">{{ "Usuário"|trans }}</th>
                 <th class="nowrap center">{{ "Oferta"|trans }}</th>
                 <th class="nowrap center">{{ "Qtd."|trans }}</th>
                 <th class="nowrap center">{{ "Data"|trans }}</th>
@@ -22,6 +23,9 @@
                 </td>
                 <td>
                     <img src='{{ order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+                </td>
+                <td>
+                    {{ order.user.name }}
                 </td>
                 <td style="width: 315px;">
                     {{ order.deal.label(80) }}
@@ -43,7 +47,7 @@
                 </td>
             </tr>
         {% else %}
-            <tr><td colspan="8">{{ "Nenhuma venda encontrada"|trans }}</td></tr>
+            <tr><td colspan="9">{{ "Nenhuma venda encontrada"|trans }}</td></tr>
         {% endfor %}
     </table>
 </div>
