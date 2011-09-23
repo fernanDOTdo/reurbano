@@ -9,7 +9,7 @@
                 <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
                 <th class="nowrap center">{{ "Usuário"|trans }}</th>
                 <th class="nowrap center">{{ "Oferta"|trans }}</th>
-                <th class="nowrap center">{{ "Qtd."|trans }}</th>
+                <th class="center">{{ "Qtd."|trans }}</th>
                 <th class="nowrap center">{{ "Data"|trans }}</th>
                 <th class="nowrap center">{{ "Total"|trans }}</th>
                 <th class="nowrap center">{{ "Status"|trans }}</th>
@@ -28,16 +28,16 @@
                 <td>
                     {{ order.user.name }}
                 </td>
-                <td style="width: 315px;">
+                <td style="width:200px;">
                     {{ order.deal.label(80) }}
                 </td>
-                <td>
+                <td style="width:10px;">
                     {{ order.quantity }}
                 </td>
                 <td>
                     {{ order.created.timestamp|date("d/m/Y") }}
                 </td>
-                <td>
+                <td class="nowrap">
                     {{ order.total|money }}
                 </td>
                 <td>

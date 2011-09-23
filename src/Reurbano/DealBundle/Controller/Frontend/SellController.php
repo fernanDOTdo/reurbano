@@ -194,7 +194,7 @@ class SellController extends BaseController
             
             
             $deal->setUser($user);
-            $deal->setPrice($price);
+            $deal->setPrice(str_replace(",", ".", $price));
             $deal->setChecked(false);
             $deal->setSpecial(false);
             $deal->setQuantity($quantity);
@@ -218,7 +218,8 @@ class SellController extends BaseController
              ->subject('Sua oferta foi cadastrada')
              ->template('oferta_novaoferta', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Confirmação de Oferta'))
              ->send();
-            $mail->notify('Aviso de nova oferta', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou a seguinte oferta: <br />'.$quantity.'x - '.$deal->getLabel().'<br /> Preço: R$ '.  number_format($price, 2, ',', '').'<br /><a href="'.$dealLink.'">'.$dealLink.'</a>');
+            //Está dando pau na hora de vender o cupom por causa da formatação do preço do deal que vem como string, mas na verdade deveria ser float
+            $mail->notify('Aviso de nova oferta', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou a seguinte oferta: <br />'.$quantity.'x - '.$deal->getLabel().'<br /> Preço: R$ '.  number_format($dela->getPrice(), 2, ',', '').'<br /><a href="'.$dealLink.'">'.$dealLink.'</a>');
             
             $this->get('session')->setFlash('ok', $this->trans('Oferta cadastrada com sucesso!'));
             return $this->redirect($this->generateUrl('_home'));

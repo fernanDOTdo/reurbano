@@ -25,7 +25,7 @@
   {% else %}
                 <tr><td colspan="5">{{ "Nenhuma cidade encontrada!"|trans }}</td></tr>
   {% endfor %} 
-            <tbody>
+            </tbody>
         </table>
         <div class='clear'></div>
         <button onclick="window.location='{{path('admin_core_city_form')}}'" title="{{ "Inserir nova cidade"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar cidade"|trans }}</button>

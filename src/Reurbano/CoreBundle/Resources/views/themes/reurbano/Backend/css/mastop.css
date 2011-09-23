@@ -1,7 +1,7 @@
 #ft{padding-top: 5px; text-align: right; color: #CCC; float: right; }
 #ft a{color: #FFF; border-bottom: 1px dotted #CCC; }
 #ft a:hover{border-bottom: 1px solid #FFF; }
-
+table.datatable{width: 100%;}
 ul#breadcrumb li span{
     line-height: 30px;
     padding-left: 20px;
@@ -352,11 +352,24 @@ a.small, button.small {
 .orderAdminList{
     border: 2px solid #ccc;
     background-color: #EDF1F3;
-    margin: 2px;
+    margin: 4px;
+    padding-left: 5px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
 }
 .orderDetails{
-    margin: 8px;
+    margin: 5px;
+    margin-left: 6px;
+    border: 2px solid #ccc;
+    background-color: #EDF1F3;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.orderDetailsInside{
+    margin: 5px;
+}
+.h1Order span{
+    color: #0F5097;
 }

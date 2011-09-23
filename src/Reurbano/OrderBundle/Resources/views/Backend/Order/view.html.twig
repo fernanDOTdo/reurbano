@@ -5,22 +5,27 @@
 {% block content %}
 <div class="content box grid_12 round_all">
     <div class="grid_8">
-        <h1 class="h1Order">{{ title|trans }} - {{ order.id }}</h1>
+        <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.status.name }}</span></h1>
         <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
         <h2>{{ order.deal.label }}</h2>
     </div>
-    <div class="orderDetails grid_4">
-        <h4>Informações da Compra</h4>
-        <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
-        <p>Usuário: <strong>{{ order.user.name}}</strong></p>
-        <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
-        <p>Total: <strong>{{ order.total|money}}</strong></p>
-        {#<h4>Informações da Operadora de Pagamento</h4>
-        {%for pay in payment.renderInfo()%}
-        <p>{{pay|raw}}</p>
-        {%else%}
-                <div class="info">Esta compra ainda não foi paga.</div>
-        {%endfor%}#}
+    <div class="clear"></div>
+    <div class="orderDetails grid_12">
+        <div class="orderDetailsInside grid_6 alpha">
+            <h4>Informações da Compra</h4>
+            <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+            <p>Usuário: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
+            <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
+            <p>Total: <strong>{{ order.total|money}}</strong></p>
+        </div>
+        <div class="orderDetailsInside grid_6 beta">
+            <h4>Informações da Operadora de Pagamento</h4>
+            {%for pay in payment.renderInfo()%}
+            <p>{{pay|raw}}</p>
+            {%else%}
+                    <div class="info">Esta compra ainda não foi paga.</div>
+            {%endfor%}
+        </div>
     </div>
     <div class="clear">
     </div>
@@ -46,7 +51,7 @@
         </div>
     </div>
     <div class="grid_6 borderStatus beta blockRigtht">
-        <div class="subTitulo" >Comentarios</div>
+        <div class="subTitulo" >Comentários</div>
         <div class="orderLists">
             {% for com in order.comments|reverse %}
                 <div class="orderAdminList">
