@@ -5,7 +5,7 @@ $(document).ready(function() {
 				"sScrollX": "",
 				"bSortClasses": false,
 				"aaSorting": [[0,'asc']],
-				"bAutoWidth": true,
+				"bAutoWidth": false,
 				"bInfo": true,
 				"sScrollY": "100%",	
 				"sScrollX": "100%",

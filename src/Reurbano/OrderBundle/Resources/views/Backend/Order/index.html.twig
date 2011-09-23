@@ -3,19 +3,20 @@
 {% block content %}
 <div class="content box grid_12 round_all">
     <h1>{{ title|trans }}</h1>
-    <table class="static">
+    <table class="display datatable">
         <thead>
             <tr>
                 <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
                 <th class="nowrap center">{{ "Usuário"|trans }}</th>
                 <th class="nowrap center">{{ "Oferta"|trans }}</th>
-                <th class="nowrap center">{{ "Qtd."|trans }}</th>
+                <th class="center">{{ "Qtd."|trans }}</th>
                 <th class="nowrap center">{{ "Data"|trans }}</th>
                 <th class="nowrap center">{{ "Total"|trans }}</th>
                 <th class="nowrap center">{{ "Status"|trans }}</th>
-                <th class="nowrap center">{{ "Ações"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
             </tr>
         </thead>
+        <tbody>
         {% for order in order %}
             <tr>
                 <td>
@@ -27,16 +28,16 @@
                 <td>
                     {{ order.user.name }}
                 </td>
-                <td style="width: 315px;">
+                <td style="width:200px;">
                     {{ order.deal.label(80) }}
                 </td>
-                <td>
+                <td style="width:10px;">
                     {{ order.quantity }}
                 </td>
                 <td>
                     {{ order.created.timestamp|date("d/m/Y") }}
                 </td>
-                <td>
+                <td class="nowrap">
                     {{ order.total|money }}
                 </td>
                 <td>
@@ -49,6 +50,12 @@
         {% else %}
             <tr><td colspan="9">{{ "Nenhuma venda encontrada"|trans }}</td></tr>
         {% endfor %}
+        </tbody>
     </table>
+    <div class='clear'></div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

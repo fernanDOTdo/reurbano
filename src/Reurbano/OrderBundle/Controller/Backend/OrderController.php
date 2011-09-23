@@ -43,18 +43,21 @@ class OrderController extends BaseController
      */
     public function viewAction(Order $order)
     {
-        $title = "Pedido";
+        $title = "Venda";
         
         $status = $order->getStatus();
-        
         $statusForm = $this->createForm(new StatusChangeType());
         $commentForm = $this->createForm(new CommentType());
+        $pay = $order->getPayment();
+        $gateway = 'Reurbano\OrderBundle\Payment\\' . $pay['gateway'];
+        $payment = new $gateway($order, $this->container);
         
         return array(
             'title' => $title,
             'order' => $order,
             'statusForm' => $statusForm->createView(),
             'commentForm' => $commentForm->createView(),
+            'payment' => $payment,
             );
     }
     /**
@@ -68,7 +71,6 @@ class OrderController extends BaseController
         $title = "Alterar status do pedido";
         $dm = $this->dm();
         $request = $this->get('request');
-        //$order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
         $form = $this->createForm(new StatusChangeType());
         if($request->getMethod() == 'POST'){
             $user = $this->get('security.context')->getToken()->getUser();
@@ -106,17 +108,24 @@ class OrderController extends BaseController
         $title = 'Cometário';
         $request = $this->get('request');
         $dm = $this->dm();
-        //$order = $this->mongo('ReurbanoOrderBundle:Order')->find((int)$id);
         $form = $this->createForm(new commentType());
         if($request->getMethod() == 'POST'){
             $comment = new Comment();
             $user = $this->get('security.context')->getToken()->getUser();
             $data = $request->request->get($form->getName());
-            $special = isset($data['Especial'])? true : false;
+                $mail = $this->get('mastop.mailer');
+                $mail->to($order->getUser()->getEmail())
+                        ->subject('Comentário na sua compra')
+                        ->template('pedido_comentario',array(
+                            'user'  => $order->getUser(),
+                            'order' => $order,
+                            'msg' => $data['comment'],
+                        ))
+                        ->send();
             
             $comment->setMessage($data['comment']);
             $comment->setUser($user);
-            $comment->setSpecial($special);
+            $comment->setSpecial(true);
             
             $order->addComments($comment);
             $dm->persist($order);

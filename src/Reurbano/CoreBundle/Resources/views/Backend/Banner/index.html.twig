@@ -2,7 +2,7 @@
 {% block title %}{{title|trans}}{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all">
-    <table class="static"> 
+    <table class="display datatable"> 
         <thead> 
             <tr> 
                 <th class="nowrap center">{{ "Imagem"|trans }}</th> 
@@ -14,6 +14,7 @@
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
+        <tbody>
 {% for banner in banner %}
         {% if banner.getDeal != "" %}
             {% set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
@@ -74,9 +75,14 @@
   {% else %}
         <tr><td colspan='2'>{{"Nenhum banner encontrado"|trans}}</td></tr>
 {% endfor %} 
+    </tbody>
     </table>
     <div class='clear'></div>
     <button onclick="window.location='{{path('admin_core_banner_new', {'control': false })}}'" title="{{ "Inserir novo banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar banner"|trans }}</button>
     <button onclick="window.location='{{path('admin_core_banner_new', {'control': true })}}'" title="{{ "Inserir nova oferta como banner"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar oferta"|trans }}</button>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

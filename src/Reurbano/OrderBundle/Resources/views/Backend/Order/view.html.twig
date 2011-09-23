@@ -4,15 +4,44 @@
 
 {% block content %}
 <div class="content box grid_12 round_all">
-    <div class="grid_12">
-        <h1 class="h1Order">{{ title|trans }} - {{ order.id }}</h1>
+    <div class="grid_8">
+        <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.status.name }}</span></h1>
         <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
         <h2>{{ order.deal.label }}</h2>
+    </div>
+    <div class="clear"></div>
+    <div class="orderDetails grid_12">
+        <div class="orderDetailsInside grid_6 alpha">
+            <h4>Informações da Compra</h4>
+            <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+            <p>Usuário: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
+            <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
+            <p>Total: <strong>{{ order.total|money}}</strong></p>
+        </div>
+        <div class="orderDetailsInside grid_6 beta">
+            <h4>Informações da Operadora de Pagamento</h4>
+            {%for pay in payment.renderInfo()%}
+            <p>{{pay|raw}}</p>
+            {%else%}
+                    <div class="info">Esta compra ainda não foi paga.</div>
+            {%endfor%}
+        </div>
     </div>
     <div class="clear">
     </div>
     <div class="grid_6 borderStatus alpha blockLeft">
         <div class="subTitulo" >Status</div>
+        <div class="orderLists">
+            {% for status in order.statusLog|reverse %}
+                <div class="orderAdminList">
+                    <span class="dateBold">{{ status.status.name }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
+                    {%if status.obs %}
+                        <br />
+                        <strong>Obs.: </strong>{{status.obs|nl2br}}
+                    {%endif%}
+                </div>
+            {%endfor%}
+        </div>
         <div>
             <form class="block" action="{{ path('admin_order_order_status', {'id':order.id}) }}" method="POST">
                 {{ form_widget(statusForm) }}
@@ -20,55 +49,33 @@
                 <input type="submit" value="Alterar" class="blockButton" />
             </form>
         </div>
-        <div class="orderLists">
-            <div class="orderListTable">
-                <table class="orderListTable static">
-                    <tr style="border-botton: 1px solid #ccc">
-                        <th> Status </th>
-                        <th> Observação </th>
-                    </tr>
-                    {% for sLog in order.statusLog|reverse %}
-                        <tr>
-                            <td> {{ sLog.status.name }} </td>
-                            {% if sLog.obs %}
-                                <td> {{ sLog.obs }} </td>
-                            {% else %}
-                                <td> Sem observação </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
     </div>
     <div class="grid_6 borderStatus beta blockRigtht">
-        <div class="subTitulo" >Comentarios</div>
+        <div class="subTitulo" >Comentários</div>
+        <div class="orderLists">
+            {% for com in order.comments|reverse %}
+                <div class="orderAdminList">
+                    <span class="dateBold">
+                        {%if com.user.id == order.user.id%}
+                            Cliente
+                        {%elseif com.user.id == order.seller.id%}
+                            Vendedor
+                        {%else%}
+                            {{mastop_param('system.site.name')}}
+                        {%endif%} 
+                        em <em>{{com.created.timestamp|date("d/m/Y h:i")}}</em>
+                    </span>
+                    <br />
+                    <strong>Comentário: </strong>{{ com.message|nl2br }}
+                </div>
+            {%endfor%}
+        </div>
         <div id="comentForm">
             <form class="block formComment" action="{{ path('admin_order_order_comment', {'id':order.id}) }}" method="POST">
                 {{ form_widget(commentForm) }}
 
                 <input type="submit" value="Comentar" class="blockButton" />
             </form>
-        </div>
-        <div class="orderLists">
-            <div class="orderListTable">
-                <table class="orderListTable static">
-                    <tr style="border-botton: 1px solid #ccc">
-                        <th> Nome </th>
-                        <th> Comentário </th>
-                    </tr>
-                    {% for com in order.comments|reverse %}
-                        <tr>
-                            <td> <strong>{%if com.user.id == order.user.id%}Cliente{%elseif com.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong><br /><em>{{com.created.timestamp|date("d/m/Y h:i")}}</em> </td>
-                            <td> {{ com.message|nl2br }} </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="2" class="center" >Nenhnum Comentário</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
         </div>
     </div>
 </div>
