@@ -3,7 +3,7 @@
 {% block content %}
 <div class="content box grid_12 round_all">
     <h1>{{ title|trans }}</h1>
-    <table class="static">
+    <table class="display datatable">
         <thead>
             <tr>
                 <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
@@ -13,9 +13,10 @@
                 <th class="nowrap center">{{ "Data"|trans }}</th>
                 <th class="nowrap center">{{ "Total"|trans }}</th>
                 <th class="nowrap center">{{ "Status"|trans }}</th>
-                <th class="nowrap center">{{ "Ações"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
             </tr>
         </thead>
+        <tbody>
         {% for order in order %}
             <tr>
                 <td>
@@ -49,6 +50,12 @@
         {% else %}
             <tr><td colspan="9">{{ "Nenhuma venda encontrada"|trans }}</td></tr>
         {% endfor %}
+        </tbody>
     </table>
+    <div class='clear'></div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

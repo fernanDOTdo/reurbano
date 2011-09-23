@@ -11,9 +11,11 @@ class StatusChangeType extends AbstractType {
         $builder->add('status', 'document',array(
                          'class' => 'Reurbano\\OrderBundle\\Document\\Status',
                          'property'=>'name',
+                         'label' => 'Novo status',
                 ))
                 ->add('obs', 'textarea', array(
                     'label' => 'Observação',
+                    'required' => false,
                     'attr'  => array(
                         'style' => 'width: 100%;',
                     )));

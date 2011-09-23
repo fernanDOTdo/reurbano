@@ -46,7 +46,6 @@ class OrderController extends BaseController
         $title = "Pedido";
         
         $status = $order->getStatus();
-        
         $statusForm = $this->createForm(new StatusChangeType());
         $commentForm = $this->createForm(new CommentType());
         
