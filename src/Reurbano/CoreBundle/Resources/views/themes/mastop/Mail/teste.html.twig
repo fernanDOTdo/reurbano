@@ -1,0 +1,11 @@
+{% extends '::mail.html.twig' %}
+        
+{% block title title|default('E-mail de Teste!')%}
+
+
+{% block content %}
+Olá, <b>{{user.name|default('Visitante')}}</b>!<br />
+Seja bem vindo ao {{mastop_param('system.site.name')}}!<br />
+Este é um email de teste.<br />
+<a href="{{url('_home')}}">Clique aqui</a> para acessar nosso site.
+{% endblock %}

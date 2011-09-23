@@ -1,0 +1,116 @@
+{% set protocol = mastop_protocol()%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="pt_BR" lang="pt_BR">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-language" content="{% block contentLanguage "pt_BR" %}" />
+<meta name="robots" content="index,follow" />
+<meta name="keywords" content="{% block metaKeywords mastop_param('system.seo.keywords') %}" />
+<meta name="description" content="{% block metaDescription mastop_param('system.seo.description') %}" />
+<meta name="rating" content="general" />
+<meta name="author" content="Mastop Internet Development" />
+<meta name="copyright" content="Copyright © 2003-{{ "now"|date('Y') }}" />
+<meta name="generator" content="Mastop Internet Development" />
+<link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
+<title>{% block title %}{{ mastop_param('system.site.name') }}{%endblock%} - {%if app.request.attributes.get('_route') == '_home'%}{{mastop_param('system.site.slogan')}}{%else%}{{mastop_param('system.site.name')}}{%endif%}</title>
+{% stylesheets 'mastop/Frontend/css/*.css' filter='yui_css' output='themes/mastop/css/pack.css' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+{% endstylesheets %}
+{% block stylesheets %}{% endblock %}
+<!-- Load JQuery -->		
+<script type="text/javascript" src="{{protocol}}ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+{% block javascriptsHead null %}
+{{ mastop_param('system.script.head') }}
+</head>
+<body>
+{# Main #}
+<div id="main">
+    
+{# Mensagens do Sistema #}
+{% if app.session.hasFlash('error') %}
+<div class="alert alert_red">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/white/acces_denied_sign.png') }}" />
+    <strong>Erro: </strong> {{ app.session.flash('error')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{% if app.session.hasFlash('ok') %}
+   
+<div class="alert alert_green">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/white/light_bulb.png') }}" />
+    {{ app.session.flash('ok')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{% if app.session.hasFlash('notice') %}
+<div class="alert alert_grey">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/grey/info___about.png') }}" />
+    <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{# /Mensagens do Sistema #}
+
+{# Header #}
+<div id="hd_wrap">
+    <div id="hd" class="container_12">
+    {% block header %}
+        <div class="grid_5">
+            <div id="logo">
+                <a href="{{ path('_home') }}">
+                {% image 'mastop/Frontend/images/logo.gif' %}
+                <img src="{{ asset_url }}" alt="{{mastop_param('system.site.name')}}" />
+                {% endimage %}
+                </a>
+            </div>
+            <div id="slogan">
+                {{mastop_param('system.site.slogan')}}
+            </div>
+            
+        </div>
+
+    
+        <div class="grid_7">
+            <div class="grid_7 alpha" id="menuTop">
+                {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
+            </div>
+            <div class="grid_7 alpha omega" id="menuMain">
+                <div id="navbar">
+                    {{mastop_menu('system-main', null, current|default(null), 0, 'list', {'id':'nav'})}}
+                </div>
+            </div>
+            <div class="grid_7 alpha" id="headUser">
+                {%if is_granted('ROLE_USER')%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>!</span>{%endif%}
+            </div>
+        </div>
+    {% endblock%}
+    </div>
+</div>
+{# /Header #}
+
+{# Body #}
+{% block body %}
+<div id="bd_wrap">
+    <div id="bd" class="container_12">
+
+    {# Conteúdo #}
+    {% block content null %}
+    {# /Conteúdo #}
+        
+    </div>
+</div>
+{% endblock body %}
+{# /Body #}
+
+{# Footer #}
+<div id="ft_wrap">
+    {{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
+    <div class="clearfix"></div>
+    <div id="ft" class="container_12">{% block footer %}<span id="copyright">© {{ "now"|date('Y') }} Mastop Internet Development</span>{% endblock%}</div>
+</div>
+{# /Footer #}
+</div>
+{#/Main #}
+{# Javascripts #}
+{% block javascripts null%}
+{{ mastop_param('system.script.foot') }}
+{#/Javascripts #}
+</body>
+</html>

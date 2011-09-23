@@ -1,0 +1,178 @@
+{% set protocol = mastop_protocol()%}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="pt_BR" lang="pt_BR">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-language" content="{% block contentLanguage "pt_BR"%}" />
+<meta name="robots" content="index,follow" />
+<meta name="keywords" content="{% block metaKeywords mastop_param('system.seo.keywords') %}" />
+<meta name="description" content="{% block metaDescription mastop_param('system.seo.description') %}" />
+<meta name="rating" content="general" />
+<meta name="author" content="Mastop Internet Development" />
+<meta name="copyright" content="Copyright © 2003-{{ "now"|date('Y') }}" />
+<meta name="generator" content="Mastop Internet Development" />
+
+<!-- iPhone, iPad and Android specific settings -->	
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1;">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+                
+<link href="{% block favicon asset('/favicon.ico') %}" rel="SHORTCUT ICON" />
+
+<title>{% block title "Administração" %} - {{ mastop_param('system.site.name') }}</title>
+
+
+<!-- Create an icon and splash screen for iPhone and iPad -->
+<link rel="apple-touch-icon" href="{{ asset('themes/mastop/admin/images/iOS_icon.png') }}" />
+<link rel="apple-touch-startup-image" href="{{ asset('themes/mastop/admin/images/iOS_startup.png') }}" />
+    
+
+{% stylesheets 'mastop/Frontend/silk/silk-sprite.css' filter='yui_css' output='themes/mastop/silk/silk-sprite.css' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+
+{% stylesheets 'mastop/Backend/css/all.css' 'mastop/Backend/css/layout_fixed.css' 'mastop/Backend/css/header_top.css' filter='yui_css' output='themes/mastop/admin/css/pack.css' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+
+{% stylesheets 'mastop/Backend/css/theme/theme_blue.css' 'mastop/Backend/css/theme/bg_dark_wood.css' filter='yui_css' output='themes/mastop/admin/css/theme/pack.css' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+
+{% stylesheets 'mastop/Backend/css/mastop.css' filter='yui_css' output='themes/mastop/admin/css/mastop.css' %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+{#
+<!-- These stylesheets are used  -->
+<link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/theme/switcher.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/theme/switcher1.php?default=layout_fixed.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/theme/switcher2.php?default=header_top.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/theme/switcher3.php?default=theme_blue.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/theme/switcher4.php?default=bg_punched.css" media="screen" />
+#}
+<!--[if IE 6]><link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/ie6.css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="/themes/mastop/admin/css/ie.css" media="screen" /><![endif]-->
+			
+<!-- Load JQuery -->		
+<script type="text/javascript" src="{{protocol}}ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+<!-- Load JQuery UI -->
+<script type="text/javascript" src="{{protocol}}ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+		
+<!-- Load Interface Plugins -->
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/uniform/jquery.uniform.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/iPhone/jquery.iphoneui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/uitotop/js/jquery.ui.totop.js') }}"></script>
+
+<!-- This file configures the various jQuery plugins for Adminica. Contains links to help pages for each plugin. -->
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/adminica/adminica_ui.js') }}"></script>
+
+
+{% block stylesheets null%}
+{% block javascriptsHead null%}
+</head>
+<body>
+{# Main #}
+<div id="wrapper">
+{# Mensagens do Sistema #}
+{% if app.session.hasFlash('error') %}
+<div class="alert alert_red">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/white/acces_denied_sign.png') }}" />
+    <strong>Erro: </strong> {{ app.session.flash('error')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{% if app.session.hasFlash('ok') %}
+   
+<div class="alert alert_green">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/white/light_bulb.png') }}" />
+    {{ app.session.flash('ok')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{% if app.session.hasFlash('notice') %}
+<div class="alert alert_grey">
+    <img height="24" width="24" src="{{ asset('themes/mastop/admin/images/icons/large/grey/info___about.png') }}" />
+    <strong>Aviso: </strong> {{ app.session.flash('notice')|raw }}<span class="close disabled ui-silk ui-silk-cancel"></span>
+</div>
+{% endif %}
+{# /Mensagens do Sistema #}
+{# Topbar #}
+<div id="topbar" class="clearfix container_12">
+	
+	<a href="{{ url('admin_system_home_index') }}" class="logo grid_4"><span>{{ mastop_param('system.site.name') }}</span></a>
+	<div id="search_bar" class="grid_5">
+	<form>
+		<input class="indent round_all" type="text" name="busca" value="" />
+		<div class="place_search">
+			<button class="button_colour round_all">
+                                <span></span>
+				<img src="{{ asset('themes/mastop/admin/images/icons/small/white/magnifying_glass.png') }}" width="24" height="24" alt="Magnifying Glass">
+				<span>Busca</span>
+			</button>
+		</div>
+	</form>
+        </div>
+	<div class="user_box round_all grid_3">
+		<img src="{{ gravatar(app.user.email|default(null), 55) }}" width="55" alt="Gravatar" />
+		<h2>Administrador</h2>
+		<h3><a class="text_shadow" href="#">{{ app.user.name|default(app.user.username) }}</a></h3>
+		<ul>
+			<li><a href="{{url('_home')}}" target="_blank">site</a><span class="divider">|</span></li>
+			<li><a href="{{url('_logout')}}">sair</a></li>
+		</ul>
+	</div><!-- #user_box -->	
+</div><!-- #topbar -->
+{# /Topbar #}
+
+{# MainContainer #}
+<div id="main_container" class="main_container container_12 clearfix">
+
+{# Navigation #}
+<div id="nav_top" class="clearfix round_top">
+        {{mastop_menu('system-admin', null, current|default(null), 1, 'admin', {'class':'clearfix round_all'})}}
+</div><!-- #nav_top -->
+{# /Navigation #}
+
+{# Breadcrumb #}
+{{breadcrumbs(title|default(null), current|default(app.request.attributes.get('_route')), breadcrumbs|default(false), {'id': 'breadcrumb', 'class': 'grad_colour'})}}
+{# /Breadcrumb #}
+{# Conteúdo #}
+{% block content %}
+{% endblock content %}
+{# /Conteúdo #}
+
+</div>
+{# /MainContainer #}
+{# Footer #}
+<div id="ft" class="container_12">{% block footer %}<span id="copyright">© 2011 <a href="http://www.mastop.com.br" target="_blank">Mastop Internet Development</a> - Alguns Direitos Reservados</span>{% endblock%}</div>
+{# /Footer #}
+</div>
+{#/Main #}
+    
+{# Javascripts #}
+{% block javascripts %}{% endblock %}
+{#/Javascripts #}
+<div id="loading_overlay">
+    <div class="loading_message round_bottom">Aguarde ...</div>
+</div>
+    
+<script type="text/javascript" src="{{ asset('themes/mastop/admin/js/tipsy/jquery.tipsy.js') }}"></script>
+<script type="text/javascript">
+    // Tipsy Top Config (more info found at http://onehackoranother.com/projects/jquery/tipsy/)
+		$('[title]').not("div").not("label").tipsy({
+			fade: true,     // fade tooltips in/out?
+			fallback: '',    // fallback text to use when no tooltip text
+			gravity: 's',    // gravity
+			opacity: 1,    // opacity of tooltip
+			title: 'title',  // attribute/callback containing tooltip text
+			trigger: 'hover' // how tooltip is triggered - hover | focus | manual    	
+		});
+	// Tipsy Side Config
+		$('input[title]').tipsy({
+			trigger: 'focus',  
+			offset:'5',
+			gravity: 'w'
+		});
+</script>
+</body>
+</html>

@@ -54,6 +54,7 @@
 [AsseticBundle]
     git=http://github.com/symfony/AsseticBundle.git
     target=/bundles/Symfony/Bundle/AsseticBundle
+    version=v1.0.1
 
 [doctrine-mongodb]
     git=http://github.com/doctrine/mongodb.git

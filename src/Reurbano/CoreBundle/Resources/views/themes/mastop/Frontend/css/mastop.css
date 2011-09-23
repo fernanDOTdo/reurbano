@@ -1,0 +1,133 @@
+/* Geral */
+body {
+  font-family: "Lucida Grande";
+  font-size: 90%;
+  background-color: #FAFAFA;
+  color: #333;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px dotted #222;
+}
+
+.sf-toolbarreset a, .sf-toolbarreset a:hover{border:none; text-decoration: none; background: none;}
+
+a:hover {
+  background: #ccc;
+  color: #000;
+}
+
+a:visited {
+  background: #ccc;
+  color: #000;
+}
+
+strong
+{
+    font-weight: bold;
+}
+
+em
+{
+    font-style: italic;
+}
+
+h1, h2, h3
+{
+    font-family:    Georgia, "Times New Roman", Times, serif;
+    color:          #404040;
+}
+
+/*/Geral */
+
+/* Header */
+#hd_wrap { /* Div que cobre todo o header */
+  background: #fafafa;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#dfdfdf));
+  /* for webkit browsers */
+  background: -moz-linear-gradient(top, #fafafa, #dfdfdf);
+  /* for firefox 3.6+ */
+  height: 111px;
+}
+#hd {/* Div que cobre o header 960 */ height: 111px;}
+
+
+
+#logo {height: 74px;}
+#logo a {border:none; padding: 5px; height: 64px;}
+#logo a:hover {text-decoration: none; background: none;}
+#slogan {height: 32px; text-align: center; font-weight: 700; color: #fff; margin-top: 5px; font-family: Georgia,'Times New Roman',times,serif; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); font-size: 1.2em;}
+#menuTop, #menuMain{height: 37px;}
+#menuTop ul{margin: 3px 0; float: right}
+#menuTop ul li{float: left; margin-left: 10px; list-style: none outside none; font-size: 0.8em;}
+#menuTop ul li a{color: #029116; border: 0;}
+#menuTop ul li.current a{color: #333; text-decoration: underline;}
+#menuTop ul li a:hover{text-decoration: underline; background: transparent;}
+#headUser{text-align: right; margin-top: 5px; height: 32px;}
+#headUser span{margin-right: 5px}
+/* /Header */
+
+/* Body */
+#bd_wrap { /* Div que cobre todo o Body */
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background: #fff;
+  padding-bottom: 3em;
+  padding-top: 3em;
+}
+#bd {min-height: 400px;/* Div que cobre o body 960 */}
+
+#navbar {
+	float: right;
+	top: 60px;
+        width: 450px;
+}
+
+#navbar a {
+	border: none;
+	border-left:1px solid #DDDDDD;
+	font-size:1em;
+	padding:0.5em 1em;
+	text-decoration:none;
+	color:		#E7E5E5; 
+	background: none;
+}
+
+#navbar a.first {
+	border:0 none;
+}
+
+#navbar a:hover { text-decoration: none; }
+#navbar a:visited { text-decoration: none; }
+#navbar a:active { text-decoration: none; }
+#navbar a.active { 
+   border-bottom: 3px solid #222;
+}
+/* /Body */
+
+/* Footer */
+#ft_wrap { /* Div que cobre todo o Footer */
+  background: #fafafa;
+  background: -webkit-gradient(linear, left top, left bottom, from(#dfdfdf), to(#fafafa));
+  /* for webkit browsers */
+  background: -moz-linear-gradient(top, #dfdfdf, #fafafa);
+  /* for firefox 3.6+ */
+  color: #555;
+  font-size: 1em;
+  padding: 2em;
+  text-align: center;
+}
+#ft {/* Div que cobre o footer 960 */}
+#navFoot{text-align: left; border-bottom: 1px solid #BBB; margin-bottom: 10px;}
+#navFoot ul li{list-style: none outside none; margin-left: 15px;}
+
+span#copyright {text-shadow: 1px 1px 0 #FFF;color: #999;}
+/* /Footer */
+
+
+
+
+
+
