@@ -114,6 +114,19 @@ class StatusLog
     }
 
     /**
+     * Get Status name
+     * 
+     * @return string
+     */
+    public function getStatusName(){
+        if($this->getStatus()){
+            return $this->getStatus()->getName();
+        }else{
+            return 'Cancelado';
+        }
+    }
+    
+    /**
      * Set created
      *
      * @param date $created
