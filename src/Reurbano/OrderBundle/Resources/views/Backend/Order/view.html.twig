@@ -5,7 +5,7 @@
 {% block content %}
 <div class="content box grid_12 round_all">
     <div class="grid_8">
-        <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.getStatusName }}</span></h1>
+        <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.StatusName }}</span></h1>
         <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
         <h2>{{ order.deal.label }}</h2>
     </div>
@@ -34,7 +34,7 @@
         <div class="orderLists">
             {% for status in order.statusLog|reverse %}
                 <div class="orderAdminList">
-                    <span class="dateBold {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
+                    <span class="dateBold {{ status.statusName|lower }}">{{ status.statusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
                     {%if status.obs %}
                         <br />
                         <strong>Obs.: </strong>{{status.obs|nl2br}}
