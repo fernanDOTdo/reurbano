@@ -30,6 +30,18 @@ use Mastop\SystemBundle\Document\BaseRepository;
 class OrderRepository extends BaseRepository {
 
     /**
+     * Cancela o pedido, deletando o status
+     */
+    public function cancelOrder($id) {
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('status')->unsetField()
+                ->getQuery()
+                ->execute();
+    }
+    
+    /**
      *
      * @param type $user
      * @return Reurbano\OrderBundle\Document\Order $order

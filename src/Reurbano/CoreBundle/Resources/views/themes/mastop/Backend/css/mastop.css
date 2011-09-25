@@ -304,3 +304,6 @@ a.small, button.small {
 .m10{margin:10px;}
 .m5{margin:5px;}
 /* /Margin */
+.cancelado{
+    color: red;
+}

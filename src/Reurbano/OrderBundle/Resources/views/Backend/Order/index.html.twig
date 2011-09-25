@@ -41,7 +41,7 @@
                     {{ order.total|money }}
                 </td>
                 <td>
-                    {{ order.status.name }}
+                    <span class="{{ order.getStatusName|lower }}">{{ order.getStatusName }}</span>
                 </td>
                 <td>
                     <a class="button small white" href="{{ path('admin_order_order_view', {'id': order.getId}) }}" title="Visualizar Pedido"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Visualizar"|trans}}</span></a>

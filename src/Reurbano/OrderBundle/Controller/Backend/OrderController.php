@@ -151,23 +151,19 @@ class OrderController extends BaseController
     }
     
     /**
-     * Criar um novo
+     * Action para cancelar um pedido.
      * 
-     * @Route("/novo", name="admin_order_order_novo")
+     * @Route("/cancelar/{id}", name="admin_order_order_cancel")
+     * @Template()
      */
-    public function newAction()
-    {
+    public function cancelAction(Order $order){
+        $request = $this->get('request');
+        $formResult = $request->request;
         $dm = $this->dm();
-        $user = $this->get('security.context')->getToken()->getUser();
-        $order = $this->mongo('ReurbanoOrderBundle:Order')->createOrder();
-        $status = $this->mongo('ReurbanoOrderBundle:Status')->findOneById(1);
-        $statusLog = new StatusLog();
-        $statusLog->setStatus($status);
-        $order->setStatus($status);
-        $order->addStatusLog($statusLog);
-        $order->setUser($user);
-        $dm->persist($order);
-        $dm->flush();
-        return $this->redirect($this->generateUrl('admin_order_order_index'));
+        if($request->getMethod() == 'POST'){
+            $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());
+            return $this->redirectFlash($this->generateUrl('admin_order_order_index'), 'Venda cancelada com sucesso!');
+        }
+        return $this->confirm($this->trans('Tem certeza que deseja cancelar o pedido numero: %id%?', array("%id%" => $order->getId())), array('id' => $order->getId()));
     }
 }
