@@ -162,6 +162,11 @@ class OrderController extends BaseController
         $dm = $this->dm();
         if($request->getMethod() == 'POST'){
             $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());
+            $statusLog = new StatusLog();
+            $statusLog->setObs($data['obs']);
+            $statusLog->setUser($user);
+            
+            $order->addStatusLog($statusLog);
             return $this->redirectFlash($this->generateUrl('admin_order_order_index'), 'Venda cancelada com sucesso!');
         }
         return $this->confirm($this->trans('Tem certeza que deseja cancelar o pedido numero: %id%?', array("%id%" => $order->getId())), array('id' => $order->getId()));

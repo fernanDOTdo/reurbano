@@ -34,7 +34,7 @@
         <div class="orderLists">
             {% for status in order.statusLog|reverse %}
                 <div class="orderAdminList">
-                    <span class="dateBold {{ status.statusName|lower }}">{{ status.statusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
+                    <span class="dateBold"><span class="statusName {{ status.statusName|lower }}">{{ status.statusName }}</span> em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
                     {%if status.obs %}
                         <br />
                         <strong>Obs.: </strong>{{status.obs|nl2br}}
