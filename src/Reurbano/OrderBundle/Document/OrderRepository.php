@@ -44,12 +44,15 @@ class OrderRepository extends BaseRepository {
     /**
      *
      * @param type $user
+     * @param type $seller
      * @return Reurbano\OrderBundle\Document\Order $order
      */
-    public function findLastOrder($user = null) {
+    public function findLastOrder($user = null, $seller = null) {
         $query = $this->createQueryBuilder();
         if ($user) {
             $query->field('user.id')->equals($user);
+        }else{
+            $query->field('seller.id')->equals($seller);
         }
         return $query->sort('created', 'desc')
                         ->getQuery()
@@ -95,8 +98,11 @@ class OrderRepository extends BaseRepository {
     }
 
     public function findByUser($id) {
-
         return $this->findBy(array('user.id' => $id), array('created' => 'desc'));
+    }
+
+    public function findBySeller($id) {
+        return $this->findBy(array('seller.id' => $id), array('created' => 'desc'));
     }
 
 }
