@@ -373,3 +373,6 @@ a.small, button.small {
 .h1Order span{
     color: #0F5097;
 }
+.statusName.cancelado{
+    color: red;
+}
