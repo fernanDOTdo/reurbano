@@ -8,7 +8,7 @@
         </div>
         <div class="orderLabel">
             <p>{{ lastOrder.deal.label }}</p>
-            <p class="orderStatus {{ lastOrder.status.name|lower }}">Status: {{ lastOrder.status.name }}</p>
+            <p class="orderStatus {{ lastOrder.getStatusName|lower }}">Status: {{ lastOrder.getStatusName }}</p>
             {{payButton|raw}}<p><a class="button {{lastOrder.deal.discountType }}" href="{{path('order_myorders_view', {'id': lastOrder.id})}}">Ver Compra</a></p>
         </div>
     </div>

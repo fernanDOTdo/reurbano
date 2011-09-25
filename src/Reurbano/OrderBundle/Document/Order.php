@@ -307,6 +307,19 @@ class Order
     {
         return $this->status;
     }
+    
+    /**
+     * Get Status name
+     * 
+     * @return string
+     */
+    public function getStatusName(){
+        if($this->getStatus()){
+            return $this->getStatus()->getName();
+        }else{
+            return 'Cancelado';
+        }
+    }
 
     /**
      * Add statusLog

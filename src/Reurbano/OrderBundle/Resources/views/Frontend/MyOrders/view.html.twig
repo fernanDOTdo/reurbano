@@ -16,7 +16,7 @@
         </div>
         <div class="orderLabel">
             <p>{{ order.deal.label }}</p>
-            <p class="orderStatus {{ order.status.name|lower }}">Status: {{ order.status.name }}</p>
+            <p class="orderStatus {{ order.getStatusName|lower }}">Status: {{ order.getStatusName }}</p>
             {{payButton|raw}}
         </div>
     </div>
@@ -50,7 +50,7 @@
         <h4>Histórico</h4>
         <div class="orderStatusLogDiv">
           {%for status in order.statusLog|reverse%}
-                <div class="orderStatusLogItem {{ status.status.name|lower }}">{{ status.status.name }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
+                <div class="orderStatusLogItem {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
           {%else%}
                 <div class="info">Não há histórico nesta compra.</div>
           {%endfor%}
