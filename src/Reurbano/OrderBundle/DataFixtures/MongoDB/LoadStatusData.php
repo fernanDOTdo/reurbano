@@ -16,7 +16,7 @@ class LoadStatusData implements FixtureInterface, ContainerAwareInterface {
     }
 
     public function load($manager) {
-        $status = array('Criado', 'Pendente', 'Processando', 'Aprovado', 'Com Problemas', 'Aguardando Informações', 'Finalizado', 'Cancelado');
+        $status = array('Criado', 'Pendente', 'Processando', 'Aprovado', 'Com Problemas', 'Aguardando Informações', 'Finalizado');
         foreach ($status as $stat) {
             $Status = new Status();
             $Status->setName($stat);
