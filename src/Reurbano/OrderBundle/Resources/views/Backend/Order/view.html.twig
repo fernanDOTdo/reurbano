@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="content box grid_12 round_all">
+    <a class="button medium red" href="{{ path('admin_order_order_cancel', {'id': order.getId()}) }}" style="float: right; margin: 10px;"><span>{{"Cancelar Pedido"|trans}}</span></a>
     <div class="grid_8">
         <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.StatusName }}</span></h1>
         <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />

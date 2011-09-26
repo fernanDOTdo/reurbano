@@ -1,0 +1,10 @@
+{% extends '::backend.html.twig' %}
+        
+{% block content %}
+<h1>{{title|trans}}</h1>
+    <form action="{{ path('admin_order_order_comment', {'id': id}) }}" method="post" {{form_enctype(form)}}>
+        {{ form_widget(form) }}
+        
+        <input type="submit" value="Comentar"/>
+    </form>
+{% endblock %}
