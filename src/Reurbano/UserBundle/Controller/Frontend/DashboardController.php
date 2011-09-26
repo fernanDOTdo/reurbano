@@ -25,14 +25,14 @@ class DashboardController extends BaseController
             'mydata' => 'Meus Dados',
             'myorders' => 'Minhas Compras',
             'mydeals' => 'Minhas Ofertas',
-            'mysell' => 'Minhas Vendas',
+            'mysales' => 'Minhas Vendas',
             'mybalance' => 'Meu Financeiro',
         );
         $panes = array(
             'ReurbanoUserBundle:Widget\\MyData:dashboard',
             'ReurbanoOrderBundle:Widget\\MyOrders:dashboard',
             'ReurbanoDealBundle:Widget\\MyDeals:dashboard',
-            'ReurbanoDealBundle:Widget\\MySell:dashboard',
+            'ReurbanoOrderBundle:Widget\\MySales:dashboard',
             'ReurbanoDealBundle:Widget\\MyBalance:dashboard',
         );
         return array(
