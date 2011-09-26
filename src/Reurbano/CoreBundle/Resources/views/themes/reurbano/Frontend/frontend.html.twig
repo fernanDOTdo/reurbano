@@ -162,8 +162,11 @@ $(function(){
     </div>
         {# /Lista de cidades #}
         
-        <div class="grid_12" id="menuMain">
+        <div class="grid_10" id="menuMain">
             {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': cat.getSlug|default(app.request.get('slug')) }%}
+        </div>
+        <div class="grid_2 omega" id="sellButton">
+            <a href="{{url('deal_sell_index')}}" class="button primary orange">Vender Cupom</a>
         </div>
         {%if breadcrumbs is defined%}
         <div class="grid_12" id="breadcrumbs">

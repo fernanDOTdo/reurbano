@@ -1,17 +1,17 @@
 #navbar {
   font: Arial,Helvetica,sans-serif;
-
 }
 
 #nav {
   margin: 0;
-  padding: 7px 40px 0;
+  padding: 7px 20px 0;
   line-height: 100%;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   background: #999;
   /* for non-css3 browsers */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a9a9a9', endColorstr='#7a7a7a');
@@ -23,7 +23,7 @@
   border: solid 1px #999;
 }
 #nav li {
-  margin: 0 4% 0 0;
+  margin: 0 2% 0 0;
   padding: 0 0 6px;
   float: left;
   position: relative;
