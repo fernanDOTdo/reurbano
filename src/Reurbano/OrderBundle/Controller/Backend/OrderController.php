@@ -56,6 +56,7 @@ class OrderController extends BaseController
         return array(
             'title' => $title,
             'order' => $order,
+            'status' => ($order->getStatus()) ? $order->getStatus() : false,
             'statusForm' => $statusForm->createView(),
             'commentForm' => $commentForm->createView(),
             'payment' => $payment,
@@ -164,6 +165,34 @@ class OrderController extends BaseController
         $form = $this->createForm(new CancelType());
         if($request->getMethod() == 'POST'){
             $data = $request->request->get($form->getName());
+            if($data['returnMoney']){
+                
+            }
+            if($data['notifyBuyer']){
+                $nBuyer = $this->get('mastop.mailer');
+                $nBuyer->to($order->getUser()->getEmail())
+                        ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
+                        ->template('oferta_canceladaoferta_comprador',array(
+                            'user'  => $order->getUser(),
+                            'order' => $order,
+                            'msg' => ($data['obs']) ? $data['obs'] : false,
+                        ))
+                        ->send();
+            }
+            if($data['notifySeller']){
+                $nSeller = $this->get('mastop.mailer');
+                $nSeller->to($order->getDeal()->getUser()->getEmail())
+                        ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
+                        ->template('oferta_canceladaoferta_vendedor',array(
+                            'user'  => $order->getDeal()->getUser(),
+                            'order' => $order,
+                            'msg' => ($data['obs']) ? $data['obs'] : false,
+                        ))
+                        ->send();
+            }
+            if($data['returnDeal']){
+                
+            }
             $user = $this->get('security.context')->getToken()->getUser();
             $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());
             $statusLog = new StatusLog();
