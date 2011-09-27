@@ -8,23 +8,24 @@ use Symfony\Component\Form\FormBuilder;
 class CancelType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
-        $builder->add('msg', 'textarea', array(
+        $builder->add('obs', 'textarea', array(
                     'label' => 'Observação',
                     ))
-                ->add('returnDeal', 'checkbox', array(
-                    'label' => 'Voltar oferta para o site?',
-                    'required' =>false,
+                ->add('returnMoney', 'checkbox',array(
+                    'label' => 'Devolver o dinheiro',
+                    'required' => false,
                 ))
                 ->add('notifyBuyer', 'checkbox', array(
                     'label' => 'Notificar o comprador?',
-                    'required' =>false,
+                    'required' => false,
                 ))
                 ->add('notifySeller', 'checkbox', array(
                     'label' => 'Notificar o vendedor?',
-                    'required' =>false,
+                    'required' => false,
                 ))
-                ->add('control', 'hidden', array(
-                    'value' => true,
+                ->add('returnDeal', 'checkbox', array(
+                    'label' => 'Voltar oferta para o site?',
+                    'required' => false,
                 ));
     }
 

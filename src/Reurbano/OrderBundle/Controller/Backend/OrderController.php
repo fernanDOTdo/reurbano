@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
 use Reurbano\OrderBundle\Form\Backend\CommentType;
+use Reurbano\OrderBundle\Form\Backend\CancelType;
 
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
@@ -157,18 +158,27 @@ class OrderController extends BaseController
      * @Template()
      */
     public function cancelAction(Order $order){
+        $title = 'Cancelar pedido - ' . $order->getId();
         $request = $this->get('request');
-        $formResult = $request->request;
         $dm = $this->dm();
+        $form = $this->createForm(new CancelType());
         if($request->getMethod() == 'POST'){
+            $data = $request->request->get($form->getName());
+            $user = $this->get('security.context')->getToken()->getUser();
             $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());
             $statusLog = new StatusLog();
             $statusLog->setObs($data['obs']);
             $statusLog->setUser($user);
             
             $order->addStatusLog($statusLog);
+            $dm->persist($order);
+            $dm->flush();
             return $this->redirectFlash($this->generateUrl('admin_order_order_index'), 'Venda cancelada com sucesso!');
         }
-        return $this->confirm($this->trans('Tem certeza que deseja cancelar o pedido numero: %id%?', array("%id%" => $order->getId())), array('id' => $order->getId()));
+        return array(
+            'title' => $title,
+            'form'  => $form->createView(),
+            'id'    => $order->getId(),
+        ); 
     }
 }
