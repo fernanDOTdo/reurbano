@@ -4,6 +4,9 @@
 
 {% block content %}
 <div class="content box grid_12 round_all">
+    {% if status %}
+    <a class="button medium red" href="{{ path('admin_order_order_cancel', {'id': order.getId()}) }}" style="float: right; margin: 10px;"><span>{{"Cancelar Pedido"|trans}}</span></a>
+    {% endif %}
     <div class="grid_8">
         <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.StatusName }}</span></h1>
         <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
@@ -42,13 +45,15 @@
                 </div>
             {%endfor%}
         </div>
-        <div>
-            <form class="block" action="{{ path('admin_order_order_status', {'id':order.id}) }}" method="POST">
-                {{ form_widget(statusForm) }}
+        {% if status %}
+            <div>
+                <form class="block" action="{{ path('admin_order_order_status', {'id':order.id}) }}" method="POST">
+                    {{ form_widget(statusForm) }}
 
-                <input type="submit" value="Alterar" class="blockButton" />
-            </form>
-        </div>
+                    <input type="submit" value="Alterar" class="blockButton" />
+                </form>
+            </div>
+        {% endif %}
     </div>
     <div class="grid_6 borderStatus beta blockRigtht">
         <div class="subTitulo" >Comentários</div>
