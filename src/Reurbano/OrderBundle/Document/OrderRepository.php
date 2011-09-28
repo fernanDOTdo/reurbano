@@ -104,5 +104,4 @@ class OrderRepository extends BaseRepository {
     public function findBySeller($id) {
         return $this->findBy(array('seller.id' => $id), array('created' => 'desc'));
     }
-
 }
