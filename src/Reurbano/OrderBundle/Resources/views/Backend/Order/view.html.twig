@@ -34,6 +34,7 @@
     </div>
     <div class="grid_6 borderStatus alpha blockLeft">
         <div class="subTitulo" >Status</div>
+        <div style="font-weight: 700; margin-left: 10px;" >Histórico:</div>
         <div class="orderLists">
             {% for status in order.statusLog|reverse %}
                 <div class="orderAdminList">
@@ -82,6 +83,18 @@
                 <input type="submit" value="Comentar" class="blockButton" />
             </form>
         </div>
+    </div>
+    <div class="clear"></div>
+    <div class="grid_12 borderStatus">
+        <div class="subTitulo">Vouchers</div>
+        {% for voucher in order.deal.voucher %}
+            {% if voucher.order.id == order.id %}
+                <div style="margin: 7px;">
+                    <a class="button big green" href="{{ path('admin_order_order_download', {'id': order.getId, 'voucher': voucher.fileName}) }}" ><span>{{"Voucher "|trans}} {{ loop.index }}</span></a><br />
+                </div>
+            {% endif %}
+            
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

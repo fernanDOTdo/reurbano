@@ -4,6 +4,7 @@ namespace Reurbano\OrderBundle\Controller\Backend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
 use Reurbano\OrderBundle\Form\Backend\CommentType;
@@ -45,9 +46,12 @@ class OrderController extends BaseController
     public function viewAction(Order $order)
     {
         $title = "Venda";
-        
         $status = $order->getStatus();
-        $statusForm = $this->createForm(new StatusChangeType());
+        $statusLog = new StatusLog();
+        if($status){
+            $statusLog->setStatus($status);
+            $statusForm = $this->createForm(new StatusChangeType(), $statusLog);
+        }
         $commentForm = $this->createForm(new CommentType());
         $pay = $order->getPayment();
         $gateway = 'Reurbano\OrderBundle\Payment\\' . $pay['gateway'];
@@ -56,8 +60,8 @@ class OrderController extends BaseController
         return array(
             'title' => $title,
             'order' => $order,
-            'status' => ($order->getStatus()) ? $order->getStatus() : false,
-            'statusForm' => $statusForm->createView(),
+            'status' => ($status) ? $order->getStatus() : false,
+            'statusForm' => ($status) ? $statusForm->createView() : false,
             'commentForm' => $commentForm->createView(),
             'payment' => $payment,
             );
@@ -209,5 +213,13 @@ class OrderController extends BaseController
             'form'  => $form->createView(),
             'id'    => $order->getId(),
         ); 
+    }
+    
+    /**
+     * @Route("/download/voucher/{id}/{voucher}", name="admin_order_order_download")
+     */
+    public function donwloadAction(Order $order, $voucher)
+    {
+        
     }
 }

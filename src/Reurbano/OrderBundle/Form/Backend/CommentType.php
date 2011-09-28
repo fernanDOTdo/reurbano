@@ -9,7 +9,7 @@ class CommentType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('comment', 'textarea', array(
-                    'label' => 'Cometário',
+                    'label' => 'Comentário',
                     'attr'  => array(
                         'style' => 'width: 100%;',
                     )));
