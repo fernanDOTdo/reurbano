@@ -1,5 +1,4 @@
 $('#Userform_email').blur(function(e) {
-    
     var email = $(this).val();
     if(email!=""){
         $.post(ajaxPath,{email:email}, function(data) {
@@ -11,7 +10,6 @@ $('#Userform_email').blur(function(e) {
         })
     }
 })
-
 $('#Userformedit_email').blur(function(e) {
     
     var email = $(this).val();
@@ -26,3 +24,6 @@ $('#Userformedit_email').blur(function(e) {
         })
     }
 })
+jQuery(function($){
+    $('.cpfMask').mask("999.999.999-99", {placeholder: " "});
+});

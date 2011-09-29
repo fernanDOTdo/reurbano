@@ -42,7 +42,8 @@
 {% block javascripts %}
         <script type="text/javascript" src="{{ path('user_user_script') }}"></script>
         {% javascripts output='static/system/js/newuser.js' 
-                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' %}
+                '@ReurbanoUserBundle/Resources/public/js/Frontend/newUser.js' 
+                '@ReurbanoCoreBundle/Resources/public/js/cpfMask.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% endblock %}
