@@ -276,13 +276,13 @@ class UserController extends BaseController {
     }
 
     /**
-     * Action de view das informações bancarias do usuário
+     * Action de view das informações do usuário
      * 
-     * @Route("/informacoes/{username}", name="admin_user_user_money")
+     * @Route("/informacoes/{username}", name="admin_user_user_info")
      * @Template()
      */
-    public function moneyAction($username){
-        $title = $this->trans("Informações Bancárias");
+    public function infoAction($username){
+        $title = $this->trans("Informações do usuário");
         $user = $this->mongo('ReurbanoUserBundle:User')->findByUsername($username);
         return array(
             'title' => $title,

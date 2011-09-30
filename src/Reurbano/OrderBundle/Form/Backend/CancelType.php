@@ -10,6 +10,7 @@ class CancelType extends AbstractType {
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('obs', 'textarea', array(
                     'label' => 'Observação',
+                    'required' => false,
                     ))
                 ->add('returnMoney', 'checkbox',array(
                     'label' => 'Devolver o dinheiro',
