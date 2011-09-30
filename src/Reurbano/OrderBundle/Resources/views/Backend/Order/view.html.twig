@@ -85,15 +85,17 @@
         </div>
     </div>
     <div class="clear"></div>
-    <div class="grid_12 borderStatus">
-        <div class="subTitulo">Vouchers</div>
-        {% for vou in voucher %}
-            <div style="margin: 7px;">
-                <a class="button big green" href="/uploads/reurbanodeal/voucher/{{vou.fileName}}" target="_blank">
-                    <span>{{"Voucher"|trans}} {{ loop.index }}</span>
-                </a><br />
-            </div>
-        {% endfor %}
-    </div>
+    {% if status %}
+        <div class="grid_12 borderStatus">
+            <div class="subTitulo">Vouchers</div>
+            {% for vou in voucher %}
+                <div style="margin: 7px;">
+                    <a class="button big green" href="/uploads/reurbanodeal/voucher/{{vou.fileName}}" target="_blank">
+                        <span>{{"Voucher"|trans}} {{ loop.index }}</span>
+                    </a><br />
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

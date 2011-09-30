@@ -76,9 +76,9 @@ class MyOrdersController extends BaseController
         }
         $ret['voucher'] = false;
         $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
-        if(count($statusVoucher) > 0){
-            foreach($statusVoucher as $j => $c){
-                if($c == $order->getStatus()->getId()){
+        if($order->getStatus()){
+            if(count($statusVoucher) > 0){
+                if(in_array($order->getStatus()->getId(), $statusVoucher)){
                     $ret['voucher'] = $order->getDealVoucher();
                 }
             }
