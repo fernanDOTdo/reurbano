@@ -69,7 +69,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child = new Children();
         $child->setName('voucherstatus');
         $child->setTitle('Id do status para liberar voucher');
-        $child->setDesc('Digite o id do status que a venda precisa ter para o sistema liberar o Voucher para o comprador');
+        $child->setDesc('Digite os ids dos status que a venda precisa ter para o sistema liberar o Voucher para o comprador (Separados por virgula)');
         $child->setValue(4);
         $child->setOrder(2);
         $param->addChildren($child);
@@ -77,7 +77,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child = new Children();
         $child->setName('releasestatus');
         $child->setTitle('Id do status para liberar pagamento');
-        $child->setDesc('Digite o id do status que a venda precisa ter para o sistema liberar o pagamento ao vendedor');
+        $child->setDesc('Digite os ids dos status que a venda precisa ter para o sistema liberar o pagamento ao vendedor (Separados por virgula)');
         $child->setValue(7);
         $child->setOrder(3);
         $param->addChildren($child);

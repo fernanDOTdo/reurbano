@@ -19,7 +19,7 @@ class UserForm extends AbstractType {
                 ->add('id', 'hidden')
                 ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome Completo'))
                 ->add('email', 'email', array('label' => 'Email'))
-                ->add('cpf', 'text', array('label' => 'CPF'))
+                ->add('cpf', 'text', array('label' => 'CPF', 'attr' => array('class' => 'cpfMask')))
                 ->add('password', 'password', array('label' => 'Senha'))
                 ->add('password2', 'password', array('property_path' => false, 'label' => 'Repita a senha'))
                 ->add('agree', 'checkbox', array('label' => 'Eu li e aceito os Termos e Condições de uso do site ', 'required' => true, 'property_path' => false))

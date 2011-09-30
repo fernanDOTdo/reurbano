@@ -93,22 +93,31 @@ class OrderController extends BaseController
             $dm->persist($order);
             $dm->flush();
             
-            /*$statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+            $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
             if(count($statusVoucher) > 0){
                 $mail = $this->get('mastop.mailer');
+                foreach($statusVoucher as $j => $c){
+                    if($c == $status->getId()){
                         $mail->to($order->getUser()->getEmail())
                             ->subject('Cupom liberado')
                             ->template('pedido_voucher',array(
                                 'user'  => $order->getUser(),
                                 'order' => $order,
                             ));
-                foreach($statusVoucher as $k => $v){
-                    if($status->getId() == $v){
-                            $mail->attach($order.);
+                        foreach($order->getDealVoucher() as $k => $v){
+                            $mail->attach($v->getPath() . "/" . $v->getFileName());
+                        }
+                        $mail->send();
                     }
                 }
-                $mail->send();
-            }*/
+            }
+            
+            $returnMoney = explode(',', $this->get('mastop')->param('order.all.releasestatus'));
+            if(count($returnMoney) > 0){
+                /**
+                 * @todo Se o status for um dos escolhidos na administração libera o dinheiro para o vendedor
+                 */
+            }
             
             return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Status atualizado com sucesso!'));
         }

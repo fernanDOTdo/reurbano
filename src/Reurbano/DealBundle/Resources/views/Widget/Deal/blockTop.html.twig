@@ -23,12 +23,8 @@
 {#Preços#}
 <div class="clear"></div>
 {%if deal.getSource.getBusinessAddress is not null%}
-{#Endereço#}
-<div class="dealAddress dp50">
-    {{deal.getSource.getBusinessAddress}}
-</div>
 {#Data Validade#}
-<div class="dealExpires dp50">
+<div class="dealExpires dp50" style="float: right;">
             Expira em <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
 </div>
 <div class="clear"></div>

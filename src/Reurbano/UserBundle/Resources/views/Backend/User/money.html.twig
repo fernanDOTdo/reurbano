@@ -1,0 +1,31 @@
+{% extends '::backend.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock title %}
+{% block content %}
+<div class="grid_12">
+    <h1>{{ title }}</h1>
+    <div class="bankInfo">
+        <span class="bankInfo">Banco:</span> {{ user.bankData.name }}<br />
+    </div>
+    <div class="bankInfo">
+        <span class="bankInfo">Agência:</span> {{ user.bankData.agency }}<br />
+    </div>
+    <div class="bankInfo">
+        <span class="bankInfo">Conta:</span> {{ user.bankData.account }}<br />
+    </div>
+    <div class="bankInfo">
+        {% if user.bankData.type == 1 %}
+            <span class="bankInfo">Tipo:</span> Conta Corrente<br />
+        {% else %}
+            <span class="bankInfo">Tipo:</span> Poupança<br />
+        {% endif %}
+    </div>
+    <div class="bankInfo">
+        <span class="bankInfo">Observações:</span> {{ user.bankData.obs }}<br />
+    </div>
+    <div class="bankInfo">
+        <button onclick="window.location='{{path('admin_user_user_index')}}'" title="{{ "Voltar"|trans }}" class="button white newItem m10">{{ "Voltar"|trans }}</button>
+    </div>
+</div>
+{% endblock %}

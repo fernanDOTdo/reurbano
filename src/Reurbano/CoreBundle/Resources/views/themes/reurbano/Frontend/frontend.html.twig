@@ -106,7 +106,7 @@ $(function(){
     <div id="topNL">
         <div class="container_12">
             <div class="grid_11">
-                <form id="formNL" action="{{ path('core_mailing_new') }}" method="post"><span class="arrow">&nbsp</span> <span id="labelNL">Receba ofertas com cupons imperdíveis de </span><div class="floatL">{{reurbano_select_city('cityNL', 'cityNL', 'chzn-select')}}</div><div class="floatL"> <input type="text" id="mailNL" name="email" value="Digite seu email" /> <button type="submit" class="button gray">Enviar</button></div></form>
+                <form id="formNL" action="{{ path('core_mailing_new') }}" method="post"><span class="arrow">&nbsp</span> <span id="labelNL">Receba o que mais vendeu em </span><div class="floatL">{{reurbano_select_city('cityNL', 'cityNL', 'chzn-select')}}</div><div class="floatL"> <input type="text" id="mailNL" name="email" placeholder="Digite seu email" /> <button type="submit" class="button gray">Enviar</button></div></form>
             </div>
             <div class="grid_1">
                 <a id="closeNL" href="#">Fechar</a>
@@ -131,7 +131,7 @@ $(function(){
         </div>
         <div class="grid_7">
             <div id="login">
-                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span> <a href="{{path('user_dashboard_index')}}" class="button small blue">Meu {{mastop_param('system.site.name')}}</a>{%endif%}
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span> <a href="{{path('user_dashboard_index')}}" class="button small blue">Minha conta</a>{%endif%}
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}

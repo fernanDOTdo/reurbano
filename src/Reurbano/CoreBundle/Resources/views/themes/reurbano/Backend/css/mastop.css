@@ -378,3 +378,9 @@ a.small, button.small {
 .statusName.cancelado{
     color: red;
 }
+span.bankInfo{
+    font-weight: 700;
+}
+div.bankInfo{
+    margin: 5px;
+}
