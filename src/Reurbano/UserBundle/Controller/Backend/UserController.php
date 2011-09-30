@@ -275,4 +275,18 @@ class UserController extends BaseController {
         return new \Symfony\Component\HttpFoundation\Response($encoder->encodePassword($pass, $salt));
     }
 
+    /**
+     * Action de view das informações bancarias do usuário
+     * 
+     * @Route("/informacoes/{username}", name="admin_user_user_money")
+     * @Template()
+     */
+    public function moneyAction($username){
+        $title = $this->trans("Informações Bancárias");
+        $user = $this->mongo('ReurbanoUserBundle:User')->findByUsername($username);
+        return array(
+            'title' => $title,
+            'user' => $user,
+        );
+    }
 }

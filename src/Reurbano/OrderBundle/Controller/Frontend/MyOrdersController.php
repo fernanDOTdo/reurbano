@@ -74,6 +74,15 @@ class MyOrdersController extends BaseController
         if (!isset($pay['data']) || $order->getStatus()->getId() == 1) {
             $payButton = $payment->renderPaymentButton();
         }
+        $ret['voucher'] = false;
+        $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+        if(count($statusVoucher) > 0){
+            foreach($statusVoucher as $j => $c){
+                if($c == $order->getStatus()->getId()){
+                    $ret['voucher'] = $order->getDealVoucher();
+                }
+            }
+        }
         $ret['title'] = 'Informações da Compra';
         $ret['order'] = $order;
         $ret['payment'] = $payment;

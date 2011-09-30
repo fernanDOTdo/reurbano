@@ -56,6 +56,21 @@
           {%endfor%}
         </div>
     </div>
+    {% if voucher %}
+        <div>
+            <h4>Vouchers</h4>
+            <div>
+                {% for vou in voucher %}
+                <div style="margin: 7px;">
+                    <a class="button big green" href="/uploads/reurbanodeal/voucher/{{vou.fileName}}" target="_blank">
+                        <span>{{"Voucher"|trans}} {{ loop.index }}</span>
+                    </a>
+                    <br />
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 <div class="clear"></div>
 <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
