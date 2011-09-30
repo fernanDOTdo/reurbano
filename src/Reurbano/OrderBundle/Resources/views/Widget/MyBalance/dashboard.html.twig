@@ -1,0 +1,78 @@
+{%if lastOrder%}
+<h2 id="lastOrderTitle">Última Venda - Data: <strong>{{ lastOrder.created.timestamp|date("d/m/Y")  }}</strong> - Total: <strong>{{lastOrder.total|money}}</strong></h2>
+<div id="myOrder">
+    <div class="orderInfo">
+        <div class="dealThumb">
+            <img src="{{asset(lastOrder.deal.source.thumb)}}" alt="{{lastOrder.deal.label}}" />
+            <span class="discount {{lastOrder.deal.discountType }}">Cód. {{lastOrder.id}}</span>
+        </div>
+        <div class="orderLabel">
+            <p>{{ lastOrder.deal.label }}</p>
+            <p class="orderStatus {{ lastOrder.getStatusName|lower }}">Status: {{ lastOrder.getStatusName }}</p>
+            <p><a class="button {{lastOrder.deal.discountType }}" href="{{path('order_mysales_view', {'id': lastOrder.id})}}">Ver Venda</a></p>
+        </div>
+    </div>
+    <div class="orderComments">
+        <div class="orderCommentsDiv">
+          {%for comment in lastOrder.comments|reverse%}
+                <div class="orderComment {%if comment.user.id == lastOrder.user.id%}customer{%elseif comment.user.id == lastOrder.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == lastOrder.user.id%}Cliente{%elseif comment.user.id == lastOrder.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y h:i")}}</em><br />{{comment.message|nl2br}}</div>
+          {%else%}
+                <div class="info">Não há comentários nesta venda.</div>
+          {%endfor%}
+        </div>
+        <form method="post" action="{{path('order_mysales_comment', {'id':lastOrder.id})}}">
+            <textarea name="message" placeholder="Deixe um comentário nesta venda"></textarea><button type="submit" class="button primary big {{lastOrder.deal.discountType }}">OK</button>
+        </form>
+    </div>
+</div>
+{%else%}
+    <div class="info">Você ainda não vendeu nenhuma oferta.</div>
+{%endif%}
+{%if orders|length > 1%}
+    <div class="clear"></div>
+    <h2>Todas as Vendas</h2>
+<table class="static"> 
+        <thead> 
+            <tr> 
+                <th class="aL">{{ "Código"|trans }}</th> 
+                <th colspan="2">{{ "Oferta"|trans }}</th> 
+                <th>{{ "Qtd."|trans }}</th> 
+                <th>{{ "Data"|trans }}</th> 
+                <th>{{ "Total"|trans }}</th> 
+                <th>{{ "Validade"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for order in orders if  order.id != lastOrder.id%}
+        <tr>
+            <td>
+                {{ order.id }}
+            </td>
+            <td>
+                <img src='{{ order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+            </td>
+            <td style="width: 315px;">
+            {{ order.deal.label(80) }}
+            </td>
+            <td class="aC">
+            {{ order.quantity }}
+            </td>
+            <td class="aC">
+            {{ order.created.timestamp|date("d/m/Y")  }}
+            </td>
+            <td class="aC">
+            {{order.total|money}}
+            </td>
+            <td class="aC">
+            {{ order.deal.source.expiresAt|date("d/m/Y")  }}
+            </td>
+            <td class="center">
+                <a class="button button-set-start small white" href="{{ path('order_mysales_view', {'id': order.getId()}) }}">{{"Ver Venda"|trans}}</a>
+            </td>
+        </tr>
+  {% else %}
+        <tr><td colspan="4">{{"Nenhuma venda encontrada"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
+{%endif%}

@@ -33,7 +33,7 @@ class DashboardController extends BaseController
             'ReurbanoOrderBundle:Widget\\MyOrders:dashboard',
             'ReurbanoDealBundle:Widget\\MyDeals:dashboard',
             'ReurbanoOrderBundle:Widget\\MySales:dashboard',
-            'ReurbanoDealBundle:Widget\\MyBalance:dashboard',
+            'ReurbanoOrderBundle:Widget\\MyBalance:dashboard',
         );
         return array(
             'title' => $title,

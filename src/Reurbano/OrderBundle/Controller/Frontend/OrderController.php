@@ -31,6 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
+use Reurbano\OrderBundle\Document\Escrow;
 use Reurbano\DealBundle\Document\Deal;
 
 /**
@@ -171,7 +172,32 @@ class OrderController extends BaseController
         }
         $dm->persist($deal);
         $dm->flush();
-        // @TODO: Enviar e-mails com notificação de criação de pedido
+        // Cria o extrato do vendedor
+        $escrow = new Escrow();
+        $escrow->setUser($order->getSeller());
+        $escrow->setData($order);
+        $escrow->setValue($order->getTotal(true));
+        $escrow->setObs("Venda #".$order->getId());
+        $dm->persist($escrow);
+        $dm->flush();
+        // Enviar e-mails para comprador, vendedor e notificação administrativa de criação de pedido
+        $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+        $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+        $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($order->getUser())
+             ->subject('Sua compra foi criada ')
+             ->template('oferta_novavenda_comprador', array('user' => $order->getUser(), 'order' => $order, 'orderLink' => $orderLinkBuyer, 'title' => 'Compra #'.$order->getId()))
+             ->send();
+        $mail->newMessage();
+        $mail->to($order->getSeller())
+             ->subject('Sua oferta foi vendida')
+             ->template('oferta_novavenda_vendedor', array('user' => $order->getSeller(), 'order' => $order, 'orderLink' => $orderLinkSeller, 'title' => 'Venda #'.$order->getId()))
+             ->send();
+        $mail->notify('Aviso de nova venda', 'O usuário '.$user->getName().' ('.$user->getEmail().') comprou <b>'.$qtd.'x - '.$deal->getLabel().'</b> do usuário '.$order->getSeller()->getName().' ('.$order->getSeller()->getEmail().').<br /><br />
+            Cód. Venda: '.$order->getId().': <br />
+            Total: R$ '.  number_format($order->getTotal(), 2, ',', '').'<br />
+            Link para a venda: <a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a><br />');
         $ret['title'] = 'Compra '.$order->getId();
         $ret['content'] = $payment->process();
         return $ret;

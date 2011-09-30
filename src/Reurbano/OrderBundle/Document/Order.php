@@ -13,6 +13,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *   collection="order",
  *   repositoryClass="Reurbano\OrderBundle\Document\OrderRepository"
  * )
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"user.$id"="desc", "created"="desc"}),
+ *   @ODM\Index(keys={"seller.$id"="desc", "created"="desc"})
+ * })
  */
 class Order
 {
@@ -243,9 +247,20 @@ class Order
      *
      * @return float $total
      */
-    public function getTotal()
+    public function getTotal($commision = false)
     {
-        return $this->total;
+        $total = $this->total;
+        if($commision){
+            $compercent = $this->getDeal()->getComission()->getSellerpercent();
+            $comreal = $this->getDeal()->getComission()->getSellerreal();
+            if($compercent > 0){
+                $totalcom = $total * ($compercent / 100) + $comreal;
+            }else{
+                $totalcom = $comreal;
+            }
+            $total -= $totalcom;
+        }
+        return $total;
     }
 
     /**

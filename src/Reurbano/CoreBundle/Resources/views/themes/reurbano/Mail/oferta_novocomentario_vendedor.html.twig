@@ -3,9 +3,9 @@
 
 {% block content %}
 <h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, um novo comentário foi enviado para o pedido {{order.id}}</h1><br/><br/>
-<h3>O vendedor enviou o seguinte comentário:</h3>
+<h3>O comprador enviou o seguinte comentário:</h3>
 {{comment|nl2br}} <br /><br />
-Caso queira responder o comentário do vendedor, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
+Caso queira responder o comentário do comprador, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
 <a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
 
 <span style="margin:0;font-size:11px;">

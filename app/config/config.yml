@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: security.yml }
 
 framework:
@@ -14,7 +14,7 @@ framework:
     session:
         default_locale: %locale%
         auto_start: true
-    translator: { fallback: en }
+#    translator: { fallback: en }
 
 # Twig Configuration
 twig:

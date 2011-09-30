@@ -28,7 +28,7 @@ set :dump_assetic_assets, true
 # set :git_enable_submodules, 1
 
 # Set some paths to be shared between versions
-set :shared_files,    ["app/config/parameters.ini"]
+set :shared_files,    ["app/config/parameters.yml"]
 set :shared_children, [app_path + "/logs", web_path + "/uploads"]
 
 #namespace :deploy do
