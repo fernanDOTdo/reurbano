@@ -163,7 +163,7 @@ class MercadoPago implements PaymentInterface {
         $ret = '<form id="paymentForm" action="' . $this->url . '" method="post">
          <h2>Sua compra foi criada com o código <span>' . $this->order->getId() . '</span> e você será redirecionado para a tela de pagamento.</h2>
          <img src="/bundles/mastopsystem/images/load.gif" alt="Carregando" />
-         <div class="info mT10 mB10">Se você não for redirecionado em 10 segundos, clique no botão abaixo para pagar sua compra.</div>
+         <div class="info mT10 mB10">Se você não for redirecionado em 5 segundos, clique no botão abaixo para pagar sua compra.</div>
          <input type="submit" class="button big ' . $this->order->getDeal()->getDiscountType() . '" value="Ir para tela de pagamento">';
 
         foreach ($this->getParams() as $name => $value) {
@@ -173,7 +173,7 @@ class MercadoPago implements PaymentInterface {
         $ret .= '
             <script type="text/javascript">
             function goToPayment() { document.getElementById("paymentForm").submit(); }
-            setTimeout(goToPayment, 10000);
+            setTimeout(goToPayment, 5000);
             </script>';
         return $ret;
     }

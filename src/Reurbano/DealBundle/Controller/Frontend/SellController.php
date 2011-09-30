@@ -99,11 +99,13 @@ class SellController extends BaseController
         if ($this->get('request')->isXmlHttpRequest()) {
             if ($this->get('request')->getMethod() == 'GET') {
                 $cupom = $this->get('request')->query->get('q');
+                $cityId = $this->get('session')->get('reurbano.user.cityId');
                 $siteId = $this->get('request')->query->get('siteid');
                 $regexp = new \MongoRegex('/' . $cupom . '/i');
                 $qb = $this->mongo('ReurbanoDealBundle:Source')->createQueryBuilder();
                 $source = $qb->sort('createdAt', 'ASC')
-                        ->field('site.$id')->equals((int)$siteId)
+                        ->field('city.id')->equals($cityId)
+                        ->field('site.id')->equals((int)$siteId)
                         ->field('expiresAt')->gt(new \DateTime())
                         ->addOr($qb->expr()->field('url')->equals($regexp))->addOr($qb->expr()->field('title')->equals($regexp))
                         ->getQuery()->execute();
