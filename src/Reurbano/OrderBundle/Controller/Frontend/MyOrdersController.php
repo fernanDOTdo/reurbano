@@ -118,7 +118,7 @@ class MyOrdersController extends BaseController
         $mail = $this->get('mastop.mailer');
         $mail->to($order->getSeller())
              ->subject('Novo comentário no pedido '.$order->getId())
-             ->template('oferta_novocomentario_comprador', array('user' => $order->getSeller(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Novo Comentário'))
+             ->template('oferta_novocomentario_vendedor', array('user' => $order->getSeller(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Novo Comentário'))
              ->send();
             $mail->notify('Aviso de novo comentário', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou o seguinte comentário no pedido '.$order->getId().': <br />'.nl2br($comment->getMessage()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
         return $this->redirectFlash($this->generateUrl('user_dashboard_index'). '#myorders', 'Comentário adicionado no pedido '.$order->getId());
