@@ -455,4 +455,21 @@ class Order
     {
         return $this->seo;
     }
+    
+    /**
+     * Retorna um array com os vouchers que pertecem ao pedido com o id que foi passado.
+     * 
+     * @return array
+     */
+    public function getDealVoucher(){
+        $ret = array();
+        foreach($this->getDeal()->getVoucher() as $k => $v){
+            if($v->getOrder()){
+                if( $v->getOrder()->getId() ==  $this->getId()){
+                    $ret[] = $v;
+                }
+            }
+        }
+        return $ret;
+    }
 }

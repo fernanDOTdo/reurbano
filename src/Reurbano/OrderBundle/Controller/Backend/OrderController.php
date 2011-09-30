@@ -4,6 +4,7 @@ namespace Reurbano\OrderBundle\Controller\Backend;
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 use Reurbano\OrderBundle\Form\Backend\StatusChangeType;
 use Reurbano\OrderBundle\Form\Backend\CommentType;
@@ -45,21 +46,24 @@ class OrderController extends BaseController
     public function viewAction(Order $order)
     {
         $title = "Venda";
-        
         $status = $order->getStatus();
-        $statusForm = $this->createForm(new StatusChangeType());
+        $statusLog = new StatusLog();
+        if($status){
+            $statusLog->setStatus($status);
+            $statusForm = $this->createForm(new StatusChangeType(), $statusLog);
+        }
         $commentForm = $this->createForm(new CommentType());
         $pay = $order->getPayment();
         $gateway = 'Reurbano\OrderBundle\Payment\\' . $pay['gateway'];
         $payment = new $gateway($order, $this->container);
-        
         return array(
             'title' => $title,
             'order' => $order,
-            'status' => ($order->getStatus()) ? $order->getStatus() : false,
-            'statusForm' => $statusForm->createView(),
+            'status' => ($status) ? $order->getStatus() : false,
+            'statusForm' => ($status) ? $statusForm->createView() : false,
             'commentForm' => $commentForm->createView(),
             'payment' => $payment,
+            'voucher' => $order->getDealVoucher(),
             );
     }
     /**
@@ -89,6 +93,23 @@ class OrderController extends BaseController
             $dm->persist($order);
             $dm->flush();
             
+            /*$statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+            if(count($statusVoucher) > 0){
+                $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getUser()->getEmail())
+                            ->subject('Cupom liberado')
+                            ->template('pedido_voucher',array(
+                                'user'  => $order->getUser(),
+                                'order' => $order,
+                            ));
+                foreach($statusVoucher as $k => $v){
+                    if($status->getId() == $v){
+                            $mail->attach($order.);
+                    }
+                }
+                $mail->send();
+            }*/
+            
             return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Status atualizado com sucesso!'));
         }
         $form = $this->createForm(new StatusChangeType());
@@ -115,15 +136,15 @@ class OrderController extends BaseController
             $comment = new Comment();
             $user = $this->get('security.context')->getToken()->getUser();
             $data = $request->request->get($form->getName());
-                $mail = $this->get('mastop.mailer');
-                $mail->to($order->getUser()->getEmail())
-                        ->subject('Comentário na sua compra')
-                        ->template('pedido_comentario',array(
-                            'user'  => $order->getUser(),
-                            'order' => $order,
-                            'msg' => $data['comment'],
-                        ))
-                        ->send();
+            $mail = $this->get('mastop.mailer');
+            $mail->to($order->getUser()->getEmail())
+                    ->subject('Comentário na sua compra')
+                    ->template('pedido_comentario',array(
+                        'user'  => $order->getUser(),
+                        'order' => $order,
+                        'msg' => $data['comment'],
+                    ))
+                    ->send();
             
             $comment->setMessage($data['comment']);
             $comment->setUser($user);
@@ -165,10 +186,10 @@ class OrderController extends BaseController
         $form = $this->createForm(new CancelType());
         if($request->getMethod() == 'POST'){
             $data = $request->request->get($form->getName());
-            if($data['returnMoney']){
+            if(isset($data['returnMoney'])){
                 
             }
-            if($data['notifyBuyer']){
+            if(isset($data['notifyBuyer'])){
                 $nBuyer = $this->get('mastop.mailer');
                 $nBuyer->to($order->getUser()->getEmail())
                         ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
@@ -179,7 +200,7 @@ class OrderController extends BaseController
                         ))
                         ->send();
             }
-            if($data['notifySeller']){
+            if(isset($data['notifySeller'])){
                 $nSeller = $this->get('mastop.mailer');
                 $nSeller->to($order->getDeal()->getUser()->getEmail())
                         ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
@@ -190,8 +211,8 @@ class OrderController extends BaseController
                         ))
                         ->send();
             }
-            if($data['returnDeal']){
-                
+            if(isset($data['returnDeal'])){
+                $order->getDeal()->setQuantity($order->getDeal()->getQuantity() + $order->getQuantity());
             }
             $user = $this->get('security.context')->getToken()->getUser();
             $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());

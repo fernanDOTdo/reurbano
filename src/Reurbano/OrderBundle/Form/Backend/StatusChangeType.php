@@ -23,7 +23,7 @@ class StatusChangeType extends AbstractType {
 
     public function getDefaultOptions(array $options) {
         return array(
-            'data_class' => 'Reurbano\OrderBundle\Document\Status',
+            'data_class' => 'Reurbano\OrderBundle\Document\StatusLog',
             'intention' => 'status_creation',
         );
     }
