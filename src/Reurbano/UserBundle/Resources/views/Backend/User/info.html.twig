@@ -3,6 +3,7 @@
 {{ title }}
 {% endblock title %}
 {% block content %}
+{% if user.bankData %}
 <div class="grid_12">
     <h1>{{ title }}</h1>
     <div class="bankInfo">
@@ -25,4 +26,5 @@
         <span class="bankInfo">Observações:</span> {{ user.bankData.obs }}<br />
     </div>
 </div>
+{% endif %}
 {% endblock content %}
