@@ -1,8 +1,8 @@
-{# E-mail de confirmação de envio de oferta #}
+{# E-mail de confirmação de venda de uma oferta pelo usuário #}
 {% extends '::mail.html.twig' %}
 
 {% block content %}
-<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua oferta no {{mastop_param('system.site.name')}} foi vendida com o código {{order.id}}</h1><br/><br/>
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua oferta no {{mastop_param('system.site.name')}} foi vendida com o código: {{order.id}}</h1><br/><br/>
 <h3>Dados da venda:</h3>
 Oferta: {{order.deal.label}} <br />
 Quantidade de Cupons: {{order.quantity}}<br />
