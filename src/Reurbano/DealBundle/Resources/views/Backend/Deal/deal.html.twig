@@ -20,7 +20,7 @@
         <h3>{{ deal.getLabel() }}</h3>
         <h3>{{"Usuário: %user%"|trans({"%user%":deal.getUser.getName()}) }}</h3>
         <h3>{{"Visualizações: %views%"|trans({"%views%":deal.getViews()}) }}</h3>
-        <form action="{{ path('admin_deal_deal_save', vars) }}" method="post" {{ form_enctype(form) }}>
+        <form action="{{ path('admin_deal_deal_save', vars) }}" method="post" enctype="multipart/form-data">
 
             {{ form_errors(form.id) }}
             {{ form_widget(form.id) }}
@@ -36,10 +36,15 @@
             {{ form_errors(form.price) }}
             {{ form_widget(form.price) }}
 
-            {{ form_label(form.quantity) }}
-            {{ form_errors(form.quantity) }}
-            {{ form_widget(form.quantity) }}
-
+            {% if deal.id %}
+                <span style="font-weight: 700;" >Quantidade disponivel: </span><br />
+                {{ deal.quantity }}<br /><br />
+            {% else %}
+                {{ form_label(form.quantity) }}
+                {{ form_errors(form.quantity) }}
+                {{ form_widget(form.quantity) }}
+            {% endif %}
+            
             {{ form_label(form.active) }}
             {{ form_errors(form.active) }}
             {{ form_widget(form.active) }}
@@ -52,18 +57,22 @@
             {{ form_errors(form.checked) }}
             {{ form_widget(form.checked) }}
             
-            <div id="sellVoucher" class="mT10 mB10">
-                {{ form_label(form.voucher0) }}
-                {{ form_errors(form.voucher0) }}
-                {{ form_widget(form.voucher0) }}
-            </div>
-            
             <div class="comission">
                 {{ form_row(form.comission) }}
             </div>
             <div class='clear'></div>
             {{ form_widget(form._token) }}
 
+                <div class="subTitulo">Vouchers</div>
+                {% for vou in voucher %}
+                    <div style="margin: 7px;">
+                        <a class="button big green" href="/uploads/reurbanodeal/voucher/{{ vou.fileName }}" target="_blank">
+                            <span>{{"Voucher"|trans}} {{ loop.index }}</span>
+                        </a>
+                        <input id="deal_voucher{{ loop.index - 1 }}" type="file" value="" name="deal[voucher-{{ vou.fileName }}]">
+                    </div>
+                {% endfor %}
+            <br />
             <button class="button green" type='submit'><span>{{ "Enviar"|trans }}</span></button>
             <button class='button red ' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
         </form>

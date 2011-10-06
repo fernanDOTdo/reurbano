@@ -2,6 +2,13 @@
 {% block title %}
 {{ title }}
 {% endblock title %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.css' 
+                    filter='?yui_css' 
+                    output='static/system/css/facebox.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all" style="padding:0">
     <table class="display datatable"> 
@@ -25,7 +32,7 @@
                 <td>{{ user.getUsername() }}</td>
                 <td>{{ user.getEmail() }}</td>
                 <td>{{ user.getStatus(true) }}</td><td>{{ user.getCreated() }}</td>
-                <td class="center nowrap"><a class="button button-set-start small white" title="{{ "Editar o usuário"|trans }}" href="{{ url('admin_user_user_edit', {'username': user.username}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set small white" title="{{ "Informações"|trans }}" href="{{ url('admin_user_user_info', {'username': user.username}) }}"><span class="ui-silk ui-silk-application">{{ "Informações"|trans }}</span></a><a class="button button-set small white" title="{{ "Trocar a senha deste usuário"|trans }}" href="{{ url('admin_user_user_pass', {'username': user.username}) }}"><span class="ui-silk ui-silk-lock-edit">{{ "Senha"|trans }}</span></a><a class="button button-set-finish small red" title="{{ "Excluir o usuário"|trans }}" href="{{ url('admin_user_user_delete', {'username': user.username}) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a></td>
+                <td class="center nowrap"><a class="button button-set-start small white" title="{{ "Editar o usuário"|trans }}" href="{{ url('admin_user_user_edit', {'username': user.username}) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set small white facebox" rel="facebox" title="{{ "Informações"|trans }}" href="{{ url('admin_user_user_info', {'username': user.username}) }}"><span class="ui-silk ui-silk-application">{{ "Informações"|trans }}</span></a><a class="button button-set small white" title="{{ "Trocar a senha deste usuário"|trans }}" href="{{ url('admin_user_user_pass', {'username': user.username}) }}"><span class="ui-silk ui-silk-lock-edit">{{ "Senha"|trans }}</span></a><a class="button button-set-finish small red" title="{{ "Excluir o usuário"|trans }}" href="{{ url('admin_user_user_delete', {'username': user.username}) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a></td>
             </tr>
                 {% endif %}
 
@@ -40,6 +47,11 @@
 <button onclick="window.location='{{path('admin_user_user_new')}}'" title="{{ "Inserir novo usuário"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar usuário"|trans }}</button>
 {% endblock content %}  
 {% block javascripts %}
-<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
-<script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
+    {% javascripts output='static/system/js/user.js' 
+                '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.js' 
+                '@ReurbanoUserBundle/Resources/public/js/Backend/user.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

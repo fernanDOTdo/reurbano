@@ -346,6 +346,7 @@ class UserController extends BaseController {
     public function saveAction($id=null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
+        $cityId = $this->get('session')->get('reurbano.user.cityId');
         if ($id) {
             $form = $factory->create(new UserFormEdit());
         } else {
@@ -438,7 +439,8 @@ class UserController extends BaseController {
                 $user->setTheme('');
                 $user->setCreated(new \DateTime());
                 $user->setRoles('ROLE_USER');
-                $user->setCity(0);
+                $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+                $user->setCity($city);
                 $user->setCpf($dadosPost['cpf']);
                 $user->setEmail($dadosPost['email']);
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
@@ -613,7 +615,8 @@ class UserController extends BaseController {
             $repository = $this->dm()->getRepository('ReurbanoUserBundle:user');
             $request = $this->getRequest();
             $result['success'] = 'false';
-
+            $cityId = $this->get('session')->get('reurbano.user.cityId');
+            
             $gets = $request->query;
             $usuario = $repository->findOneBy(array('facebookid' => $gets->get('facebookId')));
             $usuario2 = $repository->findOneBy(array('email' => $gets->get('email')));
@@ -624,7 +627,8 @@ class UserController extends BaseController {
                     //o userfacebook é ele
                     $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
                     $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
-                    $user->setCity($gets->get('cidade'));
+                    $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+                    $user->setCity($city);
                     $this->dm()->persist($user);
                     $this->dm()->flush();
                     $this->get('session')->setFlash('ok', $this->trans('Olá %name%.', array('%name%' => $usuario->getName())));
@@ -634,7 +638,8 @@ class UserController extends BaseController {
                     if (!isset($fbID) || $fbID == $gets->get('facebookId')) {
                         $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario2->getId());
                         $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
-                        $user->setCity($gets->get('cidade'));
+                        $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+                        $user->setCity($city);
                         if (!isset($fbID)) {
                             $user->setFacebookid($gets->get('facebookId'));
                             $this->get('session')->setFlash('ok', $this->trans('Olá %name%, seu facebook foi vinculado a sua conta.', array('%name%' => $usuario2->getName())));
@@ -662,7 +667,8 @@ class UserController extends BaseController {
                 $user->setLang('pt_BR');
                 $user->setCreated(new \DateTime());
                 $user->setRoles('ROLE_USER');
-                $user->setCity($gets->get('cidade'));
+                $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+                $user->setCity($city);
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $chars = "abcdefghijkmnopqrstuvwxyz023456789";
                 srand((double) microtime() * 1000000);
@@ -791,6 +797,7 @@ class UserController extends BaseController {
         $connection = $this->get('mastop.twitter');
         $request = $this->get('request');
         $session = $request->getSession();
+        $cityId = $this->get('session')->get('reurbano.user.cityId');
         $dados = $connection->getUserData($this->get('request'), array('user_id' => $session->get('tw_user_id')));
         $factory = $this->get('form.factory');
         $form = $factory->create(new UserFormTwitter());
@@ -825,7 +832,8 @@ class UserController extends BaseController {
                         $user->setTheme('');
                         $user->setCreated(new \DateTime());
                         $user->setRoles('ROLE_USER');
-                        $user->setCity($dados->location);
+                        $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+                        $user->setCity($city);
                         $user->setCpf('');
                         $user->setEmail($dadosPost['email']);
                         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);

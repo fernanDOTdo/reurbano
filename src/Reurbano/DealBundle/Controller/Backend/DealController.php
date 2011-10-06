@@ -71,14 +71,18 @@ class DealController extends BaseController {
                         $file->setPath($this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal/voucher");
                         $fileUploaded = $file->upload();
                         $voucher = new Voucher();
-                        $voucher->setFilename($fileUploaded->getFileName());
-                        $voucher->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
-                        if ($file->getPath() != "") {
-                            $voucher->setPath($fileUploaded->getPath());
-                        } else {
-                            $voucher->setPath($fileUploaded->getDeafaultPath());
+                        $oldName = explode("-", $kFile);
+                        foreach($deal->getAllVoucher() as $k => $v){
+                            if($v->getFilename() == $oldName[1]){
+                                $v->setFilename($fileUploaded->getFileName());
+                                $v->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
+                                if ($file->getPath() != "") {
+                                    $v->setPath($fileUploaded->getPath());
+                                } else {
+                                    $v->setPath($fileUploaded->getDeafaultPath());
+                                }
+                            }
                         }
-                        $deal->addVoucher($voucher);
                     }
                 }
             }
@@ -93,6 +97,7 @@ class DealController extends BaseController {
             'form' => $form->createView(),
             'deal' => $deal,
             'title' => $title,
+            'voucher' => $deal->getAllVoucher(),
             'current' => 'admin_deal_deal_index');
     }
 
