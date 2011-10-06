@@ -23,3 +23,9 @@ _logout:
     type:     annotation
 login_check:
     pattern:   /login_check
+
+_home:
+    pattern:  /
+    defaults: { _controller: ReurbanoCoreBundle:Frontend\Core:index }
+    requirements:
+      _scheme: http

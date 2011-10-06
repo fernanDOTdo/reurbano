@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Comission;
+use Reurbano\DealBundle\Document\SourceEmbed;
 
 class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
 
@@ -29,10 +30,12 @@ class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, C
         $comission->setBuyerreal(0);
         if($sources){
             foreach ($sources as $source){
+                $sourceEmbed = new SourceEmbed();
+                $sourceEmbed->populate($source);
                 // Mastop
                 $deal = new Deal();
                 $deal->setUser($userMastop);
-                $deal->setSource($source);
+                $deal->setSource($sourceEmbed);
                 $deal->setPrice(number_format($source->getPriceOffer() / 2, 2)); // Metade do Preço
                 $deal->setQuantity(2);
                 $deal->setActive(true);
@@ -45,7 +48,7 @@ class LoadDealData extends AbstractFixture implements OrderedFixtureInterface, C
                 // Suporte
                 $deal = new Deal();
                 $deal->setUser($userSuporte);
-                $deal->setSource($source);
+                $deal->setSource($sourceEmbed);
                 $deal->setPrice(number_format($source->getPriceOffer() / 3, 2)); // Um terço do Preço
                 $deal->setQuantity(1);
                 $deal->setActive(true);

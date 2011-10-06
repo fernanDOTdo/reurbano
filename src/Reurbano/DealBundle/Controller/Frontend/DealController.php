@@ -88,7 +88,7 @@ class DealController extends BaseController
     /**
      * Action que exibe uma oferta
      * 
-     * @Route("/ofertas-em-{city}/{category}/{slug}", name="deal_deal_show")
+     * @Route("/ofertas-em-{city}/{category}/{slug}", name="deal_deal_show", requirements={"_scheme" = "http"})
      * @Template()
      */
     public function showAction($city, $category, Deal $deal)

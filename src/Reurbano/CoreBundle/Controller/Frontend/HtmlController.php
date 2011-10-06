@@ -16,7 +16,7 @@ class HtmlController extends BaseController {
     /**
      * Action do Formulário de contato
      * 
-     * @Route("/fale-conosco", name="core_html_contact")
+     * @Route("/fale-conosco", name="core_html_contact", requirements={"_scheme" = "http"})
      * @Template()
      */
     public function contactAction() {
