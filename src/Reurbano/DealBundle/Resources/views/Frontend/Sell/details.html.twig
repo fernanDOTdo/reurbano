@@ -1,8 +1,11 @@
 {% extends '::frontend.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('bundles/reurbanocore/css/calendar.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block javascripts%}
-{% javascripts output='static/system/js/sell.js'
+{% javascripts output='static/system/js/sell.details.js'
                    '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/dateinput/jquery.tools.min.js'
                    '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
                    %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -11,11 +14,15 @@
 {% block content %}
 <div class="content box grid_8">
     <h1>{{"Informe os detalhes de sua oferta"|trans}}</h1>
-    <form action="{{ path('deal_sell_save') }}" method="post" id="sellDetails" {{ form_enctype(form) }} >
-        <b>Titulo</b><br />
+    <form action="{{ path('deal_sell_save') }}" method="post" id="sellDetails" {{ form_enctype(form) }} style="margin-left:20px" >
+        <img src='{{ source.thumb }}' alt="{{ source.getTitle() }}" class="m10" />
+        <h3>Titulo</h3>
         {{ source.getTitle() }}<br />
-        <b>Site</b><br />
+        <h3>Site</h3>
         {{ source.getSite.getName }}<br />
+        <div id="dealSource" class="mT10">
+                {{ form_widget(form.source) }}
+        </div>
         {{ form_row(form.quantity) }}
         {{ form_row(form.price) }}
         <div id="sellVoucher" class="mT10 mB10">

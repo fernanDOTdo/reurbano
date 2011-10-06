@@ -47,7 +47,7 @@ class LoadParametersData implements FixtureInterface, ContainerAwareInterface {
         $child->setName('autoactive');
         $child->setTitle('Ativação');
         $child->setDesc('Tipo de ativação de novos cadastros');
-        $child->setValue('email');
+        $child->setValue('auto');
         $child->setFieldtype('choice');
         $child->setOpts(array('choices' => array('auto' => 'Automático', 'email' => 'E-mail', 'admin' => 'Aprovação Manual')));
         $child->setOrder(2);

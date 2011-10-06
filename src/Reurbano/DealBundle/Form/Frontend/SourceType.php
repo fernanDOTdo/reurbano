@@ -10,9 +10,9 @@
  *                                                                 88           
  *                                                                 88           
  * 
- * Reurbano/OrderBundle/Controller/Widget/MyBalanceController.php
+ * Reurbano/DealBundle/Form/Frontend/SourceType.php
  *
- * Widget para extrato de transações do usuário
+ * Form Type para data de validade e categoria da oferta no /vender
  *  
  * 
  * @copyright 2011 Mastop Internet Development.
@@ -32,33 +32,30 @@
  * under the License.
  */
 
-namespace Reurbano\OrderBundle\Controller\Widget;
+namespace Reurbano\DealBundle\Form\Frontend;
 
-use Mastop\SystemBundle\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Reurbano\OrderBundle\Document\Order;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilder;
 
-/**
- * Controller que será os dados dentro da aba "Meu Financeiro" no minha-conta
- */
-class MyBalanceController extends BaseController {
+class SourceType extends AbstractType {
 
-    /**
-     * Dashboard do MyBalance
-     * 
-     * @Template()
-     */
-    public function dashboardAction() {
-        $user = $this->getUser();
-        $transactions = $this->mongo('ReurbanoOrderBundle:Escrow')->findByUser($user->getId());
-        
-        
-        $ret['title'] = "Meu Financeiro";
-        $ret['transactions'] = $transactions;
-        $ret['user'] = $user;
-        
-        return $ret;
+    public function buildForm(FormBuilder $builder, array $options) {
+        $builder
+                ->add('category', 'document', array('label'=>'Categoria da Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name', 'document_manager' => $options['document_manager'] ))
+                ->add('expiresAt', 'date', array('label'=>'Data de Validade', 'format'=>'dd/MM/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
+            ;
+    }
+    
+    
+    public function getDefaultOptions(array $options) {
+        return array(
+            'data_class' => 'Reurbano\DealBundle\Document\SourceEmbed',
+            'document_manager' => 'crawler',
+        );
+    }
+
+    public function getName() {
+        return 'source';
     }
 
 }

@@ -34,7 +34,7 @@ use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
 use Reurbano\DealBundle\Document\Comission;
 
-use Reurbano\DealBundle\Form\Frontend\DealType;
+use Reurbano\DealBundle\Form\Frontend\DealEditType;
 
 use Reurbano\DealBundle\Util\Upload;
 
@@ -133,47 +133,37 @@ class DealController extends BaseController
         $dm = $this->dm();
         $title = "Editar Oferta";
         $request = $this->get('request');
-        $form = $this->createForm(new DealType(), $deal);
+        $form = $this->createForm(new DealEditType(), $deal, array('document_manager' => $dm));
         $data = $this->get('request')->request->get($form->getName());
         $user = $this->get('security.context')->getToken()->getUser();
         if($user->getId() != $deal->getUser()->getId()){
             return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
         }
         if($request->getMethod() == 'POST'){
+            $mail = $this->get('mastop.mailer');
             $form->bindRequest($request);
-            $formDataResult = $request->files->get($form->getName());
-            $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['sourceId']);
-            $formDataResult = $request->files->get($form->getName());
-            if(count($formDataResult) != $data['quantity']){
-                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'É preciso enviar '.$data['quantity'].' vouchers', 'error');
+            $source = $deal->getSource();
+            $expiresAt = $data['source']['expiresAt'];
+            $category = $data['source']['category'];
+            $expiresDate = new \DateTime(substr($expiresAt, 6, 4).'-'.substr($expiresAt, 3, 2).'-'.substr($expiresAt, 0, 2));
+            if($expiresDate->getTimestamp() < time()){
+                $mail->notify('Debug: Data inválida', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta com uma data inválida: '.$expiresAt.'.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'A data de validade precisa ser maior que a data de hoje.', 'error');
             }
-            foreach ($formDataResult as $kFile => $vFile){
-                if ($vFile){
-                    $file = new Upload($formDataResult[$kFile]);
-                    $path = $this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal";
-                    $file->setPath($path);
-                    $fileUploaded = $file->upload();
-                    $voucher = new Voucher();
-                    $voucher->setFilename($fileUploaded->getFileName());
-                    $voucher->setFilesize($fileUploaded->getFileUploaded()->getClientSize());
-                    if ($file->getPath() != ""){
-                        $voucher->setPath($fileUploaded->getPath());
-                    }else {
-                        $voucher->setPath($fileUploaded->getDeafaultPath());
-                    }
-                    $deal->addVoucher($voucher);
-                }
+            if($source->getExpiresAt() == '' || $source->getExpiresAt()->format('d/m/Y') != $expiresAt){
+                // Seta a validade no Source
+                $source->setExpiresAt($expiresDate);
             }
+            // Categoria
+            $cat = $this->mongo('ReurbanoDealBundle:Category')->find($category);
+            if(!$cat){
+                $mail->notify('Erro: Categoria não encontrada', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta para a categoria ID '.$category.' e ela não foi encontrada no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'Categoria não encontrada', 'error');
+            }
+            $source->setCategory($cat);
             $deal->setSource($source);
             $price = $data['price'];
-            $quantity = $data['quantity'];
-            
-            
-            $deal->setUser($user);
-            $deal->setPrice($price);
-            $deal->setChecked(false);
-            $deal->setSpecial(false);
-            $deal->setQuantity($quantity);
+            $deal->setPrice(str_replace(",", ".", $price));
             $deal->setActive(true);
             $deal->setLabel($source->getTitle());
             
@@ -187,7 +177,7 @@ class DealController extends BaseController
             $dm->persist($deal);
             $dm->flush();
             
-            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), $this->trans('Oferta editada com sucesso!'));
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', $this->trans('Oferta editada com sucesso!'));
         }
         return array(
             'form'  => $form->createView(),

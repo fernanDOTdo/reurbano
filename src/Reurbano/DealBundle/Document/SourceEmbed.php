@@ -5,16 +5,13 @@ namespace Reurbano\DealBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Representa uma Oferta do Banco de Ofertas
+ * Representa um Embed do Source
  *
  * @author   Fernando Santos <o@fernan.do>
- * @ODM\Document(
- *   collection="source",
- *   repositoryClass="Reurbano\DealBundle\Document\SourceRepository"
- * )
+ * @ODM\EmbeddedDocument
  * @ODM\Index(keys={"coordinates"="2d"})
  */
-class Source
+class SourceEmbed
 {
     /**
      * ID da Oferta
@@ -181,13 +178,6 @@ class Source
      */
     protected $dateRegister;
     
-    /** @ODM\PrePersist */
-    public function doPrePersist()
-    {
-        // Seta data de criação
-        $this->setDateRegister(new \DateTime);
-    }
-
     /**
      * Get id
      *
@@ -196,6 +186,16 @@ class Source
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * Set id
+     *
+     * @param id $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -531,7 +531,7 @@ class Source
      *
      * @param Reurbano\CoreBundle\Document\Coordinates $coordinates
      */
-    public function setCoordinates(\Reurbano\CoreBundle\Document\Coordinates $coordinates)
+    public function setCoordinates($coordinates)
     {
         $this->coordinates = $coordinates;
     }
@@ -604,5 +604,11 @@ class Source
     public function getDateRegister()
     {
         return $this->dateRegister;
+    }
+    public function populate($source){
+        $methods = get_class_methods($source);
+        foreach ($methods as $m) {
+            if($m != 'getTitleFormat' && substr($m, 0, 3) == 'get') $this->{'set'.substr ($m, 3)}($source->$m());
+        }
     }
 }
