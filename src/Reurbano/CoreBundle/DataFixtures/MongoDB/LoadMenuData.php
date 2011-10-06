@@ -118,7 +118,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
                     $child2 = new MenuItem();
                     $child2->setCode('empresa.contato');
                     $child2->setName('Contato');
-                    $child2->setUrl('/html/contato');
+                    $child2->setUrl('/fale-conosco');
                     $child2->setOrder(1);
                 $child->addChildren($child2);
                 $manager->persist($menu);
