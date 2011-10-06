@@ -13,7 +13,6 @@ $(document).ready(function(){
         }
         $('#sellVoucher').html(voucher);
     }
-    addVoucher();
     $("#deal_quantity").blur(function(){
         addVoucher();
     });

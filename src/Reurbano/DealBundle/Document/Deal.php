@@ -607,4 +607,17 @@ class Deal
             return strtolower($v);
         }
     }
+    
+    /**
+     * Retorna um array com os vouchers do Deal.
+     * 
+     * @return array
+     */
+    public function getAllVoucher(){
+        $ret = array();
+        foreach($this->getVoucher() as $k => $v){
+            $ret[] = $v;
+        }
+        return $ret;
+    }
 }

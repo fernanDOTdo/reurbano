@@ -54,7 +54,11 @@ class User implements UserInterface {
     /** @ODM\String */
     protected $roles;
 
-    /** @ODM\Int */
+    /**
+     * Usuário dono da Oferta
+     *
+     * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
+     */
     protected $city;
 
     /** @ODM\String */
@@ -297,14 +301,6 @@ class User implements UserInterface {
         $this->roles = $roles;
     }
 
-    public function getCity() {
-        return $this->city;
-    }
-
-    public function setCity($city) {
-        $this->city = $city;
-    }
-
     public function getCpf() {
         return $this->cpf;
     }
@@ -440,4 +436,24 @@ class User implements UserInterface {
         return true;
     }
 
+
+    /**
+     * Set city
+     *
+     * @param Reurbano\CoreBundle\Document\City $city
+     */
+    public function setCity(\Reurbano\CoreBundle\Document\City $city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * Get city
+     *
+     * @return Reurbano\CoreBundle\Document\City $city
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
 }
