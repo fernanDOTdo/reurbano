@@ -12,7 +12,7 @@
 {% for deal in deal %}
         <tr>
             <td>
-                <img src='{{ deal.getSource.getThumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
+                <img src='{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
             </td>
             <td style="width: 315px;">
                 {{ deal.source.getTitle(80) }}

@@ -3,7 +3,7 @@
 <div id="myOrder">
     <div class="orderInfo">
         <div class="dealThumb">
-            <img src="{{asset(lastOrder.deal.source.thumb)}}" alt="{{lastOrder.deal.label}}" />
+            <img src="{{asset(mastop_param('deal.all.dealurl') ~ lastOrder.deal.source.thumb)}}" alt="{{lastOrder.deal.label}}" />
             <span class="discount {{lastOrder.deal.discountType }}">Cód. {{lastOrder.id}}</span>
         </div>
         <div class="orderLabel">
@@ -49,7 +49,7 @@
                 {{ order.id }}
             </td>
             <td>
-                <img src='{{ order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+                <img src='{{mastop_param('deal.all.dealurl') ~  order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
             </td>
             <td style="width: 315px;">
             {{ order.deal.label(80) }}

@@ -19,7 +19,7 @@
 <div class="deal {{deal.getDiscountType }}">
     <div class="grid_2 alpha dealThumb">
     {#Imagem#}
-            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
     </div>
     <div class="grid_4 dealTitle">
     {#Conteúdo#}

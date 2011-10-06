@@ -17,7 +17,7 @@
         <tbody> 
 {% for deal in ofertas %}
             <tr>
-                <td class='center'><img width="140" height="100" src="{{ deal.getThumb() }}" title="{{ deal.getTitle() }}" alt="{{ deal.getTitle() }}" /></td>
+                <td class='center'><img width="140" height="100" src="{{ mastop_param('deal.all.dealurl') ~ deal.thumb }}" title="{{ deal.getTitle() }}" alt="{{ deal.getTitle() }}" /></td>
                 <td>{{ deal.getTitle(50) }}</td>
                 <td>{{ deal.getSite().getName() }}</td>
                 <td>{{ deal.getCity().getName() }}</td>

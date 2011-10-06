@@ -7,7 +7,7 @@
 </div>
 {#Imagem#}
 <div class="dealThumb">
-<a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
+<a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
 </div>
 <div class="dealInfos">
     <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>

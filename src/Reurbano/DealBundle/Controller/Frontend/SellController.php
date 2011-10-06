@@ -114,7 +114,7 @@ class SellController extends BaseController
                         ->getQuery()->execute();
                 $data = '';
                 foreach($source as $k => $v){
-                    $data .= "<table><tr><td><div style='margin:3px'><img src='".$v->getThumb()."' width='80' height='60' /></div></td><td>|".$v->getTitle()."|</td></tr></table>";
+                    $data .= "<table><tr><td><div style='margin:3px'><img src='".$this->mastop()->param('deal.all.dealurl').$v->getThumb()."' width='80' height='60' /></div></td><td>|".$v->getTitle()."|</td></tr></table>";
                     $data .= '|';
                     $data .= $v->getId();
                     $data .= " \n";
