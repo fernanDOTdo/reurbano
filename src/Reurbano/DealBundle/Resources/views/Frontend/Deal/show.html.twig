@@ -8,7 +8,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:description" content="De: {{deal.getSource.getPrice|money}} por apenas {{deal.getPrice|money}} com {{deal.getDiscount}}% OFF!" />
     <meta property="og:url" content="{{dealLink}}" />
-    <meta property="og:image" content="{{asset(deal.getSource.getThumb)}}" />
+    <meta property="og:image" content="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" />
 {% endblock %}
 
 {% block content %}
@@ -33,7 +33,7 @@
     <div class="grid_5 alpha">
         {# Foto #}
         <div id="dealThumb">
-            <img src="{{asset(deal.getSource.getFilename)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
+            <img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.filename)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
         </div>
     </div>
     <div class="grid_3 omega">

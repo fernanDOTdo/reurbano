@@ -40,7 +40,7 @@ $('#dealQtd').change(function() {
         <th>Sub-Total</th>
     </tr>
     <tr>
-        <td><div style="position:relative"><img src="{{asset(deal.getSource.getThumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></div></td>
+        <td><div style="position:relative"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></div></td>
         <td style="width: 450px">{{deal.getLabel}}</td>
         <td class="aC">
             <select name="qtd" id="dealQtd">

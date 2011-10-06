@@ -8,7 +8,7 @@
                     {%set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
                     <div class="slide bannerDeal" onclick="document.location.href = '{{dealLink}}';return">
                         <div class="dealThumb">
-                        <img src="{{asset(banner.getDeal.getSource.getFilename)}}" alt="{{banner.getDeal.getLabel}}" /> <span class="discount {{banner.getDeal.getDiscountType }}">{{banner.getDeal.getDiscount}}% OFF</span>
+                        <img src="{{asset(mastop_param('deal.all.dealurl') ~ banner.deal.source.filename)}}" alt="{{banner.getDeal.getLabel}}" /> <span class="discount {{banner.getDeal.getDiscountType }}">{{banner.getDeal.getDiscount}}% OFF</span>
                         </div>
                             <h2 class="{{banner.getDeal.getDiscountType }}">{{banner.getDeal.getLabel}}</h2>
                         <div class="dealInfos {{banner.getDeal.getDiscountType }}">

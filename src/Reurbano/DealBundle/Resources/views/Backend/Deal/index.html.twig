@@ -22,7 +22,7 @@
             <tr>
                 <td class='center'>
                     <a target="_blank" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}">
-                        <img width="80" height="60" src="{{ deal.getSource().getThumb() }}" title="{{ deal.getSource().getTitle() }}" alt="{{ deal.getSource().getTitle() }}" />
+                        <img width="80" height="60" src="{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}" title="{{ deal.getSource().getTitle() }}" alt="{{ deal.getSource().getTitle() }}" />
                     </a>
                 </td>
                 <td>{{ deal.getLabel(50) }}</td>

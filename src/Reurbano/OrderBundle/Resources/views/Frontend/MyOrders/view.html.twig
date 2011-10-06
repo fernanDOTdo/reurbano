@@ -11,7 +11,7 @@
 <div id="myOrder">
     <div class="orderInfo">
         <div class="dealThumb">
-            <img src="{{asset(order.deal.source.thumb)}}" alt="{{order.deal.label}}" />
+            <img src="{{asset(mastop_param('deal.all.dealurl') ~ order.deal.source.thumb)}}" alt="{{order.deal.label}}" />
             <span class="discount {{order.deal.discountType }}">Cód. {{order.id}}</span>
         </div>
         <div class="orderLabel">

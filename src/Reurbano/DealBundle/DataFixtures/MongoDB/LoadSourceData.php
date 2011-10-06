@@ -27,8 +27,8 @@ class LoadSourceData extends AbstractFixture implements OrderedFixtureInterface,
         
         $source = new Source();
         $source->setTitle("Helicóptero de controle remoto infravermelho, de R$ 132,00 por R$ 89,90, no ProdutosOFF, com frete grátis");
-        $source->setFilename('http://static.br.groupon-content.net/15/35/1312904293515.jpg');
-        $source->setThumb('http://static.br.groupon-content.net/85/35/1312904293585.jpg');
+        $source->setFilename('teste/groupon.jpg');
+        $source->setThumb('teste/groupon.jpg');
         $source->setUrl('http://www.groupon.com.br/ofertas/sao-paulo---premium/Produtos-off/663013');
         $source->setSite($siteGroupon);
         $source->setPrice(132);
@@ -62,8 +62,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         
         $source = new Source();
         $source->setTitle("Corpinho de Sereia! 84% OFF em 3 Sessões de Manthus + 3 Sessões de Massagem Modeladora na Bella Opção Estétika (de R$600 por R$99). Use até 2 cupons");
-        $source->setFilename('http://peixeurbano.s3.amazonaws.com/2011/8/11/f0624740-1dd9-496d-915d-4d58e316a311/Big/bellaopcoj_v1_big_001.jpg');
-        $source->setThumb('http://peixeurbano.s3.amazonaws.com/2011/8/11/f0624740-1dd9-496d-915d-4d58e316a311/SideDeal/bellaopcoj_v1_sidedeal_001.jpg');
+        $source->setFilename('teste/teste1.jpg');
+        $source->setThumb('teste/teste1.jpg');
         $source->setUrl('http://www.peixeurbano.com.br/sao-paulo-grande-abc/ofertas/bella-opcao-abc4YWEZCS');
         $source->setSite($sitePxUrbano);
         $source->setPrice(600);
@@ -102,8 +102,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         
         $source = new Source();
         $source->setTitle("Sereias Perfeitas com 91% OFF em 10 Sessões de Heccus + 10 de Thermolipo + 10 de Massagem Modeladora no Studio 5 Centro de Estética (de R$1.900 por R$179). Use até 2 cupons. Parcele em até 12x*");
-        $source->setFilename('http://peixeurbano.s3.amazonaws.com/2011/8/11/378841d9-bc78-4bb7-a4dc-daed6b9cf1c9/Big/00014609_v1_big_001.jpg');
-        $source->setThumb('http://peixeurbano.s3.amazonaws.com/2011/8/11/378841d9-bc78-4bb7-a4dc-daed6b9cf1c9/Small/00014609_v1_small_001.jpg');
+        $source->setFilename('teste/teste2.jpg');
+        $source->setThumb('teste/teste2.jpg');
         $source->setUrl('http://www.peixeurbano.com.br/rio-de-janeiro/ofertas/studio-5-centro-de-hkbmjp');
         $source->setSite($sitePxUrbano);
         $source->setPrice(1900);
@@ -142,8 +142,8 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         
         $source = new Source();
         $source->setTitle("Processador de alimentos Change a Bowhl Hamilton Beach+ frete. De R$ 479,90 por R$ 199, na Polishop (Oferta Nacional)");
-        $source->setFilename('http://static.br.groupon-content.net/63/97/1313174649763.jpg');
-        $source->setThumb('http://static.br.groupon-content.net/29/98/1313174649829.jpg');
+        $source->setFilename('teste/teste3.jpg');
+        $source->setThumb('teste/teste3.jpg');
         $source->setUrl('http://www.groupon.com.br/ofertas/oferta-nacional/Polishop/667956');
         $source->setSite($siteGroupon);
         $source->setPrice(479.9);
