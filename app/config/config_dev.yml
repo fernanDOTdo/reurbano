@@ -23,5 +23,30 @@ monolog:
 assetic:
     use_controller: true
     
+doctrine_mongodb:
+    connections:
+        default:
+            server: %mongo_server%
+            options:
+                connect: true
+        crawler:
+            server: %mongo_server%
+            options:
+                connect: true
+    default_database: %mongo_database%_%kernel.environment%
+    document_managers:
+        default:
+            auto_mapping: true
+            mappings:
+                StofDoctrineExtensionsBundle: false
+            metadata_cache_driver: array # array, apc, xcache, memcache
+        crawler:
+            connection: crawler
+            database: %mongo_database%_prod
+            auto_mapping: true
+            mappings:
+                StofDoctrineExtensionsBundle: false
+            metadata_cache_driver: array # array, apc, xcache, memcache
+
 swiftmailer:
     delivery_address:  suporte@mastop.com.br

@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Reurbano\DealBundle\Document\Site;
 use Reurbano\DealBundle\Document\Source;
+use Reurbano\DealBundle\Document\SourceEmbed;
 use Reurbano\DealBundle\Document\Deal;
 use Reurbano\DealBundle\Document\Voucher;
 use Reurbano\DealBundle\Document\Comission;
@@ -102,11 +103,13 @@ class SellController extends BaseController
                 $cityId = $this->get('session')->get('reurbano.user.cityId');
                 $siteId = $this->get('request')->query->get('siteid');
                 $regexp = new \MongoRegex('/' . $cupom . '/i');
-                $qb = $this->mongo('ReurbanoDealBundle:Source')->createQueryBuilder();
-                $source = $qb->sort('createdAt', 'ASC')
-                        ->field('city.id')->equals($cityId)
+                $qb = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->createQueryBuilder();
+                $source = $qb->sort('dateRegister', 'DESC')
+                        // Linha abaixo foi comentada para pegar as ofertas de todas as cidades
+                        //->field('city.id')->equals($cityId)
                         ->field('site.id')->equals((int)$siteId)
-                        ->field('expiresAt')->gt(new \DateTime())
+                        // Linha abaixo foi comentada porque o crawler não pega data de validade de todas as ofertas
+                        //->field('expiresAt')->gt(new \DateTime())
                         ->addOr($qb->expr()->field('url')->equals($regexp))->addOr($qb->expr()->field('title')->equals($regexp))
                         ->getQuery()->execute();
                 $data = '';
@@ -134,16 +137,20 @@ class SellController extends BaseController
         $title = "Venda cupons de qualquer site de compras coletivas aqui";
         $form = $this->createForm(new SellType());
         $request = $this->get('request');
+        $crawlerDM = $this->mastop()->getDocumentManager('crawler');
         if($request->getMethod() == 'POST'){
             $data = $this->get('request')->request->get($form->getName());
-            $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['cupomId']);
+            $source = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->find($data['cupomId']);
+            $sourceEmbed = new SourceEmbed();
+            $sourceEmbed->populate($source);
             if(!$source){
                 return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Oferta não encontrada', 'error');
             }
             $deal=new Deal();
             $deal->setPrice($source->getPriceOffer());
             $deal->setQuantity(1);
-            $sourceForm = $this->createForm(new DealType(),$deal);
+            $deal->setSource($sourceEmbed);
+            $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => $this->dm('crawler')));
         }else{
             return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Selecione uma oferta', 'notice');
         }
@@ -162,17 +169,60 @@ class SellController extends BaseController
      */
     public function saveAction(){
         $dm = $this->dm();
+        $crawlerDM = $this->mastop()->getDocumentManager('crawler');
         $request = $this->get('request');
-        $form = $this->createForm(new DealType());
+        $form = $this->createForm(new DealType(),null, array('document_manager' => $crawlerDM));
         $user = $this->get('security.context')->getToken()->getUser();
         $data = $this->get('request')->request->get($form->getName());
         if($request->getMethod() == 'POST'){
+            $mail = $this->get('mastop.mailer');
             $deal = new Deal();
-            $source = $this->mongo('ReurbanoDealBundle:Source')->find($data['sourceId']);
+            $source = $crawlerDM->getRepository('ReurbanoDealBundle:Source')->find($data['sourceId']);
             $formDataResult = $request->files->get($form->getName());
             if(count($formDataResult) != $data['quantity']){
                 return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'É preciso enviar '.$data['quantity'].' vouchers', 'error');
             }
+            
+            // Data de Validade e Categoria
+            $expiresAt = $data['source']['expiresAt'];
+            $category = $data['source']['category'];
+            $expiresDate = new \DateTime(substr($expiresAt, 6, 4).'-'.substr($expiresAt, 3, 2).'-'.substr($expiresAt, 0, 2));
+            if($expiresDate->getTimestamp() < time()){
+                $mail->notify('Debug: Data inválida', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou enviar uma oferta com uma data inválida: '.$expiresAt.'.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'A data de validade precisa ser maior que a data de hoje.', 'error');
+            }
+            if($source->getExpiresAt() == '' || $source->getExpiresAt()->format('d/m/Y') != $expiresAt){
+                // Seta a validade no Source
+                $source->setExpiresAt($expiresDate);
+                $crawlerDM->persist($source);
+                $crawlerDM->flush();
+            }
+            // Categoria
+            $cat = $this->mongo('ReurbanoDealBundle:Category')->find($category);
+            if(!$cat){
+                $mail->notify('Erro: Categoria não encontrada', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou enviar uma oferta para a categoria ID '.$category.' e ela não foi encontrada no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Categoria não encontrada', 'error');
+            }
+            $source->setCategory($cat);
+            // Site
+            $siteId = $source->getSite()->getId();
+            $site = $this->mongo('ReurbanoDealBundle:Site')->find($siteId);
+            if(!$site){
+                $mail->notify('Erro: Site não encontrado', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou enviar uma oferta do site ID '.$siteId.' e ele não foi encontrado no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Site de compra coletiva não encontrado', 'error');
+            }
+            $source->setSite($site);
+            
+            // City
+            $cityId = $source->getCity()->getId();
+            $city = $this->mongo('ReurbanoCoreBundle:City')->find($cityId);
+            if(!$city){
+                $mail->notify('Erro: Cidade não encontrada', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou enviar uma oferta para a cidade ID '.$cityId.' e ela não foi encontrada no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Site de compra coletiva não encontrado', 'error');
+            }
+            $source->setCity($city);
+            
+            // Upload
             foreach ($formDataResult as $kFile => $vFile){
                 if ($vFile){
                     $file = new Upload($formDataResult[$kFile]);
@@ -190,7 +240,9 @@ class SellController extends BaseController
                     $deal->addVoucher($voucher);
                 }
             }
-            $deal->setSource($source);
+            $sourceEmbed = new SourceEmbed();
+            $sourceEmbed->populate($source);
+            $deal->setSource($sourceEmbed);
             $price = $data['price'];
             $quantity = $data['quantity'];
             
@@ -215,7 +267,6 @@ class SellController extends BaseController
             
             // Envia notificações por e-mail
             $dealLink = $this->generateUrl('deal_deal_show', array('city'=>$deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug()), true);
-            $mail = $this->get('mastop.mailer');
             $mail->to($user)
              ->subject('Sua oferta foi cadastrada')
              ->template('oferta_novaoferta', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Confirmação de Oferta'))
@@ -223,8 +274,7 @@ class SellController extends BaseController
             //Está dando pau na hora de vender o cupom por causa da formatação do preço do deal que vem como string, mas na verdade deveria ser float
             $mail->notify('Aviso de nova oferta', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou a seguinte oferta: <br />'.$quantity.'x - '.$deal->getLabel().'<br /> Preço: R$ '.  number_format($deal->getPrice(), 2, ',', '').'<br /><a href="'.$dealLink.'">'.$dealLink.'</a>');
             
-            $this->get('session')->setFlash('ok', $this->trans('Oferta cadastrada com sucesso!'));
-            return $this->redirect($this->generateUrl('_home'));
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', $this->trans('Oferta cadastrada com sucesso!'));
         }
     }
 }

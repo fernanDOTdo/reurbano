@@ -60,7 +60,7 @@ class Deal
      * Source da Oferta
      *
      * @var array
-     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Source")
+     * @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\SourceEmbed")
      */
     protected $source;
     
@@ -222,9 +222,9 @@ class Deal
     /**
      * Set source
      *
-     * @param Reurbano\DealBundle\Document\Source $source
+     * @param Reurbano\DealBundle\Document\SourceEmbed $source
      */
-    public function setSource(\Reurbano\DealBundle\Document\Source $source)
+    public function setSource(\Reurbano\DealBundle\Document\SourceEmbed $source)
     {
         $this->source = $source;
     }
@@ -232,7 +232,7 @@ class Deal
     /**
      * Get source
      *
-     * @return Reurbano\DealBundle\Document\Source $source
+     * @return Reurbano\DealBundle\Document\SourceEmbed $source
      */
     public function getSource()
     {

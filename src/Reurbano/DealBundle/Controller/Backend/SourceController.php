@@ -21,7 +21,7 @@ class SourceController extends BaseController
     public function indexAction()
     {
         $title = 'Administração do Banco de Ofertas';
-        $ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAll();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->findAll();
         //$ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
         return array(
             'ofertas' => $ofertas,
@@ -37,10 +37,10 @@ class SourceController extends BaseController
      */
     public function dealAction($id = null)
     {
-        $dm = $this->dm();
+        $dm = $this->dm('crawler');
         $title = ($id) ? "Editar Banco de Oferta" : "Novo Banco de Oferta";
         if($id){
-            $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
+            $deal = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->find($id);
             if (!$deal) {
                 throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
             }
@@ -80,8 +80,8 @@ class SourceController extends BaseController
      */
     public function deleteAction($id)
     {
-        $dm = $this->dm();
-        $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
+        $dm = $this->dm('crawler');
+        $deal = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->find($id);
         if (!$deal) {
             throw $this->createNotFoundException('Nenhuma oferta encontrada com o ID '.$id);
         }
@@ -89,14 +89,14 @@ class SourceController extends BaseController
         $request = $this->get('request');
         
         if ('POST' == $request->getMethod()) {
-            $dm = $this->dm();
+            $dm = $this->dm('crawler');
             $dm->remove($deal);
             $dm->flush();
             $this->get('session')->setFlash('ok', $this->trans('Oferta Deletada'));
             return $this->redirect($this->generateUrl('admin_deal_source_index'));
         }
 
-        $deal = $this->mongo('ReurbanoDealBundle:Source')->find($id);
+        $deal = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->find($id);
         
         return $this->confirm('Tem certeza de que deseja remover a oferta "' . $deal->getTitle() . '"', array('id' => $deal->getId()));
         

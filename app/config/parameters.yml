@@ -2,6 +2,7 @@ parameters:
   mongo_server: mongodb://localhost:27017
   mongo_server_prod: mongodb://10.76.197.134:27017
   mongo_database: reurbano
+  mongo_database_crawler: bancooferta
 
   mailer_transport: mail
   mailer_host: localhost
