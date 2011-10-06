@@ -35,7 +35,7 @@ use Reurbano\CoreBundle\Document\Content;
 class ContentController extends BaseController
 {
     /**
-     * @Route("/pg/{slug}", name="core_content_index")
+     * @Route("/pg/{slug}", name="core_content_index", requirements={"_scheme" = "http"})
      * @Template()
      */
     public function indexAction(Content $content)

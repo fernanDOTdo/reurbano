@@ -13,7 +13,7 @@ use Reurbano\CoreBundle\Document\City;
 class CityController extends BaseController
 {
     /**
-     * @Route("/ofertas-em-{slug}", name="core_city_index")
+     * @Route("/ofertas-em-{slug}", name="core_city_index", requirements={"_scheme" = "http"})
      * @Template()
      */
     public function indexAction(City $city)
