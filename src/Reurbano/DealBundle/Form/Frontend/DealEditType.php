@@ -10,9 +10,9 @@
  *                                                                 88           
  *                                                                 88           
  * 
- * Reurbano/OrderBundle/Controller/Widget/MyBalanceController.php
+ * Reurbano/DealBundle/Form/Frontend/DealEditType.php
  *
- * Widget para extrato de transações do usuário
+ * Formulário de edição de oferta
  *  
  * 
  * @copyright 2011 Mastop Internet Development.
@@ -32,33 +32,32 @@
  * under the License.
  */
 
-namespace Reurbano\OrderBundle\Controller\Widget;
+namespace Reurbano\DealBundle\Form\Frontend;
 
-use Mastop\SystemBundle\Controller\BaseController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Reurbano\OrderBundle\Document\Order;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilder;
+use Reurbano\DealBundle\Form\Frontend\SourceType;
 
-/**
- * Controller que será os dados dentro da aba "Meu Financeiro" no minha-conta
- */
-class MyBalanceController extends BaseController {
+class DealEditType extends AbstractType {
 
-    /**
-     * Dashboard do MyBalance
-     * 
-     * @Template()
-     */
-    public function dashboardAction() {
-        $user = $this->getUser();
-        $transactions = $this->mongo('ReurbanoOrderBundle:Escrow')->findByUser($user->getId());
-        
-        
-        $ret['title'] = "Meu Financeiro";
-        $ret['transactions'] = $transactions;
-        $ret['user'] = $user;
-        
-        return $ret;
+    public function buildForm(FormBuilder $builder, array $options) {
+        $builder->add('id', 'hidden')
+                ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
+                ->add('source', new SourceEditType(), array('label'=>'', 'document_manager' => $options['document_manager']))
+            ;
+    
+    }
+
+    public function getDefaultOptions(array $options) {
+        return array(
+            'data_class' => 'Reurbano\DealBundle\Document\Deal',
+            'intention' => 'deal_edit',
+            'document_manager' => '',
+        );
+    }
+
+    public function getName() {
+        return 'dealEdit';
     }
 
 }

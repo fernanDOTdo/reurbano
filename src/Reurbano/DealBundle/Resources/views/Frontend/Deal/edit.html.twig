@@ -1,9 +1,10 @@
 {% extends '::frontend.html.twig' %}
-
+{% block stylesheets %}
+    <link href="{{ asset('bundles/reurbanocore/css/calendar.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
 {% block javascripts%}
 {% javascripts output='static/system/js/sell.edit.js'
-                   '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
-                   '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
+                   '@ReurbanoCoreBundle/Resources/public/js/dateinput/jquery.tools.min.js'
                    '@ReurbanoDealBundle/Resources/public/js/Frontend/sellEditar.js'
                    %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -12,16 +13,18 @@
 {% block content %}
     <div class="content box grid_8">
     <h1>{{"Editar sua oferta"|trans}}</h1>
-    <form action="{{ path('deal_deal_edit', {'id': deal.getId} )}}" method="post" id="sellDetails" {{ form_enctype(form) }} >
-        <b>Titulo</b><br />
+    <form action="{{ path('deal_deal_edit', {'id': deal.getId} )}}" method="post" id="sellEdit" style="margin-left:20px" {{ form_enctype(form) }} >
+        <img src='{{ deal.source.thumb }}' alt="{{ deal.source.title }}" class="m10" />
+        <h3>Titulo</h3>
         {{ deal.getSource.getTitle() }}<br />
-        <b>Site</b><br />
+        <h3>Site</h3>
         {{ deal.getSource.getSite.getName }}<br />
-        {{ form_row(form.quantity) }}
-        {{ form_row(form.price) }}
-        <div id="sellVoucher" class="mT10 mB10">
-            {{ form_row(form.voucher0) }}
+        <h3>Quantidade de Cupons</h3>
+        {{ deal.quantity}}<br />
+        <div id="dealSource" class="mT10">
+                {{ form_widget(form.source) }}
         </div>
+        {{ form_row(form.price) }}
         {{ form_rest(form) }}
         <input type="hidden" value="{{ deal.getSource.getId }}" name="deal[sourceId]"/>
          <button class='button green big push_3' type="submit">{{ "Enviar Oferta"|trans }}</button>

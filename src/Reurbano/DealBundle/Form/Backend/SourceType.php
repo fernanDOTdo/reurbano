@@ -26,7 +26,7 @@ class SourceType extends AbstractType {
                 ->add('businessName', 'text', array('label'=>'Nome da empresa'))
                 ->add('businessAddress', 'text', array('label'=>'Endereço da empresa'))
                 ->add('businessCep', 'text', array('label'=>'CEP da empresa'))
-                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/m/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
+                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
                 ->add('coordinates', new CoordinatesType(), array('label'=>'Coordenadas'))
             ;
     }

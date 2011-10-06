@@ -16,13 +16,12 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface {
     }
 
     public function load($manager) {
-
-        
+        $citySP = $manager->getRepository('ReurbanoCoreBundle:City')->findBySlug('sao-paulo');
         $user = new User();
         $user->setName('Suporte Mastop');
         $user->setEmail('suporte@mastop.com.br');
         $user->setLang('pt_BR');
-        $user->setCity(0);
+        $user->setCity($citySP);
         $user->setCreated(new \DateTime());
         $user->setTheme('');
         $user->setStatus(1);
@@ -37,7 +36,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface {
         $user->setName('Mastop');
         $user->setEmail('mastop@mastop.com.br');
         $user->setLang('pt_BR');
-        $user->setCity(0);
+        $user->setCity($citySP);
         $user->setCreated(new \DateTime());
         $user->setTheme('');
         $user->setStatus(1);

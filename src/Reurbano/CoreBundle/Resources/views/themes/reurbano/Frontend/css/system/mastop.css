@@ -93,6 +93,8 @@ span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -
 
 }
 
+.loading, .ac_loading{background: #f2f2f2 url('/bundles/mastopsystem/images/load.gif') center center no-repeat !important}
+
 /* Tabelas */
 table{width: 100%;}
 th{padding: 5px; font-weight: 700; border-bottom: 2px solid #878787; text-align: center; white-space: nowrap;}

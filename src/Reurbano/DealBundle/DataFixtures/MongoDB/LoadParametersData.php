@@ -76,6 +76,14 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setOrder(5);
         $param->addChildren($child);
         
+        $child = new Children();
+        $child->setName('dealurl');
+        $child->setTitle('URL das Imagens das Ofertas');
+        $child->setDesc('Digite a URL que o sistema usará para buscar as imagens das ofertas (sem / no final)');
+        $child->setValue('http://s3.reurbano.com.br');
+        $child->setOrder(6);
+        $param->addChildren($child);
+        
         $manager->persist($param);
         $manager->flush();
     }
