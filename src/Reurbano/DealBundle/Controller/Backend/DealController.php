@@ -58,7 +58,6 @@ class DealController extends BaseController {
             $source = $this->mongo('ReurbanoDealBundle:Source')->find($formResult['source']);
             $city = $this->mongo('ReurbanoCoreBundle:City')->find($source->getCity()->getId());
             //var_dump($city->getName());
-            $deal->setSource($source);
             /* echo $deal->getPrice();
               echo "<pre>";
               print_r($formDataResult);
@@ -81,6 +80,7 @@ class DealController extends BaseController {
                                 } else {
                                     $v->setPath($fileUploaded->getDeafaultPath());
                                 }
+                                //unlink($v->getPath() . $v->getFilename());
                             }
                         }
                     }

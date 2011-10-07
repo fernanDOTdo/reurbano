@@ -45,4 +45,26 @@ class MailingController extends BaseController
             'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.txt',
         ));
     }
+    
+    /**
+     * Exibe um pre delete e deleta se for confirmado
+     * 
+     * @Route("/deletar/{id}", name="admin_core_mailing_delete")
+     * @Template()
+     */
+    public function deleteAction($id)
+    {
+        $request = $this->get('request');
+        $formResult = $request->request;
+        $dm = $this->dm();
+        $mail = $this->mongo('ReurbanoCoreBundle:Mailing')->find($id);
+        if($request->getMethod() == 'POST'){
+            if (!$mail) throw $this->createNotFoundException($this->trans('Nenhum e-mail encontrado com o ID %id%',array('%id%'=>$id)));
+            $dm->remove($mail);
+            $dm->flush();
+            return $this->redirectFlash($this->generateUrl('admin_core_mailing_index'), $this->trans('E-mail Deletado'));
+        }
+        return $this->confirm($this->trans('Tem certeza que deseja deletar o e-mail %name%?', array("%name%" => $mail->getMail())), array('id' => $mail->getId()));
+
+    }
 }

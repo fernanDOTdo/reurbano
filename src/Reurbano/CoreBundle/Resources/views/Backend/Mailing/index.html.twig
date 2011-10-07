@@ -25,11 +25,11 @@
                 {{ mailing.getCreatedAt().getTimestamp()|date("d/m/Y") }}
                 </td>
                 <td class="center">
-                    <a class="button small red" href="{{ path('admin_deal_category_delete', {'id': mailing.getId()}) }}" title="{{"Deletar"|trans}}" ><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
+                    <a class="button small red" href="{{ path('admin_core_mailing_delete', {'id': mailing.getId()}) }}" title="{{"Deletar"|trans}}" ><span class="ui-silk ui-silk-delete">{{"Deletar"|trans}}</span></a>
                 </td>
             </tr>
   {% else %}
-            <tr><td colspan="4">{{"Nenhum e-mail encontrado"|trans}}</td></tr>
+            <h1>Nenhum e-mail encontrado.</h1>
 {% endfor %} 
         </tbody> 
     </table>
