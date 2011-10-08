@@ -2,7 +2,7 @@
 .dp50 {width:50%;  float:left;  display: inline;  *margin-right:-1px; }
 /* Geral */
 body {
-  font-family: Arial, Verdana;
+  font-family: arial,helvetica,freesans,sans-serif;
   background-color: #FFF;
   color: #666;
   background: url(../images/header/bg.png) repeat-x;
