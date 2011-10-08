@@ -15,9 +15,9 @@ class SourceType extends AbstractType {
                 ->add('url', 'url', array('label'=>'Link'))
                 ->add('price', 'money', array('label'=>'Valor Original', 'currency' => 'BRL','attr'=>array('class'=>'small')))
                 ->add('priceOffer', 'money', array('label'=>'Valor com desconto', 'currency' => 'BRL','attr'=>array('class'=>'small')))
-                ->add('site', 'document', array('label'=>'Site', 'class' => 'Reurbano\\DealBundle\\Document\\Site', 'property'=>'name', 'required' => false))
-                ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name' ))
-                ->add('category', 'document', array('label'=>'Categoria', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name' ))
+                ->add('site', 'document', array('label'=>'Site', 'class' => 'Reurbano\\DealBundle\\Document\\Site', 'property'=>'name', 'required' => false, 'document_manager' => $options['dm']))
+                ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name', 'document_manager' => $options['dm'] ))
+                ->add('category', 'document', array('label'=>'Categoria', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name', 'document_manager' => $options['dm'] ))
                 ->add('totalcoupons', 'integer', array('label'=>'Total de cupons vendidos','attr'=>array('class'=>'small')))
                 ->add('totalsell', 'money', array('label'=>'Valor total faturado', 'currency' => 'BRL','attr'=>array('class'=>'small')))
                 ->add('rules', 'textarea', array('label'=>'Regulamento'))
@@ -26,8 +26,8 @@ class SourceType extends AbstractType {
                 ->add('businessName', 'text', array('label'=>'Nome da empresa'))
                 ->add('businessAddress', 'text', array('label'=>'Endereço da empresa'))
                 ->add('businessCep', 'text', array('label'=>'CEP da empresa'))
-                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'d/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
-                ->add('coordinates', new CoordinatesType(), array('label'=>'Coordenadas'))
+                ->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'dd/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
+                ->add('coordinates', new CoordinatesType(), array('label'=>'Coordenadas', 'document_manager' => $options['dm']))
             ;
     }
     
@@ -36,6 +36,7 @@ class SourceType extends AbstractType {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Source',
             'intention' => 'source_creation',
+            'dm' => 'crawler',
         );
     }
 
