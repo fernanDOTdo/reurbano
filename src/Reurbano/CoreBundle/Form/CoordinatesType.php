@@ -37,6 +37,7 @@ class CoordinatesType extends AbstractType {
     public function getDefaultOptions(array $options) {
         return array(
             'data_class' => 'Reurbano\CoreBundle\Document\Coordinates',
+            'document_manager' => 'crawler'
         );
     }
 

@@ -69,6 +69,7 @@ h1 span, h2 span, h3 span{color:#000;}
 span.arrow{float: left; background: url('../images/sprite.png') no-repeat -5px -3px; width: 30px; height: 19px; margin-top: 5px; margin-right: 10px;}
 .floatL{float: left}
 .floatR{float: right}
+.m0{margin: 0;}
 .m5{margin: 5px;}
 .mT5{margin-top: 5px;}
 .mB5{margin-bottom: 5px;}

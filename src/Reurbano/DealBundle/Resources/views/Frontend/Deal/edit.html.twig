@@ -27,7 +27,10 @@
         {{ form_row(form.price) }}
         {{ form_rest(form) }}
         <input type="hidden" value="{{ deal.getSource.getId }}" name="deal[sourceId]"/>
-         <button class='button green big push_3' type="submit">{{ "Enviar Oferta"|trans }}</button>
+        <div class="clear"></div>
+        <div class="mT10 mB10">
+         <button class='button green big push_2' type="submit">{{ "Editar Oferta"|trans }}</button> <a class='button big red floatL' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -14,7 +14,7 @@ class SourceRepository extends BaseRepository
      **/
     public function findAllByCreated()
     {
-        return $this->findBy(array(), array());
+        return $this->findBy(array(), array('dateRegister' => 'DESC'), 3000);
     }
     
     public function findByCategoryCity($category, $city){
