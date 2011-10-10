@@ -100,28 +100,24 @@ class BannerController extends BaseController
     
     /**
      * Exibe um pre delete e deleta se for confirmado
-     *
+     * 
      * @Route("/deletar/{id}", name="admin_core_banner_delete")
      * @Template()
      */
     public function deleteAction($id)
     {
         $request = $this->get('request');
+        $formResult = $request->request;
         $dm = $this->dm();
         $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
         if($request->getMethod() == 'POST'){
-            if(!$banner) throw $this->createNotFoundException ('Nenhum banner encontrado com o ID' . $id);
-            @unlink($banner->getPath() . "/" . $banner->getFileName());
+            if (!$banner) throw $this->createNotFoundException($this->trans('Nenhum banner encontrado com o ID %id%',array('%id%'=>$id)));
             $dm->remove($banner);
             $dm->flush();
-            $this->get('session')->setFlash('ok', $this->trans('Banner deletado'));
-            return $this->redirect($this->generateUrl('admin_core_banner_index'));
+            return $this->redirectFlash($this->generateUrl('admin_core_banner_index'), $this->trans('E-mail Deletado'));
         }
-        return array(
-            'title'    => $banner->getTitle(),
-            'id'      => $banner->getId(),
-            'current' => 'admin_core_banner_index',
-        );
+        return $this->confirm($this->trans('Tem certeza que deseja deletar o banner %name%?', array("%name%" => $banner->getTitle())), array('id' => $banner->getId()));
+
     }
     
     /**
