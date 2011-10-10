@@ -18,7 +18,8 @@ $(function(){
         $('#sell_cupom').autocomplete(ajaxPath + "?siteid=" + $(this).val(),{
             formatResult: formatResult,
             formatItem: formatItem,
-            minChars: 3
+            minChars: 3,
+            scrollHeight: 350
         });
     });
     $("#sell_cupom").keyup(function(){
@@ -57,19 +58,20 @@ $.tools.dateinput.localize("pt_BR",  {
    days:          'domingo,segunda,terça,quarta,quinta,sexta,sábado,domingo',
    shortDays:     'dom,seg,ter,qua,qui,sex,sáb'
 });
-if($('#deal_source_expiresAt').val() == ''){
-    var dateInput = new Date;
-    var dateValue = new Date(dateInput.getFullYear(), dateInput.getMonth() + 1, dateInput.getDay() + 2);
-}else{
-    var dateInput = $('#deal_source_expiresAt').val().split('/');
-    var dateValue = new Date(dateInput[2], dateInput[1]-1, dateInput[0]);
-}
-$(".datepicker").dateinput({ 
-	lang: 'pt_BR', 
-	format: 'dd/mm/yyyy',
-	offset: [0, 0],
-        value: dateValue
-});
+if($("#sellDetails")[0]){ // Se o form de Sell Details existe
+    if($('#deal_source_expiresAt').val() == ''){
+        var dateInput = new Date;
+        var dateValue = new Date(dateInput.getFullYear(), dateInput.getMonth() + 1, dateInput.getDay() + 2);
+    }else{
+        var dateInput = $('#deal_source_expiresAt').val().split('/');
+        var dateValue = new Date(dateInput[2], dateInput[1]-1, dateInput[0]);
+    }
+    $(".datepicker").dateinput({ 
+            lang: 'pt_BR', 
+            format: 'dd/mm/yyyy',
+            offset: [0, 0],
+            value: dateValue
+    });
     $("#sellDetails").submit(function (e) { 
         var vouchers = $('input:file');
         var verified = new Array();
@@ -111,5 +113,5 @@ $(".datepicker").dateinput({
         }
         return true;
     });
-
+}
 });

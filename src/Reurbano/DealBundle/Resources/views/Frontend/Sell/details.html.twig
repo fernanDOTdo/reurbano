@@ -15,11 +15,11 @@
 <div class="content box grid_8">
     <h1>{{"Informe os detalhes de sua oferta"|trans}}</h1>
     <form action="{{ path('deal_sell_save') }}" method="post" id="sellDetails" {{ form_enctype(form) }} style="margin-left:20px" >
-        <img src='{{ source.thumb }}' alt="{{ source.getTitle() }}" class="m10" />
+        <img src='{{ mastop_param('deal.all.dealurl') ~ source.thumb }}' alt="{{ source.getTitle() }}" class="m10" />
         <h3>Titulo</h3>
         {{ source.getTitle() }}<br />
         <h3>Site</h3>
-        {{ source.getSite.getName }}<br />
+        {{ source.getSite.getName }} - {{ source.getCity.getName }}<br />
         <div id="dealSource" class="mT10">
                 {{ form_widget(form.source) }}
         </div>
@@ -30,7 +30,10 @@
         </div>
         {{ form_rest(form) }}
         <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
-         <button class='button green big push_3' type="submit">{{ "Enviar Oferta"|trans }}</button>
+        <div class="clear"></div>
+        <div class="mT10 mB10">
+         <button class='button green big push_2' type="submit">{{ "Enviar Oferta"|trans }}</button> <a class='button big red floatL' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
+        </div>
     </form>
 </div>
 <div class="grid_4">

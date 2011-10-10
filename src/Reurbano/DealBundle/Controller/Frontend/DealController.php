@@ -196,6 +196,9 @@ class DealController extends BaseController
         if($user->getId() != $deal->getUser()->getId()){
             return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
         }
+        if($deal->getQuantity() == 0 && $active){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Não é possível ativar uma oferta vendida.', 'error');
+        }
         $dm = $this->dm();
         ($active) ? $deal->setActive(true) : $deal->setActive(false);
         $dm->persist($deal);

@@ -21,7 +21,8 @@ class SourceController extends BaseController
     public function indexAction()
     {
         $title = 'Administração do Banco de Ofertas';
-        $ofertas = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->findAll();
+        //$ofertas = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->findAll();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->findAllByCreated();
         //$ofertas = $this->mongo('ReurbanoDealBundle:Source')->findAllByCreated();
         return array(
             'ofertas' => $ofertas,
@@ -48,7 +49,7 @@ class SourceController extends BaseController
             $deal = new Source();
         }
         $request = $this->get('request');
-        $form = $this->createForm(new SourceType(), $deal);
+        $form = $this->createForm(new SourceType(), $deal, array('dm' => $dm));
          $dadosPost = $request->request->get($form->getName());
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);

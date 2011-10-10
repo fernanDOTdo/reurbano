@@ -11,17 +11,19 @@
                 <th>{{ "Cidade"|trans }}</th> 
                 <th>{{ "Categoria"|trans }}</th> 
                 <th>{{ "Preço"|trans }}</th> 
+                <th>{{ "Data"|trans }}</th> 
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
         <tbody> 
 {% for deal in ofertas %}
             <tr>
-                <td class='center'><img width="140" height="100" src="{{ deal.getThumb() }}" title="{{ deal.getTitle() }}" alt="{{ deal.getTitle() }}" /></td>
+                <td class='center'><img width="140" height="100" src="{{ mastop_param('deal.all.dealurl') ~ deal.thumb }}" title="{{ deal.getTitle() }}" alt="{{ deal.getTitle() }}" /></td>
                 <td>{{ deal.getTitle(50) }}</td>
                 <td>{{ deal.getSite().getName() }}</td>
                 <td>{{ deal.getCity().getName() }}</td>
                 <td>{{ deal.getCategory().getName() }}</td>
+                <td>{{ deal.dateRegister|date('d/m/Y') }}</td>
                 <td class='nowrap'>{{ deal.getPriceOffer()|money }}</td>
                 <td class="center nowrap">
                     <a class="button button-set-start small white" href="{{ path( 'admin_deal_source_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_source_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>

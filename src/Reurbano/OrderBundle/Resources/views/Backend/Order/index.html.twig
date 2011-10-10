@@ -23,7 +23,7 @@
                     {{ order.id }}
                 </td>
                 <td>
-                    <img src='{{ order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+                    <img src='{{mastop_param('deal.all.dealurl') ~  order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
                 </td>
                 <td>
                     {{ order.user.name }}

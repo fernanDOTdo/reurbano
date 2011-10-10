@@ -100,13 +100,20 @@ class SellController extends BaseController
         if ($this->get('request')->isXmlHttpRequest()) {
             if ($this->get('request')->getMethod() == 'GET') {
                 $cupom = $this->get('request')->query->get('q');
+                $limit = $this->get('request')->query->get('limit');
                 $cityId = $this->get('session')->get('reurbano.user.cityId');
                 $siteId = $this->get('request')->query->get('siteid');
-                $regexp = new \MongoRegex('/' . $cupom . '/i');
+                $regexp = new \MongoRegex('/' . preg_quote($cupom) . '/i');
                 $qb = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->createQueryBuilder();
-                $source = $qb->sort('dateRegister', 'DESC')
-                        // Linha abaixo foi comentada para pegar as ofertas de todas as cidades
-                        //->field('city.id')->equals($cityId)
+                $cityNacionalId = $this->get('session')->get('reurbano.user.nacional');
+                // Adicionado para buscar apenas na cidade do usuário + oferta nacional
+                if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
+                    $qb->field('city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
+                } else {
+                    $qb->field('city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacionalId)));
+                }
+                
+                $source = $qb->sort('city.id', 'desc')->sort('dateRegister', 'desc')->limit($limit)
                         ->field('site.id')->equals((int)$siteId)
                         // Linha abaixo foi comentada porque o crawler não pega data de validade de todas as ofertas
                         //->field('expiresAt')->gt(new \DateTime())
@@ -114,7 +121,10 @@ class SellController extends BaseController
                         ->getQuery()->execute();
                 $data = '';
                 foreach($source as $k => $v){
-                    $data .= "<table><tr><td><div style='margin:3px'><img src='".$v->getThumb()."' width='80' height='60' /></div></td><td>|".$v->getTitle()."|</td></tr></table>";
+                    $title = $v->getTitle();
+                    $title = preg_replace("'\s+'", ' ', $title);
+                    $title = trim($title, ' -');
+                    $data .= "<table class='m0'><tr><td><div style='margin:3px; position:relative'><img src='".$this->mastop()->param('deal.all.dealurl').$v->getThumb()."' width='80' height='60' />".(($v->getCity()->getId() == $cityNacionalId) ? "<div class='dealCity' style='position:absolute; top:0'><span></span></div>" : "")."</div></td><td>|".$title."|</td></tr></table>";
                     $data .= '|';
                     $data .= $v->getId();
                     $data .= " \n";
@@ -122,7 +132,7 @@ class SellController extends BaseController
                 return new Response($data);
             }
         }
-        //return new Response(json_encode(array()));
+        throw $this->createNotFoundException('Uepa!');
     }
     
     /**

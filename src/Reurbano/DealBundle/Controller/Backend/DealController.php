@@ -44,7 +44,7 @@ class DealController extends BaseController {
         if ($id) {
             $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($id);
             if (!$deal) {
-                throw $this->createNotFoundException($this->trans('Nenhuma oferta encontrada com o ID %id%'), array("%id%" => $id));
+                throw $this->createNotFoundException($this->trans('Nenhuma oferta encontrada com o ID %id%', array("%id%" => $id)));
             }
         } else {
             $deal = new Deal();

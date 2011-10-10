@@ -12,7 +12,7 @@
 {% for deal in deal %}
         <tr>
             <td>
-                <img src='{{ deal.getSource.getThumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
+                <img src='{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
             </td>
             <td style="width: 315px;">
                 {{ deal.source.getTitle(80) }}
@@ -31,10 +31,13 @@
             </td>
             <td class="center" nowrap="nowrap">
                 <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a>
-                {% if deal.getActive() %}
-                    <a class="button small danger" href="{{ path('deal_deal_active', {'id': deal.getId()}) }}">{{"Desativar"|trans}}</a>
-                {% else %}
-                    <a class="button small white" href="{{ path('deal_deal_active', {'id': deal.getId(), 'active': true}) }}">{{"Ativar"|trans}}</a>
+                
+                {% if deal.quantity > 0 %}
+                    {% if deal.getActive() %}
+                        <a class="button small danger" href="{{ path('deal_deal_active', {'id': deal.getId()}) }}">{{"Desativar"|trans}}</a>
+                    {% else %}
+                        <a class="button small white" href="{{ path('deal_deal_active', {'id': deal.getId(), 'active': true}) }}">{{"Ativar"|trans}}</a>
+                    {% endif %}
                 {% endif %}
             </td>
         </tr>
