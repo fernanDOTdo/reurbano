@@ -3,6 +3,7 @@
     <link href="{{ asset('bundles/reurbanocore/css/calendar.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
 {% block javascripts%}
+    <script type="text/javascript" src="{{ url('deal_sell_script') }}"></script>
 {% javascripts output='static/system/js/sell.details.js'
                    '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
                    '@ReurbanoCoreBundle/Resources/public/js/dateinput/jquery.tools.min.js'
