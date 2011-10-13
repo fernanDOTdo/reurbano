@@ -17,12 +17,12 @@
         <div class="orderLabel">
             <p>{{ order.deal.label }}</p>
             <p class="orderStatus {{ order.getStatusName|lower }}">Status: {{ order.getStatusName }}</p>
-            {{payButton|raw}}
+            {{payButton|raw}}{{refundButton|raw}}
         </div>
     </div>
     <div class="orderDetails">
         <h4>Informações da Compra</h4>
-        <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+        <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y H:i") }}</strong></p>
         <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
         <p>Total: <strong>{{ order.total|money}}</strong></p>
         <h4>Informações da Operadora de Pagamento</h4>
@@ -31,13 +31,20 @@
         {%else%}
                 <div class="info">Esta compra ainda não foi paga.</div>
         {%endfor%}
+        {% if refund %}
+            {% set refundStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
+            <h4 style="color:red">Informações da Solicitação de Reembolso</h4>
+            <p>Data da Solicitação: <strong>{{ refund.created.timestamp|date("d/m/Y H:i") }}</strong></p>
+            <p>Status da Solicitação: <strong>{{ refundStatus[refund.status] }}</strong></p>
+            <p>Motivo: <strong>{{ refund.reason|nl2br }}</strong></p>
+        {% endif %}
     </div>
     <div class="clear"></div>
     <div class="orderComments m10">
         <h4>Comentários</h4>
         <div class="orderCommentsDiv">
           {%for comment in order.comments|reverse%}
-                <div class="orderComment {%if comment.user.id == order.user.id%}customer{%elseif comment.user.id == order.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == order.user.id%}Cliente{%elseif comment.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y h:i")}}</em><br />{{comment.message|nl2br}}</div>
+                <div class="orderComment {%if comment.user.id == order.user.id%}customer{%elseif comment.user.id == order.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == order.user.id%}Comprador{%elseif comment.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y H:i")}}</em><br />{{comment.message|nl2br}}</div>
           {%else%}
                 <div class="info">Não há comentários nesta compra.</div>
           {%endfor%}
@@ -50,27 +57,29 @@
         <h4>Histórico</h4>
         <div class="orderStatusLogDiv">
           {%for status in order.statusLog|reverse%}
-                <div class="orderStatusLogItem {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
+                <div class="orderStatusLogItem {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y H:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
           {%else%}
                 <div class="info">Não há histórico nesta compra.</div>
           {%endfor%}
         </div>
     </div>
-    {% if voucher %}
-        <div>
+        <div class="m10 floatL" style="width:280px">
             <h4>Vouchers</h4>
             <div>
+                {% if voucher %}
                 {% for vou in voucher %}
                 <div style="margin: 7px;">
-                    <a class="button big green" href="/uploads/reurbanodeal/voucher/{{vou.fileName}}" target="_blank">
+                    <a class="button big blue" href="/uploads/reurbanodeal/voucher/{{vou.fileName}}" target="_blank">
                         <span>{{"Voucher"|trans}} {{ loop.index }}</span>
                     </a>
                     <br />
                 </div>
                 {% endfor %}
+                {%else%}
+                    <div class="info">Os vouchers estarão disponíveis quando o pagamento for confirmado.</div>
+                {% endif %}
             </div>
         </div>
-    {% endif %}
 </div>
 <div class="clear"></div>
 <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>

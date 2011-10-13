@@ -2,12 +2,12 @@
 {% extends '::mail.html.twig' %}
 
 {% block content %}
-<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua compra #{{order.id}} foi cancelada.</h1><br/><br/>
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, seu pedido de reembolso para a compra #{{order.id}} foi aprovado.</h1><br/><br/>
 {% if msg %}
-    <h3>O administrador enviou o seguinte comentário:</h3>
+    <h3>O administrador enviou a seguinte observação:</h3>
     {{ msg|nl2br }} <br /><br />
 {% endif %}
-Caso queira comentar o cancelamento da sua compra, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
+Você ainda pode enviar comentários no pedido, clicando no link abaixo ou copiando e colando em seu navegador:<br /><br />
 <a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
 
 <span style="margin:0;font-size:11px;">

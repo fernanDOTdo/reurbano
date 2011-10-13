@@ -24,4 +24,8 @@ order_status_backend:
 order_checkout_backend:
     resource: "@ReurbanoOrderBundle/Controller/Backend/CheckoutController.php"
     type: annotation
-    prefix:   /admin/vendas/checkout
+    prefix:   /admin/vendas/resgates
+order_refund_backend:
+    resource: "@ReurbanoOrderBundle/Controller/Backend/RefundController.php"
+    type: annotation
+    prefix:   /admin/vendas/reembolsos

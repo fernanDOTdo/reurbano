@@ -1,8 +1,54 @@
 {% extends '::backend.html.twig' %}
-        
-{% block title %}Teste{% endblock %}
-
-
+{% block title %}{{title|trans}}{% endblock %}
+{% set checkoutStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
 {% block content %}
-<h1>Teste!</h1>
+<div class="content box grid_12 round_all">
+    <table class="display datatable">
+        <thead>
+            <tr>
+                <th class="nowrap center">{{ "Código"|trans }}</th>
+                <th class="nowrap center">{{ "Usuário"|trans }}</th>
+                <th class="nowrap center">{{ "Data"|trans }}</th>
+                <th class="nowrap center">{{ "Total"|trans }}</th>
+                <th class="nowrap center">{{ "Status"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for checkout in checkout %}
+            <tr>
+                <td>
+                    {{ checkout.id }}
+                </td>
+                <td>
+                    {{ checkout.user.name }}
+                </td>
+                <td>
+                    {{ checkout.created.timestamp|date("d/m/Y") }}
+                </td>
+                <td class="nowrap">
+                    {{ checkout.total|money }}
+                </td>
+                <td>
+                    <span class="statusName {{ checkoutStatus[checkout.status]|lower }}">{{ checkoutStatus[checkout.status] }}</span>
+                </td>
+                <td>
+                    {%if checkout.status == 1%}
+                    <a class="button button-set-start small white" href="{{ path('admin_order_checkout_view', {'id': checkout.id}) }}" title="Ver Resgate"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Ver Resgate"|trans}}</span></a><a class="button button-set small green" href="{{ path('admin_order_checkout_approve', {'id': checkout.id}) }}" title="Aprovar Resgate"><span class="ui-silk ui-silk ui-silk-accept">{{"Aprovar Resgate"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_order_checkout_cancel', {'id': checkout.id}) }}" title="Cancelar Resgate"><span class="ui-silk ui-silk ui-silk-cancel">{{"Cancelar Resgate"|trans}}</span></a>
+                    {%else%}
+                    <a class="button small white" href="{{ path('admin_order_checkout_view', {'id': checkout.id}) }}" title="Ver Resgate"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Ver Resgate"|trans}}</span></a>
+                    {%endif%}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="9">{{ "Nenhum resgate encontrado"|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class='clear'></div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

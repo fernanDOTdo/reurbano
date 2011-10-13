@@ -1,8 +1,70 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}Teste{% endblock %}
-
-
+{% block title %}{{ title|trans }}{% endblock %}
+{% set checkoutStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
 {% block content %}
-<h1>Teste!</h1>
+<div class="content box grid_12 round_all">
+    <div class="grid_8">
+        <h1 class="h1Order">{{ title|trans }} - <span>{{ checkoutStatus[checkout.status] }}</span></h1>
+    </div>
+    <div class="clear"></div>
+    <div class="orderDetails grid_12">
+        <div class="orderDetailsInside grid_6 alpha">
+            <h4>Informações do Resgate</h4>
+            <p>Data da Solicitação: <strong>{{ checkout.created.timestamp|date("d/m/Y H:i") }}</strong></p>
+            <p>Usuário: <strong>{{ user.name}} ({{user.email}})</strong></p>
+            <p>Total: <strong>{{ checkout.total|money}}</strong></p>
+            <p>Status: <strong>{{ checkoutStatus[checkout.status] }}</strong></p>
+        </div>
+        <div class="orderDetailsInside grid_6 beta">
+            <h4>Informações Bancárias de {{user.name}}</h4>
+            {% set bankData = user.getBankData %}
+            {{ "<b>Banco: </b>"}} {{ bankData.getName }}
+            <br />
+            {{ "<b>Agência: </b>"}} {{ bankData.getAgency }}
+            <br />
+            {{ "<b>Conta: </b>"}} {{ bankData.getAccount }}
+            <br />
+            {{ "<b>Tipo: </b>"}} {{ (bankData.getType == 1) ? 'Conta Corrente' : 'Conta Poupança'}}
+            <br />
+            {%if bankData.getObs is not null %}
+            {{ "<b>Obs: </b>"}}<br />
+            <div class="mB10">{{ bankData.getObs|nl2br }}</div>
+            {%endif%}
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="grid_12 borderStatus beta">
+        <div class="subTitulo" >Comentários</div>
+        <div class="orderLists">
+            {% for com in checkout.comments|reverse %}
+                <div class="orderAdminList">
+                    <span class="dateBold">
+                        {%if com.user.id == checkout.user.id%}
+                            Vendedor
+                        {%else%}
+                            {{mastop_param('system.site.name')}}
+                        {%endif%} 
+                        em <em>{{com.created.timestamp|date("d/m/Y H:i")}}</em>
+                    </span>
+                    <br />
+                    <strong>Comentário: </strong>{{ com.message|nl2br }}
+                </div>
+            {%endfor%}
+        </div>
+        <div id="comentForm">
+            <form class="block formComment" action="{{ path('admin_order_checkout_comment', {'id':checkout.id}) }}" method="POST">
+                {{ form_widget(commentForm) }}
+                <button type="submit" class="button blue m10">Comentar</button>
+            </form>
+        </div>
+    </div>
+    {%if checkout.status == 1%}
+    <div class="grid_12 borderStatus beta">
+        <div class="subTitulo" >Ações</div>
+        <a class="button big red m10" href="{{ path('admin_order_checkout_cancel', {'id':checkout.id}) }}"><span>Cancelar Resgate</span></a> <a class="button big green m10" href="{{ path('admin_order_checkout_approve', {'id':checkout.id}) }}"><span>Aprovar Resgate</span></a>
+    </div>
+    <div class="clear"></div>
+    {%endif%}
+</div>
 {% endblock %}

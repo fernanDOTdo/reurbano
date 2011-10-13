@@ -82,6 +82,14 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setOrder(3);
         $param->addChildren($child);
         
+        $child = new Children();
+        $child->setName('refundstatus');
+        $child->setTitle('Id do status para permitir reembolso');
+        $child->setDesc('Digite os ids dos status que a venda precisa ter permitir que o comprador solicite reembolso (Separados por virgula)');
+        $child->setValue(4);
+        $child->setOrder(4);
+        $param->addChildren($child);
+        
         $manager->persist($param);
         $manager->flush();
     }

@@ -33,6 +33,7 @@ use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\StatusLog;
 use Reurbano\OrderBundle\Document\Escrow;
 use Reurbano\DealBundle\Document\Deal;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller que cuidará das compras em Frontend
@@ -67,7 +68,7 @@ class OrderController extends BaseController
         if(class_exists($gateway)){
             $orderId = $gateway::getOrderId($this->getRequest());
             $order = $this->mongo('ReurbanoOrderBundle:Order')->findOneById((int) $orderId);
-            if($order && $this->get('security.context')->getToken()->getUser()->getId() == $order->getUser()->getId()){ // Pedido encontrado e pertence ao user atual
+            if($order && $this->getUser()->getId() == $order->getUser()->getId()){ // Pedido encontrado e pertence ao user atual
                 $payment = new $gateway($order, $this->container);
                 $ret = $payment->checkStatus();
                 if($ret){
@@ -77,6 +78,63 @@ class OrderController extends BaseController
                     $dm = $this->dm();
                     $dm->persist($order);
                     $dm->flush();
+                    if($ret['type'] == 'ok' && $status == 'sucesso'){
+                        // Se $ret['type'] for "ok" quer dizer que o pagamento está aprovado
+                        $status = $this->mongo('ReurbanoOrderBundle:Status')->findByName('Aprovado');
+                        $statusLog = new StatusLog();
+                        $statusLog->setStatus($status);
+                        $statusLog->setUser($order->getUser());
+
+                        $order->setStatus($status);
+                        $order->addStatusLog($statusLog);
+
+                        $dm->persist($order);
+                        $dm->flush();
+                        $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+                        $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+                        // Verifica se é para liberar o Voucher
+                        $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+                        if(count($statusVoucher) > 0 && in_array($status->getId(), $statusVoucher)){
+                            $mail = $this->get('mastop.mailer');
+                            $mail->to($order->getUser())
+                                 ->subject('Cupom liberado')
+                                 ->template('pedido_voucher',array(
+                                        'title'  => 'Cupom Liberado',
+                                        'user'  => $order->getUser(),
+                                        'order' => $order,
+                                        'orderLink' => $orderLinkBuyer,
+                                    ));
+                            foreach($order->getDealVoucher() as $k => $v){
+                                $mail->attach($v->getPath() . "/" . $v->getFileName());
+                            }
+                            $mail->send();
+                        }
+                        // Envia e-mail para comprador
+                        $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getUser())
+                             ->subject('Status da Compra '.$order->getId().': '.$status->getName())
+                             ->template('pedido_status_comprador',array(
+                                    'title'  => 'Status: '.$status->getName(),
+                                    'user'  => $order->getUser(),
+                                    'order' => $order,
+                                    'orderLink' => $orderLinkBuyer,
+                                    'obs' => false,
+                                ));
+                        $mail->send();
+                        // Envia e-mail para vendedor
+                        $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getSeller())
+                             ->subject('Status da Venda '.$order->getId().': '.$status->getName())
+                             ->template('pedido_status_vendedor',array(
+                                    'title'  => 'Status: '.$status->getName(),
+                                    'user'  => $order->getSeller(),
+                                    'order' => $order,
+                                    'orderLink' => $orderLinkSeller,
+                                    'obs' => false,
+                                ));
+                        $mail->send();
+                        
+                    }
                     return $this->redirectFlash($this->generateUrl('_home'), $ret['msg'], $ret['type']);
                 }
             }else{
@@ -92,7 +150,12 @@ class OrderController extends BaseController
      */
     public function statusAction($gateway)
     {
-        return array();
+        $gateway = 'Reurbano\OrderBundle\Payment\\'.$gateway;
+        if(class_exists($gateway)){
+            $mail = $this->get('mastop.mailer');
+            $mail->notify('Debug: Mudança de Status', 'POST:<br /><br />'.  print_r($_POST, true).'<br /><br />GET:<br /><br />'.  print_r($_GET, true));
+        }
+        return new Response('OK'); 
     }
     
     /**

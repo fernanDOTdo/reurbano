@@ -36,6 +36,7 @@ namespace Reurbano\DealBundle\Controller\Frontend;
 
 use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +67,7 @@ class SellController extends BaseController
      * 
      * @Route("/", name="deal_sell_index")
      * @Secure(roles="ROLE_USER")
+     * @Method("GET");
      * @Template()
      */
     public function indexAction()
@@ -101,18 +103,23 @@ class SellController extends BaseController
             if ($this->get('request')->getMethod() == 'GET') {
                 $cupom = $this->get('request')->query->get('q');
                 $limit = $this->get('request')->query->get('limit');
-                $cityId = $this->get('session')->get('reurbano.user.cityId');
+                $city = $this->get('request')->query->get('city');
+                if($city == $this->get('session')->get('reurbano.user.city')){
+                    $cityId = $this->get('session')->get('reurbano.user.cityId');
+                }else{
+                    $cityDB = $this->mongo('ReurbanoCoreBundle:City', 'crawler')->findBySlug($city);
+                    $cityId = ($cityDB) ? $cityDB->getId() : $this->get('session')->get('reurbano.user.cityId');
+                }
                 $siteId = $this->get('request')->query->get('siteid');
                 $regexp = new \MongoRegex('/' . preg_quote($cupom) . '/i');
                 $qb = $this->mongo('ReurbanoDealBundle:Source', 'crawler')->createQueryBuilder();
                 $cityNacionalId = $this->get('session')->get('reurbano.user.nacional');
                 // Adicionado para buscar apenas na cidade do usuário + oferta nacional
-                if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
-                    $qb->field('city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
+                if ($city == 'oferta-nacional') {
+                    $qb->field('city.$id')->equals(new \MongoId($cityId));
                 } else {
-                    $qb->field('city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacionalId)));
+                    $qb->field('city.$id')->in(array(new \MongoId($cityId), new \MongoId($cityNacionalId)));
                 }
-                
                 $source = $qb->sort('city.id', 'desc')->sort('dateRegister', 'desc')->limit($limit)
                         ->field('site.id')->equals((int)$siteId)
                         // Linha abaixo foi comentada porque o crawler não pega data de validade de todas as ofertas
@@ -121,6 +128,9 @@ class SellController extends BaseController
                         ->getQuery()->execute();
                 $data = '';
                 foreach($source as $k => $v){
+                    if($v->getExpiresAt() && $v->getExpiresAt()->getTimestamp() < time()){
+                        continue; // Se a oferta tem data e está vencida, não mostra
+                    }
                     $title = $v->getTitle();
                     $title = preg_replace("'\s+'", ' ', $title);
                     $title = trim($title, ' -');
@@ -128,6 +138,10 @@ class SellController extends BaseController
                     $data .= '|';
                     $data .= $v->getId();
                     $data .= " \n";
+                }
+                if(empty ($data)){
+                    // Se não houve resultados, retorna mensagem avisando
+                    $data .= "<table class='m0'><tr><td>|<span style='color:red !important'>Nenhuma oferta encontrada contendo ".$cupom."</span>|</td></tr></table>|0";
                 }
                 return new Response($data);
             }
@@ -176,6 +190,7 @@ class SellController extends BaseController
      * 
      * @Route("/salvar", name="deal_sell_save")
      * @Secure(roles="ROLE_USER")
+     * @Method("POST")
      */
     public function saveAction(){
         $dm = $this->dm();

@@ -108,7 +108,7 @@ class MySalesController extends BaseController
              ->template('oferta_novocomentario_comprador', array('user' => $order->getUser(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Novo Comentário'))
              ->send();
             $mail->notify('Aviso de novo comentário', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou o seguinte comentário no pedido '.$order->getId().': <br />'.nl2br($comment->getMessage()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
-        return $this->redirectFlash($this->generateUrl('user_dashboard_index'). '#mysales', 'Comentário adicionado no pedido '.$order->getId());
+        return $this->redirectFlash($this->generateUrl('order_mysales_view', array('id' => $order->getId())), 'Comentário adicionado no pedido '.$order->getId());
     }
     /**
      * Action que permite ao vendedor comentar um reembolso solicitado pelo comprador

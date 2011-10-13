@@ -21,9 +21,9 @@
     </div>
     <div class="orderDetails">
         <h4>Informações da Venda</h4>
-        <p>Data da venda: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+        <p>Data da venda: <strong>{{ order.created.timestamp|date("d/m/Y H:i") }}</strong></p>
         <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
-        <p>Total: <strong>{{ order.total|money}}</strong></p>
+        <p>Total: <strong>{{ order.getTotal(true)|money}}</strong></p>
         <h4>Informações da Operadora de Pagamento</h4>
         {%for pay in payment.renderInfo()%}
         <p>{{pay|raw}}</p>
@@ -36,7 +36,7 @@
         <h4>Comentários</h4>
         <div class="orderCommentsDiv">
           {%for comment in order.comments|reverse%}
-                <div class="orderComment {%if comment.user.id == order.user.id%}customer{%elseif comment.user.id == order.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == order.user.id%}Cliente{%elseif comment.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y h:i")}}</em><br />{{comment.message|nl2br}}</div>
+                <div class="orderComment {%if comment.user.id == order.user.id%}customer{%elseif comment.user.id == order.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == order.user.id%}Comprador{%elseif comment.user.id == order.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y H:i")}}</em><br />{{comment.message|nl2br}}</div>
           {%else%}
                 <div class="info">Não há comentários nesta venda.</div>
           {%endfor%}
@@ -49,7 +49,7 @@
         <h4>Histórico</h4>
         <div class="orderStatusLogDiv">
           {%for status in order.statusLog|reverse%}
-                <div class="orderStatusLogItem {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
+                <div class="orderStatusLogItem {{ status.getStatusName|lower }}">{{ status.getStatusName }} em <em>{{ status.created.timestamp|date("d/m/Y H:i")}}</em>{%if status.obs %}<br /><strong>Obs.:</strong>{{status.obs|nl2br}}{%endif%}</div>
           {%else%}
                 <div class="info">Não há histórico nesta venda.</div>
           {%endfor%}

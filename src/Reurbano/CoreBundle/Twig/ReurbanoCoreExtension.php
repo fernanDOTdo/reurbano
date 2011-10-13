@@ -43,7 +43,7 @@ class ReurbanoCoreExtension extends Twig_Extension {
         return $functions;
     }
 
-    public function selectCity($name = 'city', $id = null, $class = null) {
+    public function selectCity($name = 'city', $id = null, $class = null, $style = null) {
         $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoCoreBundle:City');
         $cities = $repo->findAll();
         $ret = null;
@@ -52,6 +52,7 @@ class ReurbanoCoreExtension extends Twig_Extension {
             $ret = '<select name="' . $name . '"';
             $ret .= ($id) ? ' id="' . $id . '"' : '';
             $ret .= ($class) ? ' class="' . $class . '"' : '';
+            $ret .= ($style) ? ' style="' . $style. '"' : '';
             $ret .= '>';
             foreach ($cities as $k => $v) {
                 $ret .= '<option value="' . $v->getSlug() . '"' . ($current == $v->getSlug() ? ' selected="selected"' : '') . '>' . $v->getName() . '</option>';

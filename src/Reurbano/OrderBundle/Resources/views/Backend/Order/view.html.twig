@@ -4,19 +4,23 @@
 
 {% block content %}
 <div class="content box grid_12 round_all">
-    {% if status %}
+    {% if status and status.name != 'Finalizado' %}
     <a class="button medium red" href="{{ path('admin_order_order_cancel', {'id': order.getId()}) }}" style="float: right; margin: 10px;"><span>{{"Cancelar Pedido"|trans}}</span></a>
     {% endif %}
     <div class="grid_8">
-        <h1 class="h1Order">{{ title|trans }} - {{ order.id }} - <span>{{ order.StatusName }}</span></h1>
+        <h1 class="h1Order">{{ title|trans }} - <span>{{ order.StatusName }}</span></h1>
         <img src="{{asset(mastop_param('deal.all.dealurl') ~ order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
         <h2>{{ order.deal.label }}</h2>
     </div>
     <div class="clear"></div>
+    {%if refund%}
+    <h3 class="m10" style="color:red">Esta venda tem uma solicitação de reembolso de {{refund.created.timestamp|date("d/m/Y H:i")}}. <a class="button big red" href="{{ path('admin_order_refund_view', {'id':refund.id}) }}"><span>Visualizar</span></a></h3>
+    <div class="clear"></div>
+    {%endif%}
     <div class="orderDetails grid_12">
         <div class="orderDetailsInside grid_6 alpha">
             <h4>Informações da Compra</h4>
-            <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y h:i") }}</strong></p>
+            <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y H:i") }}</strong></p>
             <p>Usuário: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
             <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
             <p>Total: <strong>{{ order.total|money}}</strong></p>
@@ -38,7 +42,7 @@
         <div class="orderLists">
             {% for status in order.statusLog|reverse %}
                 <div class="orderAdminList">
-                    <span class="dateBold"><span class="statusName {{ status.statusName|lower }}">{{ status.statusName }}</span> em <em>{{ status.created.timestamp|date("d/m/Y h:i")}}</em></span>
+                    <span class="dateBold"><span class="statusName {{ status.statusName|lower }}">{{ status.statusName }}</span> em <em>{{ status.created.timestamp|date("d/m/Y H:i")}}</em></span>
                     {%if status.obs %}
                         <br />
                         <strong>Obs.: </strong>{{status.obs|nl2br}}
@@ -46,7 +50,7 @@
                 </div>
             {%endfor%}
         </div>
-        {% if status %}
+        {% if status and status.name != 'Finalizado' %}
             <div>
                 <form class="block" action="{{ path('admin_order_order_status', {'id':order.id}) }}" method="POST">
                     {{ form_widget(statusForm) }}
@@ -63,13 +67,13 @@
                 <div class="orderAdminList">
                     <span class="dateBold">
                         {%if com.user.id == order.user.id%}
-                            Cliente
+                            Comprador
                         {%elseif com.user.id == order.seller.id%}
                             Vendedor
                         {%else%}
                             {{mastop_param('system.site.name')}}
                         {%endif%} 
-                        em <em>{{com.created.timestamp|date("d/m/Y h:i")}}</em>
+                        em <em>{{com.created.timestamp|date("d/m/Y H:i")}}</em>
                     </span>
                     <br />
                     <strong>Comentário: </strong>{{ com.message|nl2br }}

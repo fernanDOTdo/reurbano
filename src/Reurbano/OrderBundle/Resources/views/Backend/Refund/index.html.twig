@@ -1,8 +1,61 @@
 {% extends '::backend.html.twig' %}
-        
-{% block title %}Teste{% endblock %}
-
-
+{% block title %}{{title|trans}}{% endblock %}
+{% set refundStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
 {% block content %}
-<h1>Teste!</h1>
+<div class="content box grid_12 round_all">
+    <table class="display datatable">
+        <thead>
+            <tr>
+                <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
+                <th class="nowrap center">{{ "Usuário"|trans }}</th>
+                <th class="nowrap center">{{ "Oferta"|trans }}</th>
+                <th class="nowrap center">{{ "Data"|trans }}</th>
+                <th class="nowrap center">{{ "Total"|trans }}</th>
+                <th class="nowrap center">{{ "Status"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for refund in refund %}
+            <tr>
+                <td>
+                    {{ refund.id }}
+                </td>
+                <td>
+                    <img src='{{mastop_param('deal.all.dealurl') ~  refund.order.deal.source.thumb }}' width='80' height='60' alt="{{ refund.order.deal.source.title }}"/>
+                </td>
+                <td>
+                    {{ refund.user.name }}
+                </td>
+                <td style="width:200px;">
+                    {{ refund.order.deal.label(80) }}
+                </td>
+                <td>
+                    {{ refund.created.timestamp|date("d/m/Y") }}
+                </td>
+                <td class="nowrap">
+                    {{ refund.order.total|money }}
+                </td>
+                <td>
+                    <span class="statusName {{ refundStatus[refund.status]|lower }}">{{ refundStatus[refund.status] }}</span>
+                </td>
+                <td>
+                    {%if refund.status == 1%}
+                    <a class="button button-set-start small white" href="{{ path('admin_order_refund_view', {'id': refund.id}) }}" title="Ver Reembolso"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Ver Reembolso"|trans}}</span></a><a class="button button-set small white" href="{{ path('admin_order_order_view', {'id': refund.id}) }}" title="Visualizar Pedido"><span class="ui-silk ui-silk ui-silk-money">{{"Ver Pedido"|trans}}</span></a><a class="button button-set small green" href="{{ path('admin_order_refund_approve', {'id': refund.id}) }}" title="Aprovar Reembolso"><span class="ui-silk ui-silk ui-silk-accept">{{"Aprovar Reembolso"|trans}}</span></a><a class="button button-set-finish small red" href="{{ path('admin_order_refund_cancel', {'id': refund.id}) }}" title="Cancelar Reembolso"><span class="ui-silk ui-silk ui-silk-cancel">{{"Cancelar Reembolso"|trans}}</span></a>
+                    {%else%}
+                    <a class="button button-set-start small white" href="{{ path('admin_order_refund_view', {'id': refund.id}) }}" title="Ver Reembolso"><span class="ui-silk ui-silk ui-silk-page-white-magnify">{{"Ver Reembolso"|trans}}</span></a><a class="button button-set-finish small white" href="{{ path('admin_order_order_view', {'id': refund.id}) }}" title="Visualizar Pedido"><span class="ui-silk ui-silk ui-silk-money">{{"Ver Pedido"|trans}}</span></a>
+                    {%endif%}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="9">{{ "Nenhum reembolso encontrado"|trans }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class='clear'></div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}

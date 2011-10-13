@@ -2,12 +2,16 @@
 {% extends '::mail.html.twig' %}
 
 {% block content %}
-<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua oferta no {{mastop_param('system.site.name')}} foi vendida com o código: {{order.id}}</h1><br/><br/>
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua venda no {{mastop_param('system.site.name')}} teve o status alterado para: {{order.status.name}}</h1><br/><br/>
 <h3>Dados da venda:</h3>
 Oferta: {{order.deal.label}} <br />
 Quantidade de Cupons: {{order.quantity}}<br />
-Total: {{order.getTotal(true)|money}}<br /><br />
-<b>Os cupons serão liberados para o comprador assim que o pagamento for confirmado pela instituição financeira.</b><br /><br />
+Total: {{order.getTotal(true)|money}}<br />
+{%if obs%}
+<b>Observação:</b> {{obs|nl2br}}<br />
+{%endif%}
+<br />
+<br /><br />
 Para acompanhar sua venda, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
 <a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
 

@@ -1,5 +1,5 @@
 {%if lastOrder%}
-<h2 id="lastOrderTitle">Última Venda - Data: <strong>{{ lastOrder.created.timestamp|date("d/m/Y")  }}</strong> - Total: <strong>{{lastOrder.total|money}}</strong></h2>
+<h2 id="lastOrderTitle">Última Venda - Data: <strong>{{ lastOrder.created.timestamp|date("d/m/Y")  }}</strong> - Total: <strong>{{lastOrder.getTotal(true)|money}}</strong></h2>
 <div id="myOrder">
     <div class="orderInfo">
         <div class="dealThumb">
@@ -15,7 +15,7 @@
     <div class="orderComments">
         <div class="orderCommentsDiv">
           {%for comment in lastOrder.comments|reverse%}
-                <div class="orderComment {%if comment.user.id == lastOrder.user.id%}customer{%elseif comment.user.id == lastOrder.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == lastOrder.user.id%}Cliente{%elseif comment.user.id == lastOrder.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y h:i")}}</em><br />{{comment.message|nl2br}}</div>
+                <div class="orderComment {%if comment.user.id == lastOrder.user.id%}customer{%elseif comment.user.id == lastOrder.seller.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == lastOrder.user.id%}Comprador{%elseif comment.user.id == lastOrder.seller.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y H:i")}}</em><br />{{comment.message|nl2br}}</div>
           {%else%}
                 <div class="info">Não há comentários nesta venda.</div>
           {%endfor%}
@@ -61,7 +61,7 @@
             {{ order.created.timestamp|date("d/m/Y")  }}
             </td>
             <td class="aC">
-            {{order.total|money}}
+            {{order.getTotal(true)|money}}
             </td>
             <td class="aC">
             {{ order.deal.source.expiresAt|date("d/m/Y")  }}

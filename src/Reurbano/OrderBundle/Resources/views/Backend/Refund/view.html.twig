@@ -1,8 +1,47 @@
 {% extends '::backend.html.twig' %}
         
-{% block title %}Teste{% endblock %}
-
-
+{% block title %}{{ title|trans }}{% endblock %}
+{% set refundStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
 {% block content %}
-<h1>Teste!</h1>
+<div class="content box grid_12 round_all">
+    <div class="grid_8">
+        <h1 class="h1Order">{{ title|trans }} - <span>{{ refundStatus[refund.status] }}</span></h1>
+        <img src="{{asset(mastop_param('deal.all.dealurl') ~ order.deal.source.thumb)}}" alt="{{order.deal.label}}" class="imgOrder" />
+        <h2>{{ order.deal.label }}</h2>
+    </div>
+    <div class="clear"></div>
+    <div class="orderDetails grid_12">
+        <div class="orderDetailsInside grid_6 alpha">
+            <h4>Informações da Compra</h4>
+            <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y H:i") }}</strong></p>
+            <p>Usuário: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
+            <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
+            <p>Total: <strong>{{ order.total|money}}</strong></p>
+        </div>
+        <div class="orderDetailsInside grid_6 beta">
+            <h4>Informações Bancárias de {{user.name}}</h4>
+            {% set bankData = user.getBankData %}
+            {{ "<b>Banco: </b>"}} {{ bankData.getName }}
+            <br />
+            {{ "<b>Agência: </b>"}} {{ bankData.getAgency }}
+            <br />
+            {{ "<b>Conta: </b>"}} {{ bankData.getAccount }}
+            <br />
+            {{ "<b>Tipo: </b>"}} {{ (bankData.getType == 1) ? 'Conta Corrente' : 'Conta Poupança'}}
+            <br />
+            {%if bankData.getObs is not null %}
+            {{ "<b>Obs: </b>"}}<br />
+            <div class="mB10">{{ bankData.getObs|nl2br }}</div>
+            {%endif%}
+        </div>
+    </div>
+    <div class="clear"></div>
+    {%if refund.status == 1%}
+    <div class="grid_12 borderStatus beta">
+        <div class="subTitulo" >Ações</div>
+        <a class="button big red m10" href="{{ path('admin_order_refund_cancel', {'id':refund.id}) }}"><span>Cancelar Reembolso</span></a> <a class="button big green m10" href="{{ path('admin_order_refund_approve', {'id':refund.id}) }}"><span>Aprovar Reembolso</span></a>
+    </div>
+    <div class="clear"></div>
+    {%endif%}
+</div>
 {% endblock %}

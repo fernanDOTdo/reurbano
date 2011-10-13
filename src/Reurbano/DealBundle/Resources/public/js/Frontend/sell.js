@@ -1,5 +1,6 @@
 $(function(){
     function formatResult(row) {
+        if(row[3] == 0) return $('#sell_cupom').val();
         return row[1].replace(/(<.+?>)/gi, '');
     }
     function formatItem(row) {
@@ -12,21 +13,22 @@ $(function(){
         $('.cupom').slideDown('fast', function(){
             $('#sell_cupom').focus();
         });
-        var hidden = $('#sell_siteId');
-        hidden.val($(this).val());
-        
-        $('#sell_cupom').autocomplete(ajaxPath + "?siteid=" + $(this).val(),{
+    });
+    $('#sell_cupom').autocomplete(ajaxPath ,{
             formatResult: formatResult,
             formatItem: formatItem,
             minChars: 3,
-            scrollHeight: 350
+            scrollHeight: 350,
+            extraParams: {'siteid': function(){ return $('#sell_site').val();}, 'city': function(){ return $('#cityId').val();}}
         });
-    });
     $("#sell_cupom").keyup(function(){
         $("#sellContinue").hide();
         $('#sell_cupomId').val('');
     });
     $("#sell_cupom").result(function(event, data, formatted) {
+        if (!data || data[3] == 0){
+            return false;
+        }
         $("#sellContinue").hide();
         var hidden = $('#sell_cupomId');
         hidden.val(data[3]);

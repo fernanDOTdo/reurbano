@@ -35,11 +35,70 @@
 namespace Reurbano\OrderBundle\Document;
 
 use Mastop\SystemBundle\Document\BaseRepository;
+use Reurbano\OrderBundle\Document\Escrow;
 
 class EscrowRepository extends BaseRepository {
 
     public function findByUser($id) {
         return $this->findBy(array('user.id' => $id), array('created' => 'desc'));
+    }
+    public function totalCheckoutByUser($id){
+        $escrows = $this->findByUser($id);
+        $inApproved = 0;
+        $inPendent = 0;
+        $outApproved = 0;
+        $outPendent = 0;
+        foreach ($escrows as $v) {
+            if($v->getApproved()){
+                if($v->getMoneyIn()){
+                    $inApproved += $v->getValue();
+                    continue;
+                }
+                $outApproved += $v->getValue();
+                continue;
+            }
+            ($v->getMoneyIn()) ? $inPendent += $v->getValue() : $outPendent += $v->getValue();
+        }
+        $totalCheckout = $inApproved - $outApproved - $outPendent;
+        return ($totalCheckout > 0) ? $totalCheckout : 0;        
+    }
+
+
+    public function cancelOrder($order){
+        $this->createQueryBuilder()
+                ->update()
+                ->field('data.$id')->equals($order->getId())
+                ->field('data.type')->equals('order')
+                ->field('approved')->set(true)
+                ->getQuery()
+                ->execute();
+        $escrow = new Escrow();
+        $escrow->setUser($order->getSeller());
+        $escrow->setData($order);
+        $escrow->setValue($order->getTotal(true));
+        $escrow->setApproved(true);
+        $escrow->setMoneyIn(false);
+        $escrow->setObs("Cancelamento da Venda #".$order->getId());
+        $this->getDocumentManager()->persist($escrow);
+        $this->getDocumentManager()->flush();
+    }
+    public function releaseOrder($order){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('data.$id')->equals($order->getId())
+                ->field('data.type')->equals('order')
+                ->field('approved')->set(true)
+                ->getQuery()
+                ->execute();
+    }
+    public function releaseCheckout($checkout){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('data.$id')->equals($checkout->getId())
+                ->field('data.type')->equals('checkout')
+                ->field('approved')->set(true)
+                ->getQuery()
+                ->execute();
     }
 
 }
