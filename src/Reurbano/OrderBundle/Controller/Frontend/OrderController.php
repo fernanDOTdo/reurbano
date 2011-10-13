@@ -151,9 +151,102 @@ class OrderController extends BaseController
     public function statusAction($gateway)
     {
         $gateway = 'Reurbano\OrderBundle\Payment\\'.$gateway;
+        $mail = $this->get('mastop.mailer');
+        $mail->notify('Debug: Mudança de Status', 'POST:<br /><br />'.  print_r($_POST, true).'<br /><br />GET:<br /><br />'.  print_r($_GET, true));
         if(class_exists($gateway)){
-            $mail = $this->get('mastop.mailer');
-            $mail->notify('Debug: Mudança de Status', 'POST:<br /><br />'.  print_r($_POST, true).'<br /><br />GET:<br /><br />'.  print_r($_GET, true));
+            $orderId = $gateway::getOrderId($this->getRequest());
+            $order = $this->mongo('ReurbanoOrderBundle:Order')->findOneById((int) $orderId);
+            if($order && $order->getStatus()){ // Pedido encontrado e não tá cancelado
+                $payment = new $gateway($order, $this->container);
+                $ret = $payment->checkStatus();
+                if($ret){
+                    $pay = $order->getPayment();
+                    $pay['data'] = $payment->getData();
+                    $order->setPayment($pay);
+                    $dm = $this->dm();
+                    $dm->persist($order);
+                    $dm->flush();
+                    if($ret['type'] == 'ok'){
+                        // Se $ret['type'] for "ok" quer dizer que o pagamento está aprovado
+                        $status = $this->mongo('ReurbanoOrderBundle:Status')->findByName('Aprovado');
+                        if($status && $status->getId() == $order->getStatus()->getId()){
+                            return new Response('OK'); // Status do pedido já está como aprovado
+                        }
+                        $statusLog = new StatusLog();
+                        $statusLog->setStatus($status);
+                        $statusLog->setUser($order->getUser());
+
+                        $order->setStatus($status);
+                        $order->addStatusLog($statusLog);
+
+                        $dm->persist($order);
+                        $dm->flush();
+                        $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+                        $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+                        // Verifica se é para liberar o Voucher
+                        $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+                        if(count($statusVoucher) > 0 && in_array($status->getId(), $statusVoucher)){
+                            $mail = $this->get('mastop.mailer');
+                            $mail->to($order->getUser())
+                                 ->subject('Cupom liberado')
+                                 ->template('pedido_voucher',array(
+                                        'title'  => 'Cupom Liberado',
+                                        'user'  => $order->getUser(),
+                                        'order' => $order,
+                                        'orderLink' => $orderLinkBuyer,
+                                    ));
+                            foreach($order->getDealVoucher() as $k => $v){
+                                $mail->attach($v->getPath() . "/" . $v->getFileName());
+                            }
+                            $mail->send();
+                        }
+                        // Envia e-mail para comprador
+                        $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getUser())
+                             ->subject('Status da Compra '.$order->getId().': '.$status->getName())
+                             ->template('pedido_status_comprador',array(
+                                    'title'  => 'Status: '.$status->getName(),
+                                    'user'  => $order->getUser(),
+                                    'order' => $order,
+                                    'orderLink' => $orderLinkBuyer,
+                                    'obs' => false,
+                                ));
+                        $mail->send();
+                        // Envia e-mail para vendedor
+                        $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getSeller())
+                             ->subject('Status da Venda '.$order->getId().': '.$status->getName())
+                             ->template('pedido_status_vendedor',array(
+                                    'title'  => 'Status: '.$status->getName(),
+                                    'user'  => $order->getSeller(),
+                                    'order' => $order,
+                                    'orderLink' => $orderLinkSeller,
+                                    'obs' => false,
+                                ));
+                        $mail->send();
+                        
+                    }elseif($ret['type'] == 'error'){
+                        $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
+                        $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+                        // Pagamento foi cancelado / recusado
+                        // Envia e-mail para comprador
+                        $mail = $this->get('mastop.mailer');
+                        $mail->to($order->getUser())
+                             ->subject('Seu Pagamento foi Recusado'.$order->getId())
+                             ->template('pedido_pagamento_recusado',array(
+                                    'title'  => 'Pagamento Recusado',
+                                    'user'  => $order->getUser(),
+                                    'order' => $order,
+                                    'orderLink' => $orderLinkBuyer,
+                                    'obs' => false,
+                                ));
+                        $mail->send();
+                        $mail->notify('Aviso de pagamento recusado', 'O pagamento do usuário '.$user->getName().' ('.$user->getEmail().') no pedido pedido '.$order->getId().' foi recusado.<br /><br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
+                    }
+                     return new Response('OK');
+                }
+            }
+            
         }
         return new Response('OK'); 
     }
