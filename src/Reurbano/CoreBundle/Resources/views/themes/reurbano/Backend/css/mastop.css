@@ -1,15 +1,3 @@
-.info{
-    background: #f2f2f2 url('../images/info.png') 5px center no-repeat;
-    padding: 3px 3px 3px 30px;
-    font-size: 12px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border: 1px solid #dfdfdf;
-    margin-bottom: 10px;
-    
-
-}
 #ft{padding-top: 5px; text-align: right; color: #CCC; float: right; }
 #ft a{color: #FFF; border-bottom: 1px dotted #CCC; }
 #ft a:hover{border-bottom: 1px solid #FFF; }
