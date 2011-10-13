@@ -11,6 +11,10 @@
         <h1>{{"Venda seu cupom de compra coletiva aqui"|trans}}</h1>
     <form action="{{ path('deal_sell_details') }}" method="post" {{form_enctype(form)}}>
         <div>
+        <label class="chzn-select required" style="width: 200px;" for="cityId">Cidade</label>
+        {{reurbano_select_city('cityId', 'cityId', 'chzn-select', 'width:200px')}}
+        </div>
+        <div>
             {{ form_label(form.site) }}
             {{ form_errors(form.site) }}
             {{ form_widget(form.site, { 'empty_value': '' }) }}

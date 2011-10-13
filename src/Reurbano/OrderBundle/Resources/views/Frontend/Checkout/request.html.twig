@@ -1,7 +1,11 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title %}Teste{% endblock %}
-
 {% block content %}
-Teste!
+<h1 class="m10">{{title}}</h1>
+<div class="info m10" style="font-size: 1.2em;">
+    Tem certeza de que deseja solicitar um resgate de <strong>{{total|money}}</strong>?
+</div>
+<form method="post" action="{{path('order_checkout_request')}}">
+    <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button primary big green m10">Solicitar Resgate</button>
+</form>
 {% endblock %}

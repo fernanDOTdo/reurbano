@@ -52,10 +52,32 @@ class MyBalanceController extends BaseController {
     public function dashboardAction() {
         $user = $this->getUser();
         $transactions = $this->mongo('ReurbanoOrderBundle:Escrow')->findByUser($user->getId());
-        
-        
+        $checkouts = $this->mongo('ReurbanoOrderBundle:Checkout')->findByUser($user->getId());
+        $inApproved = 0;
+        $inPendent = 0;
+        $outApproved = 0;
+        $outPendent = 0;
+        foreach ($transactions as $v) {
+            if($v->getApproved()){
+                if($v->getMoneyIn()){
+                    $inApproved += $v->getValue();
+                    continue;
+                }
+                $outApproved += $v->getValue();
+                continue;
+            }
+            ($v->getMoneyIn()) ? $inPendent += $v->getValue() : $outPendent += $v->getValue();
+        }
+        if($checkouts){
+            $ret['checkouts'] = $checkouts;
+        }
         $ret['title'] = "Meu Financeiro";
         $ret['transactions'] = $transactions;
+        $ret['inApproved'] = $inApproved;
+        $ret['outApproved'] = $outApproved;
+        $ret['outPendent'] = $outPendent;
+        $ret['inPendent'] = $inPendent;
+        $ret['totalCheckout'] = $inApproved - $outApproved - $outPendent;
         $ret['user'] = $user;
         
         return $ret;

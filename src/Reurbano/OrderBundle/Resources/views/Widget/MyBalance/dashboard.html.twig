@@ -1,6 +1,86 @@
-<h2>{{title}}</h2>
-{%for transaction in transactions %}
-    {{debug(transaction.data.id)}}
+{%if transactions%}
+<div class="dp50">
+    <div class="balanceBox">
+        <h2>Transações</h2>
+        <div style="max-height: 350px; overflow: auto;">
+            <table>
+                {%for transaction in transactions %}
+                    <tr class="transaction {%if transaction.moneyIn %}in{%else%}out{%endif%} {%if transaction.approved %}approved{%else%}pendent{%endif%}">
+                        <td>{{transaction.created.timestamp|date("d/m H:i")}}</td>
+                        <td>{%if transaction.moneyIn%}Crédito{%else%}Débito{%endif%}</td>
+                        <td>{%if transaction.approved%}Liberado{%else%}Pendente{%endif%}</td>
+                        <td>{{transaction.value|money}}</td>
+                        <td>{{transaction.obs|nl2br}}</td>
+                    </tr>
+                {%else%}
+                    <tr>
+                        <td><div class="info">Você ainda não tem transações financeiras.</div></td>
+                    </tr>
+                {%endfor%}
+            </table>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+<div class="dp50">
+    <div class="balanceBox">
+        <h2>Resumo</h2>
+        <ul>
+            <li><strong>Crédito Pendente:</strong> {{inPendent|money}}</li>
+            <li><strong>Débito Pendente:</strong> {{outPendent|money}}</li>
+            <li><strong>Total disponível para resgate:</strong> {{totalCheckout|money}}</li>
+        </ul>
+        {%if user.getBankData is null%}
+        Para solicitar resgate você precisa <br /><a href="{{path('user_user_bank')}}" class="button orange" style="margin-left:15px">Cadastrar suas informações bancárias</a>.
+        {%else%}
+            {%if totalCheckout > 0%}
+                <a href="{{path('order_checkout_request')}}" class="button orange" style="margin-left:175px">Solicitar Resgate</a>
+            {%else%}
+                <div class="info">Você ainda não tem valores liberados para resgate.</div>
+            {%endif%}
+        {%endif%}
+    
+    </div>
+</div>
+{%if checkouts is defined %}
+{% set checkoutStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
+    <div class="clear"></div>
+    <h2>Resgates</h2>
+<table class="static"> 
+        <thead> 
+            <tr> 
+                <th class="aL">{{ "Código"|trans }}</th> 
+                <th>{{ "Data"|trans }}</th> 
+                <th>{{ "Total"|trans }}</th> 
+                <th>{{ "Status"|trans }}</th> 
+                <th class="last nowrap center">{{ "Ações"|trans }}</th> 
+            </tr> 
+        </thead> 
+{% for checkout in checkouts%}
+        <tr>
+            <td>
+                {{ checkout.id }}
+            </td>
+            <td class="aC">
+            {{ checkout.created.timestamp|date("d/m/Y H:i")  }}
+            </td>
+            <td class="aC">
+            {{checkout.total|money}}
+            </td>
+            <td class="aC">
+            {{ checkoutStatus[checkout.status] }}
+            </td>
+            <td class="aC">
+                <a class="button button-set-start small white" href="{{ path('order_checkout_view', {'id': checkout.id}) }}">{{"Ver Resgate"|trans}}</a>
+            </td>
+        </tr>
+  {% else %}
+        <tr><td colspan="5">{{"Nenhum resgate encontrado"|trans}}</td></tr>
+{% endfor %} 
+    </table>
+    <div class='clear'></div>
+{%endif%}
 {%else%}
-    <div class="info">Você ainda não tem transações financeiras.</div>
-{%endfor%}
+<div class="info">Você ainda não tem transações financeiras.</div>
+{%endif%}

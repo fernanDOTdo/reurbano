@@ -11,7 +11,7 @@ class SellType extends AbstractType {
         $builder->add('site', 'document',array(
                     'class' => 'Reurbano\\DealBundle\\Document\\Site',
                     'property'=>'name',
-                    'label' =>"Qual o site da Oferta",
+                    'label' =>"Site da Oferta",
                     'attr'    => array(
                         'class' => 'chzn-select',
                         'data-placeholder' => 'Escolha um site', 

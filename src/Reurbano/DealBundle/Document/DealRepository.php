@@ -41,6 +41,7 @@ class DealRepository extends BaseRepository
                 ->field('active')->equals(true)
                 ->field('quantity')->gt(0)
                 ->field('source._id')->equals(new \MongoId($deal->getSource()->getId()))
+                ->field('source.expiresAt')->gt($deal->getSource()->getExpiresAt())
                 ->sort('special', 'desc')
                 ->sort('views', 'desc')
                 ->getQuery()
@@ -136,6 +137,7 @@ class DealRepository extends BaseRepository
         if($quantity){
             $deal->field('quantity')->gt(0);
         }
+        $deal->sort('source.expiresAt', 'asc');
         return $deal->getQuery()->execute();
     }
     

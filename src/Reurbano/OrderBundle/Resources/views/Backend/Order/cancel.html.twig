@@ -5,7 +5,15 @@
     <div class="content box grid_12 round_all">
         <form class="block" action="{{ path('admin_order_order_cancel', {'id': id}) }}" method="post" {{form_enctype(form)}}>
             {{ form_widget(form) }}
-
+            <div>
+                <label for="cancel_notifyBuyer"><input type="checkbox" value="1" name="cancel[notifyBuyer]" id="cancel_notifyBuyer" style="opacity: 0;" checked="checked"> Notificar o comprador</label>
+            </div>
+            <div>
+                <label for="cancel_notifySeller"><input type="checkbox" value="1" name="cancel[notifySeller]" id="cancel_notifySeller" style="opacity: 0;" checked="checked"> Notificar o vendedor</label>
+            </div>
+            <div>
+                <label for="cancel_returnDeal"><input type="checkbox" value="1" name="cancel[returnDeal]" id="cancel_returnDeal" style="opacity: 0;" checked="checked"> Reativar a oferta</label>
+            </div>
             <input type="submit" value="Cancelar pedido"/>
         </form>
     </div>

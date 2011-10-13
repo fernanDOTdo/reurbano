@@ -30,15 +30,32 @@ use Mastop\SystemBundle\Document\BaseRepository;
 class OrderRepository extends BaseRepository {
 
     /**
-     * Cancela o pedido, deletando o status
+     * Cancela o pedido
      */
-    public function cancelOrder($id) {
-        return $this->createQueryBuilder()
+    public function cancelOrder($order) {
+        $dm = $this->getDocumentManager();
+        $escrowRepo = $dm->getRepository('ReurbanoOrderBundle:Escrow');
+        // Deleta o Status
+        $this->createQueryBuilder()
                 ->update()
-                ->field('id')->equals($id)
+                ->field('id')->equals($order->getId())
                 ->field('status')->unsetField()
                 ->getQuery()
                 ->execute();
+        // Cria / Deleta o Escrow
+        $escrowRepo->cancelOrder($order);
+        // Remove o Order do Voucher do Deal
+        $deal = $order->getDeal();
+        $voucher = $deal->getVoucher();
+        if($voucher){
+            foreach ($voucher as $v) {
+                if($v->getOrder() && $v->getOrder()->getId() == $order->getId()){
+                    $v->removeOrder();                    
+                }
+            }
+        }
+        $dm->persist($deal);
+        $dm->flush();
     }
     
     /**
@@ -78,7 +95,7 @@ class OrderRepository extends BaseRepository {
         $count = 0;
         while ($control) {
             if ($count < 3) {
-                $id = round(abs(crc32(uniqid(rand(), true)) / 1000));
+                $id = round(abs(crc32(uniqid(rand(), true)) / 100000));
                 if (!$this->hasId($id)) {
                     $control = false;
                 } else {

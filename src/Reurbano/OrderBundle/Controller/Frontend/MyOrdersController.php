@@ -41,6 +41,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\Comment;
+use Reurbano\OrderBundle\Document\Refund;
+use Reurbano\OrderBundle\Form\Frontend\RefundType;
 
 class MyOrdersController extends BaseController
 {
@@ -74,12 +76,26 @@ class MyOrdersController extends BaseController
         if (!isset($pay['data']) || $order->getStatus()->getId() == 1) {
             $payButton = $payment->renderPaymentButton();
         }
+        // Vouchers
         $ret['voucher'] = false;
-        $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
+        $statusVoucher = array_merge(explode(',', $this->get('mastop')->param('order.all.voucherstatus')), explode(',', $this->get('mastop')->param('order.all.releasestatus')));
         if($order->getStatus()){
             if(count($statusVoucher) > 0){
                 if(in_array($order->getStatus()->getId(), $statusVoucher)){
                     $ret['voucher'] = $order->getDealVoucher();
+                }
+            }
+        }
+        // Reembolso
+        $refundStatus = explode(',', $this->get('mastop')->param('order.all.refundstatus'));
+        $ret['refund'] = false;
+        $ret['refundButton'] = null;
+        if($this->mongo('ReurbanoOrderBundle:Refund')->hasId($order->getId())){
+            $ret['refund'] = $this->mongo('ReurbanoOrderBundle:Refund')->findOneById($order->getId());
+        }else{
+            if($order->getStatus()){
+                if(count($refundStatus) > 0 && in_array($order->getStatus()->getId(), $refundStatus)){
+                    $ret['refundButton'] = '<a href="'.$this->generateUrl('order_myorders_refund', array('id'=>$order->getId())).'" class="button big red">Solicitar Reembolso</a>';
                 }
             }
         }
@@ -103,7 +119,7 @@ class MyOrdersController extends BaseController
             return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você não tem permissão para acessar esta página.', 'error');
         }
         if($this->getRequest()->request->get('message') == null){
-            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Digite uma mensagem para enviar um comentário no pedido.', 'error');
+            return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Digite uma mensagem para enviar um comentário no pedido.', 'error');
         }
         $dm = $this->dm();
         $comment = new Comment();
@@ -121,7 +137,7 @@ class MyOrdersController extends BaseController
              ->template('oferta_novocomentario_vendedor', array('user' => $order->getSeller(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Novo Comentário'))
              ->send();
             $mail->notify('Aviso de novo comentário', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou o seguinte comentário no pedido '.$order->getId().': <br />'.nl2br($comment->getMessage()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
-        return $this->redirectFlash($this->generateUrl('user_dashboard_index'). '#myorders', 'Comentário adicionado no pedido '.$order->getId());
+        return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Comentário adicionado no pedido '.$order->getId());
     }
     /**
      * Action que permite ao comprador solicitar um reembolso
@@ -129,9 +145,45 @@ class MyOrdersController extends BaseController
      * @Route("/reembolso/{id}", name="order_myorders_refund")
      * @Template()
      */
-    public function refundAction()
+    public function refundAction(Order $order)
     {
-        return array();
+        $user = $this->getUser();
+        if($user->getId() != $order->getUser()->getId()){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index'), 'Você não tem permissão para acessar esta página.', 'error');
+        }
+        // Verifica se este pedido pode ter Reembolso
+        $refundStatus = explode(',', $this->get('mastop')->param('order.all.refundstatus'));
+        if($this->mongo('ReurbanoOrderBundle:Refund')->hasId($order->getId())){
+            return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Esta compra já tem uma solicitação de reembolso.', 'error');
+        }elseif(!$order->getStatus() || !in_array($order->getStatus()->getId(), $refundStatus)){
+            return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Esta compra não está apta a solicitação de reembolso.', 'error');
+        }
+        // Verifica se o usuário preencheu as informações bancárias
+        if($user->getBankData() == ''){
+            return $this->redirectFlash($this->generateUrl('user_user_bank'), 'Para solicitar reembolso você precisa definir suas informações bancárias.', 'error');
+        }
+        $dm = $this->dm();
+        $request = $this->get('request');
+        $form = $this->createForm(new RefundType());
+        if($request->getMethod() == 'POST'){
+            // Salva a solicitação de Reembolso
+            $data = $request->request->get($form->getName());
+            $refund = new Refund();
+            $refund->setId($order->getId());
+            $refund->setUser($user);
+            $refund->setReason($data['reason']);
+            $refund->setOrder($order);
+            $dm->persist($refund);
+            $dm->flush();
+            $orderLinkAdmin = $this->generateUrl('admin_order_refund_view', array('id'=>$order->getId()), true);
+            $mail = $this->get('mastop.mailer');
+            $mail->notify('Aviso de Solicitação de Reembolso', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou um solicitação de reembolso para a compra #'.$order->getId().'. <br />Motivo:<br />'.nl2br($refund->getReason()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
+            return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Sua solicitação de reembolso foi efetuada. Aguarde nosso contato.');
+        }
+        $ret['title'] = 'Solicitação de Reembolso da Compra #'.$order->getId();
+        $ret['order'] = $order;
+        $ret['form']  = $form->createView();
+        return $ret;
     }
     /**
      * Action que permite ao comprador comentar um reembolso

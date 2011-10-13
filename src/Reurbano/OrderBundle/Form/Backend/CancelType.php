@@ -11,23 +11,7 @@ class CancelType extends AbstractType {
         $builder->add('obs', 'textarea', array(
                     'label' => 'Observação',
                     'required' => false,
-                    ))
-                ->add('returnMoney', 'checkbox',array(
-                    'label' => 'Devolver o dinheiro',
-                    'required' => false,
-                ))
-                ->add('notifyBuyer', 'checkbox', array(
-                    'label' => 'Notificar o comprador?',
-                    'required' => false,
-                ))
-                ->add('notifySeller', 'checkbox', array(
-                    'label' => 'Notificar o vendedor?',
-                    'required' => false,
-                ))
-                ->add('returnDeal', 'checkbox', array(
-                    'label' => 'Voltar oferta para o site?',
-                    'required' => false,
-                ));
+                    ));
     }
 
     public function getDefaultOptions(array $options) {

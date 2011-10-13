@@ -1,7 +1,35 @@
 {% extends '::frontend.html.twig' %}
-
-{% block title %}Teste{% endblock %}
+{% set checkoutStatus = {0:"Cancelado", 1: "Pendente", 2: "Finalizado"} %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/views/themes/reurbano/Frontend/css/bundles/order/*' filter='?yui_css' output='static/system/css/myorder.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
 
 {% block content %}
-Teste!
+<h1 class="m10">{{title}} - {{checkoutStatus[checkout.status]}}</h1>
+<div class="m10">
+    <div class="orderDetails">
+        <h4>Informações da Solicitação de Resgate</h4>
+        <p>Data da Solicitação: <strong>{{ checkout.created.timestamp|date("d/m/Y H:i") }}</strong></p>
+        <p>Total: <strong>{{ checkout.total|money}}</strong></p>
+        <p>Status: <strong>{{checkoutStatus[checkout.status]}}</strong></p>
+    </div>
+    <div class="clear"></div>
+    <div class="orderComments m10" style="width:325px;">
+        <h4>Comentários</h4>
+        <div class="orderCommentsDiv">
+          {%for comment in checkout.comments|reverse%}
+                <div class="orderComment {%if comment.user.id == checkout.user.id%}seller{%else%}admin{%endif%}"><strong>{%if comment.user.id == checkout.user.id%}Vendedor{%else%}{{mastop_param('system.site.name')}}{%endif%}</strong> em <em>{{comment.created.timestamp|date("d/m/Y H:i")}}</em><br />{{comment.message|nl2br}}</div>
+          {%else%}
+                <div class="info">Não há comentários nesta solicitação.</div>
+          {%endfor%}
+        </div>
+        <form method="post" action="{{path('order_checkout_comment', {'id':checkout.id})}}">
+            <textarea name="message" placeholder="Deixe um comentário neste resgate"></textarea><button type="submit" class="button primary big green">OK</button>
+        </form>
+    </div>
+</div>
+<div class="clear"></div>
+<a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
 {% endblock %}

@@ -16,4 +16,7 @@ class StatusRepository extends BaseRepository
     {
         return $this->findBy(array(), array('order'=>'asc'));
     }
+    public function findByName($name){
+        return $this->findOneBy(array('name' => $name), array());
+    }
 }

@@ -1,11 +1,20 @@
-{# E-mail de confirmação de envio de oferta #}
+{# E-mail de confirmação de compra #}
 {% extends '::mail.html.twig' %}
 
 {% block content %}
-<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, o cupom do seu pedido número: {{order.id}} foi liberado!</h1><br/><br/>
-<h3>Sua compra foi aprovada e seus cupons estão em anexo.</h3>
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua compra no {{mastop_param('system.site.name')}} teve o status alterado para: {{order.status.name}}</h1><br/><br/>
+<h3>Dados da compra:</h3>
+Oferta: {{order.deal.label}} <br />
+Quantidade de Cupons: {{order.quantity}}<br />
+Total: {{order.total|money}}<br />
+{%if obs%}
+<b>Observação:</b> {{obs|nl2br}}<br />
+{%endif%}
+<br />
+<br /><br />
 Para acompanhar sua compra, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
 <a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
+
 <span style="margin:0;font-size:11px;">
 Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
 </span><br/><br/>

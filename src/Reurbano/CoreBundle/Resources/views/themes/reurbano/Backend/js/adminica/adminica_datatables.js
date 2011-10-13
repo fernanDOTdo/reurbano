@@ -12,6 +12,7 @@ $(document).ready(function() {
 				"bScrollCollapse": true,
 				"sPaginationType": "full_numbers",
 				"bRetrieve": true,
+                                "bSort": false,
 	} );
 
 	

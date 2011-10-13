@@ -30,7 +30,7 @@ class OrderController extends BaseController
     public function indexAction()
     {
         $title = 'Administração de Pedidos';
-        $order = $this->mongo('ReurbanoOrderBundle:Order')->FindAll();
+        $order = $this->mongo('ReurbanoOrderBundle:Order')->findAllByCreated();
         return array(
             'order'   => $order,
             'title'   => $title,
@@ -45,12 +45,17 @@ class OrderController extends BaseController
      */
     public function viewAction(Order $order)
     {
-        $title = "Venda";
+        $title = "Visualizar Venda ".$order->getId();
         $status = $order->getStatus();
         $statusLog = new StatusLog();
         if($status){
             $statusLog->setStatus($status);
             $statusForm = $this->createForm(new StatusChangeType(), $statusLog);
+        }
+        // Reembolso
+        $refund = false;
+        if($this->mongo('ReurbanoOrderBundle:Refund')->hasId($order->getId())){
+            $refund = $this->mongo('ReurbanoOrderBundle:Refund')->findOneById($order->getId());
         }
         $commentForm = $this->createForm(new CommentType());
         $pay = $order->getPayment();
@@ -62,8 +67,10 @@ class OrderController extends BaseController
             'status' => ($status) ? $order->getStatus() : false,
             'statusForm' => ($status) ? $statusForm->createView() : false,
             'commentForm' => $commentForm->createView(),
+            'refund' => $refund,
             'payment' => $payment,
             'voucher' => $order->getDealVoucher(),
+            'current' => 'admin_order_order_index',
             );
     }
     /**
@@ -79,8 +86,11 @@ class OrderController extends BaseController
         $request = $this->get('request');
         $form = $this->createForm(new StatusChangeType());
         if($request->getMethod() == 'POST'){
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->getUser();
             $data = $request->request->get($form->getName());
+            if($data['status'] == $order->getStatus()->getId()){
+                return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('O status atual deste pedido já é '.$order->getStatus()->getName()), 'error');
+            }
             $status = $this->mongo('ReurbanoOrderBundle:Status')->find((int)$data['status']);
             $statusLog = new StatusLog();
             $statusLog->setStatus($status);
@@ -92,33 +102,64 @@ class OrderController extends BaseController
             
             $dm->persist($order);
             $dm->flush();
-            
+            $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+            $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+            // Verifica se é para liberar o Voucher
             $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
-            if(count($statusVoucher) > 0){
+            if(count($statusVoucher) > 0 && in_array($status->getId(), $statusVoucher)){
                 $mail = $this->get('mastop.mailer');
-                foreach($statusVoucher as $j => $c){
-                    if($c == $status->getId()){
-                        $mail->to($order->getUser()->getEmail())
-                            ->subject('Cupom liberado')
-                            ->template('pedido_voucher',array(
-                                'user'  => $order->getUser(),
-                                'order' => $order,
-                            ));
-                        foreach($order->getDealVoucher() as $k => $v){
-                            $mail->attach($v->getPath() . "/" . $v->getFileName());
-                        }
-                        $mail->send();
-                    }
+                $mail->to($order->getUser())
+                     ->subject('Cupom liberado')
+                     ->template('pedido_voucher',array(
+                            'title'  => 'Cupom Liberado',
+                            'user'  => $order->getUser(),
+                            'order' => $order,
+                            'orderLink' => $orderLinkBuyer,
+                        ));
+                foreach($order->getDealVoucher() as $k => $v){
+                    $mail->attach($v->getPath() . "/" . $v->getFileName());
                 }
+                $mail->send();
             }
-            
-            $returnMoney = explode(',', $this->get('mastop')->param('order.all.releasestatus'));
-            if(count($returnMoney) > 0){
-                /**
-                 * @todo Se o status for um dos escolhidos na administração libera o dinheiro para o vendedor
-                 */
+            // Verifica se é para liberar o dinheiro para o vendedor
+            $releaseMoney = explode(',', $this->get('mastop')->param('order.all.releasestatus'));
+            if(count($releaseMoney) > 0 && in_array($status->getId(), $releaseMoney)){
+                $mail = $this->get('mastop.mailer');
+                $mail->to($order->getSeller())
+                     ->subject('Pagamento liberado')
+                     ->template('pedido_valor_liberado',array(
+                            'title'  => 'Pagamento Liberado',
+                            'user'  => $order->getSeller(),
+                            'order' => $order,
+                            'orderLink' => $this->generateUrl('user_dashboard_index', array(), true). '#mybalance',
+                        ));
+                $mail->send();
+                $this->mongo('ReurbanoOrderBundle:Escrow')->releaseOrder($order);
             }
-            
+            // Envia e-mail para comprador
+            $mail = $this->get('mastop.mailer');
+            $mail->to($order->getUser())
+                 ->subject('Status da Compra '.$order->getId().': '.$status->getName())
+                 ->template('pedido_status_comprador',array(
+                        'title'  => 'Status: '.$status->getName(),
+                        'user'  => $order->getUser(),
+                        'order' => $order,
+                        'orderLink' => $orderLinkBuyer,
+                        'obs' => $data['obs'],
+                    ));
+            $mail->send();
+            // Envia e-mail para vendedor
+            $mail = $this->get('mastop.mailer');
+            $mail->to($order->getSeller())
+                 ->subject('Status da Venda '.$order->getId().': '.$status->getName())
+                 ->template('pedido_status_vendedor',array(
+                        'title'  => 'Status: '.$status->getName(),
+                        'user'  => $order->getSeller(),
+                        'order' => $order,
+                        'orderLink' => $orderLinkSeller,
+                        'obs' => $data['obs'],
+                    ));
+            $mail->send();
             return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Status atualizado com sucesso!'));
         }
         $form = $this->createForm(new StatusChangeType());
@@ -145,15 +186,8 @@ class OrderController extends BaseController
             $comment = new Comment();
             $user = $this->get('security.context')->getToken()->getUser();
             $data = $request->request->get($form->getName());
-            $mail = $this->get('mastop.mailer');
-            $mail->to($order->getUser()->getEmail())
-                    ->subject('Comentário na sua compra')
-                    ->template('pedido_comentario',array(
-                        'user'  => $order->getUser(),
-                        'order' => $order,
-                        'msg' => $data['comment'],
-                    ))
-                    ->send();
+            $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+            $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
             
             $comment->setMessage($data['comment']);
             $comment->setUser($user);
@@ -163,6 +197,18 @@ class OrderController extends BaseController
             $dm->persist($order);
             $dm->flush();
             
+            // E-mail para o comprador
+            $mail = $this->get('mastop.mailer');
+            $mail->to($order->getUser())
+             ->subject('Novo comentário no pedido '.$order->getId())
+             ->template('oferta_novocomentario_admin', array('user' => $order->getUser(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLinkBuyer, 'title' => 'Novo Comentário'))
+             ->send();
+            // E-mail para o vendedor
+            $mail = $this->get('mastop.mailer');
+            $mail->to($order->getSeller())
+             ->subject('Novo comentário no pedido '.$order->getId())
+             ->template('oferta_novocomentario_admin', array('user' => $order->getSeller(), 'comment' => $comment->getMessage(), 'order' => $order, 'orderLink' => $orderLinkSeller, 'title' => 'Novo Comentário'))
+             ->send();
             return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $id)), $this->trans('Comentado com sucesso!'));
             
         }
@@ -193,38 +239,44 @@ class OrderController extends BaseController
         $request = $this->get('request');
         $dm = $this->dm();
         $form = $this->createForm(new CancelType());
+        if(!$order->getStatus()){
+            // Não deixa cancelar o cancelado
+            return $this->redirectFlash($this->generateUrl('admin_order_order_view', array('id' => $order->getId())), $this->trans('Este pedido já está cancelado'), 'error');
+        }
         if($request->getMethod() == 'POST'){
             $data = $request->request->get($form->getName());
-            if(isset($data['returnMoney'])){
-                
-            }
             if(isset($data['notifyBuyer'])){
+                $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
                 $nBuyer = $this->get('mastop.mailer');
                 $nBuyer->to($order->getUser()->getEmail())
-                        ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
-                        ->template('oferta_canceladaoferta_comprador',array(
+                        ->subject('Compra Cancelada')
+                        ->template('oferta_cancelada_comprador',array(
                             'user'  => $order->getUser(),
                             'order' => $order,
                             'msg' => ($data['obs']) ? $data['obs'] : false,
+                            'orderLink' => $orderLinkBuyer,
                         ))
                         ->send();
             }
             if(isset($data['notifySeller'])){
+                $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
                 $nSeller = $this->get('mastop.mailer');
                 $nSeller->to($order->getDeal()->getUser()->getEmail())
-                        ->subject('Pedido nº: ' . $order->getId() . 'cancelado')
-                        ->template('oferta_canceladaoferta_vendedor',array(
+                        ->subject('Venda Cancelada')
+                        ->template('oferta_cancelada_vendedor',array(
                             'user'  => $order->getDeal()->getUser(),
                             'order' => $order,
                             'msg' => ($data['obs']) ? $data['obs'] : false,
+                            'orderLink' => $orderLinkSeller,
                         ))
                         ->send();
             }
             if(isset($data['returnDeal'])){
-                $order->getDeal()->setQuantity($order->getDeal()->getQuantity() + $order->getQuantity());
+                $this->mongo('ReurbanoDealBundle:Deal')->updateQuantity($order->getDeal()->getId(), $order->getDeal()->getQuantity() + $order->getQuantity());
+                $this->mongo('ReurbanoDealBundle:Deal')->updateActive($order->getDeal()->getId(), true);
             }
-            $user = $this->get('security.context')->getToken()->getUser();
-            $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order->getId());
+            $user = $this->getUser();
+            $this->mongo('ReurbanoOrderBundle:Order')->cancelOrder($order);
             $statusLog = new StatusLog();
             $statusLog->setObs($data['obs']);
             $statusLog->setUser($user);

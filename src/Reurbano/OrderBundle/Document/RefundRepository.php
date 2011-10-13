@@ -14,7 +14,7 @@ class RefundRepository extends BaseRepository
      **/
     public function findAllByCreated()
     {
-        return $this->findBy(array(), array('created'=>'asc'));
+        return $this->findBy(array(), array('created'=>'desc'));
     }
 
 }

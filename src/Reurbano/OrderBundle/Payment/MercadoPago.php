@@ -143,6 +143,9 @@ class MercadoPago implements PaymentInterface {
      * @return string 
      */
     public function renderPaymentButton($text = 'Pagar') {
+        if(!$this->order->getStatus() || $this->order->getStatus()->getId() != 1){
+            return null;
+        }
         $ret = '<form action="' . $this->url . '" method="post"><input type="submit" value="' . $text . '" class="button ' . $this->order->getDeal()->getDiscountType() . '">';
 
         foreach ($this->getParams() as $name => $value) {

@@ -100,3 +100,20 @@ div.orderComment.seller{
 div.orderComment.admin{
     background: #EDFFF0;
 }
+div.balanceBox{
+    padding: 0 5px;
+    
+}
+table tr.transaction td{
+    padding: 2px;
+    border: 1px solid #EFEFEF;
+}
+table tr.transaction.pendent td{
+    background: #FCFFCE;
+}
+table tr.transaction.in.approved td{
+    background: #D7FFCE;
+}
+table tr.transaction.out.approved td{
+    background: #FFE2E2;
+}
