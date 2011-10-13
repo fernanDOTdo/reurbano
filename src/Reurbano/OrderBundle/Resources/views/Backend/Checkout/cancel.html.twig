@@ -3,10 +3,10 @@
 {% block content %}
     <h1>{{title|trans}}</h1>
     <div class="content box grid_12 round_all">
-    <div class="info">
-        Você deve cancelar a solicitação de resgate quando, por algum motivo, o depósito não for feito na conta do vendedor.<br />
-        <strong>O valor do resgate voltará para a área financeira do vendedor e ele poderá solicitar um novo resgate.</strong>    
-    </div>
+                <div class="info"><div class="alert alert_red"><img height="24" width="24" src="{{ asset('themes/'~mastop_theme_name()~'/admin/images/icons/large/white/speech_bubble_2.png') }}" />
+                        Você deve cancelar a solicitação de resgate quando, por algum motivo, o depósito não for feito na conta do vendedor.<br />
+        <strong>O valor do resgate voltará para a área financeira do vendedor e ele poderá solicitar um novo resgate.</strong>
+                    </div></div>
         <form class="block" action="{{ path('admin_order_checkout_execute', {'id': id}) }}" method="post" {{form_enctype(form)}}>
             {{ form_widget(form) }}
                 <input type="hidden" value="0" name="checkout[status]" id="checkout[status]" />
