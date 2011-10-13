@@ -1,0 +1,13 @@
+{# E-mail de cancelamento de pedido #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, o pagameto de sua compra #{{order.id}} foi recusado pela instituição financeira.</h1><br/><br/>
+<h3 style="margin:0;font-weight:bold;font-size:13px;color:#000;">Você precisa acessar a página de sua compra para tentar um novo pagamento.</h3>
+Para acessar a página de sua compra, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
+<a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
+
+<span style="margin:0;font-size:11px;">
+Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
+</span><br/><br/>
+{% endblock %}
