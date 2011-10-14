@@ -202,6 +202,9 @@ class OrderController extends BaseController
                                 $mail->attach($v->getPath() . "/" . $v->getFileName());
                             }
                             $mail->send();
+                        }else{
+                            // Debug
+                            $mail->notify('Debug: Status não encontrado', '$statusVoucher:<br /><br />'.  print_r($statusVoucher, true).'<br /><br />Mastop Param:<br /><br />'.  print_r($this->get('mastop')->param('order.all.voucherstatus'), true));
                         }
                         // Envia e-mail para comprador
                         $mail = $this->get('mastop.mailer');
