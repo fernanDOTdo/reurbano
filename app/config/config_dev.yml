@@ -50,3 +50,12 @@ doctrine_mongodb:
 
 swiftmailer:
     delivery_address:  suporte@mastop.com.br
+    
+mastop_system:
+    themes_dir: %themes_dir%
+    active_theme: "reurbano"
+    twitter:
+       file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
+       consumer_key: JUTf0s1U3zU8x0yhAWvUYw
+       consumer_secret: 7AQZGatGKntBoJBS2l1GS8kYzCxHq9affitEYbHsoNs
+       callback_url: http://reurbano/usuario/twitter/back

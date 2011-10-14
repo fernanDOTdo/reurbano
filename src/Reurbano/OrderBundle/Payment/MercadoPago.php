@@ -294,8 +294,10 @@ class MercadoPago implements PaymentInterface {
      * @return string|null
      */
     public static function getOrderId(Request $request) {
-        if ($request->query->get('extra_part') != '') {
-            return $request->query->get('extra_part');
+        if ($request->get('extra_part') != '') {
+            return $request->get('extra_part');
+        }elseif($request->get('seller_op_id') != ''){
+            return $request->get('seller_op_id');
         }
         return null;
     }

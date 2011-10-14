@@ -25,7 +25,12 @@
                 {{ form_widget(form.source) }}
         </div>
         {{ form_row(form.quantity) }}
-        {{ form_row(form.price) }}
+        <div>
+            <div class="info floatR" style="width:315px; font-size: 0.8em; margin-top: 20px;">Nossa comissão é de {%if mastop_param('deal.all.comsellreal') > 1%}{{mastop_param('deal.all.comsellreal')|money}} + {%endif%}<strong>{{mastop_param('deal.all.comsellpercent')}}%</strong> sobre o seu valor desejado.<br />
+                Leia nossos <a href="{{url('core_content_index', {'slug': 'termos-e-condicoes'})}}" target="_blank">Termos e Condições</a> para mais informações.
+            </div>
+            {{ form_row(form.price) }}
+        </div>
         <div id="sellVoucher" class="mT10 mB10">
             {{ form_row(form.voucher0) }}
         </div>

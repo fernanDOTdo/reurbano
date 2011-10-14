@@ -94,6 +94,8 @@ class SiteController extends BaseController {
      */
     public function deleteAction($id)
     {
+        // Adicionado para impedir remoção por causa do crawler
+        return $this->redirectFlash($this->generateUrl('admin_deal_site_index'), 'Não é possível remover sites devido à integração com o Crawler.', 'error');
         $request = $this->get('request');
         $dm = $this->dm();
         $site = $this->mongo('ReurbanoDealBundle:Site')->find((int)$id);

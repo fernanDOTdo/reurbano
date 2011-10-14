@@ -96,13 +96,11 @@ class UserController extends BaseController {
         if ($modoCadastro == 'email') {
             $msg = $this->trans('Olá %name%, seu cadastro foi efetuado, favor conferir seu email para habilitar sua conta. Foi enviado um email para %email%', array("%name%" => $usuario->getName(), "%email%" => $usuario->getEmail()));
         } elseif ($modoCadastro == 'auto') {
-            $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado com sucesso. Seja bem vindo.', array("%name%" => $dadosPost['name']));
+            $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado com sucesso. Seja bem vindo.', array("%name%" => $usuario->getName()));
         } elseif ($modoCadastro == 'admin') {
-            $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, aguarde a aprovação por um de nossos administradores. Assim que for aprovado você receberá um email de confirmação através do email %email%', array("%name%" => $dadosPost['name'], "%email%" => $dadosPost['email']));
+            $msg = $this->trans('Olá <b>%name%</b>, seu cadastro foi efetuado, aguarde a aprovação por um de nossos administradores. Assim que for aprovado você receberá um email de confirmação através do email %email%', array("%name%" => $usuario->getName(), "%email%" => $usuario->getEmail()));
         }
-        return $this->render('ReurbanoUserBundle:Frontend/User:confirmation.html.twig', array(
-                    'msg' => $msg
-                ));
+        return $this->redirectFlash($this->generateUrl('_home'), $msg);
     }
 
     /**
@@ -624,6 +622,10 @@ class UserController extends BaseController {
                 //é existe o user
                 //verificar se os dados cadastrais estao atualizados
                 if ($usuario) {
+                    // Verifica se ele não tá inativo
+                    if($usuario->getStatus() == 2){
+                        return $this->redirectFlash($this->generateUrl('_home'), 'Seu usuário ('.$usuario->getEmail().') está bloqueado. Entre em contato para maiores informações.', 'error');
+                    }
                     //o userfacebook é ele
                     $user = $this->dm()->getReference('ReurbanoUserBundle:User', $usuario->getId());
                     $user->setName($gets->get('firstName') . " " . $gets->get('lastName'));
@@ -766,6 +768,10 @@ class UserController extends BaseController {
             $repository = $this->dm()->getRepository('ReurbanoUserBundle:User');
             $usuario = $repository->findOneBy(array('twitterid' => $token_credentials['user_id']));
             if ($usuario) {
+                // Verifica se ele não tá inativo
+                if($usuario->getStatus() == 2){
+                    return $this->redirectFlash($this->generateUrl('_home'), 'Seu usuário ('.$usuario->getEmail().') está bloqueado. Entre em contato para maiores informações.', 'error');
+                }
                 //ja existe um usuario com este twitter, portanto apenas logar ele
                 $this->authenticateUser($usuario);
                 $msg = $this->trans('Olá %name%.', array("%name%" => $usuario->getName()));

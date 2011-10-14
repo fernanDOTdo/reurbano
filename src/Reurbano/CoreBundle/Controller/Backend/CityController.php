@@ -59,6 +59,8 @@ class CityController extends BaseController
      */
     public function deleteAction(City $city)
     {
+        // Adicionado para impedir remoção por causa do crawler
+        return $this->redirectFlash($this->generateUrl('admin_core_city_index'), 'Não é possível remover cidades devido à integração com o Crawler.', 'error');
         if($this->get('request')->getMethod() == 'POST'){
             $this->dm()->remove($city);
             $this->dm()->flush();

@@ -21,11 +21,19 @@
         {{ deal.getSource.getSite.getName }} - {{ deal.getSource.getCity.getName }}<br />
         <h3>Quantidade de Cupons</h3>
         {{ deal.quantity}}<br />
+        <h3>Vencimento da Oferta</h3>
+        {{ deal.source.expiresAt|date("d/m/Y")}}<br />
         <div id="dealSource" class="mT10">
-                {{ form_widget(form.source) }}
+                {{ form_row(form.source.category) }}
         </div>
-        {{ form_row(form.price) }}
-        {{ form_rest(form) }}
+        <div>
+            <div class="info floatR" style="width:315px; font-size: 0.8em; margin-top: 20px;">Nossa comissão é de {%if mastop_param('deal.all.comsellreal') > 1%}{{mastop_param('deal.all.comsellreal')|money}} + {%endif%}<strong>{{mastop_param('deal.all.comsellpercent')}}%</strong> sobre o seu valor desejado.<br />
+                Leia nossos <a href="{{url('core_content_index', {'slug': 'termos-e-condicoes'})}}" target="_blank">Termos e Condições</a> para mais informações.
+            </div>
+            {{ form_row(form.price) }}
+        </div>
+        {{ form_row(form._token) }}
+        {{ form_row(form.id) }}
         <input type="hidden" value="{{ deal.getSource.getId }}" name="deal[sourceId]"/>
         <div class="clear"></div>
         <div class="mT10 mB10">

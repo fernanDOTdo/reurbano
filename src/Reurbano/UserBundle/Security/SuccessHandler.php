@@ -29,7 +29,7 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface
         }elseif(in_array('ROLE_ADMIN', $roles)){
            return new RedirectResponse($this->router->generate('admin_system_home_index')); // Se o user for admin, vai para a Home da Administração
         }else{
-           return new RedirectResponse($this->router->generate('_home'));
+           return new RedirectResponse($this->router->generate('user_dashboard_index'));
         }
         //$targetUrl = $request->headers->get('Referer')
     }

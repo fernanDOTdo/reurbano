@@ -14,7 +14,7 @@ framework:
     default_locale: %locale%
     session:
         auto_start: true
-#    translator: { fallback: en }
+    translator: { fallback: en }
 
 # Twig Configuration
 twig:
@@ -117,9 +117,9 @@ mastop_system:
     active_theme: "reurbano"
     twitter:
        file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
-       consumer_key: JUTf0s1U3zU8x0yhAWvUYw
-       consumer_secret: 7AQZGatGKntBoJBS2l1GS8kYzCxHq9affitEYbHsoNs
-       callback_url: http://reurbano/usuario/twitter/back
+       consumer_key: gfOuKj8MmG8Wc2wGyGyDCg
+       consumer_secret: rJCedVjsmmnED4ZLgHiyUPNNBQ6vtTzkObarciVhs
+       callback_url: http://mmm.reurbano.com.br/usuario/twitter/back
 
 reurbano_core:
     default_city: "oferta-nacional"
