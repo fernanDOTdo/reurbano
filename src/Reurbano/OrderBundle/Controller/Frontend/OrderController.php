@@ -157,6 +157,8 @@ class OrderController extends BaseController
             $orderId = $gateway::getOrderId($this->getRequest());
             $order = $this->mongo('ReurbanoOrderBundle:Order')->findOneById((int) $orderId);
             if($order && $order->getStatus()){ // Pedido encontrado e não tá cancelado
+                $user = $order->getUser();
+                $seller = $order->getSeller();
                 $payment = new $gateway($order, $this->container);
                 $ret = $payment->checkStatus();
                 if($ret){
@@ -174,7 +176,7 @@ class OrderController extends BaseController
                         }
                         $statusLog = new StatusLog();
                         $statusLog->setStatus($status);
-                        $statusLog->setUser($order->getUser());
+                        $statusLog->setUser($user);
 
                         $order->setStatus($status);
                         $order->addStatusLog($statusLog);
@@ -183,15 +185,16 @@ class OrderController extends BaseController
                         $dm->flush();
                         $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
                         $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+                        $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
                         // Verifica se é para liberar o Voucher
                         $statusVoucher = explode(',', $this->get('mastop')->param('order.all.voucherstatus'));
                         if(count($statusVoucher) > 0 && in_array($status->getId(), $statusVoucher)){
                             $mail = $this->get('mastop.mailer');
-                            $mail->to($order->getUser())
+                            $mail->to($user)
                                  ->subject('Cupom liberado')
                                  ->template('pedido_voucher',array(
                                         'title'  => 'Cupom Liberado',
-                                        'user'  => $order->getUser(),
+                                        'user'  => $user,
                                         'order' => $order,
                                         'orderLink' => $orderLinkBuyer,
                                     ));
@@ -202,11 +205,11 @@ class OrderController extends BaseController
                         }
                         // Envia e-mail para comprador
                         $mail = $this->get('mastop.mailer');
-                        $mail->to($order->getUser())
+                        $mail->to($user)
                              ->subject('Status da Compra '.$order->getId().': '.$status->getName())
                              ->template('pedido_status_comprador',array(
                                     'title'  => 'Status: '.$status->getName(),
-                                    'user'  => $order->getUser(),
+                                    'user'  => $user,
                                     'order' => $order,
                                     'orderLink' => $orderLinkBuyer,
                                     'obs' => false,
@@ -214,17 +217,17 @@ class OrderController extends BaseController
                         $mail->send();
                         // Envia e-mail para vendedor
                         $mail = $this->get('mastop.mailer');
-                        $mail->to($order->getSeller())
+                        $mail->to($seller)
                              ->subject('Status da Venda '.$order->getId().': '.$status->getName())
                              ->template('pedido_status_vendedor',array(
                                     'title'  => 'Status: '.$status->getName(),
-                                    'user'  => $order->getSeller(),
+                                    'user'  => $seller,
                                     'order' => $order,
                                     'orderLink' => $orderLinkSeller,
                                     'obs' => false,
                                 ));
                         $mail->send();
-                        
+                        $mail->notify('Aviso de pagamento aprovado', 'O pagamento do usuário '.$user->getName().' ('.$user->getEmail().') no pedido pedido '.$order->getId().' foi aprovado.<br /><br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
                     }elseif($ret['type'] == 'error'){
                         $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
                         $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
