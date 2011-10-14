@@ -14,7 +14,7 @@ class UserFormEdit extends AbstractType {
                 ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome', 'required' => false))
                 ->add('email', 'email', array('label' => 'Email'))
                 ->add('cpf', 'text', array('label' => 'CPF', 'required' => false))
-                ->add('roles', 'choice', array('choices' => array('ROLE_USER' => 'Usuário', 'ROLE_ADMIN' => 'Administrador'), 'required' => true, 'label' => 'Grupo'))
+                ->add('roles', 'choice', array('property_path' => false, 'choices' => array('ROLE_USER' => 'Usuário', 'ROLE_ADMIN' => 'Administrador'), 'required' => true, 'label' => 'Grupo'))
                 ->add('status', 'choice', array('label' => 'Ativo', 'required' => true,
                     'choices' => array('1' => 'Sim', '2' => 'Não')))
 

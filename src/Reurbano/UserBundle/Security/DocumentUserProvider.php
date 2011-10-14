@@ -46,6 +46,8 @@ class DocumentUserProvider implements UserProviderInterface
 
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('Usuário "%s" não encontrado.', $username));
+        }  elseif ($user->getStatus() == 2) {
+            throw new UsernameNotFoundException(sprintf('Usuário "%s" está desativado.', $username));
         }
 
         return $user;

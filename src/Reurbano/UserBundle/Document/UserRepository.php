@@ -56,6 +56,23 @@ class UserRepository extends BaseRepository implements UserProviderInterface {
                 ->execute()
         ;
     }
+    /**
+     * Bloqueia o usuário
+     * @param id $id
+     * @return null
+     */
+    public function block($user) {
+        return $this->createQueryBuilder('ReurbanoUserBundle:User')
+                ->findAndUpdate()
+                ->field('id')->equals($user->getId())
+                ->update()
+                ->field('actkey')->set('')
+                ->field('mailOk')->set(true)
+                ->field('status')->set(2)
+                ->getQuery()
+                ->execute()
+        ;
+    }
 
     public function findByField($campo, $valor, $multiplos=false) {
         if ($multiplos) {
@@ -73,6 +90,8 @@ class UserRepository extends BaseRepository implements UserProviderInterface {
 
         if (null === $user) {
             throw new UsernameNotFoundException(sprintf('Usuário "%s" não encontrado.', $username));
+        }elseif($user->getStatus() == 2){
+            throw new UsernameNotFoundException(sprintf('Usuário "%s" está desativado.', $username));
         }
 
         return $user;

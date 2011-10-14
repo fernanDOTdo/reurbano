@@ -74,6 +74,8 @@ class CategoryController extends BaseController {
      * @Template()
      */
     public function deleteAction($id) {
+        // Adicionado para impedir remoção por causa do crawler
+        return $this->redirectFlash($this->generateUrl('admin_deal_category_index'), 'Não é possível remover categorias devido à integração com o Crawler.', 'error');
         $request = $this->get('request');
         $dm = $this->dm();
         $cat = $this->mongo('ReurbanoDealBundle:Category')->find($id);

@@ -233,7 +233,7 @@ class UserController extends BaseController {
     }
 
     /**
-     * @Route("/deletar", name="admin_user_user_delete")
+     * @Route("/bloquear", name="admin_user_user_block")
      * @Template()
      */
     public function deleteAction() {
@@ -244,21 +244,20 @@ class UserController extends BaseController {
             $usuario = $this->mongo('ReurbanoUserBundle:User')->findOneById($id);
             if ($usuario->superadmin()) {
                 if (!$this->hasRole("ROLE_SUPERADMIN")) {
-                    $msg = $this->trans('Você não tem permissão para deletar este usuário.');
+                    $msg = $this->trans('Você não tem permissão para bloquear este usuário.');
                     $this->get('session')->setFlash('error', $msg);
                     return $this->redirect($this->generateUrl('_home'));
                 }
             }
+            $this->mongo('ReurbanoUserBundle:User')->block($usuario);
             $nome = $usuario->getName();
             $uname = $usuario->getUsername();
-            $this->dm()->remove($usuario);
-            $this->dm()->flush();
-            $msg = $this->trans('O usuário %name% foi removido com sucesso.', array("%name%" => $nome . " ($uname)"));
+            $msg = $this->trans('O usuário %name% foi bloqueado com sucesso.', array("%name%" => $nome . " ($uname)"));
             $this->get('session')->setFlash('ok', $msg);
             return $this->redirect($this->generateUrl('admin_user_user_index'));
         } else {
             $usuario = $this->mongo('ReurbanoUserBundle:User')->findOneBy(array('username' => $username));
-            return $this->confirm($this->trans('Tem certeza que deseja remover o usuário %name%?', array("%name%" => $usuario->getName())), array('id' => $usuario->getId()));
+            return $this->confirm($this->trans('Tem certeza que deseja bloquear o usuário %name%?', array("%name%" => $usuario->getName())), array('id' => $usuario->getId()));
         }
     }
 

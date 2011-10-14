@@ -138,23 +138,27 @@ class DealController extends BaseController
         $data = $this->get('request')->request->get($form->getName());
         $user = $this->get('security.context')->getToken()->getUser();
         if($user->getId() != $deal->getUser()->getId()){
-            return $this->redirectFlash($this->generateUrl('_home'), 'Você não tem permissão para acessar esta página.', 'error');
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Você não tem permissão para acessar esta página.', 'error');
+        }
+        // Não deixa editar oferta vencida
+        if($deal->getSource()->getExpiresAt()->getTimestamp() < time()){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Não é possível editar uma oferta vencida.', 'error');
         }
         if($request->getMethod() == 'POST'){
             $mail = $this->get('mastop.mailer');
-            $form->bindRequest($request);
+            //$form->bindRequest($request);
             $source = $deal->getSource();
-            $expiresAt = $data['source']['expiresAt'];
+            //$expiresAt = $data['source']['expiresAt'];
             $category = $data['source']['category'];
-            $expiresDate = new \DateTime(substr($expiresAt, 6, 4).'-'.substr($expiresAt, 3, 2).'-'.substr($expiresAt, 0, 2));
-            if($expiresDate->getTimestamp() < time()){
-                $mail->notify('Debug: Data inválida', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta com uma data inválida: '.$expiresAt.'.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
-                return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'A data de validade precisa ser maior que a data de hoje.', 'error');
-            }
-            if($source->getExpiresAt() == '' || $source->getExpiresAt()->format('d/m/Y') != $expiresAt){
+            //$expiresDate = new \DateTime(substr($expiresAt, 6, 4).'-'.substr($expiresAt, 3, 2).'-'.substr($expiresAt, 0, 2));
+            //if($expiresDate->getTimestamp() < time()){
+            //    $mail->notify('Debug: Data inválida', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta com uma data inválida: '.$expiresAt.'.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+            //    return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'A data de validade precisa ser maior que a data de hoje.', 'error');
+            //}
+            //if($source->getExpiresAt() == '' || $source->getExpiresAt()->format('d/m/Y') != $expiresAt){
                 // Seta a validade no Source
-                $source->setExpiresAt($expiresDate);
-            }
+            //    $source->setExpiresAt($expiresDate);
+            //}
             // Categoria
             $cat = $this->mongo('ReurbanoDealBundle:Category')->find($category);
             if(!$cat){

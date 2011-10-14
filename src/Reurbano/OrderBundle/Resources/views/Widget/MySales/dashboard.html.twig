@@ -1,4 +1,7 @@
 {%if lastOrder%}
+<div class="info mB10" style="font-size: 0.8em;">Nossa comissão de {%if mastop_param('deal.all.comsellreal') > 1%}{{mastop_param('deal.all.comsellreal')|money}} + {%endif%}<strong>{{mastop_param('deal.all.comsellpercent')}}%</strong> já está abatida dos valores das suas vendas.<br />
+ Leia nossos <a href="{{url('core_content_index', {'slug': 'termos-e-condicoes'})}}" target="_blank">Termos e Condições</a> para mais informações.
+</div>
 <h2 id="lastOrderTitle">Última Venda - Data: <strong>{{ lastOrder.created.timestamp|date("d/m/Y")  }}</strong> - Total: <strong>{{lastOrder.getTotal(true)|money}}</strong></h2>
 <div id="myOrder">
     <div class="orderInfo">
