@@ -143,6 +143,8 @@ class DealController extends BaseController
         // Não deixa editar oferta vencida
         if($deal->getSource()->getExpiresAt()->getTimestamp() < time()){
             return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Não é possível editar uma oferta vencida.', 'error');
+        }elseif($deal->getQuantity() == 0){
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Não é possível editar uma oferta vendida.', 'error');
         }
         if($request->getMethod() == 'POST'){
             $mail = $this->get('mastop.mailer');

@@ -32,9 +32,33 @@ class UserController extends BaseController {
         $script = '
             var ajaxPath = "' . $this->generateUrl('user_user_check', array(), true) . '";
             var ajaxPath2 = "' . $this->generateUrl('user_user_check2', array(), true) . '";
+            var ajaxCPF = "' . $this->generateUrl('user_user_checkCPF', array(), true) . '";
             var emailExiste = "' . $this->get('translator')->trans('O email digitado já existe, favor inserir outro.') . '";
             ';
         return new Response($script);
+    }
+
+    /**
+     * @Route("/usuario/checkCPF", name="user_user_checkCPF")
+     */
+    public function checkCPFAction() {
+        if ($this->get('request')->isXmlHttpRequest()) {
+            if ($this->get('request')->getMethod() == 'POST') {
+                $cpf = $this->get('request')->request->get('cpf');
+                if (!empty($cpf)) {
+                    $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
+                            ->field('cpf')->equals($cpf)
+                            ->getQuery()
+                            ->execute();
+                    if (($result->count() == 0)) {
+                        return new Response('1');
+                    } else {
+                        return new Response('0');
+                    }
+                }
+            }
+        }
+        return new Response($this->get('translator')->trans('Operação não permitida.'));
     }
 
     /**
