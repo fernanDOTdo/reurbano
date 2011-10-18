@@ -9,7 +9,19 @@ $('#Userform_email').blur(function(e) {
     
         })
     }
-})
+});
+$('#Userform_cpf').blur(function(e) {
+    var cpf = $(this).val();
+    if(cpf!=""){
+        $.post(ajaxCPF,{cpf:cpf}, function(data) {
+            if(data==0){
+                alert("Já existe um cadastro com este CPF. Digite outro.");
+                $('#Userform_cpf').val('');
+            }
+    
+        })
+    }
+});
 $('#Userformedit_email').blur(function(e) {
     
     var email = $(this).val();
@@ -23,7 +35,7 @@ $('#Userformedit_email').blur(function(e) {
     
         })
     }
-})
+});
 jQuery(function($){
     $('.cpfMask').mask("999.999.999-99", {placeholder: " "});
 });
