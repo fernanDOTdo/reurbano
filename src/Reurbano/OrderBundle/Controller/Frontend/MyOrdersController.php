@@ -43,6 +43,7 @@ use Reurbano\OrderBundle\Document\Order;
 use Reurbano\OrderBundle\Document\Comment;
 use Reurbano\OrderBundle\Document\Refund;
 use Reurbano\OrderBundle\Form\Frontend\RefundType;
+use Reurbano\OrderBundle\Document\StatusLog;
 
 class MyOrdersController extends BaseController
 {
@@ -129,7 +130,7 @@ class MyOrdersController extends BaseController
         $dm->persist($order);
         $dm->flush();
         // Enviar e-mail de notificação de novo comentário
-        $orderLink = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
+        $orderLink = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
         $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
         $mail = $this->get('mastop.mailer');
         $mail->to($order->getSeller())
@@ -175,8 +176,27 @@ class MyOrdersController extends BaseController
             $refund->setOrder($order);
             $dm->persist($refund);
             $dm->flush();
-            $orderLinkAdmin = $this->generateUrl('admin_order_refund_view', array('id'=>$order->getId()), true);
+            // Coloca o pedido como Status = 5 = Em Análise
+            $status = $this->mongo('ReurbanoOrderBundle:Status')->find(5);
+            $statusLog = new StatusLog();
+            $statusLog->setStatus($status);
+            $statusLog->setObs('Solicitação de reembolso pelo comprador: '.$refund->getReason());
+            $statusLog->setUser($user);
+            
+            $order->setStatus($status);
+            $order->addStatusLog($statusLog);
+            
+            $dm->persist($order);
+            $dm->flush();
+            // Envia e-mail para comprador
+            $orderLink = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
             $mail = $this->get('mastop.mailer');
+            $mail->to($user)
+             ->subject('Recebemos sua solicitação de reembolso')
+             ->template('pedido_reembolso_solicitado', array('user' => $user, 'order' => $order, 'orderLink' => $orderLink, 'title' => 'Solicitação de Reembolso'))
+             ->send();
+            
+            $orderLinkAdmin = $this->generateUrl('admin_order_refund_view', array('id'=>$order->getId()), true);
             $mail->notify('Aviso de Solicitação de Reembolso', 'O usuário '.$user->getName().' ('.$user->getEmail().') enviou um solicitação de reembolso para a compra #'.$order->getId().'. <br />Motivo:<br />'.nl2br($refund->getReason()).'<br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
             return $this->redirectFlash($this->generateUrl('order_myorders_view', array('id' => $order->getId())), 'Sua solicitação de reembolso foi efetuada. Aguarde nosso contato.');
         }
