@@ -23,12 +23,14 @@ class IPtoCity {
             $ch = curl_init();
             $ver = 'v1/';
             $method = 'ipinfo/';
+            // O 3600 representa uma hora a menos por causa da porra do horário de verão
             $timestamp = gmdate('U'); // 1200603038
             // echo $timestamp;   
             $sig = md5($apikey . $secret . $timestamp);
-            $service = 'http://api.quova.com/';
-            curl_setopt($ch, CURLOPT_URL, $service . $ver. $method. $ip . '?apikey=' .
-            $apikey . '&sig='.$sig . '&format=xml');
+            //$service = 'http://api.quova.com/'; // Chave em desenvolvimento
+            $service = 'http://api.quova.com/geodirectory/'; // Chave em produção
+            $url = $service . $ver. $method. $ip . '?apikey=' . $apikey . '&sig='.$sig . '&format=xml';
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -38,7 +40,7 @@ class IPtoCity {
             curl_close($ch);
             // return XML data
             if ($headers['http_code'] != '200') {
-                $container->get('logger')->err('Erro ao obter dados do QUOVA para o IP '.$ip);
+                $container->get('logger')->err('Erro ao obter dados do QUOVA para o IP '.$ip.' - '.$url);
             } else {
                 $xml = simplexml_load_string($data);
                 $this->setIP($xml->ip_address);
