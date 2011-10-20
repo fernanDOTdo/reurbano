@@ -4,10 +4,10 @@ parameters:
   mongo_database: reurbano
   mongo_database_crawler: bancooferta
 
-  mailer_transport: mail
+  mailer_transport: gmail
   mailer_host: localhost
-  mailer_user: null
-  mailer_password: null 
+  mailer_user: contato@reurbano.com.br
+  mailer_password: 123reurbano
 
   locale: pt_BR
 

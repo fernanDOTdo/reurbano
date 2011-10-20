@@ -100,7 +100,7 @@ class MySalesController extends BaseController
         $dm->persist($order);
         $dm->flush();
         // Enviar e-mail de notificação de novo comentário
-        $orderLink = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);
+        $orderLink = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
         $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
         $mail = $this->get('mastop.mailer');
         $mail->to($order->getUser())

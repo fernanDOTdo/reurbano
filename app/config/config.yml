@@ -124,8 +124,8 @@ mastop_system:
 reurbano_core:
     default_city: "oferta-nacional"
     quova:
-      apikey: 100.hrh7drfjbhx87nt8avnz 
-      secret: Qp9HKWZU
+      apikey: 200.1.MDAxODAwMDAwMHM0UzVQQUFV.MDAxODAwMDAwMHM0UzVQQUFV.rAS8PTJOuQYZ1g5QzZ4H94L4fIkXFfEC
+      secret: nhmR2vdE
       
 services:
   text.twig.extension:

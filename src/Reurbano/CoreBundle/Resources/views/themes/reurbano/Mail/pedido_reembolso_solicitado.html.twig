@@ -1,0 +1,13 @@
+{# E-mail de cancelamento de pedido #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, seu pedido de reembolso para a compra #{{order.id}} foi solicitado.</h1><br/><br/>
+Os administradores entrarão em contato em breve.<br />
+Você ainda pode enviar comentários no pedido, clicando no link abaixo ou copiando e colando em seu navegador:<br /><br />
+<a href="{{orderLink}}" target="_blank">{{orderLink}}</a><br /><br /><br /><br />
+
+<span style="margin:0;font-size:11px;">
+Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
+</span><br/><br/>
+{% endblock %}
