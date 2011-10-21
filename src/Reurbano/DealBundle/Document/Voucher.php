@@ -140,7 +140,7 @@ class Voucher
     public function getPath()
     {
         //return $this->path;
-        return __DIR__ . "/../../../web/uploads/reurbanodeal/voucher";
+        return __DIR__ . "/../../../../web/uploads/reurbanodeal/voucher";
     }
 
     /**
