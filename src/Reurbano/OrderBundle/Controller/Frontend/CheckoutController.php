@@ -80,6 +80,8 @@ class CheckoutController extends BaseController
         if(!$total){
             $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mybalance', $this->trans('Você ainda não tem valor liberado para resgate.'), 'error');
         }
+        $mail = $this->get('mastop.mailer');
+        $mail->notify('Debug: Resgate', 'O usuário '.$user->getName().' ('.$user->getEmail().') entrou em resgate. DEBUG:<br />'.print_r($total, true));
         if($request->getMethod() == 'POST'){
             // Salva a solicitação de Resgate
             $checkout = $this->mongo('ReurbanoOrderBundle:Checkout')->createCheckout();
