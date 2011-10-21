@@ -239,7 +239,7 @@ class Escrow
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = number_format($value, 2, '.', '');
     }
 
     /**
@@ -249,7 +249,7 @@ class Escrow
      */
     public function getValue()
     {
-        return $this->value;
+        return number_format($this->value, 2, '.', '');
     }
     
     /**
