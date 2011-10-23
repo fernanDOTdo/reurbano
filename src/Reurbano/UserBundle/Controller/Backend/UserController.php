@@ -21,7 +21,7 @@ class UserController extends BaseController {
      */
     public function indexAction() {
         $rep = $this->get('doctrine.odm.mongodb.document_manager');
-        $dados = $rep->getRepository("ReurbanoUserBundle:User")->findAll();
+        $dados = $rep->getRepository("ReurbanoUserBundle:User")->findAllByCreated();
         $itens = array();
         $titulo = $this->trans("Listagem de usuários");
 
@@ -280,12 +280,19 @@ class UserController extends BaseController {
      * @Route("/informacoes/{username}", name="admin_user_user_info")
      * @Template()
      */
-    public function infoAction($username){
-        $title = $this->trans("Informações do usuário");
-        $user = $this->mongo('ReurbanoUserBundle:User')->findByUsername($username);
+    public function infoAction(User $user){
+        $title = $this->trans("Informações de ".$user->getName());
+        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->count('user.id', $user->getId());
+        $compras = $this->mongo('ReurbanoOrderBundle:Order')->count('user.id', $user->getId());
+        $vendas = $this->mongo('ReurbanoOrderBundle:Order')->count('seller.id', $user->getId());
+        $saldo = $this->mongo('ReurbanoOrderBundle:Escrow')->totalCheckoutByUser($user->getId());
         return array(
             'title' => $title,
             'user' => $user,
+            'ofertas' => $ofertas,
+            'compras' => $compras,
+            'vendas' => $vendas,
+            'saldo' => $saldo,
         );
     }
 }

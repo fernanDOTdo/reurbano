@@ -676,7 +676,7 @@ class SourceEmbed
      *
      * @param Reurbano\DealBundle\Document\Billing $billing
      */
-    public function setBilling(\Reurbano\DealBundle\Document\Billing $billing)
+    public function setBilling($billing)
     {
         $this->billing = $billing;
     }

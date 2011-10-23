@@ -1,5 +1,5 @@
-<div class="grid_12">
-    <h1>{{ title }}</h1>
+<div class="box">
+    <h2>{{ title }}</h2>
     <div class="info">
         <span class="info">Nome:</span> {{ user.name }}<br />
     </div>
@@ -7,27 +7,33 @@
         <span class="info">E-mail:</span> {{ user.email }}<br />
     </div>
     <div class="info">
-        <span class="info">Cidade:</span> {{ user.email }}<br />
+        <span class="info">Cidade:</span> {{ user.city.name }}<br />
     </div>
+    <div class="info">
+        <span class="info">Ofertas:</span> {{ ofertas }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Compras:</span> {{ compras }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Vendas:</span> {{ vendas }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Saldo Liberado:</span> {{ saldo|money }}<br />
+    </div>
+    <br />
     {% if user.bankData %}
-        <div class="info">
+    <h3 class="box_head">Informações Bancárias</h3>
+    <div class="user_box round_all clearfix">
             <span class="info">Banco:</span> {{ user.bankData.name }}<br />
-        </div>
-        <div class="info">
             <span class="info">Agência:</span> {{ user.bankData.agency }}<br />
-        </div>
-        <div class="info">
             <span class="info">Conta:</span> {{ user.bankData.account }}<br />
-        </div>
-        <div class="info">
             {% if user.bankData.type == 1 %}
                 <span class="info">Tipo:</span> Conta Corrente<br />
             {% else %}
                 <span class="info">Tipo:</span> Poupança<br />
             {% endif %}
-        </div>
-        <div class="info">
-            <span class="info">Observações:</span> {{ user.bankData.obs }}<br />
-        </div>
+            <span class="info">Observações:</span> {{ user.bankData.obs|nl2br }}<br />
+    </div>
     {% endif %}
 </div>
