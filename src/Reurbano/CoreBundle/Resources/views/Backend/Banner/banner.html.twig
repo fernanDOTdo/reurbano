@@ -20,12 +20,20 @@
             </div>
             <h3 id="userName">&nbsp;</h3>
             <div class="hidden" id="userDeal">
+                {%if id is not null%}
+                    <input type="hidden" value="{{banner.deal.id}}" name="banner[deal]" />
+                {%endif%}
             </div>
             {{ form_rest(form) }}
+            {%if id is not null%}
+                    <div class="block"><button class="button green m10" id="bannerEnviar"><span>Salvar</span></button> <a href="#" onclick="javascript:history.go(-1); return false;" class="button red">Cancelar</a></div>
+            {%else%}
+                    <div class="block"><button class="button green m10 hidden" id="bannerEnviar"><span>Salvar</span></button> <a href="#" onclick="javascript:history.go(-1); return false;" class="button red">Cancelar</a></div>
+            {%endif%}
         {% else %}
             {{ form_widget(form) }}
+            <div class="block"><button class="button green m10" id="bannerEnviar"><span>Salvar</span></button> <a href="#" onclick="javascript:history.go(-1); return false;" class="button red">Cancelar</a></div>
         {% endif %}
-        <div class="block"><button class="button green m10 {%if control %}hidden{% endif %}" id="bannerEnviar"><span>Salvar</span></button> <a href="javascript:history.go(-1); return false;" class="button red">Cancelar</a></div>
     </form>
 </div>
 {% endblock %}
