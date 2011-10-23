@@ -90,6 +90,7 @@ class BannerController extends BaseController
             
         }
         return array(
+            'id'  => $id,
             'control'  => $control,
             'form'     => $form->createView(),
             'banner'   => $banner,

@@ -9,7 +9,7 @@
                 <label for="cancel_cancelOrder"><input type="checkbox" value="1" name="refund[cancelOrder]" id="cancel_cancelOrder" style="opacity: 0;" checked="checked"> Cancelar a venda e reativar a oferta</label>
             </div>
                 <input type="hidden" value="0" name="refund[status]" id="refund[status]" />
-            <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button big green m10">Cancelar Reembolso</button>
+            <a class='button big red m10' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button big green m10">Cancelar Reembolso</button>
         </form>
     </div>
 {% endblock %}

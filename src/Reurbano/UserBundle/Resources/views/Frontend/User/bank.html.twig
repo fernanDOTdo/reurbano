@@ -5,7 +5,7 @@
     <form action="{{ path('user_user_banksave') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
         <div class="mT10">
-            <button class='button blue' type='submit'>{{ "Salvar"|trans }}</button> <a class='button red' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
+            <button class='button blue' type='submit'>{{ "Salvar"|trans }}</button> <a class='button red' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
         </div>
     </form>
 </div>

@@ -10,6 +10,16 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UserRepository extends BaseRepository implements UserProviderInterface {
+    
+    /**
+     * Pega todos ordenado por CREATED
+     *
+     * @return User ou null
+     **/
+    public function findAllByCreated()
+    {
+        return $this->findBy(array(), array('created'=>'desc'));
+    }
 
     /**
      * Encontra o user com o username fornecido

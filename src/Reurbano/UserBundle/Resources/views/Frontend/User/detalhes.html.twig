@@ -16,6 +16,6 @@
         {{ usuario.getLastLogin() }}
     {% endif %}
     <div class='clear'></div>
-    <button class='button red' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
+    <button class='button red' onclick='javascript:history.go(-1); return false;'>{{"Voltar"|trans}}</button>
 </div>
 {% endblock content %}  

@@ -6,6 +6,6 @@
     Tem certeza de que deseja solicitar um resgate de <strong>{{total|money}}</strong>?
 </div>
 <form method="post" action="{{path('order_checkout_request')}}">
-    <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button primary big green m10">Solicitar Resgate</button>
+    <a class='button big red m10' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button primary big green m10">Solicitar Resgate</button>
 </form>
 {% endblock %}

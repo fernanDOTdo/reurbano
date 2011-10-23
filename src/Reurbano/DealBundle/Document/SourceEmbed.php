@@ -38,7 +38,12 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\EmbeddedDocument
- * @ODM\Index(keys={"coordinates"="2d"})
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"city.$id"="desc", "site.$id"="desc", "expiresAt"="asc"}),
+ *   @ODM\Index(keys={"expiresAt"="asc", "totalsell"="desc"}),
+ *   @ODM\Index(keys={"dateRegister"="desc"}),
+ *   @ODM\Index(keys={"coordinates"="2d"})
+ * })
  */
 class SourceEmbed
 {
@@ -206,6 +211,17 @@ class SourceEmbed
      * @ODM\Date
      */
     protected $dateRegister;
+    
+    /**
+     * Data do fim das negociações
+     *
+     * @var date
+     * @ODM\Date
+     */
+    protected $expiresDeal;
+    
+    /** @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Billing") */
+    protected $billing;
     
     /**
      * Get id
@@ -634,6 +650,47 @@ class SourceEmbed
     {
         return $this->dateRegister;
     }
+
+    /**
+     * Set expiresDeal
+     *
+     * @param date $expiresDeal
+     */
+    public function setExpiresDeal($expiresDeal)
+    {
+        $this->expiresDeal = $expiresDeal;
+    }
+
+    /**
+     * Get expiresDeal
+     *
+     * @return date $expiresDeal
+     */
+    public function getExpiresDeal()
+    {
+        return $this->expiresDeal;
+    }
+
+    /**
+     * Set billing
+     *
+     * @param Reurbano\DealBundle\Document\Billing $billing
+     */
+    public function setBilling($billing)
+    {
+        $this->billing = $billing;
+    }
+
+    /**
+     * Get billing
+     *
+     * @return Reurbano\DealBundle\Document\Billing $billing
+     */
+    public function getBilling()
+    {
+        return $this->billing;
+    }
+    
     public function populate($source){
         $methods = get_class_methods($source);
         foreach ($methods as $m) {

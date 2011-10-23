@@ -4,7 +4,7 @@
     <h1>Tem certeza que deseja deletar o banner: {{ title }}?</h1>
     <form action="{{ path('admin_core_banner_delete', {'id': id}) }}" name="delete" method="post">
         <input type="submit" value="Sim" />
-        <input type="button" value="Não" onclick="history.go(-1)" />
+        <input type="button" value="Não" onclick="history.go(-1); return false;" />
     </form>
 {% endblock %}
 

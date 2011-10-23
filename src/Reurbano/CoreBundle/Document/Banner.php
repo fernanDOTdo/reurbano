@@ -55,7 +55,7 @@ class Banner
      * @var Int
      * @ODM\Int
      */
-    protected $order;
+    protected $order = 0;
 
     /**
      * Ativo
