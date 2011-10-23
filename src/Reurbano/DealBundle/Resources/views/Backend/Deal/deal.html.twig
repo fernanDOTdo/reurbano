@@ -74,7 +74,7 @@
                 {% endfor %}
             <br />
             <button class="button green" type='submit'><span>{{ "Enviar"|trans }}</span></button>
-            <button class='button red ' onclick='javascript:history.go(-1)'>{{"Voltar"|trans}}</button>
+            <button class='button red ' onclick='javascript:history.go(-1); return false;'>{{"Voltar"|trans}}</button>
         </form>
     </div>
 </div>

@@ -4,7 +4,7 @@
     <h1>Tem certeza que deseja deletar a oferta {{ deal.getLabel() }}?</h1>
     <form action="{{ path('admin_deal_deal_delete', {'id': id}) }}" name="delete" method="post">
         <input type="submit" value="Sim" />
-        <input type="button" value="Não" onclick="history.go(-1)" />
+        <input type="button" value="Não" onclick="history.go(-1); return false;" />
     </form>
 {% endblock %}
 

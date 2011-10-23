@@ -6,7 +6,7 @@
         <h1>{{ title }}</h1>
         <form class="block" action="{{ path('core_html_contact') }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
-            <div><button class="button green m10"><span>Enviar</span></button> <a class="button red" href="javascript:history.go(-1);">Cancelar</a></div>
+            <div><button class="button green m10"><span>Enviar</span></button> <a class="button red" href="javascript:history.go(-1); return false;">Cancelar</a></div>
         </form>
     </div>
     <div class="grid_4 omega">

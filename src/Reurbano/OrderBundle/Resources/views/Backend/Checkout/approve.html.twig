@@ -7,7 +7,7 @@
         <form class="block" action="{{ path('admin_order_checkout_execute', {'id': id}) }}" method="post" {{form_enctype(form)}}>
             {{ form_widget(form) }}
                 <input type="hidden" value="2" name="checkout[status]" id="checkout[status]" />
-            <a class='button big red m10' onclick='javascript:history.go(-1)' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button big green m10">Aprovar Resgate</button>
+            <a class='button big red m10' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button big green m10">Aprovar Resgate</button>
         </form>
     </div>
 {% endblock %}
