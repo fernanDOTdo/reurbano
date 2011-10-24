@@ -53,7 +53,7 @@ class MercadoPago implements PaymentInterface {
         } else {
             $this->setParam('acc_id', '26474029');
             $this->setParam('enc', 'pyQC9zG%2FjM71lL2%2FTIyHstsATM0%3D');
-            $this->setParam('url_sucessfull', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'sucesso'), true));
+            $this->setParam('url_successfull', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'sucesso'), true));
             $this->setParam('url_process', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'analise'), true));
             $this->setParam('url_cancel', $container->get('router')->generate('order_order_return', array('gateway' => 'MercadoPago', 'status' => 'nao-autorizado'), true));
             $this->setParam('seller_op_id', $order->getId());
