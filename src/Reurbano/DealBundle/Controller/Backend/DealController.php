@@ -55,8 +55,6 @@ class DealController extends BaseController {
             $form->bindRequest($request);
             $formResult = $request->request->get('deal');
             $formDataResult = $request->files->get('deal');
-            $source = $this->mongo('ReurbanoDealBundle:Source')->find($formResult['source']);
-            $city = $this->mongo('ReurbanoCoreBundle:City')->find($source->getCity()->getId());
             //var_dump($city->getName());
             /* echo $deal->getPrice();
               echo "<pre>";
@@ -86,12 +84,10 @@ class DealController extends BaseController {
                     }
                 }
             }
-            if ($form->isValid()) {
-                $dm->persist($deal);
-                $dm->flush();
-                $this->get('session')->setFlash('ok', $this->trans(($id) ? "Oferta Editada" : "Oferta Criada" ));
-                return $this->redirect($this->generateUrl('admin_deal_deal_index'));
-            }
+            $dm->persist($deal);
+            $dm->flush();
+            $this->get('session')->setFlash('ok', $this->trans(($id) ? "Oferta Editada" : "Oferta Criada" ));
+            return $this->redirect($this->generateUrl('admin_deal_deal_index'));
         }
         return array(
             'form' => $form->createView(),
