@@ -3,9 +3,9 @@ README
 
 Sistema Reurbano
 
-1 - Baixou
-2 - No terminal: $ bin/vendors.sh
-3 - Edite o app/parameters.ini e o app/config.yml de acordo com suas necessidades.
+    1º - Baixou
+    2º - No terminal: $ bin/vendors.sh
+    3º - Edite o app/parameters.ini e o app/config.yml de acordo com suas necessidades.
 
 REQUISITOS:
 
