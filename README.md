@@ -25,4 +25,7 @@ EXTENSÕES PHP:
 - php_posix
 - intl
 - sqlite3 ou pdo_sqlite
-- json
+- jsonix
+    - intl
+    - sqlite3 ou pdo_sqlite
+    - json
