@@ -7,19 +7,19 @@
 
 [monolog]
     git=http://github.com/Seldaek/monolog.git
-    version=1.0.1
+    version=1.0.2
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
-    version=origin/2.1.x
+    version=origin/master
 
 [doctrine-dbal]
     git=http://github.com/doctrine/dbal.git
-    version=origin/2.1.x
+    version=origin/master
 
 [doctrine]
     git=http://github.com/doctrine/doctrine2.git
-    version=origin/2.1.x
+    version=origin/master
 
 [swiftmailer]
     git=http://github.com/swiftmailer/swiftmailer.git
@@ -92,7 +92,7 @@
     git=git://github.com/kertz/twitteroauth.git
 
 [MastopBundles]
-    git=git@github.com:mastop/MastopBundles.git
+    git=git@github.com:startupsaopaulo/MastopBundles.git
     target=/bundles/Mastop
 
 [JMSAopBundle]

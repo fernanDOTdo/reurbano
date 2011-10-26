@@ -8,7 +8,7 @@ set :user,        "reurbano"
 
 set :app_path,    "app"
 
-set :repository,  "git@github.com:mastop/reurbano.git"
+set :repository,  "git@github.com:startupsaopaulo/reurbano.git"
 set :scm,         :git
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `subversion`, `mercurial`, `perforce`, `subversion` or `none`
 
