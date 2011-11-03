@@ -15,3 +15,4 @@ parameters:
   secretRemember: MastopInternetDevelopment_OhGoshThisIsSOSecret
 
   themes_dir: %kernel.root_dir%/../src/Reurbano/CoreBundle/Resources/views/themes
+  site_host: reurbano

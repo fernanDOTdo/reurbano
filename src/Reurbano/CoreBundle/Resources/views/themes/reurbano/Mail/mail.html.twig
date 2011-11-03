@@ -26,7 +26,7 @@ body {
 <tbody>
     <tr>
         <td width="300">
-                <a href="{{url('_home')}}" name="header_logo" title="{{mastop_param('system.site.name')}} - {{mastop_param('system.site.slogan')}}"><img src="{{asset(url~'/images/logo.png')}}" alt="{{mastop_param('system.site.name')}}" style="border:0px;"/></a></td>
+                <a href="{{url('_home')}}" name="header_logo" title="{{mastop_param('system.site.name')}} - {{mastop_param('system.site.slogan')}}"><img src="{{url~'/images/logo.png'}}" alt="{{mastop_param('system.site.name')}}" style="border:0px;"/></a></td>
         <td width="360">
                 <h1 style="color:#7a9e24;font-size:18pt;padding-top:40px; margin: 0 0 30px 10px; font-family: Arial, Verdana">
                         {{title|default(mastop_param('system.site.slogan'))}}</h1>
@@ -92,11 +92,11 @@ body {
                             <tr>
                                     <td style="width:10px; font-size:2pt;">&nbsp;</td>
                                     <td style="background-color:White; padding: 15px; text-align: center;">
-                                            {% render 'ReurbanoDealBundle:Widget\\Mail:category'%}
+                                            {% include 'ReurbanoDealBundle:Widget\\Mail:category.html.twig' with {'categories': reurbano_get_categories() }%}
                                             <br />
                                             <br />
-                                            <b style="color:#666;">Siga o {{mastop_param('system.site.name')}}</b><br /> <a target="_blank" href="http://www.facebook.com/recompracoletiva"><img src="{{asset(url~'/images/facebook.png')}}" alt="Facebook" height="64" border="0" width="64"></a>&nbsp;&nbsp;
-                                            <a target="_blank" href="http://twitter.com/ReurbanoBrasil"><img src="{{asset(url~'/images/twitter.png')}}" alt="Twitter" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                            <b style="color:#666;">Siga o {{mastop_param('system.site.name')}}</b><br /> <a target="_blank" href="http://www.facebook.com/recompracoletiva"><img src="{{url~'/images/facebook.png'}}" alt="Facebook" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                            <a target="_blank" href="http://twitter.com/ReurbanoBrasil"><img src="{{url~'/images/twitter.png'}}" alt="Twitter" height="64" border="0" width="64"></a>&nbsp;&nbsp;
                                     </td>
                                     <td style="width:10px; font-size:2pt;">&nbsp;</td>
                             </tr>
