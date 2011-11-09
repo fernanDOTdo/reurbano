@@ -1,0 +1,42 @@
+{# E-mail de aviso ao vendedor de que a oferta está expirando #}
+{% extends '::mail.html.twig' %}
+
+{% block content %}
+<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">{{user.name}}, sua oferta irá expirar em {{days}} dias</h1><br/><br/>
+
+<div style="text-align:center;width:100%;background-color:#ffffff;">
+<table width="600" cellpadding="5" cellspacing="0" style="background-color:#ffffff;text-align:left;margin:auto;" align="center">
+<tr>
+    <td rowspan="3"><img src='http:{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}' width='140' height='100' alt="{{ deal.source.getTitle(50) }}"/></td>
+    <td colspan="2"><strong>{{deal.source.site.name}}:</strong> {{deal.label}}</td>
+</tr>
+<tr>
+    <td style="text-align: center">De: <strong>{{deal.source.price|money}}</strong></td>
+    <td style="text-align: center">Por: <strong style="font-size:25px;color:#7A9D24;">{{deal.price|money}}</strong></td>
+</tr>
+<tr>
+    <td colspan="2" style="text-align: center"><strong style="font-size:25px;color:#D87D08;">{{deal.discount}}%</strong> de desconto</td>
+</tr>
+<tr>
+    <td colspan="3">
+        <h3 style="margin-top: 20px">Ainda dá tempo de vender sua oferta!</h3>
+        <p>
+            Você pode <b>baixar o preço</b> da sua oferta para deixá-la mais atraente para os compradores.<br />
+            Para mudar o preço da sua oferta, clique no link abaixo ou copie e cole em seu navegador:<br /><br />
+            <a href="{{dealEditLink}}" target="_blank">{{dealEditLink}}</a>
+        </p>
+        <h3>Divulgue sua oferta!</h3>
+        <p>
+            Chame seus amigos para te ajudar a divulgar sua oferta nas redes sociais!<br />
+            O link para sua oferta está abaixo. Basta copiar e enviar aos seus amigos:<br /><br />
+            <a href="{{dealLink}}" target="_blank">{{dealLink}}</a>
+        </p>
+    </td>
+</tr>
+</table>
+</div>
+<br /><br />
+<span style="margin:0;font-size:11px;">
+Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
+</span><br/><br/>
+{% endblock %}

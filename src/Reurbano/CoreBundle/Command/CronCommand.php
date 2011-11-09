@@ -60,11 +60,17 @@ class CronCommand extends ContainerAwareCommand {
                 break;
             case 'week':
                 // Gerar o sitemap
-
+                $command = $this->getApplication()->find('reurbano:sitemap');
+                $arguments = array(
+                    'command' => 'reurbano:sitemap',
+                );
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
                 break;
             case 'day':
             default :
-                // Cancelar todos os pedidos que foram feitos há 2 dias atrás e estão com o status "pendente" ainda.
+                // Cancelar todos os pedidos que foram feitos há 1 dia atrás e estão com o status "pendente" ainda.
+                $output->writeln("<question>Cancelando pedidos não pagos há 24 horas</question>");
                 $command = $this->getApplication()->find('reurbano:cron:cancelorders');
                 $arguments = array(
                     'command' => 'reurbano:cron:cancelorders',
@@ -72,7 +78,23 @@ class CronCommand extends ContainerAwareCommand {
                 );
                 $input = new ArrayInput($arguments);
                 $returnCode = $command->run($input, $output);
-
+                // Desativar ofertas vencidas
+                $output->writeln("<question>Desativando ofertas vencidas</question>");
+                $command = $this->getApplication()->find('reurbano:cron:deactivatedeal');
+                $arguments = array(
+                    'command' => 'reurbano:cron:deactivatedeal',
+                );
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
+                $output->writeln("<question>Notificando vendedores de ofertas que vencerão em 3 dias</question>");
+                // Envia aviso aos vendedores de ofertas que vencerão em X dias
+                $command = $this->getApplication()->find('reurbano:cron:expiresnotify');
+                $arguments = array(
+                    'command' => 'reurbano:cron:expiresnotify',
+                    'days' => 3,
+                );
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
                 break;
         }
     }

@@ -118,7 +118,7 @@ class CancelOrdersCommand extends ContainerAwareCommand {
                 Link para a venda: <a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a><br />');
             }
         }else{
-            $output->writeln("Nenhum Pedido Encontrado");
+            $output->writeln("<error>Nenhum Pedido Encontrado</error>");
         }
         
         
