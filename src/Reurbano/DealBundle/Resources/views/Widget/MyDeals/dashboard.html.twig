@@ -10,12 +10,13 @@
             </tr> 
         </thead> 
 {% for deal in deal %}
+    {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
         <tr>
             <td>
-                <img src='{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/>
+                <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src='{{ mastop_param('deal.all.dealurl') ~ deal.source.thumb }}' width='80' height='60' alt="{{ deal.source.getTitle(50) }}"/></a>
             </td>
             <td style="width: 315px;">
-                {{ deal.source.getTitle(80) }}
+                <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{ deal.source.getTitle(80) }}</a>
             </td>
             <td>
                 {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}

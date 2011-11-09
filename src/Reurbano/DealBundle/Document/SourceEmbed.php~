@@ -10,9 +10,9 @@
  *                                                                 88           
  *                                                                 88           
  * 
- * Reurbano/DealBundle/Document/Source.php
+ * Reurbano/DealBundle/Document/SourceEmbed.php
  *
- * Document que representa uma oferta no banco de ofertas
+ * Document para uma oferta do banco de ofertas como EMBED para o Deal
  *  
  * 
  * @copyright 2011 Mastop Internet Development.
@@ -37,10 +37,7 @@ namespace Reurbano\DealBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(
- *   collection="source",
- *   repositoryClass="Reurbano\DealBundle\Document\SourceRepository"
- * )
+ * @ODM\EmbeddedDocument
  * @ODM\Indexes({
  *   @ODM\Index(keys={"city.$id"="desc", "site.$id"="desc", "expiresAt"="asc"}),
  *   @ODM\Index(keys={"expiresAt"="asc", "totalsell"="desc"}),
@@ -48,7 +45,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *   @ODM\Index(keys={"coordinates"="2d"})
  * })
  */
-class Source
+class SourceEmbed
 {
     /**
      * ID da Oferta
@@ -226,13 +223,6 @@ class Source
     /** @ODM\EmbedOne(targetDocument="Reurbano\DealBundle\Document\Billing") */
     protected $billing;
     
-    /** @ODM\PrePersist */
-    public function doPrePersist()
-    {
-        // Seta data de criação
-        $this->setDateRegister(new \DateTime);
-    }
-
     /**
      * Get id
      *
@@ -241,6 +231,16 @@ class Source
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * Set id
+     *
+     * @param id $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -392,7 +392,7 @@ class Source
      *
      * @param Reurbano\DealBundle\Document\Category $category
      */
-    public function setCategory(\Reurbano\DealBundle\Document\Category $category)
+    public function setCategory($category)
     {
         $this->category = $category;
     }
@@ -576,7 +576,7 @@ class Source
      *
      * @param Reurbano\CoreBundle\Document\Coordinates $coordinates
      */
-    public function setCoordinates(\Reurbano\CoreBundle\Document\Coordinates $coordinates)
+    public function setCoordinates($coordinates)
     {
         $this->coordinates = $coordinates;
     }
@@ -676,7 +676,7 @@ class Source
      *
      * @param Reurbano\DealBundle\Document\Billing $billing
      */
-    public function setBilling(\Reurbano\DealBundle\Document\Billing $billing)
+    public function setBilling($billing)
     {
         $this->billing = $billing;
     }
@@ -689,5 +689,12 @@ class Source
     public function getBilling()
     {
         return $this->billing;
+    }
+    
+    public function populate($source){
+        $methods = get_class_methods($source);
+        foreach ($methods as $m) {
+            if($m != 'getTitleFormat' && substr($m, 0, 3) == 'get') $this->{'set'.substr ($m, 3)}($source->$m());
+        }
     }
 }

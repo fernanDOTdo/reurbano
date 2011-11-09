@@ -628,24 +628,4 @@ class Deal
         }
         return $ret;
     }
-
-    /**
-     * Set obs
-     *
-     * @param string $obs
-     */
-    public function setObs($obs)
-    {
-        $this->obs = $obs;
-    }
-
-    /**
-     * Get obs
-     *
-     * @return string $obs
-     */
-    public function getObs()
-    {
-        return $this->obs;
-    }
 }

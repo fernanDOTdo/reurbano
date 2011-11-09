@@ -44,6 +44,7 @@ class DealEditType extends AbstractType {
         $builder->add('id', 'hidden')
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
                 ->add('source', new SourceEditType(), array('label'=>'', 'document_manager' => $options['document_manager']))
+                ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
             ;
     
     }

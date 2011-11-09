@@ -6,6 +6,16 @@ $(function(){
     function formatItem(row) {
         return row[0] +  row[1] ;
     }
+    $('#sellDetails').submit(function(e){
+        if($('#deal_source_category').val() == ""){
+            e.preventDefault();
+            alert('Selecione uma categoria');
+            return false;
+        }
+        $(':submit', this).click(function() {
+            return false;
+        });
+    });
     $("#sell_site").chosen().change(function(){
         $('#sell_cupom').val(null);
         $('#sell_cupomId').val('');
@@ -68,11 +78,13 @@ if($("#sellDetails")[0]){ // Se o form de Sell Details existe
         var dateInput = $('#deal_source_expiresAt').val().split('/');
         var dateValue = new Date(dateInput[2], dateInput[1]-1, dateInput[0]);
     }
+    var today = new Date;
     $(".datepicker").dateinput({ 
             lang: 'pt_BR', 
             format: 'dd/mm/yyyy',
             offset: [0, 0],
-            value: dateValue
+            value: dateValue,
+            min: new Date
     });
     $("#sellDetails").submit(function (e) { 
         var vouchers = $('input:file');
