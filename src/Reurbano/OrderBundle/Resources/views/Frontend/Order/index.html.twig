@@ -22,6 +22,14 @@ $('#dealQtd').change(function() {
   var dealTotal = dealPrice + dealCom;
   $('#dealTotal').html('R$ '+dealTotal.formatMoney(2, ',', ''));   
 });
+$('form#orderFinish').submit(function(e){
+    $(':submit', this).html('Aguarde <img src="/bundles/mastopsystem/images/load.gif"/>');
+    $(':submit', this).attr("disabled", "true");
+    $(':submit', this).addClass("disable");
+    $(':submit', this).click(function() {
+        return false;
+    });
+});
 });
 </script>
 {% endblock %}
@@ -30,7 +38,7 @@ $('#dealQtd').change(function() {
 <p>Este cupom deverá ser resgatado até <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>. Programe-se para usá-lo dentro deste prazo.<br />
     Caso queira ver todos os detalhes desta oferta, <a rel="nofollow" href="{{deal.getSource.getUrl}}" target="_blank" title="Veja a página da oferta no {{deal.getSource.getSite.getName}}">clique aqui</a> para abrir a página original da oferta no <strong>{{deal.getSource.getSite.getName}}</strong> (o link abrirá em uma nova janela).
 </p>
-<form action="{{path('order_order_finish')}}" method="post">
+<form id="orderFinish" action="{{path('order_order_finish')}}" method="post">
     <input type="hidden" name="deal" value="{{deal.getId()}}" />
 <table id="dealCart">
     <tr>

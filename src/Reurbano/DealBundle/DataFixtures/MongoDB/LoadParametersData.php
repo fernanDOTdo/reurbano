@@ -40,7 +40,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setDesc('Selecione a ordenação padrão das ofertas');
         $child->setValue('sortNew');
         $child->setFieldtype('choice');
-        $child->setOpts(array('choices' => array('sortNew' => 'Mais Novos', 'sortCheap' => 'Mais Baratos', 'sortExpires' => 'Vencimento', 'sortDiscount' => 'Maior Desconto')));
+        $child->setOpts(array('choices' => array('sortRanking' => 'Ranking', 'sortNew' => 'Mais Novos', 'sortCheap' => 'Mais Baratos', 'sortExpires' => 'Vencimento', 'sortDiscount' => 'Maior Desconto')));
         $child->setOrder(1);
         $param->addChildren($child);
         

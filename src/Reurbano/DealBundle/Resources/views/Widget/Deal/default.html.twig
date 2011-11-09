@@ -1,6 +1,7 @@
 {%if showSort and deals%}
     <div class="sortPag button-group minor-group floatR">
     <form method="post" action="#" id="dealActions">
+    <a id="sortRanking" href="#" class="dealSort button{%if orderBy == 'sortRanking'%} active{%endif%}">Ranking</a>
     <a id="sortNew" href="#" class="dealSort button{%if orderBy == 'sortNew'%} active{%endif%}">Mais Novos</a>
     <a id="sortCheap" href="#" class="dealSort button{%if orderBy == 'sortCheap'%} active{%endif%}">Mais Baratos</a>
     <a id="sortExpires" href="#" class="dealSort button{%if orderBy == 'sortExpires'%} active{%endif%}">Vencimento</a>

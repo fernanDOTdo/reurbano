@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Reurbano\DealBundle\Document\Source;
+use Reurbano\DealBundle\Document\Billing;
 
 class LoadSourceData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
 
@@ -24,7 +25,7 @@ class LoadSourceData extends AbstractFixture implements OrderedFixtureInterface,
         $catProdutos = $manager->getRepository('ReurbanoDealBundle:Category')->findBySlug('produtos');
         $siteGroupon = $manager->getRepository('ReurbanoDealBundle:Site')->findOneById(1);
         $sitePxUrbano = $manager->getRepository('ReurbanoDealBundle:Site')->findOneById(4);
-        
+        $billing = new Billing();
         $source = new Source();
         $source->setTitle("Helicóptero de controle remoto infravermelho, de R$ 132,00 por R$ 89,90, no ProdutosOFF, com frete grátis");
         $source->setFilename('teste/groupon.jpg');
@@ -57,6 +58,7 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setBusinessUrl('http://www.produtosoff.com.br');
         $source->setBusinessName('ProdutosOFF');
         $source->setExpiresAt(new \DateTime('2011-10-10'));
+        $source->setBilling($billing);
         $manager->persist($source);
         $manager->flush();
         
@@ -97,6 +99,7 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setBusinessName('Bella Opção Estétika ');
         $source->setBusinessAddress('Avenida Padre Anchieta - 303 - Bairro Jardim');
         $source->setExpiresAt(new \DateTime('2012-02-16'));
+        $source->setBilling($billing);
         $manager->persist($source);
         $manager->flush();
         
@@ -137,6 +140,7 @@ pende para baixo, ora o desestabiliza em alta velocidade... Mas, no fim das cont
         $source->setBusinessAddress('R. da Quitanda, 67 Sl 302 - Centro');
         $source->setBusinessCep('20011030');
         $source->setExpiresAt(new \DateTime('2012-02-16'));
+        $source->setBilling($billing);
         $manager->persist($source);
         $manager->flush();
         
@@ -175,6 +179,7 @@ Polishop</h3>
         $source->setBusinessUrl('http://www.polishop.com.br');
         $source->setBusinessName('Polishop');
         $source->setExpiresAt(new \DateTime('2011-09-15'));
+        $source->setBilling($billing);
         $manager->persist($source);
         $manager->flush();
         
