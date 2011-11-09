@@ -18,6 +18,10 @@ class DealController extends BaseController {
      */
     public function renderAction($cat = null, $limit = 4, $pg = 1, $orderBy = 'createdAt', $template = 'default', $showSort = true, $pagination = true, $search = null) {
         switch ($orderBy) {
+            case 'sortRanking':
+                $sort = 'source.billing.totalsellNormalized';
+                $order = 'desc';
+                break;
             case 'sortCheap':
                 $sort = 'price';
                 $order = 'asc';
@@ -54,7 +58,11 @@ class DealController extends BaseController {
             $dealQuery->addOr($dealQuery->expr()->field('label')->equals($regexp))->addOr($dealQuery->expr()->field('tags')->all($tags));
         }
         $total = 0;
-        $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->limit($limit);
+        if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
+            $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->sort('price', 'asc')->limit($limit);
+        }else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
+            $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->limit($limit);
+        }
         if ($pg > 1) {
             $pag = $pg - 1;
             $dealQuery->skip($limit * $pag);

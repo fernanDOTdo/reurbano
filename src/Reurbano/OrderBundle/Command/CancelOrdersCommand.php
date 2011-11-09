@@ -98,16 +98,16 @@ class CancelOrdersCommand extends ContainerAwareCommand {
                         ))
                         ->send();
                 // Notifica vendedor do cancelamento
-                $nSeller = $container->get('mastop.mailer');
-                $nSeller->to($order->getSeller())
-                        ->subject('Venda Cancelada')
-                        ->template('oferta_cancelada_vendedor',array(
-                            'user'  => $order->getSeller(),
-                            'order' => $order,
-                            'msg' => false,
-                            'orderLink' => $orderLinkSeller,
-                        ))
-                        ->send();
+                //$nSeller = $container->get('mastop.mailer');
+                //$nSeller->to($order->getSeller())
+                //        ->subject('Venda Cancelada')
+                //        ->template('oferta_cancelada_vendedor',array(
+                //            'user'  => $order->getSeller(),
+                //            'order' => $order,
+                //            'msg' => false,
+                //            'orderLink' => $orderLinkSeller,
+                //        ))
+                //        ->send();
                 // Notifica o administrador do cancelamento
                 $mail->notify('[CRON] Venda Cancelada', 'O sistema cancelou a venda Cód.  '.$order->getId().'<br /><br />
                 Comprador: '.$order->getUser()->getName().' ('.$order->getUser()->getEmail().')<br />

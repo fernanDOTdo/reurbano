@@ -218,18 +218,22 @@ class OrderController extends BaseController
                                     'obs' => false,
                                 ));
                         $mail->send();
+                        $mail->to($order->getSeller())
+                             ->subject('Sua oferta foi vendida')
+                             ->template('oferta_novavenda_vendedor', array('user' => $seller, 'order' => $order, 'orderLink' => $orderLinkSeller, 'title' => 'Venda #'.$order->getId()))
+                             ->send();
                         // Envia e-mail para vendedor
-                        $mail = $this->get('mastop.mailer');
-                        $mail->to($seller)
-                             ->subject('Status da Venda '.$order->getId().': '.$status->getName())
-                             ->template('pedido_status_vendedor',array(
-                                    'title'  => 'Status: '.$status->getName(),
-                                    'user'  => $seller,
-                                    'order' => $order,
-                                    'orderLink' => $orderLinkSeller,
-                                    'obs' => false,
-                                ));
-                        $mail->send();
+                        //$mail = $this->get('mastop.mailer');
+                        //$mail->to($seller)
+                        //     ->subject('Status da Venda '.$order->getId().': '.$status->getName())
+                        //     ->template('pedido_status_vendedor',array(
+                        //            'title'  => 'Status: '.$status->getName(),
+                        //            'user'  => $seller,
+                        //            'order' => $order,
+                        //            'orderLink' => $orderLinkSeller,
+                        //            'obs' => false,
+                        //        ));
+                        //$mail->send();
                         $mail->notify('Aviso de pagamento aprovado', 'O pagamento do usuário '.$user->getName().' ('.$user->getEmail().') no pedido pedido '.$order->getId().' foi aprovado.<br /><br /><a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a>');
                     }elseif($ret['type'] == 'error'){
                         $orderLinkAdmin = $this->generateUrl('admin_order_order_view', array('id'=>$order->getId()), true);
@@ -352,10 +356,11 @@ class OrderController extends BaseController
              ->template('oferta_novavenda_comprador', array('user' => $order->getUser(), 'order' => $order, 'orderLink' => $orderLinkBuyer, 'title' => 'Compra #'.$order->getId()))
              ->send();
         $mail->newMessage();
-        $mail->to($order->getSeller())
-             ->subject('Sua oferta foi vendida')
-             ->template('oferta_novavenda_vendedor', array('user' => $order->getSeller(), 'order' => $order, 'orderLink' => $orderLinkSeller, 'title' => 'Venda #'.$order->getId()))
-             ->send();
+        // Linhas abaixo foram escrotamente comentadas para o vendedor não ser notificado quando houver nova venda. Pode isso, Arnaldo? 
+        //$mail->to($order->getSeller())
+        //     ->subject('Sua oferta foi vendida')
+        //     ->template('oferta_novavenda_vendedor', array('user' => $order->getSeller(), 'order' => $order, 'orderLink' => $orderLinkSeller, 'title' => 'Venda #'.$order->getId()))
+        //     ->send();
         $mail->notify('Aviso de nova venda', 'O usuário '.$user->getName().' ('.$user->getEmail().') comprou <b>'.$qtd.'x - '.$deal->getLabel().'</b> do usuário '.$order->getSeller()->getName().' ('.$order->getSeller()->getEmail().').<br /><br />
             Cód. Venda: '.$order->getId().': <br />
             Total: R$ '.  number_format($order->getTotal(), 2, ',', '').'<br />
