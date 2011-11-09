@@ -174,7 +174,7 @@ class SellController extends BaseController
             $deal->setPrice($source->getPriceOffer());
             $deal->setQuantity(1);
             $deal->setSource($sourceEmbed);
-            $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => $this->dm('crawler')));
+            $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => 'crawler'));
         }else{
             return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Selecione uma oferta', 'notice');
         }
@@ -196,7 +196,7 @@ class SellController extends BaseController
         $dm = $this->dm();
         $crawlerDM = $this->mastop()->getDocumentManager('crawler');
         $request = $this->get('request');
-        $form = $this->createForm(new DealType(),null, array('document_manager' => $crawlerDM));
+        $form = $this->createForm(new DealType(),null, array('document_manager' => 'crawler'));
         $user = $this->get('security.context')->getToken()->getUser();
         $data = $this->get('request')->request->get($form->getName());
         if($request->getMethod() == 'POST'){

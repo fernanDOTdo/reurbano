@@ -33,6 +33,7 @@ class ReurbanoCoreExtension extends Twig_Extension {
         $mappings = array(
             'reurbano_select_city' => 'selectCity',
             'reurbano_get_cities' => 'getCities',
+            'reurbano_get_categories' => 'getCategories',
         );
 
         $functions = array();
@@ -76,6 +77,11 @@ class ReurbanoCoreExtension extends Twig_Extension {
             }
         }
         return $ret;
+    }
+
+    public function getCategories() {
+        $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoDealBundle:Category');
+        return $repo->findAllByOrder();
     }
 
     /**

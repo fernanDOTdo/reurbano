@@ -2,6 +2,7 @@ web/bundles/
 web/themes/
 web/static/
 web/uploads/
+web/sitemap.xml
 app/bootstrap*
 app/cache/*
 app/logs/*

@@ -98,6 +98,10 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
+# Para usar a linha abaixo, é preciso adicionar "app/console swiftmailer:spool:send --time-limit=10" ao Cron
+#    spool:
+#        type: file
+#        path: %kernel.root_dir%/spool
 
 jms_security_extra:
     secure_all_services: false
