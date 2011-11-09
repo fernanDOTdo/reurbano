@@ -95,7 +95,7 @@ class DealController extends BaseController
     {
         // Só por entrar no action já significa que o $deal foi encontrado pelo Slug, mas o if abaixo valida o que está na URL como city e category
         if($deal->getSource()->getCity()->getSlug() != $city || $deal->getSource()->getCategory()->getSlug() != $category){
-            throw $this->createNotFoundException('Oferta não encontrada.');
+            throw $this->createNotFoundException('Oferta não encontrada. '.$deal->getSource()->getCategory()->getSlug());
         }
         // Se o Deal está vendido, inativo ou vencido, procura outro deal semelhante e redireciona
         if($deal->getQuantity() < 1 || $deal->getActive() == false || $deal->getSource()->getExpiresAt()->getTimestamp() < time()){
@@ -170,6 +170,8 @@ class DealController extends BaseController
             $source->setCategory($cat);
             $deal->setSource($source);
             $price = $data['price'];
+            $obs = $data['obs'];
+            $deal->setObs($obs);
             $deal->setPrice(str_replace(",", ".", $price));
             $deal->setActive(true);
             $deal->setLabel($source->getTitle());

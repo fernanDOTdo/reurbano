@@ -173,6 +173,9 @@ class SellController extends BaseController
             $deal=new Deal();
             $deal->setPrice($source->getPriceOffer());
             $deal->setQuantity(1);
+            if($sourceEmbed->getCategory()->getSlug() == 'outros'){
+                $sourceEmbed->setCategory(null);
+            }
             $deal->setSource($sourceEmbed);
             $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => 'crawler'));
         }else{
@@ -270,6 +273,7 @@ class SellController extends BaseController
             $deal->setSource($sourceEmbed);
             $price = $data['price'];
             $quantity = $data['quantity'];
+            $obs = $data['obs'];
             
             
             $deal->setUser($user);
@@ -278,6 +282,7 @@ class SellController extends BaseController
             $deal->setSpecial(false);
             $deal->setQuantity($quantity);
             $deal->setActive(true);
+            $deal->setObs($obs);
             $deal->setLabel($source->getTitle());
             
             // Comissão

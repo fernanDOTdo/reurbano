@@ -184,6 +184,14 @@ class Deal
      */
     protected $createdAt;
     
+    /**
+     * Observação na hora de criar a oferta
+     * 
+     * @var string
+     * @ODM\String
+     */
+    protected $obs;
+    
     public function __construct()
     {
         $this->voucher = new \Doctrine\Common\Collections\ArrayCollection();
@@ -619,5 +627,25 @@ class Deal
             $ret[] = $v;
         }
         return $ret;
+    }
+
+    /**
+     * Set obs
+     *
+     * @param string $obs
+     */
+    public function setObs($obs)
+    {
+        $this->obs = $obs;
+    }
+
+    /**
+     * Get obs
+     *
+     * @return string $obs
+     */
+    public function getObs()
+    {
+        return $this->obs;
     }
 }

@@ -46,6 +46,7 @@ class DealType extends AbstractType {
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
                 ->add('source', new SourceType(), array('label'=>'', 'document_manager' => $options['document_manager']))
                 ->add('voucher0', 'file', array ('label' => "Voucher 1" , 'property_path' => false))
+                ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
             ;
     }
 

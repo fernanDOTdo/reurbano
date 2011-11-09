@@ -41,7 +41,16 @@ class SourceType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
-                ->add('category', 'document', array('label'=>'Categoria da Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name', 'document_manager' => $options['document_manager'] ))
+                ->add('category', 'document', 
+                        array(
+                            'label'=>'Categoria da Oferta', 
+                            'class' => 'Reurbano\\DealBundle\\Document\\Category', 
+                            'property'=>'name', 
+                            'document_manager' => $options['document_manager'],
+                            'required' => false,
+                            'empty_value' => "Selecione",
+                        )
+                )
                 ->add('expiresAt', 'date', array('label'=>'Data de Validade', 'format'=>'dd/MM/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
             ;
     }

@@ -392,7 +392,7 @@ class SourceEmbed
      *
      * @param Reurbano\DealBundle\Document\Category $category
      */
-    public function setCategory(\Reurbano\DealBundle\Document\Category $category)
+    public function setCategory($category)
     {
         $this->category = $category;
     }
