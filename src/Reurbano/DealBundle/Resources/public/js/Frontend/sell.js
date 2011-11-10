@@ -6,16 +6,6 @@ $(function(){
     function formatItem(row) {
         return row[0] +  row[1] ;
     }
-    $('#sellDetails').submit(function(e){
-        if($('#deal_source_category').val() == ""){
-            e.preventDefault();
-            alert('Selecione uma categoria');
-            return false;
-        }
-        $(':submit', this).click(function() {
-            return false;
-        });
-    });
     $("#sell_site").chosen().change(function(){
         $('#sell_cupom').val(null);
         $('#sell_cupomId').val('');
@@ -86,7 +76,7 @@ if($("#sellDetails")[0]){ // Se o form de Sell Details existe
             value: dateValue,
             min: new Date
     });
-    $("#sellDetails").submit(function (e) { 
+    $("#sellDetails").submit(function (e) {
         var vouchers = $('input:file');
         var verified = new Array();
         $(vouchers).each(function(index) {
@@ -125,6 +115,14 @@ if($("#sellDetails")[0]){ // Se o form de Sell Details existe
             e.preventDefault();
             return false;
         }
+        if($('#deal_source_category').val() == ""){
+            e.preventDefault();
+            alert('Selecione uma categoria');
+            return false;
+        }
+        $(':submit', this).click(function() {
+            return false;
+        });
         return true;
     });
 }
