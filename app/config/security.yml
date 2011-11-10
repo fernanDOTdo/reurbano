@@ -7,7 +7,7 @@ services:
         arguments: [@router]
     mastop.user.security.interactive_login_listener:
         class: Reurbano\UserBundle\Security\InteractiveLoginListener
-        arguments: [@mastop.user]
+        arguments: [@mastop.user, @service_container]
         tags:
           - {name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin}
     

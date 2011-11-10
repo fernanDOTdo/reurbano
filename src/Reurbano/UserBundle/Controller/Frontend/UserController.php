@@ -365,7 +365,7 @@ class UserController extends BaseController {
      * @Route("/usuario/salvar/{id}", name="user_user_save", defaults={"id" = null})
      * @Template()
      */
-    public function saveAction($id=null) {
+    public function saveAction($id = null) {
         $request = $this->get('request');
         $factory = $this->get('form.factory');
         $cityId = $this->get('session')->get('reurbano.user.cityId');
@@ -394,6 +394,11 @@ class UserController extends BaseController {
                 if (count($erro) == 0) {
                     $user->setName($dadosPost['name']);
                     $user->setCpf($dadosPost['cpf']);
+                    $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($dadosPost['city']);
+                    $user->setCity($city);
+                    $birth = new \DateTime();
+                    $birth->setDate($dadosPost['birth']['year'], $dadosPost['birth']['month'], $dadosPost['birth']['day']);
+                    $user->setBirth($birth);
                     $user->setEdited(new \DateTime());
                     $this->dm()->persist($user);
                     $this->dm()->flush();
@@ -463,7 +468,7 @@ class UserController extends BaseController {
                 $user->setRoles('ROLE_USER');
                 $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
                 $user->setCity($city);
-                $user->setCpf($dadosPost['cpf']);
+                //$user->setCpf($dadosPost['cpf']);
                 $user->setEmail($dadosPost['email']);
                 $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $user->setPassword($encoder->encodePassword($dadosPost['password'], $user->getSalt()));
