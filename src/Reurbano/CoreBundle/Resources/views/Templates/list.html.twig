@@ -1,0 +1,31 @@
+{% if root == true%}
+<ul  {% for k, v in attrs %}{{k}}="{{v}}"{% endfor %}>
+{% endif %}
+{% for code, link in menu %}
+    {% if link.role is null or (link.role == 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted('ROLE_USER') == false) or (link.role != 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted(link.role)) %}
+        {% set class = null %}
+        {%if loop.first%}
+            {% set class = 'first' %}
+        {%elseif loop.last%}
+            {% set class = 'last' %}
+        {%endif%}
+        {%if current == link.url or (current is null and app.request.attributes.get('_route') == link.url)%} 
+            {% set class = class ~ ' current' %}
+        {%endif%}
+        <li{%if class is not null%} class="{{class}}"{%endif%}>
+        <a href="{% if link.route == true %}{{url(link.url)}}{%else%}{{link.url}}{%endif%}" {%if link.newwindow %}target="_blank"{%endif%}{%if link.title is not null %}title="{{link.title}}"{%endif%}>{{link.name}}</a>
+        {%if link.children is not null and depth > 0 %}
+        <ul>
+            {%if root == true and depth == 1 %}
+                {% include 'MastopMenuBundle:Templates:list.html.twig' with {'menu': link.children, 'root': false, 'depth': 0} %}
+            {% else %}
+                {% include 'MastopMenuBundle:Templates:list.html.twig' with {'menu': link.children, 'root': false, 'depth': depth} %}
+            {% endif %}
+        </ul>
+        {% endif %}
+        </li>
+    {% endif %}
+{% endfor %}
+{% if root == true%}
+</ul>
+{% endif %}

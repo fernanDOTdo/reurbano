@@ -1,6 +1,6 @@
 {%if showSort and deals%}
-    <div class="sortPag button-group minor-group floatR">
     <form method="post" action="#" id="dealActions">
+    <div class="sortPag button-group minor-group floatR">
     <a id="sortRanking" href="#" class="dealSort button{%if orderBy == 'sortRanking'%} active{%endif%}">Ranking</a>
     <a id="sortNew" href="#" class="dealSort button{%if orderBy == 'sortNew'%} active{%endif%}">Mais Novos</a>
     <a id="sortCheap" href="#" class="dealSort button{%if orderBy == 'sortCheap'%} active{%endif%}">Mais Baratos</a>
@@ -9,53 +9,67 @@
     <input type="hidden" name="cat" value="{{cat|default('all')}}" />
     <input type="hidden" name="sort" value="{{orderBy}}" />
     <input type="hidden" name="dealSearch" value="{{search}}" />
-    </form>
     </div>
+    </form>
     <div class="clear"></div>
     <div class="dealBox">
 {%endif%}
     {# Encontrados: {{found}} de {{total}} #}
 {%for deal in deals%}
 {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
-<div class="deal {{deal.getDiscountType }}">
+<div class="deal">
     <div class="grid_3 alpha dealThumb">
     {#Imagem#}
-            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
+            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /></a>
     </div>
-    <div class="grid_4 dealTitle">
+    <div class="grid_6 omega dealContent">
     {#Conteúdo#}
-            <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel}}</a>
-            {%if deal.getSource.getBusinessAddress is not null%}
-                <div class="dealAddress">
-                    {{deal.getSource.getBusinessAddress}}
-                </div>        
-           {%endif%}
-    </div>
-    <div class="grid_2 omega">
-    {#Preços#}
-            <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
-            <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-            <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+            <div class="grid_6 dealTitle alpha omega">
+                <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel}}</a>
+            </div>
+            <div class="grid_6 alpha omega">
+                <div class="grid_4 alpha omega">
+                    <div class="dp50">
+                        {#Preços#}
+                        <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
+                        <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+                    </div>
+                    <div class="dp50">
+                        {#Site#}
+                        <div class="dealSite">
+                            <a rel="nofollow" href="{{deal.getSource.getUrl}}" target="_blank" title="Veja a página da oferta no {{deal.getSource.getSite.getName}}"><img src="{{asset('/uploads/reurbanodeal/site/'~deal.getSource.getSite.getFilename)}}" alt="Página da Oferta no {{deal.getSource.getSite.getName}}" /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_2 alpha">
+                    {#Comprar#}
+                    <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{path('order_order_index', {'id': deal.getId})}}">COMPRAR</a></div>
+                    <div class="dealDetails"><a href="{{dealLink}}" title="Veja {{deal.getLabel}}">detalhes da oferta</a></div>
+                </div>
+            {#Preços#}
+            </div>
     </div>
     <div class="clear"></div>
-    <div class="grid_3 alpha dealSource">
-            do <span>{{deal.getSource.getSite.getName}}</span>
+    <div class="dealFoot grid_9 alpha omega">
+        <div class="grid_2 alpha">
+            <span><strong>Economize: </strong> {{deal.getDiscount}}%</span>
+        </div>
+        <div class="grid_2">
+            <span><strong>Cupons: </strong> {{deal.quantity}}</span>
+        </div>
+        <div class="grid_3">
+            <span><strong>Categoria: </strong> {{deal.source.category.name}}&nbsp;{%if deal.getSource.getCity.getSlug == 'oferta-nacional'%}<span class="brFlag floatR" title="Oferta Nacional">&nbsp;</span>{%endif%}</span>
+        </div>
+        <div class="grid_2 omega">
+            <span><strong>Validade: </strong> {{deal.getSource.getExpiresAt|date('d/m/Y')}}</span>
+        </div>
     </div>
-    <div class="grid_2 dealExpires">
-            Expira em <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
-    </div>
-    <div class="grid_2 dealCity">
-        &nbsp;{%if deal.getSource.getCity.getSlug == 'oferta-nacional'%}<span> Oferta Nacional</span>{%endif%}
-    </div>
-    <div class="grid_2 dealQtd omega">
-            {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
-            {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
-            {% endtranschoice %}
-    </div>
+    {%if orderBy == "sortRanking" and loop.index <= 3%}
+         <div class="dealRank dealRank-{{loop.index}}">{{loop.index}}º Lugar</div>
+    {%endif%}
     <div class="clear"></div>
 </div>
 {%if loop.last == false%}
-<hr />
 <div class="clear"></div>
 {%endif%}
 {%else%}

@@ -1,6 +1,5 @@
 {%if banner is defined%}
 <div id="bannerSlides">
-    <img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/new-ribbon.png') }}" width="112" height="112" alt="Novo!" id="ribbon">
     <div id="slides">
             <div class="slides_container">
                 {% for banner in banner %}
@@ -8,19 +7,36 @@
                     {%set dealLink = url('deal_deal_show', {'city': banner.getDeal.getSource.getCity.getSlug, 'category': banner.getDeal.getSource.getCategory.getSlug, 'slug': banner.getDeal.getSlug}) %}
                     <div class="slide bannerDeal" onclick="document.location.href = '{{dealLink}}';return">
                         <div class="dealThumb">
-                        <img src="{{asset(mastop_param('deal.all.dealurl') ~ banner.deal.source.filename)}}" alt="{{banner.getDeal.getLabel}}" /> <span class="discount {{banner.getDeal.getDiscountType }}">{{banner.getDeal.getDiscount}}% OFF</span>
+                        <img src="{{asset(mastop_param('deal.all.dealurl') ~ banner.deal.source.filename)}}" alt="{{banner.getDeal.getLabel}}" />
                         </div>
-                            <h2 class="{{banner.getDeal.getDiscountType }}">{{banner.getDeal.getLabel}}</h2>
-                        <div class="dealInfos {{banner.getDeal.getDiscountType }}">
-                            <div class="priceSource">De: <strong>{{banner.getDeal.getSource.getPrice|money}}</strong></div>
-                            <div class="price">Por: <strong>{{banner.getDeal.getPrice|money}}</strong></div>
-                            <div class="buyNow"><a rel="nofollow" class="button primary pill big {{banner.getDeal.getDiscountType }}" href="{{dealLink}}">Confira esta Oferta</a></div>
-                            <div class="dealQtd">
-                               {% transchoice banner.getDeal.getQuantity with {'%count%' : banner.getDeal.getQuantity} %}
-                                    {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
-                               {% endtranschoice %}
-                            </div> 
-
+                        <div class="dealInfos">
+                            <h2>{{banner.deal.label}}</h2>
+                            <div class="dealInfosMain">
+                                <div class="dealPrices">
+                                    {#Preços#}
+                                    <div class="priceSource">De: <strong>{{banner.deal.source.price|money}}</strong></div>
+                                    <div class="price">Por: <strong>{{banner.deal.price|money}}</strong></div>
+                                </div>
+                                    {#Site#}
+                                <div class="dealSite">
+                                    <img src="{{asset('/uploads/reurbanodeal/site/'~banner.deal.source.site.filename)}}" alt="Oferta do {{banner.deal.source.site.name}}" />
+                                </div>
+                            </div>
+                            <div class="dealBuy">
+                                {#Comprar#}
+                                <div class="buyNow"><a rel="nofollow" class="button big green buyButton" href="{{path('order_order_index', {'id': banner.deal.id})}}">COMPRAR</a></div>
+                                <div class="dealDetails"><a href="{{dealLink}}" title="Veja {{banner.deal.label}}">detalhes da oferta</a></div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="dealFoot">
+                                    <span class="moneyIcon">Economize: <strong>{{banner.deal.discount}}%</strong></span>
+                                    <span class="couponIcon">
+                                    {% transchoice banner.deal.quantity with {'%count%' : banner.deal.quantity} %}
+                                        {0} Oferta vendida|{1} <strong>1</strong> cupom disponível|]1,Inf] <strong>%count%</strong> cupons disponíveis
+                                    {% endtranschoice %}
+                                    </span>
+                                    <span class="dateIcon">Validade: <strong>{{banner.deal.source.expiresAt|date('d/m/Y')}}</strong></span>
+                            </div>
                         </div>
                     </div>
                     {%else%}
@@ -28,8 +44,5 @@
                     {%endif%}
                 {% endfor %}
             </div>
-            <a href="#" class="prev"><img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/arrow-prev.png') }}" width="19" height="21" alt="Arrow Prev"></a>
-            <a href="#" class="next"><img src="{{ asset('themes/'~mastop_theme_name()~'/images/slides/arrow-next.png') }}" width="19" height="21" alt="Arrow Next"></a>
-    </div>
 </div>
 {%endif%}

@@ -1,0 +1,27 @@
+<ul  {% for k, v in attrs %}{{k}}="{{v}}"{% endfor %}>
+{%if area == 'admin' %}
+    <li><a href="{{ url('admin_system_home_index') }}">Dashboard</a></li>
+{%else%}
+    <li><a href="{{ url('_home') }}">Home</a></li>
+{%endif%}
+{% for link in crumbs %}
+        {% set class = null %}
+        {%if loop.first%}
+            {% set class = 'first' %}
+        {%elseif loop.last%}
+            {% set class = 'last' %}
+        {%endif%}
+        <li{%if class is not null%} class="{{class}}"{%endif%}>
+        {%if link.url is not null and (loop.last == false or title is not null)%}
+        <a href="{%if link.route%}{{url(link.url)}}{%else%}{{link.url}}{%endif%}">{{link.name}}</a>
+        {%elseif loop.last and title is null%}
+        <span>{{link.name}}</span>
+        {%else%}
+        <a href="void(0);">{{link.name}}</a>
+        {%endif%}
+        </li>
+{% endfor %}
+{%if title is not null%}
+        <li><span>{{title}}</span></li>
+{%endif%}
+</ul>

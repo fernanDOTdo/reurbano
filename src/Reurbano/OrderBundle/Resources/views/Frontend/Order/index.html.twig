@@ -34,6 +34,7 @@ $('form#orderFinish').submit(function(e){
 </script>
 {% endblock %}
 {% block content %}
+<div id="siteContent">
 <h1>Seu pedido</h1>
 <p>Este cupom deverá ser resgatado até <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>. Programe-se para usá-lo dentro deste prazo.<br />
     Caso queira ver todos os detalhes desta oferta, <a rel="nofollow" href="{{deal.getSource.getUrl}}" target="_blank" title="Veja a página da oferta no {{deal.getSource.getSite.getName}}">clique aqui</a> para abrir a página original da oferta no <strong>{{deal.getSource.getSite.getName}}</strong> (o link abrirá em uma nova janela).
@@ -76,4 +77,5 @@ $('form#orderFinish').submit(function(e){
     </tr>
 </table>
 </form>
+</div>
 {% endblock %}

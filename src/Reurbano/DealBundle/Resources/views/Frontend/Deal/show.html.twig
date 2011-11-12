@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="siteContent">
 <div class="grid_9">
     {# Título e Share #}
     <h1 class="grid_9" id="dealTitle">{{title}}</h1>
@@ -98,5 +99,6 @@
 </div>
 <div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat, 'id': deal.getId}} %}
+</div>
 </div>
 {% endblock %}

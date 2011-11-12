@@ -1,6 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block content %}
+<div id="siteContent">
 <div class="grid_9">
     {{content.getContent|raw}}
     {%if is_granted('ROLE_ADMIN') %}
@@ -10,5 +11,6 @@
 </div>
 <div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'content', 'opts': {'content': content}} %}
+</div>
 </div>
 {% endblock %}

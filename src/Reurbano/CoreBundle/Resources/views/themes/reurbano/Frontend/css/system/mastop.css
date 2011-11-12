@@ -3,7 +3,7 @@
 /* Geral */
 body {
   font-family: tahoma,arial,helvetica,freesans,sans-serif;
-  background-color: #FFF;
+  background-color: #f5f5f5;
   color: #666;
   background: url(../images/header/bg.png) repeat;
 }
@@ -156,7 +156,7 @@ td{padding: 3px;}
 #breadcrumbs div{float: left; margin-right: 5px;}
 #breadcrumbs div span{font-weight: 700; font-size: 1.1em;}
 #breadcrumbs div a span{font-weight: 400;}
-#bannerHome{height: 335px; margin-top: 25px;}
+#bannerHome{height: 355px; margin-top: 20px; margin-bottom: 15px;}
 
 #menuTop ul{margin: 3px 0; float: right; font-size: 1.1em; font-weight: 700}
 #menuTop ul li{float: left; margin-left: 10px; list-style: none outside none;}
@@ -180,7 +180,7 @@ td{padding: 3px;}
     color: #999;
     border: 1px solid #d9d9d9;
     padding: 2px 72px 2px 10px;
-    background: #f6f6f6;
+    background: #FDFDFD;
 }
 #search #q.focusField{
     color: #666;
@@ -282,7 +282,15 @@ td{padding: 3px;}
 #bd {
     /* Div que cobre o body 960 */
     min-height: 400px;
+}
+#siteContent {
     background: #FFF;
+    padding: 10px 0;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    overflow: hidden;
+    
 }
 
 #navbar {
@@ -313,16 +321,49 @@ td{padding: 3px;}
 }
 
 /*Lista de Deals*/
-.dealBox{}
+.dealBox .deal{width: 700px;border: 2px dashed #C0C0C0; position: relative;}
 .dealBox hr{height:1px; border-width:0; background-color:#D4D4D4; width: 100%; margin: 10px auto;}
-.deal{margin:5px 0;}
-.deal .dealTitle { margin-top: 3px}
-.deal .dealTitle a{font-size: 15px; font-weight: 700; line-height: 18px;}
-.deal .dealTitle a:hover{text-decoration: none;}
+.deal{
+    background: #FFF;
+    margin: 8px 0;
+}
+.deal .dealTitle { margin: 10px 0 30px 0;}
+.deal .dealTitle a{font-size: 21px; font-weight: 700; line-height: 130%; color: #EA9A32;}
+.deal .dealTitle a:hover{text-decoration: underline;}
 .deal .dealThumb {position: relative;}
-.deal .dealThumb a{width: 220px; height: 140px; float: left; overflow: hidden;}
-.deal .dealThumb a img{width: 220px; height: 140px;}
+.deal .dealThumb a{width: 220px; height: 140px; float: left; overflow: hidden; margin: 10px 0 5px 5px;}
+.deal .dealThumb a img{width: 218px; height: 138px; border: 1px solid #E1DEDE;}
+.deal .dealContent{margin-bottom: 10px}
+.deal .dealSite {text-align: center; border-left: 1px solid #DEDEDE; border-right: 1px solid #DEDEDE; height: 55px; width: 105px; margin: auto;}
+.deal .dealSite img{margin-top: 10px;}
+.deal .dealFoot {background-color: #DFDFDF; padding: 11px 0; text-align: center;}
+.deal .dealFoot span{padding-right: 5px;}
+.deal .dealDetails, .dealBox .deal .buyNow{text-align: center;}
+.deal .dealDetails a{text-decoration: underline; color: #EA9A32}
 
+.dealBox div.deal.over {border: 2px dashed #EA9A32;}
+.dealBox div.deal.over .dealThumb a img{border: 1px solid #EA9A32;}
+.dealBox div.deal.over .dealFoot {background-color: #FFDEB7;}
+.dealBox div.deal.over .dealSite {border-left: 1px solid #EA9A32; border-right: 1px solid #EA9A32;}
+
+.deal .dealRank{
+    height: 82px;
+    left: -6px;
+    line-height: 0;
+    position: absolute;
+    text-indent: -9999px;
+    top: -6px;
+    width: 82px;
+}
+.dealRank-1{
+    background: url('../images/tag_1_lugar.png') no-repeat;
+}
+.dealRank-2{
+    background: url('../images/tag_2_lugar.png') no-repeat;
+}
+.dealRank-3{
+    background: url('../images/tag_3_lugar.png') no-repeat;
+}
 span.discount{
     color: #FFF;
     font-weight: 700;
@@ -358,14 +399,14 @@ div.deal.blue.over{background-color: #DEF0FC}
 div.deal.green.over{background-color: #f5fce2}
 div.deal.orange.over{background-color: #fff4e3}
 
-div.priceSource{text-align: right; margin: 3px 10px 0 0}
-div.priceSource strong{text-decoration: line-through}
-div.price{text-align: right; margin: 0 10px 0 0}
-div.price strong{font-size: 1.7em; color:#7A9D24;}
+div.priceSource{margin: 3px 10px 0 0}
+div.priceSource strong{text-decoration: line-through; color: #B6B6B6;}
+div.price{}
+div.price strong{font-size: 1.6em; color:#EA9A32;}
 div.expires{font-size: 0.9em;}
-div.buyNow{text-align: right; margin: 3px 10px 0 0}
+div.buyNow{text-align: center;}
 div.dealSource, div.dealCity, div.dealExpires, div.dealQtd{font-size: 11px;}
-div.dealQtd{text-align: right; margin: 0 10px 0 0}
+div.dealQtd{text-align: center;}
 div.dealSource{text-align: center;}
 div.dealCity {font-weight: 700; color: #333;}
 div.dealCity span, span.brFlag{padding-left: 17px; background: url(../images/flag.png) center left no-repeat;}
@@ -373,45 +414,39 @@ div.dealAddress {font-size: 11px}
 
 /*Blocos*/
 div.block{
-    -moz-box-shadow: 0 0 5px #D4D4D4;
-    -webkit-box-shadow: 0 0 5px #D4D4D4;
-    box-shadow: 0 0 5px #D4D4D4;
-    border:1px solid #D4D4D4;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    margin-bottom: 15px;
+	margin-bottom: 30px;
 }
+
 div.blockTitle{
-    font-weight: 700;
-    padding: 5px;
-    border-bottom: 1px solid #D4D4D4;
-    background-color: #ffffff;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e4e4e4');
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e4e4e4));
-    background-image: -moz-linear-gradient(#ffffff, #e4e4e4);
-    background-image: -o-linear-gradient(#ffffff, #e4e4e4);
-    background-image: linear-gradient(#ffffff, #e4e4e4);
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    
+    color: #15567F;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    text-transform: uppercase;
 }
+
 div.blockContent{
     margin: 5px 3px;
 }
 div.blockContent div.deal{
-    margin: 5px;
+    padding: 5px;
+}
+div.blockContent div.dealTitle{
+    margin: 10px 0;
+}
+div.blockContent div.dealThumb{
+    overflow: hidden;
 }
 div.blockContent div.dealThumb a{
-    margin: 0 5px 5px 0;
+    margin: 0 5px 5px 5px;
 }
-div.blockContent div.dealThumb a img, div.blockContent div.dealThumb a{
-    height: 60px;
-    width: 80px;
+div.blockContent div.dealThumb a img{
+    height: 128px;
+    width: 193px;
+}
+div.blockContent div.dealThumb a{
+    height: 130px;
+    width: 195px;
 }
 div.blockContent div.price strong{
     font-size: 14px;
@@ -420,9 +455,10 @@ div.blockContent div.priceSource strong{
     font-size: 12px;
 }
 div.blockContent span.discount{
-    font-weight: 400;
+    font-weight: 700;
     font-size: 0.9em;
-    padding: 2px 3px;
+    padding: 5px;
+    left: 5px;
 }
 div.blockContent div.dealTitle a{
     font-weight: 400;

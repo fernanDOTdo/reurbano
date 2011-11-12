@@ -2,7 +2,7 @@
 {% form_theme form ':Form:form.html.twig' %}
 {% endif %}
 {% set protocol = mastop_protocol() %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="pt_BR" lang="pt_BR">
 <head>
 <!--
@@ -224,7 +224,7 @@ $(function(){
 			<div id="textoFooter2" class="grid_5 alpha omega">sites de compra coletiva e clubes de compra do país.</div>
 		</div>
 		<div id="ftBelt2" class="grid_7">
-			{{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
+			{{reurbano_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
 			<div id="FormasPagamento" class="grid_7 alpha omega"><a>Formas de Pagamento</a>
 			</div>
 		</div>
