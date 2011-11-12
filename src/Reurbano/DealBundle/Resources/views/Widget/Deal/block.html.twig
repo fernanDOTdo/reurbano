@@ -18,7 +18,7 @@
 <div class="dp50 mT10">
      <div class="dealQtd">
         {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
-        {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+        {0} Oferta vendida|{1} 1 cupom|]1,Inf] %count% cupons
         {% endtranschoice %}
     </div> 
     <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>

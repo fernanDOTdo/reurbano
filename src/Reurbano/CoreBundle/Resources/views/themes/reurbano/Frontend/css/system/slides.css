@@ -1,25 +1,9 @@
 #bannerSlides {
-	width:800px;
-	height:302px;
+	width:940px;
+	height:312px;
 	position:relative;
         margin: auto;
         background: #FFF;
-}
-
-#ribbon {
-	position:absolute;
-	top:-3px;
-	left:-3px;
-	z-index:500;
-}
-
-#frame {
-	position:absolute;
-	z-index:0;
-	width:900px;
-	height:361px;
-	top:-18px;
-	left:-90px;
 }
 
 /*
@@ -29,8 +13,6 @@
 #slides {
 	position:absolute;
 	z-index:100;
-        background: #FFF;
-        border: 1px solid #e9e9e9;
 }
 
 /*
@@ -41,10 +23,16 @@
 */
 
 .slides_container {
-	width:800px;
+	width:940px;
 	overflow:hidden;
 	position:relative;
 	display:none;
+        -moz-box-shadow: 0 0 9px 0 #999999;
+        -webkit-box-shadow: 0 0 9px 0 #999999;
+        box-shadow: 0 0 9px 0 #999999;
+        zoom: 1;
+        background: #FFF;
+        border: 1px solid #DFDFDF;
 }
 
 /*
@@ -56,8 +44,8 @@
 */
 
 .slides_container .slide {
-	width:800px;
-	height:270px;
+	width:940px;
+	height:312px;
         cursor: pointer;
 	display:block;
 }
@@ -70,50 +58,51 @@
 	Next/prev buttons
 */
 
-#slides .next,#slides .prev {
-	position:absolute;
-	top:130px;
-	left:-21px;
-	width:19px;
-	height:21px;
-	display:block;
-	z-index:101;
-        outline: none;
-}
-
-#slides .next {
-	left:802px;
-}
-
 /*
 	Pagination
 */
 
 .pagination {
 	margin:0 auto 0;
-	width:100px;
+	width:20%;
+        display: block;
+        text-align: center;
+        background: #FFF;
+        -webkit-border-bottom-right-radius: 5px;
+        -moz-border-radius-bottomright: 5px;
+        border-bottom-right-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+        -moz-border-radius-bottomleft: 5px;
+        border-bottom-left-radius: 5px;
+        border: 1px solid #DFDFDF;
+        border-top: 0;
 }
 
 .pagination li {
-	float:left;
-	margin:10px 1px;
+	display: inline-block;
+	margin:10px 4px 5px;
 	list-style:none;
+        width: 15px;
+        zoom: 1;
+        *display:inline;
 }
 
 .pagination li a {
-	display:block;
-	width:12px;
+	display:inline-block;
+	width:15px;
 	height:0;
-	padding-top:12px;
-	background-image:url(../images/slides/pagination.png);
-	background-position:0 0;
-	float:left;
+	padding-top:15px;
+	background-image:url(../images/slides/pagination_1.png);
+	background-position:right top;
 	overflow:hidden;
         outline: none;
+        margin: 0 3px;
+        zoom: 1;
+        *display:inline;
 }
 
 .pagination li.current a {
-	background-position:0 -12px;
+	background-position:left top;
 }
 .pagination li.current a:active, .pagination li.current a:focus {
 	outline: none;
@@ -121,54 +110,98 @@
 
 /* Banner de Oferta */
 div.bannerDeal div.dealThumb{
-    width: 375px;
-    height: 270px;
+    width: 415px;
+    height: 287px;
     float: left;
     position: relative;
 }
 div.bannerDeal div.dealThumb img{
-    width: 370px;
-    height: 265px;
-    margin: 5px 0 0 5px;
-}
-div.bannerDeal span.discount{
-    right: 0;
-    -webkit-border-bottom-left-radius: 7px;
-    -moz-border-radius-bottomleft: 7px;
-    border-bottom-left-radius: 7px;
-    font-size: 1.5em;
-    font-weight: 700;
-    padding: 5px;
-    left: inherit;
-}
-div.bannerDeal h2{
-    float: right;
     width: 400px;
-    margin: 5px 10px;
-    text-align: center;
-    font-size: 1.4em;
-    line-height: 1.3em;
+    height: 270px;
+    margin: 10px 0 0 10px;
+    border: 1px solid #DFDFDF;
 }
 
-div.bannerDeal h2.gray{color: #999}
-div.bannerDeal h2.blue{color: #15567F}
-div.bannerDeal h2.green{color: #587906}
-div.bannerDeal h2.orange{color: #D87D08}
+div.bannerDeal h2{
+    margin: 0 10px 15px 0;
+    font-size: 24px;
+    line-height: 130%;
+    color:#7A9D24;
+}
+
+
+
+div.bannerDeal div.dealInfosMain{
+    float: left;
+    width: 340px;
+    margin-top: 10px;
+}
+div.bannerDeal div.dealPrices{
+    float: left;
+    width: 200px;
+    margin-top: 10px;
+}
+div.bannerDeal div.dealSite{
+    float: left;
+    text-align: center; border-left: 1px solid #DEDEDE; border-right: 1px solid #DEDEDE; height: 55px; width: 125px;
+    margin-top: 10px;
+    padding-top: 20px;
+}
+div.bannerDeal div.dealBuy{
+    float: left;
+    width: 155px;
+    margin-top: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+div.bannerDeal div.dealFoot{
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 7px;
+    background-color: #DEE8C4;
+    overflow: hidden;
+    line-height: 100%;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+div.bannerDeal div.dealFoot span{
+    float: left;
+    height: 19px;
+    padding-right: 10px;
+    padding-top: 7px;
+}
+div.bannerDeal span.moneyIcon{
+    padding-left: 31px;
+    background: url(../images/slides/moneyIcon.gif) no-repeat;
+}
+div.bannerDeal span.couponIcon{
+    padding-left: 33px;
+    background: url(../images/slides/couponIcon.gif) 6px no-repeat;
+    border-left: 1px solid #AAAF9D;
+}
+div.bannerDeal span.dateIcon{
+    padding-left: 31px;
+    background: url(../images/slides/dateIcon.gif) 7px no-repeat;
+    border-left: 1px solid #AAAF9D;
+}
 
 div.bannerDeal div.dealInfos{
     float: right;
-    width: 400px;
+    width: 510px;
     margin-top: 10px;
 }
 
-div.bannerDeal div.priceSource, div.bannerDeal div.price, div.bannerDeal div.buyNow, div.bannerDeal div.dealQtd{
-    text-align: center;
-}
 div.bannerDeal div.price strong{
     font-size: 2em;
+    color: #7A9D24;
 }
 div.bannerDeal div.buyNow{
     margin-top: 20px;
+}
+div.bannerDeal div.dealDetails a{
+    color: #7A9D24;
+    text-decoration: underline;
 }
 div.bannerDeal div.buyNow a{
     font-size: 1.6em;

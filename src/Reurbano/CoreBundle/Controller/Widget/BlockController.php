@@ -79,7 +79,7 @@ class BlockController extends BaseController {
                     }
                     $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), false, 'price', 'asc');
                     if ($blockCheap && $blockCheap->getId() != $catSpecialId) { // Evita 2 ofertas iguais em blocos diferentes
-                        $ret[$c]['title'] = 'Mais Barato de '.$opts['cat']->getName();
+                        $ret[$c]['title'] = '+ Barato de '.$opts['cat']->getName();
                         $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
                         $ret[$c]['opts'] = array('deal' => $blockCheap);
                         $c++;
@@ -115,7 +115,7 @@ class BlockController extends BaseController {
                     }
                     $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), $opts['cat']->getId(), false, 'price', 'asc', $opts['id']);
                     if ($blockCheap && $blockCheap->getId() != $catSpecialId) { // Evita 2 ofertas iguais em blocos diferentes
-                        $ret[$c]['title'] = 'Mais Barato de '.$opts['cat']->getName();
+                        $ret[$c]['title'] = '+ Barato de '.$opts['cat']->getName();
                         $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
                         $ret[$c]['opts'] = array('deal' => $blockCheap);
                         $c++;
@@ -143,7 +143,7 @@ class BlockController extends BaseController {
             default :
                 $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'price', 'asc');
                 if ($blockCheap) {
-                    $ret[$c]['title'] = 'Mais Barato de '.$session->get('reurbano.user.cityName');
+                    $ret[$c]['title'] = '+ Barato de '.$session->get('reurbano.user.cityName');
                     $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:block';
                     $ret[$c]['opts'] = array('deal' => $blockCheap);
                     $c++;
@@ -165,6 +165,20 @@ class BlockController extends BaseController {
                 //$c++;
                 break;
         }
+        $ret[$c]['title'] = 'Nosso Vídeo';
+        $ret[$c]['content'] = '
+        <p><a href="http://www.youtube.com/watch?v=ui_Hhm0Nfks" target="_blank"><img title="Nosso Vídeo" src="/themes/reurbano/images/video.jpg" alt="Nosso Vídeo" width="217" height="132" /></a></p>
+        ';
+        $c++;
+        $ret[$c]['title'] = 'Parceiros';
+        $ret[$c]['content'] = '
+        <p><a href="http://www.peixeurbano.com.br/" target="_blank"><img title="Peixe Urbano" src="/themes/reurbano/images/peixe-urbano.png" alt="Peixe Urbano" width="218" height="53" /></a></p>
+<p><a href="http://www.groupon.com.br/" target="_blank"><img title="Groupon" src="/themes/reurbano/images/groupon.png" alt="Groupon" width="218" height="53" /></a></p>
+<p><a href="http://br.groupalia.com/" target="_blank"><img title="Groupalia" src="/themes/reurbano/images/groupalia.png" alt="Groupalia" width="218" height="53" /></a></p>
+<p><a href="http://www.clubedodesconto.com.br/" target="_blank"><img title="Clube do Desconto" src="/themes/reurbano/images/clube-do-desconto.png" alt="Clube do Desconto" width="218" height="53" /></a></p>
+<p><a href="http://www.clickon.com.br/" target="_blank"><img title="ClickOn" src="/themes/reurbano/images/clickon.png" alt="ClickOn" width="218" height="53" /></a></p>    
+        ';
+        $c++;
         //$ret[$c]['content'] = '<a id="twitterBlock" href="http://twitter.com/ReurbanoBrasil" target="_blank" title="Siga o Reurbano no Twitter!">Siga o Reurbano no Twitter!</a>';
         //$c++;
         //$ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';

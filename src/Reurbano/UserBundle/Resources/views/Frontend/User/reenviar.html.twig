@@ -3,6 +3,7 @@
 {{ "Reenvio de Código de ativação por email"|trans }}
 {% endblock title %}
 {% block content %}
+<div id="siteContent">
 <div class="grid_6">
     <h1>{{ "Reenvio de código de ativação por email"|trans }}</h1>
     <form action="{{ path('user_user_resendOk') }}" method="post" {{ form_enctype(form) }}>
@@ -14,5 +15,6 @@
 </div>
 <div class="grid_6">
     <div class='info_box info'><b>{{ "Importante"|trans }}</b><br />{{"Verifique se o email não foi bloqueado pelo sistema anti-SPAM de seu provedor de email."|trans }}</div>
+</div>
 </div>
 {% endblock content %}  

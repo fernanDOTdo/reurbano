@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<div id="siteContent">
 <h1 id="myOrderTitle">{{title}}</h1>
 <div id="myOrder">
     <div class="orderInfo">
@@ -58,4 +59,5 @@
 </div>
 <div class="clear"></div>
 <a class='button big red m10' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
+</div>
 {% endblock %}

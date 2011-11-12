@@ -1,6 +1,7 @@
 {% extends '::frontend.html.twig' %}
 {% block title %}{{ "Detalhes do usuário %username%"|trans({'%username%' : usuario.getUsername()}) }}{% endblock %}
 {% block content %}
+<div id="siteContent">
 <div class="grid_12">
     <h1>{{ "Detalhes do usuário %email%"|trans({'%email%' : usuario.getEmail()}) }}</h1>
     {{ "<b>Nome: </b>"}} {{ usuario.getName() }}
@@ -17,5 +18,6 @@
     {% endif %}
     <div class='clear'></div>
     <button class='button red' onclick='javascript:history.go(-1); return false;'>{{"Voltar"|trans}}</button>
+</div>
 </div>
 {% endblock content %}  

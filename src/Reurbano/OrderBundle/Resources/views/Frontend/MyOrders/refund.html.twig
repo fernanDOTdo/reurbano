@@ -1,6 +1,7 @@
 {% extends '::frontend.html.twig' %}
 
 {% block content %}
+<div id="siteContent">
 <h1 class="m10">{{title}}</h1>
 <div class="info m10">
 Você pode solicitar um reembolso quando não conseguir usar seus cupons.
@@ -9,4 +10,5 @@ Você pode solicitar um reembolso quando não conseguir usar seus cupons.
     {{ form_widget(form) }}
     <a class='button big red m10' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a> <button type="submit" class="button primary big green m10">Enviar</button>
 </form>
+</div>
 {% endblock %}

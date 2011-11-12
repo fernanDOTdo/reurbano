@@ -34,6 +34,7 @@ class ReurbanoCoreExtension extends Twig_Extension {
             'reurbano_select_city' => 'selectCity',
             'reurbano_get_cities' => 'getCities',
             'reurbano_get_categories' => 'getCategories',
+            'reurbano_menu'           => 'menu',
         );
 
         $functions = array();
@@ -82,6 +83,39 @@ class ReurbanoCoreExtension extends Twig_Extension {
     public function getCategories() {
         $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('ReurbanoDealBundle:Category');
         return $repo->findAllByOrder();
+    }
+    
+    public function menu($menu, $item = null, $current = null, $depth = 0, $template = 'list', $attributes = array())
+    {
+        list($bundle, $code) = explode('-', $menu);
+        $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('MastopMenuBundle:Menu');
+        $cache = $this->container->get('mastop')->getCache();
+        $menuService = $this->container->get('mastop.menu');
+        if (!$item) {
+            if ($cache->has($menu)) {
+                $document = $cache->get($menu);
+            } else {
+                $menuMain = $repo->findByBundleCode($bundle, $code);
+                if (!$menuMain) {
+                    throw new \Exception("Menu " . $menu . " não encontrado.");
+                }
+                $document = $menuService->prepareLinks($menuMain);
+                $cache->set($menu, $document, 604800); // Uma semana
+            }
+        } else {
+            if ($cache->has($menu . '.' . $item)) {
+                $document = $cache->get($menu . '.' . $item);
+            } else {
+                $menuMain = $repo->findByBundleCode($bundle, $code);
+                $menuItem = $repo->getChildrenByCode($menuMain, $item);
+                if (!$menuItem) {
+                    throw new \Exception("Menu " . $item . " de " . $menu . " não encontrado.");
+                }
+                $document = $menuService->prepareLinks($menuItem);
+                $cache->set($menu . '.' . $item, $document, 604800); // Uma semana
+            }
+        }
+        return $this->container->get('templating')->render('ReurbanoCoreBundle:Templates:' . $template . '.html.twig', array('menu' => $document, 'current' => $current, 'attrs' => $attributes, 'root' => true, 'depth' => $depth));
     }
 
     /**

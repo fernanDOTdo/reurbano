@@ -1,5 +1,6 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
+<div id="siteContent">
 <div class="grid_6">
     <h1>{{ "Edição do usuário %name%"|trans({'%name%':usuario.getName()}) }}</h1>
     <form action="{{ path('user_user_save' , {'id': usuario.getId()}) }}" method="post" {{ form_enctype(form) }}>
@@ -8,5 +9,6 @@
             <button class='button blue' type='submit'>{{ "Salvar"|trans }}</button> <a class='button red' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
         </div>
     </form>
+</div>
 </div>
 {% endblock content %}  

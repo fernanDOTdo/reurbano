@@ -1,0 +1,45 @@
+{# Este template ignora o depth #}
+<div class="menuFooter" {% for k, v in attrs %}{{k}}="{{v}}"{% endfor %}>
+{% for code, link in menu %}
+    {% if link.role is null or (link.role == 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted('ROLE_USER') == false) or (link.role != 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted(link.role)) %}
+        {%if loop.first%}
+            {% set class = 'grid_2 alpha' %}
+        {%elseif loop.last%}
+            {% set class = 'grid_2 omega' %}
+        {%else%}
+            {% set class = 'grid_3' %}
+        {%endif%}
+        {%if current == link.url or app.request.attributes.get('_route') == link.url%} 
+            {% set class = class ~ ' current' %}
+        {%endif%}
+        <div{%if class is not null%} class="{{class}}"{%endif%}>
+        {%if link.url is null%}
+            <strong>{{link.name}}</strong>
+        {%else%}
+        <a href="{% if link.route == true %}{{url(link.url)}}{%else%}{{link.url}}{%endif%}" {%if link.newwindow %}target="_blank"{%endif%}{%if link.title is not null %}title="{{link.title}}"{%endif%}>{{link.name}}</a>
+        {%endif%}
+        {%if link.children is not null %}
+        <ul>
+        {% for sub in link.children%}
+            {% if sub.role is null or (sub.role == 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted('ROLE_USER') == false) or (sub.role != 'IS_AUTHENTICATED_ANONYMOUSLY' and is_granted(sub.role)) %}
+                {% set subclass = null %}
+                {%if loop.first%}
+                    {% set subclass = 'first' %}
+                {%elseif loop.last%}
+                    {% set subclass = 'last' %}
+                {%endif%}
+                {%if current == sub.url or app.request.attributes.get('_route') == sub.url%}
+                    {% set subclass = subclass ~ ' current' %}
+                {%endif%}
+                <li{%if subclass is not null%} class="{{subclass}}"{%endif%}>
+                <a href="{% if sub.route == true %}{{url(sub.url)}}{%else%}{{sub.url}}{%endif%}" {%if sub.newwindow %}target="_blank"{%endif%}{%if sub.title is not null %}title="{{sub.title}}"{%endif%}>{{sub.name}}</a>
+                </li>
+            {% endif %}
+        {%endfor%}
+        </ul>
+        {% endif %}
+        </div>
+    {% endif %}
+{% endfor %}
+<div class="clearfix"></div>
+</div>

@@ -47,7 +47,7 @@
 }
 
 #nav .current a, #nav li:hover > a {
-  background: #d1d1d1;
+  background: #D87D08;
   /* for non-css3 browsers */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF8C00', endColorstr='#D87D08');
   /* for IE */
@@ -72,7 +72,7 @@
 }
 
 #nav ul a:hover {
-  background: #0399d4 !important;
+  background: #0186ba !important;
   /* for non-css3 browsers */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04acec', endColorstr='#0186ba');
   /* for IE */
@@ -88,7 +88,7 @@
 
 /* level 2 list */
 #nav ul {
-  background: #ddd;
+  background: #cfcfcf;
   /* for non-css3 browsers */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf');
   /* for IE */
