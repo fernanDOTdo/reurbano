@@ -32,7 +32,7 @@
                                     <span class="moneyIcon">Economize: <strong>{{banner.deal.discount}}%</strong></span>
                                     <span class="couponIcon">
                                     {% transchoice banner.deal.quantity with {'%count%' : banner.deal.quantity} %}
-                                        {0} Oferta vendida|{1} <strong>1</strong> cupom disponível|]1,Inf] <strong>%count%</strong> cupons disponíveis
+                                        {0} Oferta vendida|{1} <strong>1</strong> cupom|]1,Inf] <strong>%count%</strong> cupons
                                     {% endtranschoice %}
                                     </span>
                                     <span class="dateIcon">Validade: <strong>{{banner.deal.source.expiresAt|date('d/m/Y')}}</strong></span>
