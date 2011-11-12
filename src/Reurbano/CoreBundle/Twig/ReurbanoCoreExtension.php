@@ -90,7 +90,6 @@ class ReurbanoCoreExtension extends Twig_Extension {
         list($bundle, $code) = explode('-', $menu);
         $repo = $this->container->get('mastop')->getDocumentManager()->getRepository('MastopMenuBundle:Menu');
         $cache = $this->container->get('mastop')->getCache();
-        $menuService = $this->container->get('mastop.menu');
         if (!$item) {
             if ($cache->has($menu)) {
                 $document = $cache->get($menu);
@@ -99,7 +98,7 @@ class ReurbanoCoreExtension extends Twig_Extension {
                 if (!$menuMain) {
                     throw new \Exception("Menu " . $menu . " não encontrado.");
                 }
-                $document = $menuService->prepareLinks($menuMain);
+                $document = $this->prepareLinks($menuMain);
                 $cache->set($menu, $document, 604800); // Uma semana
             }
         } else {
@@ -111,11 +110,35 @@ class ReurbanoCoreExtension extends Twig_Extension {
                 if (!$menuItem) {
                     throw new \Exception("Menu " . $item . " de " . $menu . " não encontrado.");
                 }
-                $document = $menuService->prepareLinks($menuItem);
+                $document = $this->prepareLinks($menuItem);
                 $cache->set($menu . '.' . $item, $document, 604800); // Uma semana
             }
         }
         return $this->container->get('templating')->render('ReurbanoCoreBundle:Templates:' . $template . '.html.twig', array('menu' => $document, 'current' => $current, 'attrs' => $attributes, 'root' => true, 'depth' => $depth));
+    }
+    private function prepareLinks($menu) {
+        $childs = $menu->getChildren();
+        $ret = array();
+        if (count($childs) > 0) {
+            $childs = $childs->toArray();
+            usort($childs, function($a, $b) {
+                        return $a->getOrder() > $b->getOrder() ? 1 : -1;
+                    });
+            foreach ($childs as $child) {
+                $ret[$child->getCode()]['name'] = $child->getName();
+                $ret[$child->getCode()]['title'] = $child->getTitle();
+                $ret[$child->getCode()]['role'] = $child->getRole();
+                $ret[$child->getCode()]['url'] = $child->getUrl();
+                $ret[$child->getCode()]['newwindow'] = $child->getNewWindow();
+                $ret[$child->getCode()]['route'] = $child->getRoute();
+                if (count($child->getChildren()) > 0) {
+                    $ret[$child->getCode()]['children'] = $this->prepareLinks($child);
+                } else {
+                    $ret[$child->getCode()]['children'] = null;
+                }
+            }
+        }
+        return $ret;
     }
 
     /**
