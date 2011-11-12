@@ -123,10 +123,12 @@ div.bannerDeal div.dealThumb img{
 }
 
 div.bannerDeal h2{
-    margin: 0 10px 15px 0;
+    margin: 0 10px 0 0;
     font-size: 24px;
     line-height: 130%;
     color:#7A9D24;
+    max-height: 120px;
+    overflow: hidden;
 }
 
 
@@ -155,7 +157,7 @@ div.bannerDeal div.dealBuy{
     text-align: center;
 }
 div.bannerDeal div.dealFoot{
-    margin-top: 20px;
+    margin-top: 15px;
     margin-right: 10px;
     padding: 7px;
     background-color: #DEE8C4;
