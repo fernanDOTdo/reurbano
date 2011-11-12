@@ -218,10 +218,19 @@ $(function(){
 <div id="ft_wrap">
     <div class="clearfix"></div>
     <div id="ft" class="container_12">
-        <div id="ftBelt" class="grid_4 prefix_4 suffix_4"><a href="{{ path('_home') }}" title="Homepage">{{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }}</a></div>
-   </div>
-   {{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
-    <div class="container_12">
+        <div id="ftBelt" class="grid_5">
+			<div class="grid_5 alpha omega"><a href="{{ path('_home') }}" title="Homepage">{{ mastop_param('system.site.name') }} - {{ mastop_param('system.site.slogan') }}</a></div>
+			<div id="textoFooter1" class="grid_5 alpha omega">O ReUrbano é um portal que revende ofertas anunciadas nos</div>
+			<div id="textoFooter2" class="grid_5 alpha omega">sites de compra coletiva e clubes de compra do país.</div>
+		</div>
+		<div id="ftBelt2" class="grid_7">
+			{{mastop_menu('system-foot', null, null, 0, 'footer', {'id':'navFoot'})}}
+			<div id="FormasPagamento" class="grid_7 alpha omega"><a>Formas de Pagamento</a>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+   </div>   
+   <div id="BorderFooter" class="container_12">
         <div id="copyright" class="grid_9">
             {% block footer %} {{ mastop_param('system.site.footer') }} {% endblock%}
         </div>
@@ -232,6 +241,7 @@ $(function(){
 </div>
 {# /Footer #}
 </div>
+
 {#/Main #}
 {# Facebook div #}
 <div id="fb-root" class="hidden"></div>
