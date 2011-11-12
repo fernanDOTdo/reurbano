@@ -12,10 +12,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="grid_8">
+<div class="grid_9">
     {# Título e Share #}
-    <h1 class="grid_8" id="dealTitle">{{title}}</h1>
-    <div class="grid_8" id="dealShare">
+    <h1 class="grid_9" id="dealTitle">{{title}}</h1>
+    <div class="grid_9" id="dealShare">
         <fb:like href="{{dealLink}}" send="true" layout="button_count" width="55" show_faces="false" action="like" font="lucida grande"></fb:like>
         <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="ReurbanoBrasil">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
         <g:plusone size="medium"></g:plusone>
@@ -30,7 +30,7 @@
           })();
         </script>
     </div>
-    <div class="grid_5 alpha">
+    <div class="grid_6 alpha">
         {# Foto #}
         <div id="dealThumb">
             <img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.filename)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </div>
-    <div class="grid_5 alpha mT10">
+    <div class="grid_6 alpha mT10">
         <div id="dealDetails">
             <h2>Informações</h2>
         {{deal.getSource.getDetails|raw}}
@@ -88,7 +88,7 @@
             {%endif%}
         </div>
     </div>
-    <div class="grid_8 alpha omega" id="dealComments">
+    <div class="grid_9 alpha omega" id="dealComments">
     <fb:comments href="{{dealLink}}" num_posts="10" width="620"></fb:comments>
     </div>
     {%if is_granted('ROLE_ADMIN') %}
@@ -96,7 +96,7 @@
     <div class="info m10"><a href="{{path('admin_deal_deal_edit', {'id': deal.getId})}}" class="button green" title="Editar {{deal.getLabel}}">Editar</a></div>
     {%endif%}
 </div>
-<div class="grid_4">
+<div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat, 'id': deal.getId}} %}
 </div>
 {% endblock %}

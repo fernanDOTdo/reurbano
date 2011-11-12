@@ -13,7 +13,7 @@
 {% endjavascripts %}
 {% endblock%}
 {% block content %}
-<div class="content box grid_8">
+<div class="content box grid_9">
     <h1>{{"Informe os detalhes de sua oferta"|trans}}</h1>
     <form action="{{ path('deal_sell_save') }}" method="post" id="sellDetails" {{ form_enctype(form) }} style="margin-left:20px" >
         <img src='{{ mastop_param('deal.all.dealurl') ~ source.thumb }}' alt="{{ source.getTitle() }}" class="m10" />
@@ -42,7 +42,7 @@
         </div>
     </form>
 </div>
-<div class="grid_4">
+<div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'sell'} %}
 </div>
 {% endblock %}

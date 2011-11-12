@@ -3,10 +3,10 @@
 {% block title %}Resultado da Busca por "{{q}}" em {{app.session.get('reurbano.user.cityName')}}{% endblock %}
 
 {% block content %}
-<div class="grid_8">
+<div class="grid_9">
 {% render 'ReurbanoDealBundle:Widget\\Deal:render' with{'limit': mastop_param('deal.all.perpage'), 'orderBy': app.request.cookies.get('dealsort')|default(mastop_param('deal.all.dealsort')), 'search': q} %}
 </div>
-<div class="grid_4">
+<div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'search', 'opts': {'q': q}} %}
 </div>
 {% endblock %}

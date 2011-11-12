@@ -52,33 +52,6 @@ class BlockController extends BaseController {
         $ret = array();
         $c = 0;
         switch ($area) {
-            case 'topL':
-                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true, 'source.totalcoupons');
-                $blockSpecialId = null;
-                if ($blockSpecial) {
-                    $blockSpecialId = $blockSpecial->getId();
-                    $ret[$c]['title'] = 'Oferta em Destaque';
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:blockTop';
-                    $ret[$c]['opts'] = array('deal' => $blockSpecial);
-                    $c++;
-                }
-                return array('blocks' => $ret, 'area' => $area);
-                break;
-            case 'topR':
-                $blockSpecial = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, true, 'source.totalcoupons');
-                $blockSpecialId = null;
-                if ($blockSpecial) {
-                    $blockSpecialId = $blockSpecial->getId();
-                }
-                $blockCheap = $this->mongo('ReurbanoDealBundle:Deal')->findOneByCityCat($session->get('reurbano.user.cityId'), null, false, 'source.totalcoupons', 'desc', $blockSpecialId);
-                if ($blockCheap) {
-                    $ret[$c]['title'] = 'Mais Procurado em '.$session->get('reurbano.user.cityName');
-                    $ret[$c]['widget'] = 'ReurbanoDealBundle:Widget\\Deal:blockTop';
-                    $ret[$c]['opts'] = array('deal' => $blockCheap);
-                    $c++;
-                }
-                return array('blocks' => $ret, 'area' => $area);
-                break;
             case 'city': // Home de cada cidade
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
                     $nacionalId = $session->get('reurbano.user.nacional');
@@ -187,15 +160,13 @@ class BlockController extends BaseController {
                         }
                     }
                 }
-                $ret[$c]['title'] = 'Bloco de Exemplo para a Home';
-                $ret[$c]['content'] = 'Conteúdo de Exemplo para a Home';
-                $c++;
+                //$ret[$c]['title'] = 'Bloco de Exemplo para a Home';
+                //$ret[$c]['content'] = 'Conteúdo de Exemplo para a Home';
+                //$c++;
                 break;
         }
-        $ret[$c]['content'] = '<a id="twitterBlock" href="http://twitter.com/ReurbanoBrasil" target="_blank" title="Siga o Reurbano no Twitter!">Siga o Reurbano no Twitter!</a>';
-        $c++;
-        $ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebookFans';
-        $ret[$c]['opts'] = array('profile' => '188401247891549', 'url' => 'http://www.facebook.com/recompracoletiva', 'css' => 'http://www.mastop.com.br/fernando/css/facebook.css');
+        //$ret[$c]['content'] = '<a id="twitterBlock" href="http://twitter.com/ReurbanoBrasil" target="_blank" title="Siga o Reurbano no Twitter!">Siga o Reurbano no Twitter!</a>';
+        //$c++;
         //$ret[$c]['widget'] = 'ReurbanoCoreBundle:Widget\\Block:facebook';
         //$ret[$c]['opts'] = array('url' => 'http://www.facebook.com/recompracoletiva', 'width' => '292', 'border' => '#FFFFFF');
         return array('blocks' => $ret, 'area' => $area);

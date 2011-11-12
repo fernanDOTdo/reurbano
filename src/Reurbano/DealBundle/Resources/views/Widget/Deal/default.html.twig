@@ -18,7 +18,7 @@
 {%for deal in deals%}
 {%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
 <div class="deal {{deal.getDiscountType }}">
-    <div class="grid_2 alpha dealThumb">
+    <div class="grid_3 alpha dealThumb">
     {#Imagem#}
             <a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
     </div>
@@ -38,7 +38,7 @@
             <div class="buyNow"><a rel="nofollow" class="button {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
     </div>
     <div class="clear"></div>
-    <div class="grid_2 alpha dealSource">
+    <div class="grid_3 alpha dealSource">
             do <span>{{deal.getSource.getSite.getName}}</span>
     </div>
     <div class="grid_2 dealExpires">

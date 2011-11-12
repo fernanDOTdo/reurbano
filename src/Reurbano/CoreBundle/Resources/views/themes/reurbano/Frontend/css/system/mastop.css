@@ -2,10 +2,10 @@
 .dp50 {width:50%;  float:left;  display: inline;  *margin-right:-1px; }
 /* Geral */
 body {
-  font-family: arial,helvetica,freesans,sans-serif;
+  font-family: tahoma,arial,helvetica,freesans,sans-serif;
   background-color: #FFF;
   color: #666;
-  background: url(../images/header/bg.png) repeat-x;
+  background: url(../images/header/bg.png) repeat;
 }
 
 a {
@@ -147,11 +147,11 @@ td{padding: 3px;}
 
 
 #logo {height: 87px;}
-#logo a{height: 87px; width: 380px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden;}
+#logo a{height: 87px; width: 380px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden; margin-top: 10px;}
 #cities{height: 58px; line-height: 40px;}
 #login{height: 28px; text-align: right;}
 #menuTop, #menuMain{height: 34px;}
-#menuMain{}
+#menuMain, #sellButton{ margin-top: 5px; }
 #breadcrumbs{height: 25px; padding-top: 10px;}
 #breadcrumbs div{float: left; margin-right: 5px;}
 #breadcrumbs div span{font-weight: 700; font-size: 1.1em;}
@@ -166,11 +166,11 @@ td{padding: 3px;}
 #headUser{text-align: right; margin-top: 5px; height: 32px;}
 #headUser span{margin-right: 5px}
 
-#search{height: 83px;}
-#search form{margin-left: 45px; height: 65px; padding-top: 18px;}
+#search{height: 40px;}
+#search form{margin-left: 45px; height: 40px; margin-top: 49px;}
 #searchDiv{float: right; position: relative; width: 400px;}
-#searchDiv button{position: absolute; right: 3px; margin-top: 6px;}
-#search #q{width: 317px; padding-left: 10px; height: 29px;
+#searchDiv button{position: absolute; right: 1px; margin-top: 5px;}
+#search #q{width: 317px; padding-left: 10px; height: 27px;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -198,12 +198,12 @@ td{padding: 3px;}
 #cityLabel{
     font-weight: 700;
     font-size: 1.1em;
-    margin-top: 5px;
+    margin-top: 15px;
     float: left;
 }
 #cityCombo{
     font-size: 1.5em;
-    margin: 10px 0 0 10px;
+    margin: 20px 0 0 10px;
     float: left;
     width: 270px;
 }
@@ -213,8 +213,8 @@ td{padding: 3px;}
 
 
 #listCities{
-    background: #15567F;
-    box-shadow: 0 -2px 2px #0D0D0D;
+    background: #ECECEC;
+    box-shadow: 0 2px 2px #4b4b4b;
     padding: 5px 10px;
     width: 920px;
     float: left;
@@ -222,7 +222,7 @@ td{padding: 3px;}
     display: none;
 }
 #listCities h2{
-    color: #FFF;
+    color: #777;
     font-size: 1.3em;
     margin-bottom: 0.5em;;
 }
@@ -237,23 +237,23 @@ td{padding: 3px;}
     margin: 0;
 }
 #listCities ul li a{
-    background: #6c9ab7;
-    color: #003454;
+    background: #adadad;
+    color: #fff;
     display: block;
-    border: 1px solid #71a4c5;
+    border: 1px solid #888;
     margin: 3px;
     padding: 1px 3px;
     font-weight: 700;
 }
 #listCities ul li a:hover{
     background: #FFF;
-    color: #15567F;
-    border: 1px solid #2090D6;
+    color: #666;
+    border: 1px solid #666;
 }
 #listCities ul li a.selected{
     background: #FFF;
     color: #666;
-    border: 1px solid #333;
+    border: 1px solid #999;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 #sellButton{
@@ -320,8 +320,8 @@ td{padding: 3px;}
 .deal .dealTitle a{font-size: 15px; font-weight: 700; line-height: 18px;}
 .deal .dealTitle a:hover{text-decoration: none;}
 .deal .dealThumb {position: relative;}
-.deal .dealThumb a{width: 140px; height: 100px; float: left; overflow: hidden;}
-.deal .dealThumb a img{width: 140px; height: 100px;}
+.deal .dealThumb a{width: 220px; height: 140px; float: left; overflow: hidden;}
+.deal .dealThumb a img{width: 220px; height: 140px;}
 
 span.discount{
     color: #FFF;
@@ -412,6 +412,12 @@ div.blockContent div.dealThumb a{
 div.blockContent div.dealThumb a img, div.blockContent div.dealThumb a{
     height: 60px;
     width: 80px;
+}
+div.blockContent div.price strong{
+    font-size: 14px;
+}
+div.blockContent div.priceSource strong{
+    font-size: 12px;
 }
 div.blockContent span.discount{
     font-weight: 400;
@@ -610,15 +616,21 @@ table#dealCart td{
 
 /* Footer */
 #ft_wrap { /* Div que cobre todo o Footer */
-  background: url(../images/footer/bg.png) repeat-x;
+  background: #1a1a1a url(../images/footer/bg.png) repeat-x; height: 250px;
 }
 #ft {/* Div que cobre o footer 960 */}
-#ftBelt{height: 118px; margin-bottom: 15px;}
-#ftBelt a{width: 300px; height: 118px; float: left; background: url(../images/footer/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden;}
-#navFoot{text-align: left; border-bottom: 1px solid #BBB; margin-bottom: 10px;}
-#navFoot ul li{list-style: none outside none; margin-left: 15px;}
-
-#copyright {text-shadow: 1px 1px 0 #FFF;color: #999;}
-#poweredBy{text-align: right;}
+#ftBelt{height: 172px; margin-bottom: 15px;}
+#ftBelt a{width: 356px; height: 85px; float: left; background: url(../images/header/ReUrbano.png) no-repeat; text-indent: -9999em; overflow: hidden; margin-top: 25px}
+#navFoot{text-align: left; margin-bottom: 10px; margin-top: 25px; color: #FFF; font-size: 1.1em}
+#navFoot a{text-align: left; color: #BABABA}
+#navFoot a:hover{text-align: left; color: #fff}
+#navFoot ul li{list-style: none outside none; margin-left: 5px;}
+#navFoot strong{font-weight:400;}
+#textoFooter1 {color: #9A9A9A; margin-top: 10px; line-height: 10px}
+#textoFooter2 {color: #9A9A9A; line-height: 20px}
+#FormasPagamento a{width: 341px; height: 24px; float: left; background: url(../images/footer/formas-pagamento.png) no-repeat; line-height: 999em; overflow: hidden;}
+#BorderFooter { border-top: 1px solid #333; margin-top: 5px;}
+#copyright {color: #9A9A9A; margin-top: 5px;}
+#poweredBy{text-align: right; margin-top: 5px;}
 #poweredBy a{width: 177px; height: 28px; float: right; background: url(../images/footer/mastop-internet-development.png) no-repeat; line-height: 999em; overflow: hidden;}
 /* /Footer */
