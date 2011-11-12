@@ -170,7 +170,7 @@ class BlockController extends BaseController {
         <p><a href="http://www.youtube.com/watch?v=ui_Hhm0Nfks" target="_blank"><img title="Nosso Vídeo" src="/themes/reurbano/images/video.jpg" alt="Nosso Vídeo" width="217" height="132" /></a></p>
         ';
         $c++;
-        $ret[$c]['title'] = 'Parceiros';
+        $ret[$c]['title'] = 'Compras Coletivas';
         $ret[$c]['content'] = '
         <p><a href="http://www.peixeurbano.com.br/" target="_blank"><img title="Peixe Urbano" src="/themes/reurbano/images/peixe-urbano.png" alt="Peixe Urbano" width="218" height="53" /></a></p>
 <p><a href="http://www.groupon.com.br/" target="_blank"><img title="Groupon" src="/themes/reurbano/images/groupon.png" alt="Groupon" width="218" height="53" /></a></p>
