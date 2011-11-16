@@ -66,7 +66,7 @@ class CancelOrdersCommand extends ContainerAwareCommand {
         $orders = $orderRepo->createQueryBuilder()
                 ->field('created')->lte($date) // Data de criação for menor ou igual ao definido na opção "days"
                 ->field('status.id')->equals(1) // Status for igual a 1 (Pendente)
-                ->field('payment.data.status_description')->notEqual("in_proccess") // pedidos que não estejam "processando" pelo Mercado Pago
+                ->field('payment.data.status_description')->notEqual("in_process") // pedidos que não estejam "processando" pelo Mercado Pago
                 ->getQuery()
                 ->execute();
         if($orders->count()){

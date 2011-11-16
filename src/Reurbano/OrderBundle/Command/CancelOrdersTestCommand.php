@@ -71,10 +71,11 @@ class CancelOrdersTestCommand extends ContainerAwareCommand {
         $orders1 = $orderRepo->createQueryBuilder()
                 ->field('created')->lte($date) // Data de criação for menor ou igual ao definido na opção "days"
                 ->field('status.id')->equals(1) // Status for igual a 1 (Pendente)
-                ->field('payment.data.status_description')->notEqual("in_proccess") // pedidos que não estejam "processando" pelo Mercado Pago
+                ->field('payment.data.status_description')->notEqual("in_process") // pedidos que não estejam "processando" pelo Mercado Pago
                 ->getQuery()
                 ->execute();
         if($orders->count()){
+            $output->writeln("<info>[0] ".$orders->count()." Pedidos</info>");
             foreach($orders as $order){
                 $output->writeln("[0] Pedido ".$order->getId());
             }
@@ -82,6 +83,7 @@ class CancelOrdersTestCommand extends ContainerAwareCommand {
             $output->writeln("<error>[0] Nenhum Pedido Encontrado</error>");
         }
         if($orders1->count()){
+            $output->writeln("<info>[1] ".$orders1->count()." Pedidos</info>");
             foreach($orders1 as $order){
                 $output->writeln("[1] Pedido ".$order->getId());
             }
