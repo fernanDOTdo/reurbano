@@ -50,7 +50,13 @@ $('form#orderFinish').submit(function(e){
     </tr>
     <tr>
         <td><div style="position:relative"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" width="140" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></div></td>
-        <td style="width: 450px">{{deal.getLabel}}</td>
+        <td style="width: 450px">{{deal.getLabel}}
+        {%if deal.obs != ''%}
+            <div class="info mT10"><strong>Obs. do Vendedor</strong><br />
+            {{deal.obs|nl2br}}
+            </div>
+        {%endif%}
+        </td>
         <td class="aC">
             <select name="qtd" id="dealQtd">
             {% for i in 1..deal.getQuantity%}

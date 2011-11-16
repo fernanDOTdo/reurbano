@@ -64,7 +64,7 @@
             <span><strong>Validade: </strong> {{deal.getSource.getExpiresAt|date('d/m/Y')}}</span>
         </div>
     </div>
-    {%if orderBy == "sortRanking" and loop.index <= 3%}
+    {%if orderBy == "sortRanking" and pg == 1 and loop.index <= 3%}
          <div class="dealRank dealRank-{{loop.index}}">{{loop.index}}º Lugar</div>
     {%endif%}
     <div class="clear"></div>

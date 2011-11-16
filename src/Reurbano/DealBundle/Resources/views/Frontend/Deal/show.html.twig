@@ -69,6 +69,10 @@
         <div id="dealDetails">
             <h2>Informações</h2>
         {{deal.getSource.getDetails|raw}}
+        {%if deal.obs != ''%}
+            <h2>Observações do Vendedor</h2>
+            <p>{{deal.obs|nl2br}}</p>
+        {%endif%}
         {%if deal.getSource.getBusinessAddress != ''%}
             <p><img src="http://maps.google.com/maps/api/staticmap?center={{deal.getSource.getBusinessAddress}}&zoom=16&markers=color:orange|label:R|{{deal.getSource.getBusinessAddress}}&size=380x260&sensor=false" /></p>
         {%endif%}
