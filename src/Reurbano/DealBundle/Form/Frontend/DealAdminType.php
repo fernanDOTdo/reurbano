@@ -10,7 +10,7 @@
  *                                                                 88           
  *                                                                 88           
  * 
- * Reurbano/DealBundle/Form/Frontend/DealType.php
+ * Reurbano/DealBundle/Form/Frontend/DealAdminType.php
  *
  * Formulário de envio de nova oferta
  *  
@@ -38,10 +38,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Reurbano\DealBundle\Form\Frontend\SourceType;
 
-class DealType extends AbstractType {
+class DealAdminType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden')
+                ->add('user', 
+                      'document', 
+                      array(
+                          'label'         => 'Usuário',
+                          'class'         => 'Reurbano\\UserBundle\\Document\\User', 
+                          'property'      => 'email', 
+                          'property_path' => false,
+                          'attr'          => array(
+                                'class' => 'chzn-select',
+                          )
+                      )
+                )
                 ->add('quantity', 'integer', array('label'=>'Quantidade disponível','attr'=> array('class' => 'small')))
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
                 ->add('source', new SourceType(), array('label'=>'', 'document_manager' => $options['document_manager']))

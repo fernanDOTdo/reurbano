@@ -120,6 +120,18 @@ class DealRepository extends BaseRepository
     }
     
     /**
+     * Pega todos ordenado por CREATED
+     *
+     * @return Deal ou null
+     **/
+    public function findAllNotChecked()
+    {
+        $deal = $this->createQueryBuilder()
+                ->field('checked')->equals(false);
+        return $deal->getQuery()->execute();
+    }
+    
+    /**
      * Procura os deals de um user, com opções de ativo(sim/não) quantidade(Maior que 0 ou não)
      * 
      * @param mongoID $id

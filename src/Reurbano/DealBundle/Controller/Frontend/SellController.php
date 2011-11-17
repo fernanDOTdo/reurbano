@@ -52,6 +52,7 @@ use Reurbano\DealBundle\Util\Upload;
 
 use Reurbano\DealBundle\Form\Frontend\SellType;
 use Reurbano\DealBundle\Form\Frontend\DealType;
+use Reurbano\DealBundle\Form\Frontend\DealAdminType;
 
 
 
@@ -177,12 +178,19 @@ class SellController extends BaseController
                 $sourceEmbed->setCategory(null);
             }
             $deal->setSource($sourceEmbed);
-            $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => 'crawler'));
+            $admin = false;
+            if($this->hasRole('ROLE_ADMIN') || $this->hasRole('ROLE_SUPERADMIN')){
+                $sourceForm = $this->createForm(new DealAdminType(),$deal, array('document_manager' => 'crawler'));
+                $admin = true;
+            }else{
+                $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => 'crawler'));
+            }
         }else{
             return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Selecione uma oferta', 'notice');
         }
         return array(
             'title'  => $title,
+            'admin'  => $admin,
             'source' => $source,
             'form'   => $sourceForm->createView(),
         );
@@ -200,8 +208,12 @@ class SellController extends BaseController
         $crawlerDM = $this->mastop()->getDocumentManager('crawler');
         $request = $this->get('request');
         $form = $this->createForm(new DealType(),null, array('document_manager' => 'crawler'));
-        $user = $this->get('security.context')->getToken()->getUser();
         $data = $this->get('request')->request->get($form->getName());
+        if($data['user']){
+            $user = $this->mongo('ReurbanoUserBundle:User')->find($data['user']);
+        }else{
+            $user = $this->get('security.context')->getToken()->getUser();
+        }
         if($request->getMethod() == 'POST'){
             $mail = $this->get('mastop.mailer');
             $deal = new Deal();
