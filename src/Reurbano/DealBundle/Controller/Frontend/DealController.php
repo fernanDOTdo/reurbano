@@ -98,7 +98,7 @@ class DealController extends BaseController
             throw $this->createNotFoundException('Oferta não encontrada. ');
         }
         // Se o Deal está vendido, inativo ou vencido, procura outro deal semelhante e redireciona
-        if($deal->getQuantity() < 1 || $deal->getActive() == false || $deal->getSource()->getExpiresAt()->getTimestamp() < time()){
+        if($deal->getQuantity() < 1 || $deal->getActive() == false || $deal->getSource()->getExpiresAt()->getTimestamp() < time() || $deal->getChecked() == false){
             if($dealRelated = $this->mongo('ReurbanoDealBundle:Deal')->findRelated($deal)){
                 return $this->redirect($this->generateUrl('deal_deal_show', array('city'=>$city, 'category'=>$category, 'slug'=>$dealRelated->getSlug())), 302);
             }

@@ -76,16 +76,19 @@ class CancelOrdersCommand extends ContainerAwareCommand {
                 $orderLinkAdmin = $container->get('router')->generate('admin_order_order_view', array('id'=>$order->getId()), true);
                 $output->writeln("Cancelando Pedido ".$order->getId());
                 // Coloca a quantidade de cupons do pedido de volta na oferta
-                $dealRepo->updateQuantity($order->getDeal()->getId(), $order->getDeal()->getQuantity() + $order->getQuantity());
+                $deal = $order->getDeal();
+                $deal->setQuantity($deal->getQuantity() + $order->getQuantity());
+                //$dealRepo->updateQuantity($order->getDeal()->getId(), $order->getDeal()->getQuantity() + $order->getQuantity());
                 // Reativa a oferta
-                $dealRepo->updateActive($order->getDeal()->getId(), true);
+                $deal->setActive(true);
+                //$dealRepo->updateActive($order->getDeal()->getId(), true);
                 // Cancela a venda
                 $orderRepo->cancelOrder($order);
                 // Adiciona o status em StatusLog
                 $statusLog = new StatusLog();
                 $statusLog->setUser($order->getUser());
                 $order->addStatusLog($statusLog);
-                $dm->persist($order);
+                //$dm->persist($order);
                 $dm->flush();
                 // Notifica comprador do cancelamento
                 $nBuyer = $container->get('mastop.mailer');
