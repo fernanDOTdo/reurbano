@@ -187,7 +187,7 @@ class Voucher
      */
     public function removeOrder()
     {
-        unset($this->order);
+        $this->order = null;
     }
     
 }
