@@ -22,6 +22,11 @@
         {{ source.getTitle() }}<br />
         <h3>Site</h3>
         {{ source.getSite.getName }} - {{ source.getCity.getName }}<br />
+        {% if admin %}
+            <div>
+                {{ form_row(form.user) }}
+            </div>
+        {% endif %}
         <div id="dealSource" class="mT10">
                 {{ form_widget(form.source) }}
         </div>

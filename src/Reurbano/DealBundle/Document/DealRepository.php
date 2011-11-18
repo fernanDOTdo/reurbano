@@ -69,6 +69,7 @@ class DealRepository extends BaseRepository
                 ->getQuery()
                 ->execute();
     }
+    
     /**
      * Ativa / Desativa a Oferta
      */
@@ -120,6 +121,37 @@ class DealRepository extends BaseRepository
     }
     
     /**
+     * Pega todos ordenado por CREATED
+     *
+     * @return Deal ou null
+     **/
+    public function findAllChecked($checked = true)
+    {
+        if($checked){
+            $deal = $this->createQueryBuilder()
+                    ->field('checked')->equals(true)
+                    ->sort('createdAt', 'desc');
+        }else{
+            $deal = $this->createQueryBuilder()
+                    ->field('checked')->equals(false)
+                    ->sort('createdAt', 'desc');
+        }
+        return $deal->getQuery()->execute();
+    }
+    
+    /**
+     * Checked Ativo / Desativo
+     */
+    public function updateChecked($id, $checked = true){
+        return $this->createQueryBuilder()
+                ->update()
+                ->field('id')->equals($id)
+                ->field('checked')->set($active)
+                ->getQuery()
+                ->execute();
+    }
+    
+    /**
      * Procura os deals de um user, com opções de ativo(sim/não) quantidade(Maior que 0 ou não)
      * 
      * @param mongoID $id
@@ -142,7 +174,6 @@ class DealRepository extends BaseRepository
     }
     
     public function findBySource($id){
-        
         return $this->findBy(array('source.id'=>new \MongoId($id)));
     }
     

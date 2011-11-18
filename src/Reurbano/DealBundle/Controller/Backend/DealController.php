@@ -24,7 +24,7 @@ class DealController extends BaseController {
     public function indexAction() {
         $title = 'Administração de Ofertas';
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
-        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllChecked(true);
         return array(
             'ofertas' => $ofertas,
             'title' => $title,
@@ -32,6 +32,21 @@ class DealController extends BaseController {
         );
     }
 
+    /**
+     * @Route("/a-conferir", name="admin_deal_deal_checked")
+     * @Template()
+     */
+    public function checkedAction() {
+        $title = 'Administração de Ofertas a conferir';
+        //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
+        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllChecked(false);
+        return array(
+            'ofertas' => $ofertas,
+            'title' => $title,
+            'current' => 'admin_deal_deal_index',
+        );
+    }
+    
     /**
      * @Route("/novo", name="admin_deal_deal_new")
      * @Route("/editar/{id}", name="admin_deal_deal_edit")
@@ -170,6 +185,20 @@ class DealController extends BaseController {
         $dm->persist($banner);
         $dm->flush();
         return $this->redirect($this->generateUrl('admin_deal_deal_index'));
+    }
+    
+    /**
+     * Checked Ativo
+     * 
+     * @Route("/checado/{deal}", name="admin_deal_deal_set_checked")
+     */
+    public function setCheckedAction($deal){
+        $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($deal);
+        $dm = $this->dm();
+        $deal->setChecked(true);
+        $dm->persist($deal);
+        $dm->flush();
+        return $this->redirect($this->generateUrl('admin_deal_deal_checked'));
     }
 
 }

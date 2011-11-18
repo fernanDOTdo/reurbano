@@ -42,6 +42,7 @@ class DealController extends BaseController {
         }
         $dealRepo = $this->mongo("ReurbanoDealBundle:Deal");
         $dealQuery = $dealRepo->createQueryBuilder();
+        $dealQuery->field('checked')->equals(true);
         if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
             $dealQuery->field('source.city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
         } else {
