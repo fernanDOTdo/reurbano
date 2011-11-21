@@ -14,6 +14,12 @@
 {% block content %}
 <div id="siteContent">
 <div class="grid_9">
+    {%if deal.checked == false%}
+        <div class="info" style="background-color: #FFF9D7; border: 1px solid #E2C822;"><strong>ATENÇÃO:</strong>
+            Esta oferta está <strong>aguardando aprovação</strong> dos administradores do site e não pode ser comprada agora. <br />
+            Assim que esta oferta for aprovada, a compra será liberada nesta mesma página. Volte dentro de instantes!
+        </div>
+    {%endif%}
     {# Título e Share #}
     <h1 class="grid_9" id="dealTitle">{{title}}</h1>
     <div class="grid_9" id="dealShare">
@@ -42,7 +48,9 @@
         <div id="dealPrices" class="{{deal.getDiscountType }}">
             <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
             <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
-            {%if dontBuy is not defined%}
+            {%if deal.checked == false%}
+            <div class="buyNow"><a rel="nofollow" class="button big silver disable primary" href="#" onclick="alert('Esta oferta está aguardando aprovação dos administradores do site.');">Breve!</a></div>
+            {%elseif dontBuy is not defined%}
             <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }} primary" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
             {%else%}
             <div class="buyNow"><a rel="nofollow" class="button big gray primary disable" href="#" style="cursor:default;">Vendido</a></div>

@@ -1,5 +1,25 @@
 {% extends '::frontend.html.twig' %}
-
+{#Template da Cidade#}
+{% block javascriptsHead %}
+    {% javascripts '@ReurbanoCoreBundle/Resources/public/js/jtweets/jquery.jtweetsanywhere-1.2.1.min.js' output='static/system/js/jtweets.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript" src="http://platform.twitter.com/anywhere.js?id={{ mastop_param('user.all.twitterappid') }}&v=1&lang=pt"></script>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+    $('#jTweetsAnywhere').jTweetsAnywhere({
+        username: 'reurbanoBrasil',
+        count: 5,
+        showFollowButton: true
+    });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/jtweets/jquery.jtweetsanywhere-1.2.1.css' output='static/system/css/jtweets.css' filter='?yui_css' %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
 {% block title %}Ofertas em {{app.session.get('reurbano.user.cityName')}}{% endblock %}
 
 {% block content %}
@@ -8,5 +28,22 @@
 </div>
 <div class="grid_3">
 {% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'city'} %}
+</div>
+<div class="clear"></div>
+<div class="grid_4 ftColumn">
+    <h4>Facebook</h4>
+    <fb:like-box href="http://www.facebook.com/recompracoletiva" width="300" height="340" show_faces="true" border_color="#DFDFDF" stream="false" header="false"></fb:like-box>
+</div>
+<div class="grid_4 ftColumn">
+    <h4>Twitter</h4>
+    <div id="jTweetsAnywhere"></div>
+</div>
+<div class="grid_4 ftColumn">
+    <h4>Reurbano na Mídia</h4>
+    <div class="" id="Midia">
+    <a href="http://www.brasileconomico.com.br/noticias/estreia-hoje-site-de-recompra-de-cupons-de-compra-coletiva_109194.html" target="_blank" id="MidEco"><img title="Brasil Econômico" src="/themes/{{mastop_theme_name()}}/images/brasil-economico.png" alt="Brasil Econômico" /></a>
+    <a href="http://idgnow.uol.com.br/mercado/2011/11/09/novo-site-que-facilitar-revenda-de-cupons-de-compras-coletivas/" target="_blank" id="MidIg"><img title="IDG NOW!" src="/themes/{{mastop_theme_name()}}/images/idg-now.png" alt="IDG NOW!" /></a>
+    <a href="http://colunistas.ig.com.br/guilhermebarros/2011/11/10/site-promove-negociacao-de-cupons-de-compras-coletivas-entre-consumidores/" target="_blank" id="MidIdg"><img title="IG" src="/themes/{{mastop_theme_name()}}/images/ig.png" alt="IG" /></a>
+    </div>
 </div>
 {% endblock %}
