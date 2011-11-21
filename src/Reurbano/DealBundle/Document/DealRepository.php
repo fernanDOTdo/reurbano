@@ -38,10 +38,10 @@ class DealRepository extends BaseRepository
     public function findRelated($deal){
         return $this->createQueryBuilder()
                 ->field('id')->notEqual($deal->getId())
+                ->field('checked')->equals(true)
                 ->field('active')->equals(true)
                 ->field('quantity')->gt(0)
                 ->field('source._id')->equals(new \MongoId($deal->getSource()->getId()))
-                ->field('source.expiresAt')->gt($deal->getSource()->getExpiresAt())
                 ->sort('special', 'desc')
                 ->sort('views', 'desc')
                 ->getQuery()
@@ -96,6 +96,7 @@ class DealRepository extends BaseRepository
      */
     public function findOneByCityCat($city, $cat = null, $special = false, $sort = 'special', $order = 'desc', $notId = null){
         $deal = $this->createQueryBuilder()
+                ->field('checked')->equals(true)
                 ->field('source.city.$id')->equals(new \MongoId($city))
                 ->field('active')->equals(true)
                 ->field('quantity')->gt(0);
@@ -121,7 +122,7 @@ class DealRepository extends BaseRepository
     }
     
     /**
-     * Pega todos ordenado por CREATED
+     * Pega todos conferidos ou não
      *
      * @return Deal ou null
      **/
@@ -169,7 +170,7 @@ class DealRepository extends BaseRepository
         if($quantity){
             $deal->field('quantity')->gt(0);
         }
-        $deal->sort('source.expiresAt', 'asc');
+        $deal->sort('checked', 'asc')->sort('active', 'desc')->sort('createdAt', 'desc');
         return $deal->getQuery()->execute();
     }
     

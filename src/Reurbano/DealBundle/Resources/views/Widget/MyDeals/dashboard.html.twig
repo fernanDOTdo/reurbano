@@ -4,9 +4,9 @@
                 <th colspan="2">{{ "Descrição"|trans }}</th> 
                 <th>{{ "Validade"|trans }}</th> 
                 <th>{{ "Preço"|trans }}</th> 
-                <th class="center">{{ "Quantidade"|trans }}</th> 
+                <th class="aC">{{ "Quantidade"|trans }}</th> 
                 <th>{{ "Publicação"|trans }}</th> 
-                <th class="last center">{{ "Ações"|trans }}</th> 
+                <th class="last aC">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
 {% for deal in deal %}
@@ -21,17 +21,19 @@
             <td>
                 {{ deal.source.getExpiresAt().getTimestamp()|date("d/m/Y")  }}
             </td>
-            <td>
+            <td class="aC">
                 {{ deal.getPrice()|money  }}
             </td>
-            <td class="center">
+            <td class="aC">
                 {{ deal.getQuantity() }}
             </td>
             <td>
                 {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
             </td>
-            <td class="center" nowrap="nowrap">
-                {% if "now"|date('Y-m-d') < deal.source.expiresAt|date('Y-m-d') %}
+            <td class="aC" nowrap="nowrap">
+                {% if deal.checked == false %}
+                    <strong style="color:red">Aguardando Aprovação</strong>
+                {% elseif "now"|date('Y-m-d') < deal.source.expiresAt|date('Y-m-d') %}
                 <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a>
                     {% if deal.quantity > 0 %}
                         {% if deal.getActive() %}
