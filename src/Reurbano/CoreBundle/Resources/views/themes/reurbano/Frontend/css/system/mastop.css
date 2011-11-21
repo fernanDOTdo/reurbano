@@ -650,6 +650,55 @@ table#dealCart td{
 }
 /* /Body */
 
+/* 3 colunas acima do Footer */
+#Midia {
+    position:relative;
+    height: 170px;
+}
+
+#MidEco {
+    position:absolute;
+    width:298px;
+    height:64px;
+}
+#MidEco img{
+    width:298px;
+    height:64px;
+}
+
+#MidIg {
+    position:absolute;
+    width:169px;
+    height:106px;
+    left:0px;
+    top:64px;
+}
+
+#MidIg img{
+    width:169px;
+    height:106px;
+}
+
+#MidIdg {
+    position:absolute;
+    width:129px;
+    height:106px;
+    left:169px;
+    top:64px;
+}
+
+#MidIdg img{
+    width:129px;
+    height:106px;
+}
+.ftColumn{
+    margin-top: 40px;
+}
+.ftColumn h4{
+    color: #D87D08;
+    font-size: 19px;
+    font-weight: bold;
+}
 /* Footer */
 #ft_wrap { /* Div que cobre todo o Footer */
   background: #1a1a1a url(../images/footer/bg.png) repeat-x; height: 250px;
