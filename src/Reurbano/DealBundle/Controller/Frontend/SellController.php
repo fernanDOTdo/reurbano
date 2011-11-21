@@ -300,6 +300,10 @@ class SellController extends BaseController
             $deal->setSpecial(false);
             $deal->setQuantity($quantity);
             $deal->setActive(true);
+            if($this->hasRole('ROLE_ADMIN')){
+                // Se o usuário que enviou a oferta é administrador, marca como conferida
+                $deal->setChecked(true);
+            }
             $deal->setObs($obs);
             $deal->setLabel($source->getTitle());
             
