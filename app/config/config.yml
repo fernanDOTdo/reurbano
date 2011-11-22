@@ -10,7 +10,7 @@ framework:
     form: true
     csrf_protection: true
     validation: { enable_annotations: true }
-    templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
+    templating: { engines: ['twig'], assets_version: v1.1}
     default_locale: %locale%
     session:
         auto_start: true
@@ -123,7 +123,7 @@ mastop_system:
        file: %kernel.root_dir%/../vendor/twitteroauth/twitteroauth/twitteroauth.php
        consumer_key: gfOuKj8MmG8Wc2wGyGyDCg
        consumer_secret: rJCedVjsmmnED4ZLgHiyUPNNBQ6vtTzkObarciVhs
-       callback_url: http://mmm.reurbano.com.br/usuario/twitter/back
+       callback_url: http://www.reurbano.com.br/usuario/twitter/back
 
 reurbano_core:
     default_city: "oferta-nacional"

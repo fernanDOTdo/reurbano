@@ -1,6 +1,7 @@
 {% extends '::backend.html.twig' %}
 {% block content %}
 <div class="content box grid_12 round_all" style="padding:0">
+{%if ofertas is not empty%}
     <table class="display datatable"> 
         <thead> 
             <tr> 
@@ -11,9 +12,8 @@
                 <th class="center nowrap">{{ "Valor"|trans }}</th> 
                 <th class="center">{{ "Cat."|trans }}</th> 
                 <th class="center">{{ "Cidade"|trans }}</th> 
-                <th class="center">{{ "Dest."|trans }}</th> 
                 <th class="center">{{ "Data"|trans }}</th> 
-                <th class="center">{{ "Checado"|trans }}</th> 
+                <th class="center">{{ "Aprovar"|trans }}</th> 
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
@@ -31,22 +31,20 @@
                 <td class='nowrap'>{{ deal.getPrice()|money }}</td>
                 <td>{{ deal.getSource().getCategory().getName() }}</td>
                 <td>{{  deal.getSource().getCity().getName() }}</td>
-                <td>{{ deal.getSpecial(true) }}</td>
-                <td>{{ deal.getCreatedAt()|date('d/m/Y') }}</td>
+                <td>{{ deal.getCreatedAt()|date('d/m/y') }}</td>
                 <td class="center">
-                    <button onclick="window.location='{{path('admin_deal_deal_set_checked', {'deal': deal.id})}}'" title="{{ "Autorizado"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
+                    <button onclick="window.location='{{path('admin_deal_deal_set_checked', {'id': deal.id})}}'" title="{{ "Aprovar"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
                 </td>
                 <td class="center nowrap">
                     <a target="_blank" class="button button-set-start small white" href="{{ path( 'deal_deal_show', {'city': deal.getSource().getCity().getSlug(),'category':deal.getSource().getCategory().getSlug(),'slug':deal.getSlug() } ) }}"><span class="ui-silk ui-silk ui-silk-eye">{{ "Visualizar"|trans }}</span></a><a class="button button-set small white" href="{{ path( 'admin_deal_deal_edit', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk ui-silk-pencil">{{ "Editar"|trans }}</span></a><a class="button button-set-finish small red" href="{{ path( 'admin_deal_deal_delete', {'id': deal.getId() } ) }}"><span class="ui-silk ui-silk-delete">{{ "Deletar"|trans }}</span></a>
                 </td>
             </tr>
-  {% else %}
-            <tr><td colspan='9'>{{"Nenhuma oferta encontrada"|trans}}</td></tr>
-  {% endfor %} 
-        </tbody> 
+            {% endfor %}
+            </tbody> 
     </table>
-
-    <button onclick="window.location='{{path('deal_sell_index')}}'" title="{{ "Inserir nova oferta"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Nova Oferta"|trans }}</button>
+  {% else %}
+            <div class="info"><div class="alert alert_red"><img height="24" width="24" src="{{ asset('themes/'~mastop_theme_name()~'/admin/images/icons/large/white/speech_bubble_2.png') }}" />Nenhuma Oferta Pendente de Aprovação</div></div>
+{% endif %} 
 </div>
 {% endblock %} 
 {% block javascripts %}

@@ -34,9 +34,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *   repositoryClass="Reurbano\DealBundle\Document\DealRepository"
  * )
  * @ODM\Indexes({
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "special"="desc"}),
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "quantity"="asc", "tags"="desc"}),
- *   @ODM\Index(keys={"source.city.$id"="desc", "active"="asc", "source.category.$id"="desc", "special"="desc"})
+ *   @ODM\Index(keys={"checked"="asc", "source.city.$id"="desc", "active"="asc", "quantity"="asc", "special"="desc"}),
+ *   @ODM\Index(keys={"checked"="asc", "source.city.$id"="desc", "active"="asc", "quantity"="asc", "tags"="desc"}),
+ *   @ODM\Index(keys={"checked"="asc", "source.city.$id"="desc", "active"="asc", "source.category.$id"="desc", "special"="desc"})
  * })
  */
 class Deal

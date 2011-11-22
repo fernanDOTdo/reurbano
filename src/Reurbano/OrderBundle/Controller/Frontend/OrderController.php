@@ -54,6 +54,10 @@ class OrderController extends BaseController
         if($deal->getQuantity() < 1 || $deal->getActive() == false){
             return $this->redirectFlash($this->generateUrl('_home'), 'Esta oferta já foi vendida.', 'notice');
         }
+        // Não deixa comprar oferta sem aprovação do admin
+        if($deal->getChecked() == false){
+            return $this->redirectFlash($this->generateUrl('deal_deal_show', array('city' => $deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug())), 'Não é possível comprar uma oferta que está aguardando aprovação dos administradores.', 'notice');
+        }
         return array('deal'=>$deal);
     }
     /**
@@ -283,6 +287,9 @@ class OrderController extends BaseController
         }elseif($deal->getQuantity() < $qtd){
             // Se a quantidade for menor que a disponível
             return $this->redirectFlash($this->generateUrl('_home'), 'A quantidade escolhida não está mais disponível para esta oferta.', 'notice');
+        }elseif($deal->getChecked() == false){
+            // Se a oferta não foi aprovada pelos administradores
+            return $this->redirectFlash($this->generateUrl('_home'), 'A oferta escolhida ainda não foi aprovada pelos administradores.', 'error');
         }
         $newQtd = $deal->getQuantity() - $qtd;
         $dm = $this->dm();

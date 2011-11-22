@@ -20,6 +20,7 @@ use Reurbano\UserBundle\Document\BankData;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Reurbano\CoreBundle\Util\IPtoCity;
 
 
 class UserController extends BaseController {

@@ -103,6 +103,10 @@ class SellController extends BaseController
         if ($this->get('request')->isXmlHttpRequest()) {
             if ($this->get('request')->getMethod() == 'GET') {
                 $cupom = $this->get('request')->query->get('q');
+                if(strpos($cupom, 'http://') !== false){
+                    // Se a busca é por uma URL, remove o query string
+                    $cupom = preg_replace('/\?.*/', '', $cupom);
+                }
                 $limit = $this->get('request')->query->get('limit');
                 $city = $this->get('request')->query->get('city');
                 if($city == $this->get('session')->get('reurbano.user.city')){
@@ -135,6 +139,8 @@ class SellController extends BaseController
                     $title = $v->getTitle();
                     $title = preg_replace("'\s+'", ' ', $title);
                     $title = trim($title, ' -');
+                    // Coloca a data da oferta antes do título
+                    $title = ($v->getDateRegister() != '') ? $v->getDateRegister()->format('d/m/Y').' - '.$title : $title;
                     $data .= "<table class='m0'><tr><td><div style='margin:3px; position:relative'><img src='".$this->mastop()->param('deal.all.dealurl').$v->getThumb()."' width='80' height='60' />".(($v->getCity()->getId() == $cityNacionalId) ? "<div class='dealCity' style='position:absolute; top:0'><span></span></div>" : "")."</div></td><td>|".$title."|</td></tr></table>";
                     $data .= '|';
                     $data .= $v->getId();
@@ -294,6 +300,10 @@ class SellController extends BaseController
             $deal->setSpecial(false);
             $deal->setQuantity($quantity);
             $deal->setActive(true);
+            if($this->hasRole('ROLE_ADMIN')){
+                // Se o usuário que enviou a oferta é administrador, marca como conferida
+                $deal->setChecked(true);
+            }
             $deal->setObs($obs);
             $deal->setLabel($source->getTitle());
             

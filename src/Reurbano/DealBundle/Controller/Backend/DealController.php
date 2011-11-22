@@ -37,7 +37,7 @@ class DealController extends BaseController {
      * @Template()
      */
     public function checkedAction() {
-        $title = 'Administração de Ofertas a conferir';
+        $title = 'Administração de Ofertas a Conferir';
         //$ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAll();
         $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findAllChecked(false);
         return array(
@@ -190,15 +190,21 @@ class DealController extends BaseController {
     /**
      * Checked Ativo
      * 
-     * @Route("/checado/{deal}", name="admin_deal_deal_set_checked")
+     * @Route("/checado/{id}", name="admin_deal_deal_set_checked")
      */
-    public function setCheckedAction($deal){
-        $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($deal);
+    public function setCheckedAction(Deal $deal){
+        $user = $deal->getUser();
         $dm = $this->dm();
         $deal->setChecked(true);
-        $dm->persist($deal);
         $dm->flush();
-        return $this->redirect($this->generateUrl('admin_deal_deal_checked'));
+        // Notifica o vendedor da liberação da oferta
+        $dealLink = $this->generateUrl('deal_deal_show', array('city'=>$deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug()), true);
+        $mail = $this->get('mastop.mailer');
+        $mail->to($user)
+             ->subject('Oferta Aprovada')
+             ->template('oferta_aprovada', array('user' => $user, 'deal' => $deal, 'dealLink' => $dealLink, 'title' => 'Oferta Aprovada'))
+             ->send();
+        return $this->redirectFlash($this->generateUrl('admin_deal_deal_checked'), 'Oferta aprovada!');
     }
 
 }
