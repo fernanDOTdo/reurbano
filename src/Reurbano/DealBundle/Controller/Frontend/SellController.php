@@ -215,7 +215,7 @@ class SellController extends BaseController
         $request = $this->get('request');
         $form = $this->createForm(new DealType(),null, array('document_manager' => 'crawler'));
         $data = $this->get('request')->request->get($form->getName());
-        if($data['user']){
+        if(isset($data['user'])){
             $user = $this->mongo('ReurbanoUserBundle:User')->find($data['user']);
         }else{
             $user = $this->get('security.context')->getToken()->getUser();
