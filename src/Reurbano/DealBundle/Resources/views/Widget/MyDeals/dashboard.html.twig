@@ -30,17 +30,29 @@
             <td>
                 {{ deal.getCreatedAt().getTimestamp()|date("d/m/Y")  }}
             </td>
+            {% set vouchers = 0 %}
+            {% for vou in deal.voucher %}
+                {% if vou.order %}
+                    {% if vou.order.status.id == 2 %}
+                        {% set vouchers = 1 %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
             <td class="aC" nowrap="nowrap">
                 {% if deal.checked == false %}
                     <strong style="color:red">Aguardando Aprovação</strong>
                 {% elseif "now"|date('Y-m-d') < deal.source.expiresAt|date('Y-m-d') %}
-                <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a>
-                    {% if deal.quantity > 0 %}
-                        {% if deal.getActive() %}
-                            <a class="button small danger" href="{{ path('deal_deal_active', {'id': deal.getId()}) }}">{{"Desativar"|trans}}</a>
-                        {% else %}
-                            <a class="button small white" href="{{ path('deal_deal_active', {'id': deal.getId(), 'active': true}) }}">{{"Ativar"|trans}}</a>
+                    {% if vouchers == 0 %}
+                        <a class="button small white" href="{{ path('deal_deal_edit', {'id': deal.getId()}) }}">{{"Editar"|trans}}</a>
+                        {% if deal.quantity > 0 %}
+                            {% if deal.getActive() %}
+                                <a class="button small danger" href="{{ path('deal_deal_active', {'id': deal.getId()}) }}">{{"Desativar"|trans}}</a>
+                            {% else %}
+                                <a class="button small white" href="{{ path('deal_deal_active', {'id': deal.getId(), 'active': true}) }}">{{"Ativar"|trans}}</a>
+                            {% endif %}
                         {% endif %}
+                    {% else %}
+                        <a class="button small white voucher" href="#">{{"Editar"|trans}}</a>
                     {% endif %}
                 {% else %}
                             <strong style="color:red">Oferta Vencida</strong>

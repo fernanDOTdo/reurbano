@@ -66,10 +66,16 @@ class DealController extends BaseController {
         }
         $request = $this->get('request');
         $form = $this->createForm(new DealType(), $deal);
+        $dadosPost = $request->request->get($form->getName());
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
             $formResult = $request->request->get('deal');
             $formDataResult = $request->files->get('deal');
+            $form->bindRequest($request);
+            $formResult = $dadosPost['expiresAt'];
+            $expiresAt = explode('/',$formResult);
+            $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
+            $deal->getSource()->setExpiresAt($dataAtual);
             //var_dump($city->getName());
             /* echo $deal->getPrice();
               echo "<pre>";
