@@ -5,7 +5,8 @@
 
     {% javascripts output='static/admin/js/deal.js' 
         '@ReurbanoDealBundle/Resources/public/js/Backend/deal.js'
-        '@ReurbanoDealBundle/Resources/public/js/Backend/jquery.price_format.1.3.js' %}
+        '@ReurbanoDealBundle/Resources/public/js/Backend/jquery.price_format.1.3.js'
+         %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
@@ -45,6 +46,11 @@
                 {{ form_widget(form.quantity) }}
             {% endif %}
             
+            <div>
+                <label class="datepicker required" for="deal_expiresAt">Validade</label>
+                <input id="deal_expiresAt" class="datepicker" type="text" name="deal[expiresAt]" value="{{ deal.source.expiresAt | date('d/m/Y')  }}"/>
+            </div>
+                
             {{ form_row(form.obs) }}
                 
             {{ form_label(form.active) }}

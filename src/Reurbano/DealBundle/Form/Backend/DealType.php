@@ -17,6 +17,7 @@ class DealType extends AbstractType {
                 ->add('active', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Ativo'))
                 ->add('special', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Destaque'))
                 ->add('checked', 'choice', array('choices' => array('1' => 'Sim','0' => 'Não'), 'label'=>'Conferido'))
+                //->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'dd/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
                 ->add('comission', new ComissionType(), array('label'=>'Comissão'))
                 ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
                 //->add('voucher0', 'file', array ('label' => "Voucher" , 'property_path' => false))
