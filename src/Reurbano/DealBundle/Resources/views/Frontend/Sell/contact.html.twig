@@ -1,0 +1,57 @@
+{% extends '::frontend.html.twig' %}
+{% block javascripts%}
+{% javascripts output='static/system/js/sell.contact.js'
+                   '@ReurbanoDealBundle/Resources/public/js/Frontend/contact.js'
+                   %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock%}
+
+{% block content %}
+<div class="content box grid_12 round_all">
+    <form action="{{ path('deal_sell_contact') }}" method="post" {{ form_enctype(form) }}>
+        <div class="container_12">
+            <div class="grid_6">
+                {{ form_label(form.site) }}
+                {{ form_errors(form.site) }}
+                {{ form_widget(form.site) }}
+            </div>
+            <div class="grid_6">
+                {{ form_label(form.city) }}
+                {{ form_errors(form.city) }}
+                {{ form_widget(form.city) }}
+            </div>
+            <div class="clear"></div>
+            <div class="grid_6">
+                {{ form_label(form.url) }}
+                {{ form_errors(form.url) }}
+                {{ form_widget(form.url) }}
+            </div>
+            <div class="grid_6">
+                {{ form_label(form.quantity) }}
+                {{ form_errors(form.quantity) }}
+                {{ form_widget(form.quantity) }}
+            </div>
+            <div class="clear"></div>
+            <div class="grid_6">
+                {{ form_label(form.price) }}
+                {{ form_errors(form.price) }}
+                {{ form_widget(form.price) }}
+            </div>
+            <div class="grid_6">
+                {{ form_label(form.obs) }}
+                {{ form_errors(form.obs) }}
+                {{ form_widget(form.obs) }}
+            </div>
+            <div class="clear"></div>
+            <div class="grid_12" id="contactVoucher">
+                {{ form_label(form.voucher0) }}
+                {{ form_errors(form.voucher0) }}
+                {{ form_widget(form.voucher0) }}
+            </div>
+            <div class="clear"></div>
+            <button class="button_colour" type='submit' style="margin-top: 10px;"><span>{{ "Enviar"|trans }}</span></button>
+        </div>
+    </form>
+</div>
+{% endblock %}
