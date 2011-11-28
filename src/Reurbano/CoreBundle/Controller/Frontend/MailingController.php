@@ -28,6 +28,11 @@ class MailingController extends BaseController
             $this->get('session')->setFlash('error', $this->trans('E-mail invalido'));
             return $this->redirect($this->generateUrl('_home'));
         }
+        if($this->mongo('ReurbanoCoreBundle:Mailing')->has('mail', $request->request->get('email'))){
+            $this->setCookie('hideNL', 1);
+            $this->get('session')->setFlash('ok', $this->trans('E-mail cadastrado com sucesso!'));
+            return $this->redirect($this->generateUrl('_home'));
+        }
         $mailing->setMail($request->request->get('email'));
         $mailing->setCity($request->request->get('cityNL'));
         $dm->persist($mailing);

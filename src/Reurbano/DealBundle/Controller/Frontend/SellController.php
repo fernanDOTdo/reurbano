@@ -51,6 +51,7 @@ use Reurbano\DealBundle\Document\Comission;
 use Reurbano\DealBundle\Util\Upload;
 
 use Reurbano\DealBundle\Form\Frontend\SellType;
+use Reurbano\DealBundle\Form\Frontend\ContactType;
 use Reurbano\DealBundle\Form\Frontend\DealType;
 use Reurbano\DealBundle\Form\Frontend\DealAdminType;
 
@@ -328,5 +329,32 @@ class SellController extends BaseController
             
             return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', $this->trans('Oferta cadastrada com sucesso!'));
         }
+    }
+    
+    /**
+     * Formulario de contato caso o usuário não consiga inserir uma oferta
+     * 
+     * @route("/contato", name="deal_sell_contact")
+     * @Secure(roles="ROLE_USER")
+     * @Template() 
+     */
+    public function contactAction(){
+        $form = $this->createForm(new ContactType());
+        $request = $this->get('request');
+        $data = $this->get('request')->request->get($form->getName());
+        if($request->getMethod() == 'POST'){
+            $formDataResult = $request->files->get($form->getName());
+            $mail = $this->get('mastop.mailer');
+            $mail->to('contato@reurbano.com.br')
+             ->subject('Nova oferta para cadastro no site')
+             ->template('oferta_contatooferta', array(
+                 'user' => $user, 
+                 'data' => $data, 
+                 'title' => 'Nova oferta para cadastro'))
+             ->send();
+        }
+        return array(
+            'form' => $form->createView(),
+        );
     }
 }

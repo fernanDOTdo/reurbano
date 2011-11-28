@@ -34,11 +34,11 @@ class MailingController extends BaseController
     public function exportAction()
     {
         $mailing = $this->mongo('ReurbanoCoreBundle:Mailing')->findAllByOrder();
-        $data = "E-mail,Cidade,Data<br />";
+        $data = "E-mail,Cidade,Data\n";
         foreach($mailing as $mailing){
             $data .= $mailing->getMail() . 
                     "," . $mailing->getCity() . 
-                    "," . date('d/m/Y', $mailing->getCreatedAt()->getTimestamp()) . "<br />";
+                    "," . date('d/m/Y', $mailing->getCreatedAt()->getTimestamp()) . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',

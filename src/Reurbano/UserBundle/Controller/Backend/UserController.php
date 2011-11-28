@@ -12,6 +12,7 @@ use Reurbano\UserBundle\Form\Backend\UserFormEdit;
 use Reurbano\UserBundle\Form\Backend\ChangePass;
 use Reurbano\UserBundle\Form\ForgetForm;
 use Reurbano\UserBundle\Document\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends BaseController {
 
@@ -294,5 +295,24 @@ class UserController extends BaseController {
             'vendas' => $vendas,
             'saldo' => $saldo,
         );
+    }
+    
+    /**
+     * @Route("/export", name="admin_user_user_export")
+     */
+    public function exportAction()
+    {
+        $user = $this->mongo('ReurbanoUserBundle:User')->findAllByCreated();
+        $data = "Nome,E-mail,Cidade,Data\n";
+        foreach($user as $user){
+            $data .= $user->getName() .  
+                    "," .$user->getEmail() . 
+                    "," . $user->getCity()->getName() . 
+                    "," . $user->getCreated() . "\n";
+        }
+        return new Response($data, 200, array(
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.txt',
+        ));
     }
 }

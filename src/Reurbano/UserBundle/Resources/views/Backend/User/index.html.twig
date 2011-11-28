@@ -45,6 +45,7 @@
 </div>
 <div class='clear'></div>
 <button onclick="window.location='{{path('admin_user_user_new')}}'" title="{{ "Inserir novo usuário"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-add"></span> {{ "Adicionar usuário"|trans }}</button>
+<button onclick="window.location='{{path('admin_user_user_export')}}'" title="{{ "Exportar E-mails"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-email-go"></span> {{ "Exportar E-mails"|trans }}</button>
 {% endblock content %}  
 {% block javascripts %}
     {% javascripts output='static/system/js/user.js' 
