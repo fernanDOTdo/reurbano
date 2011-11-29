@@ -56,8 +56,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface, C
                 $manager->flush();
                 
                 $child4 = new MenuItem();
-                $child4->setCode('ofertas.banco-ofertas');
-                $child4->setName('Banco de Ofertas');
+                $child4->setCode('ofertas.crawler');
+                $child4->setName('Crawler');
                 $child4->setRole('ROLE_ADMIN');
                 $child4->setUrl('admin_deal_source_index');
                 $child4->setRoute(true);

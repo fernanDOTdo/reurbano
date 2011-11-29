@@ -39,7 +39,8 @@
                 <th>{{ "Qtd."|trans }}</th> 
                 <th>{{ "Data"|trans }}</th> 
                 <th>{{ "Total"|trans }}</th> 
-                <th>{{ "Validade"|trans }}</th> 
+                <th>{{ "Validade"|trans }}</th>
+                <th>{{ "Status"|trans }}</th>
                 <th class="last nowrap center">{{ "Ações"|trans }}</th> 
             </tr> 
         </thead> 
@@ -65,6 +66,9 @@
             </td>
             <td class="aC">
             {{ order.deal.source.expiresAt|date("d/m/Y")  }}
+            </td>
+            <td class="aC">
+            {{ order.status.name }}
             </td>
             <td class="center">
                 <a class="button button-set-start small white" href="{{ path('order_myorders_view', {'id': order.getId()}) }}">{{"Ver Compra"|trans}}</a>
