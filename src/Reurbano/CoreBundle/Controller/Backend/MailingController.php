@@ -42,7 +42,7 @@ class MailingController extends BaseController
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.txt',
+            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.csv',
         ));
     }
     
