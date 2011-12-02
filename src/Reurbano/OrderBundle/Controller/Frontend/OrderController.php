@@ -374,6 +374,7 @@ class OrderController extends BaseController
             Link para a venda: <a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a><br />');
         $ret['title'] = 'Compra '.$order->getId();
         $ret['content'] = $payment->process();
+        $ret['order'] = $order;
         return $ret;
     }
 }

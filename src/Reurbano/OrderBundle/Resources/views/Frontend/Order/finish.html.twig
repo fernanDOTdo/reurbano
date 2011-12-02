@@ -1,5 +1,35 @@
 {% extends '::frontend.html.twig' %}
 
+{% block javascripts%}
+<script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol ) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-25047081-1")
+pageTracker._addTrans(
+      "{{ order.id }}", // required
+      "{{mastop_param('system.site.name')}}",
+      "{{ order.total }}",
+      "0",
+      "0",
+      "{{ order.deal.source.city.name }}",
+      "Brasil"
+); 
+ 
+pageTracker._addItem(
+      "{{ order.id }}", // required
+      "{{ order.deal.source.id }}",
+      "{{ order.deal.label }}",
+      "{{ order.deal.source.category.name }}",
+      "{{ order.deal.price }}",  // required
+      "{{ order.quantity }}"  //required
+); 
+
+pageTracker._trackTrans();
+</script>
+{% endblock%}
+
 {% block content %}
 <div id="siteContent">
 {{content|raw}}
