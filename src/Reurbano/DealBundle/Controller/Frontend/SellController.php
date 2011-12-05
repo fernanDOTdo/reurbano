@@ -342,16 +342,39 @@ class SellController extends BaseController
         $form = $this->createForm(new ContactType());
         $request = $this->get('request');
         $data = $this->get('request')->request->get($form->getName());
+        $user = $this->get('security.context')->getToken()->getUser();
         if($request->getMethod() == 'POST'){
             $formDataResult = $request->files->get($form->getName());
+            if(count($formDataResult) != $data['quantity']){
+                return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'É preciso enviar '.$data['quantity'].' vouchers', 'error');
+            }
             $mail = $this->get('mastop.mailer');
+            $site = $this->mongo('ReurbanoDealBundle:Site')->find((int)$data['site']);
+            $city = $this->mongo('ReurbanoCoreBundle:City')->find($data['city']);
             $mail->to('contato@reurbano.com.br')
              ->subject('Nova oferta para cadastro no site')
              ->template('oferta_contatooferta', array(
                  'user' => $user, 
-                 'data' => $data, 
-                 'title' => 'Nova oferta para cadastro'))
-             ->send();
+                 'data' => $data,
+                 'site' => $site,
+                 'city' => $city,
+                 'title' => 'Nova oferta para cadastro'));
+            foreach ($formDataResult as $kFile => $vFile){
+                if ($vFile){
+                    $file = new Upload($formDataResult[$kFile]);
+                    $path = $this->get('kernel')->getRootDir() . "/../web/uploads/reurbanodeal/voucher";
+                    $file->setPath($path);
+                    $fileUploaded = $file->upload();
+                    
+                    if ($file->getPath() != ""){
+                        $filePath = $fileUploaded->getPath();
+                    }else {
+                        $filePath = $fileUploaded->getDeafaultPath();
+                    }
+                    $mail->attach($filePath . "/" . $fileUploaded->getFileName());
+                }
+            }
+            $mail->send();
         }
         return array(
             'form' => $form->createView(),

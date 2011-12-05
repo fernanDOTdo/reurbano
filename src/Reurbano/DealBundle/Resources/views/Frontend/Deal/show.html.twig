@@ -106,7 +106,10 @@
     </div>
     {%if is_granted('ROLE_ADMIN') %}
     <div class="clear"></div>
-    <div class="info m10"><a href="{{path('admin_deal_deal_edit', {'id': deal.getId})}}" class="button green" title="Editar {{deal.getLabel}}">Editar</a></div>
+    <div class="info m10">
+        <a href="{{path('admin_deal_deal_edit', {'id': deal.getId})}}" class="button green" title="Editar {{deal.getLabel}}">Editar</a>
+        <a href="{{path('admin_core_banner_new', {'control': 1, 'deal': deal.id})}}" class="button green" title="Banner {{deal.getLabel}}">Banner</a>
+    </div>
     {%endif%}
 </div>
 <div class="grid_3">
