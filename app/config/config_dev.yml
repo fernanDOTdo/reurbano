@@ -49,7 +49,7 @@ doctrine_mongodb:
             metadata_cache_driver: array # array, apc, xcache, memcache
 
 swiftmailer:
-    delivery_address:  rafael@mastop.com.br
+    delivery_address:  symfony@mastop.com.br
     
 mastop_system:
     themes_dir: %themes_dir%

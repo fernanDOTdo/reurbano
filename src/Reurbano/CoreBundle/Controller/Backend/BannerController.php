@@ -39,14 +39,19 @@ class BannerController extends BaseController
      * control = false Banner normal
      * control = true Oferta
      * 
-     * @Route("/novo/{control}", name="admin_core_banner_new", defaults={"control" = false})
+     * @Route("/novo/{control}/{deal}", name="admin_core_banner_new", defaults={"control" = false, "deal" = false})
      * @Route("/editar/{id}/{control}", name="admin_core_banner_edit", defaults={"control" = false})
      * @Route("/salvar/{id}", name="admin_core_banner_save", defaults={"id" = null})
      * @Template()
      */
-    public function bannerAction($id = null, $control = false)
+    public function bannerAction($id = null,$deal = false, $control = false)
     {
         $dm = $this->dm();
+        if($deal){
+            $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($deal);
+        }else{
+            $deal = false;
+        }
         $title = ($id) ? "Editar Banner" : "Novo Banner";
         if($id){
             $banner = $this->mongo('ReurbanoCoreBundle:Banner')->find($id);
@@ -56,13 +61,25 @@ class BannerController extends BaseController
             $banner->setUrl('http://');
         }
         $formType = (!$control) ? new BannerType() : new BannerOfferType();
-        $form = $this->createForm($formType, $banner);
+        if($deal){
+            $form = $this->createFormBuilder()
+                    ->add('active', 'checkbox', array('label' => 'Ativo?', 'required' => false,))
+                    ->add('order', 'integer', array('label'=>'Ordem'))
+                    ->getForm();
+        }else{
+            $form = $this->createForm($formType, $banner);
+        }
         $request = $this->get('request');
         if('POST' == $request->getMethod()){
             $form->bindRequest($request);
             $query = $request->request->get($form->getName());
+            $request2 = $request->request->get('form');
             if(isset($query['deal'])){
                 $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($query['deal']);
+                $banner->setDeal($deal);
+                $banner->setCity($deal->getSource()->getCity());
+            }elseif(isset($request2)){
+                $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($request2['dealId']);
                 $banner->setDeal($deal);
                 $banner->setCity($deal->getSource()->getCity());
             }
@@ -91,6 +108,7 @@ class BannerController extends BaseController
         }
         return array(
             'id'  => $id,
+            'deal' => $deal,
             'control'  => $control,
             'form'     => $form->createView(),
             'banner'   => $banner,
@@ -198,7 +216,6 @@ class BannerController extends BaseController
         }else{
             $radios .= '<div class="alert alert_red">Este usuário não possui nenhuma oferta ativa. Selecione outro usuário.</div><div class="clearfix"></div>';
         }
-        
         return new Response($radios);
     }
 }
