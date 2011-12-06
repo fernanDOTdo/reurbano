@@ -350,7 +350,7 @@ class SellController extends BaseController
             }
             $mail = $this->get('mastop.mailer');
             $site = $this->mongo('ReurbanoDealBundle:Site')->find((int)$data['site']);
-            $city = $this->mongo('ReurbanoCoreBundle:City')->find($data['city']);
+            $city = $this->mongo('ReurbanoCoreBundle:City')->findBySlug($request->request->get('city'));
             $mail->to('contato@reurbano.com.br')
              ->subject('Nova oferta para cadastro no site')
              ->template('oferta_contatooferta', array(
@@ -375,8 +375,10 @@ class SellController extends BaseController
                 }
             }
             $mail->send();
+            return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', $this->trans('Sua oferta foi enviada! Aguarde nosso contato.'));
         }
         return array(
+            'title' => "Envie sua oferta por e-mail",
             'form' => $form->createView(),
         );
     }

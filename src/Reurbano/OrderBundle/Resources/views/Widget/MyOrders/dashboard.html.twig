@@ -68,7 +68,15 @@
             {{ order.deal.source.expiresAt|date("d/m/Y")  }}
             </td>
             <td class="aC">
-            {{ order.status.name }}
+                {%if order.status%}
+                    {%if order.status.name == 'Aprovado' or order.status.name == 'Finalizado'%}
+                    <strong style="color:green">{{ order.status.name }}</strong>
+                    {%else%}
+                    {{ order.status.name }}
+                    {%endif%}
+                {%else%}
+                    <strong style="color:red">Cancelado</strong>
+                {%endif%}
             </td>
             <td class="center">
                 <a class="button button-set-start small white" href="{{ path('order_myorders_view', {'id': order.getId()}) }}">{{"Ver Compra"|trans}}</a>
