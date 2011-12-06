@@ -18,18 +18,8 @@ class ContactType extends AbstractType {
                         'style'=> 'width: 200px;',
                     )
                 ))
-                ->add('city', 'document',array(
-                    'class' => 'Reurbano\\CoreBundle\\Document\\City',
-                    'property'=>'name',
-                    'label' =>"Cidade",
-                    'attr'    => array(
-                        'class' => 'chzn-select',
-                        'data-placeholder' => 'Escolha uma cidade', 
-                        'style'=> 'width: 200px;',
-                    )
-                ))
-                ->add('url', 'text')
-                ->add('quantity', 'integer', array('label'=>'Quantidade disponível','attr'=> array('class' => 'small')))
+                ->add('url', 'text', array('label'=>'Link para a oferta'))
+                ->add('quantity', 'integer', array('label'=>'Quantidade de cupons','attr'=> array('class' => 'small')))
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
                 ->add('voucher0', 'file', array ('label' => "Voucher 1" , 'property_path' => false))
                 ->add('obs', 'textarea', array ('label' => 'Observações', 'required' => false));
