@@ -40,6 +40,9 @@
         <div id="sellVoucher" class="mT10 mB10">
             {{ form_row(form.voucher0) }}
         </div>
+        <div class="info floatR" style="width:315px; font-size: 0.8em; margin-top: 20px;">
+            Esse campo serve para você colocar detalhes da sua oferta! Ex.: Estabelecimento escolhido ou algum dado relevante ao comprador.
+        </div>
         {{ form_rest(form) }}
         <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
         <div class="clear"></div>
