@@ -385,7 +385,7 @@ div.main_container .box .no_padding{
 	color:#666;
 }
 
-.box .block input{
+.box .block input[type=text], .box .block input[type=number], .box .block input[type=password], .box .block input[type=email]{
 	display:block;
 	border:1px solid #b5b8bb;
 	background-color:#e7edef;

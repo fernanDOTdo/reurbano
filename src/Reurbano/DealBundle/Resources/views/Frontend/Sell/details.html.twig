@@ -7,6 +7,7 @@
 {% javascripts output='static/system/js/sell.details.js'
                    '@ReurbanoCoreBundle/Resources/public/js/autocomplete/jquery.autocomplete.pack.js'
                    '@ReurbanoCoreBundle/Resources/public/js/dateinput/jquery.tools.min.js'
+                   '@ReurbanoDealBundle/Resources/public/js/Frontend/maskmoney/maskMoney.js'
                    '@ReurbanoDealBundle/Resources/public/js/Frontend/sell.js'
                    %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -41,7 +42,12 @@
             {{ form_row(form.voucher0) }}
         </div>
         <div class="info floatR" style="width:315px; font-size: 0.8em; margin-top: 20px;">
-            Esse campo serve para você colocar detalhes da sua oferta! Ex.: Estabelecimento escolhido ou algum dado relevante ao comprador.
+            Este campo serve para você colocar detalhes da sua oferta! Ex.: Estabelecimento escolhido ou algum dado relevante ao comprador.
+        </div>
+        <div>
+            {{ form_label(form.obs) }}
+            {{ form_errors(form.obs) }}
+            {{ form_widget(form.obs, {'attr': {'style': 'width: 45%;'}}) }}
         </div>
         {{ form_rest(form) }}
         <input type="hidden" value="{{ source.getId }}" name="deal[sourceId]"/>
