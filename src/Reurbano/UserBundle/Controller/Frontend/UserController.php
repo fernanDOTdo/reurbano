@@ -397,9 +397,12 @@ class UserController extends BaseController {
                     $user->setCpf($dadosPost['cpf']);
                     $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($dadosPost['city']);
                     $user->setCity($city);
+                    $user->setGender($dadosPost['gender']);
                     $birth = new \DateTime();
-                    $birth->setDate($dadosPost['birth']['year'], $dadosPost['birth']['month'], $dadosPost['birth']['day']);
-                    $user->setBirth($birth);
+                    if($dadosPost['birth']['year'] != "" && $dadosPost['birth']['month'] != "" && $dadosPost['birth']['day']){
+                        $birth->setDate($dadosPost['birth']['year'], $dadosPost['birth']['month'], $dadosPost['birth']['day']);
+                        $user->setBirth($birth);
+                    }
                     $user->setEdited(new \DateTime());
                     $this->dm()->persist($user);
                     $this->dm()->flush();

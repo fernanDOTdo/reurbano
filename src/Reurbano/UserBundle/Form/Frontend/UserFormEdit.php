@@ -18,6 +18,13 @@ class UserFormEdit extends AbstractType {
                 ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome Completo'))
                 ->add('email', 'email', array('label' => 'Email'))
                 ->add('cpf', 'text', array('label' => 'CPF', 'required' => false))
+                ->add('gender', 'choice', array(
+                    'choices' => array(
+                        'm' => 'Masculino',
+                        'f' => 'Feminino'
+                    ),
+                    'label' => 'Gênero'
+                ))
                 ->add('birth', 'birthday', array('label'=>'Data de nascimento', 'format' => 'd/M/y','required' => false))
                 ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name', 'required' => false, 'empty_value' => 'Todas' ))
         ;
