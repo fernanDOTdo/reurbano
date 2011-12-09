@@ -292,4 +292,27 @@ class OrderController extends BaseController
             'id'    => $order->getId(),
         ); 
     }
+    /**
+     * @Route("/export", name="admin_order_order_export")
+     */
+    public function exportAction()
+    {
+        $order = $this->mongo('ReurbanoOrderBundle:Order')->findAllByCreated();
+        $data = "Cidade,Site de origem,Categoria,Nome Vendedor,E-mail Vendedor,Nome Comprador,E-mail Comprador,Preço Original,Preço no site,Data Inclusão,Data Venda,Visualizações,Status,Forma de Pagamento\n";
+        foreach($deal as $deal){
+            $data .= $deal->getSource()->getCity()->getName() .  
+                    "," .$deal->getSource()->getSite()->getName() . 
+                    "," . $deal->getSource()->getCategory()->getName() . 
+                    "," . $deal->getUser()->getName() . 
+                    "," . $deal->getUser()->getEmail() . 
+                    "," . $deal->getSource()->getPrice() . 
+                    "," . $deal->getPrice() . 
+                    "," . $deal->getCreatedAt()->format('d/m/Y') .
+                    "," . $deal->getViews() . "\n";
+        }
+        return new Response($data, 200, array(
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.csv',
+        ));
+    }
 }
