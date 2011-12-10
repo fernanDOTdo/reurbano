@@ -219,17 +219,21 @@ class DealController extends BaseController {
     public function exportAction()
     {
         $deal = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
-        $data = "Cidade,Site de origem,Categoria,Nome Vendedor,E-mail Vendedor,Preço Original,Preço no site,Data,Visualizações\n";
+        $data = "Cidade;Site de origem;Categoria;Nome Vendedor;E-mail Vendedor;Preço Original;Preço no site;Data;Conferido;Destaque;Ativo;Cupons Disponíveis;Visualizações\n";
         foreach($deal as $deal){
             $data .= $deal->getSource()->getCity()->getName() .  
-                    "," .$deal->getSource()->getSite()->getName() . 
-                    "," . $deal->getSource()->getCategory()->getName() . 
-                    "," . $deal->getUser()->getName() . 
-                    "," . $deal->getUser()->getEmail() . 
-                    "," . $deal->getSource()->getPrice() . 
-                    "," . $deal->getPrice() . 
-                    "," . $deal->getCreatedAt()->format('d/m/Y') .
-                    "," . $deal->getViews() . "\n";
+                    ";" .$deal->getSource()->getSite()->getName() . 
+                    ";" . $deal->getSource()->getCategory()->getName() . 
+                    ";" . $deal->getUser()->getName() . 
+                    ";" . $deal->getUser()->getEmail() . 
+                    ";" . $deal->getSource()->getPrice() . 
+                    ";" . $deal->getPrice() . 
+                    ";" . $deal->getCreatedAt()->format('d/m/Y') .
+                    ";" . (($deal->getChecked()) ? "Sim" : "Não") .
+                    ";" . (($deal->getSpecial()) ? "Sim" : "Não") .
+                    ";" . (($deal->getActive()) ? "Sim" : "Não") .
+                    ";" . $deal->getQuantity() .
+                    ";" . $deal->getViews() . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',
