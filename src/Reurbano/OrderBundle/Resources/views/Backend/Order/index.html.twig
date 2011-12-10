@@ -51,6 +51,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <button onclick="window.location='{{path('admin_order_order_export')}}'" title="{{ "Exportar vendas"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-cart-go"></span> {{ "Exportar vendas"|trans }}</button>
     <div class='clear'></div>
 </div>
 {% endblock %}

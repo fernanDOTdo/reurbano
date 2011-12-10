@@ -298,21 +298,29 @@ class OrderController extends BaseController
     public function exportAction()
     {
         $order = $this->mongo('ReurbanoOrderBundle:Order')->findAllByCreated();
-        $data = "Cidade,Site de origem,Categoria,Nome Vendedor,E-mail Vendedor,Nome Comprador,E-mail Comprador,Preço Original,Preço no site,Data Inclusão,Data Venda,Visualizações,Status,Forma de Pagamento\n";
-        foreach($deal as $deal){
-            $data .= $deal->getSource()->getCity()->getName() .  
-                    "," .$deal->getSource()->getSite()->getName() . 
-                    "," . $deal->getSource()->getCategory()->getName() . 
-                    "," . $deal->getUser()->getName() . 
-                    "," . $deal->getUser()->getEmail() . 
-                    "," . $deal->getSource()->getPrice() . 
-                    "," . $deal->getPrice() . 
-                    "," . $deal->getCreatedAt()->format('d/m/Y') .
-                    "," . $deal->getViews() . "\n";
+        $data = "Cidade;Site de origem;Categoria;Oferta;Quantidade;Nome Vendedor;E-mail Vendedor;Nome Comprador;E-mail Comprador;Preço Original;Preço no site;Data Inclusão;Data Venda;Visualizações;Status;Forma de Pagamento\n";
+        foreach($order as $order){
+            $payment = $order->getPayment();
+            $data .= $order->getDeal()->getSource()->getCity()->getName() .  
+                    ";" .$order->getDeal()->getSource()->getSite()->getName() . 
+                    ";" . $order->getDeal()->getSource()->getCategory()->getName() . 
+                    ";" . $order->getDeal()->getLabel() .
+                    ";" . $order->getQuantity() .
+                    ";" . $order->getSeller()->getName() .
+                    ";" . $order->getSeller()->getEmail() . 
+                    ";" . $order->getUser()->getName() . 
+                    ";" . $order->getUser()->getEmail() . 
+                    ";" . $order->getDeal()->getSource()->getPrice() . 
+                    ";" . $order->getDeal()->getPrice() . 
+                    ";" . $order->getDeal()->getCreatedAt()->format('d/m/Y') .
+                    ";" . $order->getCreated()->format('d/m/Y') .
+                    ";" . $order->getDeal()->getViews() .
+                    ";" . $order->getStatus()->getName() .
+                    ";" . $payment['gateway'] . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.csv',
+            'Content-Disposition' => 'attachment; filename= vendas_' . date('d_m_Y') . '.csv',
         ));
     }
 }
