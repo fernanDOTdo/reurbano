@@ -14,7 +14,7 @@ span.close{
     float:right;
 }
 
-.box .block input, .box .block textarea{width: 35%;}
+.box .block input[type=text], .box .block input[type=number], .box .block input[type=password], .box .block input[type=email], .box .block textarea{width: 35%;}
 .box .block textarea.large{width:60%; height:250px;}
 
 table.static tbody tr:hover td {background-color: #FFFFE2;}

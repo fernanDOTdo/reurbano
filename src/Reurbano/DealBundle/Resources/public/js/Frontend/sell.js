@@ -19,7 +19,7 @@ $(function(){
             formatItem: formatItem,
             minChars: 3,
             scrollHeight: 350,
-            extraParams: {'siteid': function(){ return $('#sell_site').val();}, 'city': function(){ return $('#cityId').val();}}
+            extraParams: {'siteid': function(){return $('#sell_site').val();}, 'city': function(){return $('#cityId').val();}}
         });
     $("#sell_cupom").keyup(function(){
         $("#sellContinue").hide();
@@ -53,6 +53,11 @@ $(function(){
         $('#sellVoucher').html(voucher);
     });
     // the portuguese localization
+    $('#deal_price').maskMoney({
+        symbol: 'R$ ',
+        thousands: '.',
+        decimal: ','
+    });
 $.tools.dateinput.localize("pt_BR",  {
    months:        'janeiro,fevereiro,março,abril,maio,junho,julho,agosto,' +
                    	'setembro,outubro,novembro,dezembro',
@@ -77,6 +82,12 @@ if($("#sellDetails")[0]){ // Se o form de Sell Details existe
             min: new Date
     });
     $("#sellDetails").submit(function (e) {
+        var preco = $('#deal_price').val().replace(/\./g, '').replace(/,/g, '.');
+        if(preco < 1.5){
+            alert("Só são permitidos valores maiores que R$ 1,50");
+            return false;
+            e.preventDefault();
+        }
         var vouchers = $('input:file');
         var verified = new Array();
         $(vouchers).each(function(index) {

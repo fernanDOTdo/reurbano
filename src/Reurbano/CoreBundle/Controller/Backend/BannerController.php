@@ -82,6 +82,8 @@ class BannerController extends BaseController
                 $deal = $this->mongo('ReurbanoDealBundle:Deal')->find($request2['dealId']);
                 $banner->setDeal($deal);
                 $banner->setCity($deal->getSource()->getCity());
+                $banner->setActive($request2['active']);
+                $banner->setOrder($request2['order']);
             }
             $data = $request->request->get($form->getName());
             $fileData = $request->files->get($form->getName());

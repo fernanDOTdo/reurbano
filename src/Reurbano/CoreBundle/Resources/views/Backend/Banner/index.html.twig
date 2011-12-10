@@ -63,9 +63,9 @@
                 </td>
                 <td class='center'>
                     {% if banner.getActive %}
-                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': false})}}'" title="{{ "Ativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': false})}}'" title="{{ "Desativar"|trans }}" class="button white small"><span class="ui-silk ui-silk-accept"></span></button>
                     {% else %}
-                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': true})}}'" title="{{ "Inativo"|trans }}" class="button white small"><span class="ui-silk ui-silk-stop"></span></button>
+                        <button onclick="window.location='{{path('admin_core_banner_active', {'id': banner.getId, 'active': true})}}'" title="{{ "Ativar"|trans }}" class="button white small"><span class="ui-silk ui-silk-stop"></span></button>
                     {% endif %}
                 </td>
                 <td class="nowrap center">
