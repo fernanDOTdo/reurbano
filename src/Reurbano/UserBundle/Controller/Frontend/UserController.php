@@ -383,18 +383,20 @@ class UserController extends BaseController {
             if ($id) {
                 $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
                 //validando se o email já não existe
-                $result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
+                /*$result = $this->dm()->createQueryBuilder('ReurbanoUserBundle:user')
                         ->field('email')->equals($dadosPost['email'])
                         ->field('id')->notEqual($dadosPost['id'])
                         ->getQuery()
                         ->execute();
                 if (($result->count() > 0)) {
                     $erro[] = $this->trans('O endereço de email <b>%email%</b> já é utilizado. Escolha outro email.', array('%email%' => $dadosPost['email']));
-                }
+                }*/
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
                     $user->setName($dadosPost['name']);
-                    $user->setCpf($dadosPost['cpf']);
+                    if(isset($dadosPost['cpf'])){
+                        $user->setCpf($dadosPost['cpf']);
+                    }
                     $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($dadosPost['city']);
                     $user->setCity($city);
                     $user->setGender($dadosPost['gender']);
@@ -407,10 +409,10 @@ class UserController extends BaseController {
                     $this->dm()->persist($user);
                     $this->dm()->flush();
                     $msgAux = "";
-                    if ($dadosPost['email'] != $user->getEmail()) {
+                    /*if ($dadosPost['email'] != $user->getEmail()) {
                         $msgAux = $this->trans('<br />A alteração do email de <b>%emailOld%</b> para <b>%email%</b> somente será realizada após a confirmação do email enviado para seu novo email', array("%emailOld%" => $user->getEmail(), "%email%" => $dadosPost['email']));
                         $this->emailTrocaEmail($user, $dadosPost['email']);
-                    }
+                    }*/
                     $msg = $this->trans('Usuário <b>%name%</b> alterado com sucesso.', array("%name%" => $dadosPost['name']));
                     $this->get('session')->setFlash('ok', $msg . $msgAux);
                     return $this->redirect($this->generateUrl('user_dashboard_index'));

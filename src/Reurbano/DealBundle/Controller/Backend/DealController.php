@@ -222,14 +222,14 @@ class DealController extends BaseController {
         $data = "Cidade,Site de origem,Categoria,Nome Vendedor,E-mail Vendedor,Preço Original,Preço no site,Data,Visualizações\n";
         foreach($deal as $deal){
             $data .= $deal->getSource()->getCity()->getName() .  
-                    "," .$deal->getSource()->getSite()->getName() . 
-                    "," . $deal->getSource()->getCategory()->getName() . 
-                    "," . $deal->getUser()->getName() . 
-                    "," . $deal->getUser()->getEmail() . 
-                    "," . $deal->getSource()->getPrice() . 
-                    "," . $deal->getPrice() . 
-                    "," . $deal->getCreatedAt()->format('d/m/Y') .
-                    "," . $deal->getViews() . "\n";
+                    ";" .$deal->getSource()->getSite()->getName() . 
+                    ";" . $deal->getSource()->getCategory()->getName() . 
+                    ";" . $deal->getUser()->getName() . 
+                    ";" . $deal->getUser()->getEmail() . 
+                    ";" . $deal->getSource()->getPrice() . 
+                    ";" . $deal->getPrice() . 
+                    ";" . $deal->getCreatedAt()->format('d/m/Y') .
+                    ";" . $deal->getViews() . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',

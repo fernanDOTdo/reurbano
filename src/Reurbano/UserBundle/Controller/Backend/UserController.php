@@ -306,9 +306,9 @@ class UserController extends BaseController {
         $data = "Nome,E-mail,Cidade,Data\n";
         foreach($user as $user){
             $data .= $user->getName() .
-                    "," .$user->getEmail() .
-                    "," . $user->getCity()->getName() .
-                    "," . $user->getCreated() . "\n";
+                    ";" .$user->getEmail() .
+                    ";" . $user->getCity()->getName() .
+                    ";" . $user->getCreated() . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type' => 'text/csv',

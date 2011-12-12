@@ -314,9 +314,13 @@ class OrderController extends BaseController
                     ";" . $order->getDeal()->getPrice() . 
                     ";" . $order->getDeal()->getCreatedAt()->format('d/m/Y') .
                     ";" . $order->getCreated()->format('d/m/Y') .
-                    ";" . $order->getDeal()->getViews() .
-                    ";" . $order->getStatus()->getName() .
-                    ";" . $payment['gateway'] . "\n";
+                    ";" . $order->getDeal()->getViews();
+            if($order->getStatus()){
+                $data .= ";" . $order->getStatus()->getName();
+            }else{
+                $data .= ";Cancelado";
+            }
+            $data .= ";" . $payment['gateway'] . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',
