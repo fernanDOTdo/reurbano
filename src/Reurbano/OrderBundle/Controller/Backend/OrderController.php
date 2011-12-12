@@ -297,9 +297,9 @@ class OrderController extends BaseController
      */
     public function exportAction()
     {
-        $order = $this->mongo('ReurbanoOrderBundle:Order')->findAllByCreated();
+        $orders = $this->mongo('ReurbanoOrderBundle:Order')->findAllByCreated();
         $data = "Cidade;Site de origem;Categoria;Oferta;Quantidade;Nome Vendedor;E-mail Vendedor;Nome Comprador;E-mail Comprador;Preço Original;Preço no site;Data Inclusão;Data Venda;Visualizações;Status;Forma de Pagamento\n";
-        foreach($order as $order){
+        foreach($orders as $order){
             $payment = $order->getPayment();
             $data .= $order->getDeal()->getSource()->getCity()->getName() .  
                     ";" .$order->getDeal()->getSource()->getSite()->getName() . 
@@ -314,13 +314,9 @@ class OrderController extends BaseController
                     ";" . $order->getDeal()->getPrice() . 
                     ";" . $order->getDeal()->getCreatedAt()->format('d/m/Y') .
                     ";" . $order->getCreated()->format('d/m/Y') .
-                    ";" . $order->getDeal()->getViews();
-            if($order->getStatus()){
-                $data .= ";" . $order->getStatus()->getName();
-            }else{
-                $data .= ";Cancelado";
-            }
-            $data .= ";" . $payment['gateway'] . "\n";
+                    ";" . $order->getDeal()->getViews() .
+                    ";" . (($order->getStatus() != null) ? $order->getStatus()->getName() : "Cancelado").
+                    ";" . $payment['gateway'] . "\n";
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',

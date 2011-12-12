@@ -303,7 +303,7 @@ class UserController extends BaseController {
     public function exportAction()
     {
         $user = $this->mongo('ReurbanoUserBundle:User')->findAllByCreated();
-        $data = "Nome,E-mail,Cidade,Data\n";
+        $data = "Nome;E-mail;Cidade;Data\n";
         foreach($user as $user){
             $data .= $user->getName() .
                     ";" .$user->getEmail() .
