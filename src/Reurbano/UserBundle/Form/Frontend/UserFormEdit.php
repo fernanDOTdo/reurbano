@@ -16,7 +16,7 @@ class UserFormEdit extends AbstractType {
         $builder
                 ->add('id', 'hidden')
                 ->add('name', 'text', array('max_length' => 100, 'label' => 'Nome Completo'))
-                ->add('email', 'email', array('label' => 'Email', 'attr' => array('disabled' => 'disabled')))
+                ->add('email', 'email', array('label' => 'Email'))
                 ->add('cpf', 'text', array('label' => 'CPF', 'required' => false))
                 ->add('gender', 'choice', array(
                     'choices' => array(
