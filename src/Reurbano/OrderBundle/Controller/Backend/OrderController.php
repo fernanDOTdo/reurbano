@@ -301,10 +301,13 @@ class OrderController extends BaseController
         $data = "Cidade;Site de origem;Categoria;Oferta;Quantidade;Nome Vendedor;E-mail Vendedor;Nome Comprador;E-mail Comprador;Preço Original;Preço no site;Data Inclusão;Data Venda;Visualizações;Status;Forma de Pagamento\n";
         foreach($orders as $order){
             $payment = $order->getPayment();
+            $label = $order->getDeal()->getLabel();
+            $label = preg_replace("'\s+'", ' ', $label);
+            $label = trim($label, ' -');
             $data .= $order->getDeal()->getSource()->getCity()->getName() .  
                     ";" .$order->getDeal()->getSource()->getSite()->getName() . 
                     ";" . $order->getDeal()->getSource()->getCategory()->getName() . 
-                    ";" . $order->getDeal()->getLabel() .
+                    ";" . $label .
                     ";" . $order->getQuantity() .
                     ";" . $order->getSeller()->getName() .
                     ";" . $order->getSeller()->getEmail() . 

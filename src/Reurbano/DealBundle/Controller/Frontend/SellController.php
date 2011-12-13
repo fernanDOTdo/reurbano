@@ -310,7 +310,12 @@ class SellController extends BaseController
                 $deal->setChecked(true);
             }
             $deal->setObs($obs);
-            $deal->setLabel($source->getTitle());
+            
+            // Limpa o title
+            $label = $source->getTitle();
+            $label = preg_replace("'\s+'", ' ', $label);
+            $label = trim($label, ' -');
+            $deal->setLabel($label);
             
             // Comissão
             $comission = new Comission();
