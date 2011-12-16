@@ -379,6 +379,7 @@ class UserController extends BaseController {
         $dadosPost = $request->request->get($form->getName());
         $erro = array();
         $form->bindRequest($request);
+        $mail = $this->get('mastop.mailer');
         if ($form->isValid()) {
             if ($id) {
                 $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
@@ -484,6 +485,7 @@ class UserController extends BaseController {
                 $user->setNewsletters($dadosPost['email'] == 1 ? true : false);
                 $this->dm()->persist($user);
                 $this->dm()->flush();
+                
                 if ($modoCadastro == 'email') {
                     //envio de email para confirmar user
                     $this->emailActKey($dadosPost['email'], $dadosPost['name'], $actkey);
@@ -513,6 +515,11 @@ class UserController extends BaseController {
                     }
                     // /notificação de novo usuario
                 }
+                $mail->to($user)
+                     ->subject('Bem vindo ao Reurbano')
+                     ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem vindo!'))
+                     ->send();
+                    $mail->notify('Novo usuário', 'O usuário '.$user->getName().' ('.$user->getEmail().') Foi cadastrado com sucesso no sistema.');
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('user_user_confirmation', array('username' => $user->getUsername())));
             }
