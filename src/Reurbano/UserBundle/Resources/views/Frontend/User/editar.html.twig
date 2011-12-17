@@ -1,12 +1,29 @@
 {% extends '::frontend.html.twig' %}
 {% block content %}
 <div id="siteContent">
-<div class="grid_6">
+<div class="grid_12">
     <h1>{{ "Edição do usuário %name%"|trans({'%name%':usuario.getName()}) }}</h1>
     <form action="{{ path('user_user_save' , {'id': usuario.getId()}) }}" method="post" {{ form_enctype(form) }}>
+        
+        {{ form_row(form.name) }}
+        
+        {{ form_row(form.email) }}
+        <div>
+            {% if usuario.cpf %}
+                <div class="grid_3">
+                    {{ form_label(form.cpf) }}
+                    {{ form_errors(form.cpf) }}
+                    {{ form_widget(form.cpf, { 'attr': { 'disabled': 'disabled' }}) }}
+                </div>
+                <div class="info grid_9" style="width:315px; font-size: 0.8em; margin-top: 20px;">
+                    Para trocar seu cpf entre em contato com o Reurbano.
+                </div>
+                <div class="clear"></div>
+            {% endif %}
+        </div>
         {{ form_widget(form) }}
         <div class="mT10">
-            <button class='button blue' type='submit'>{{ "Salvar"|trans }}</button> <a class='button red' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a>
+            <a class='button red' onclick='javascript:history.go(-1); return false;' href='javascript:void(0)'>{{"Voltar"|trans}}</a><button class='button blue' type='submit'>{{ "Salvar"|trans }}</button>
         </div>
     </form>
 </div>

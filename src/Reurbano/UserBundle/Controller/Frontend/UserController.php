@@ -394,7 +394,9 @@ class UserController extends BaseController {
                 // /validando se o email já não existe
                 if (count($erro) == 0) {
                     $user->setName($dadosPost['name']);
-                    $user->setCpf($dadosPost['cpf']);
+                    if(isset($dadosPost['cpf'])){
+                        $user->setCpf($dadosPost['cpf']);
+                    }
                     $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($dadosPost['city']);
                     $user->setCity($city);
                     $user->setGender($dadosPost['gender']);

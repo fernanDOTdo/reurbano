@@ -219,16 +219,24 @@ class DealController extends BaseController {
     public function exportAction()
     {
         $deal = $this->mongo('ReurbanoDealBundle:Deal')->findAllByCreated();
-        $data = "Cidade;Site de origem;Categoria;Nome Vendedor;E-mail Vendedor;Preço Original;Preço no site;Data;Conferido;Destaque;Ativo;Cupons Disponíveis;Visualizações\n";
+        $data = "Cidade;Site de origem;Categoria;Oferta;URL;Nome Vendedor;E-mail Vendedor;No estabelecimento;Na compra coletiva;No Reurbano;Data;Expirado;Data Vencimento;Conferido;Destaque;Ativo;Cupons Disponíveis;Visualizações\n";
         foreach($deal as $deal){
+            $label = $deal->getLabel();
+            $label = preg_replace("'\s+'", ' ', $label);
+            $label = trim($label, ' -');
             $data .= $deal->getSource()->getCity()->getName() .  
                     ";" .$deal->getSource()->getSite()->getName() . 
                     ";" . $deal->getSource()->getCategory()->getName() . 
+                    ";" . $label . 
+                    ";" . $this->generateUrl('deal_deal_show', array('city' => $deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug())) . 
                     ";" . $deal->getUser()->getName() . 
                     ";" . $deal->getUser()->getEmail() . 
                     ";" . $deal->getSource()->getPrice() . 
+                    ";" . $deal->getSource()->getPriceOffer() . 
                     ";" . $deal->getPrice() . 
                     ";" . $deal->getCreatedAt()->format('d/m/Y') .
+                    ";" . (($deal->getSource()->getExpiresAt()->getTimestamp() < time()) ? "Sim" : "Não") .
+                    ";" . $deal->getSource()->getExpiresAt()->format('d/m/Y') . 
                     ";" . (($deal->getChecked()) ? "Sim" : "Não") .
                     ";" . (($deal->getSpecial()) ? "Sim" : "Não") .
                     ";" . (($deal->getActive()) ? "Sim" : "Não") .
@@ -237,7 +245,7 @@ class DealController extends BaseController {
         }
         return new Response($data, 200, array(
             'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename= mailing_' . date('d_m_Y') . '.csv',
+            'Content-Disposition' => 'attachment; filename= ofertas_' . date('d_m_Y') . '.csv',
         ));
     }
 }
