@@ -57,6 +57,18 @@ class BannerRepository extends BaseRepository
     }
     
     /**
+     * Deleta banner apartir da oferta
+     */
+    public function deleteByDeal($dealid){
+        return $this->createQueryBuilder()
+                ->field('deal.id')->equals($dealid)
+                ->remove()
+                ->getQuery()
+                ->execute();
+                
+    }
+    
+    /**
      * Retorna um número específico de banners ativos por cidade
      *
      * @param int $limit quantidade de banners

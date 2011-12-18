@@ -1,8 +1,52 @@
 {# E-mail de boas vindas de novo usuário #}
-{% extends '::mail.html.twig' %}
+{% extends '::mail2.html.twig' %}
 
 {% block content %}
-<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">Obrigado por criar sua conta no {{mastop_param('system.site.name')}}!</h1><br/><br/>
+    <table>
+        <tr>
+            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                    fique ligado <br/>
+                    nos e-mails
+                </div>
+                <a href="{{url('_home')}}">
+                    <img src="{{url~'/images/icon1.jpg'}}" width="150" height="80" />
+                </a>
+                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                    Sempre enviamos boas ofertas e novidades através do e-mail. <br/>
+                    Fiquei atento para não na caixa de SPAM e você ficar de fora, ok?
+                </div>
+            </td>
+            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                    fale com a gente <br/>
+                    nas redes sociais
+                </div>
+                <a href="{{url('_home')}}">
+                    <img src="{{url~'/images/icon2.jpg'}}" width="150" height="80" />
+                </a>
+                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                    Mande sua sugestão, peça ajuda, queremos ouvir você!<br />
+                    E claro, teremos promoções<br />
+                    exclusivas,fique atento!</div>
+            </td>
+            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                    não se preocupe,<br/>
+                    o reurbano garante
+                </div>
+                <a href="{{url('_home')}}">
+                    <img src="{{url~'/images/icon3.jpg'}}" width="150" height="80" />
+                </a>
+                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                    Aqui nós garantimos que você vai receber pelo cupom que<br/>
+                    vendeu, e vai usar o cupom<br/>
+                    que comprou.
+                </div>
+            </td>
+        </tr>
+    </table>
+{#<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">Obrigado por criar sua conta no {{mastop_param('system.site.name')}}!</h1><br/><br/>
 <p style="margin:0;font-size:12px;">A partir de agora você pode:</p><br/><br/>
 <ul style="margin:0;font-size:12px;">
 <li>Vender seus cupons não usados de sites de compra coletiva.</li>
@@ -31,5 +75,5 @@ Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte e
 
 <span style="margin:0;font-size:11px; color: #999">
 Enviamos-lhe este e-mail pois você criou uma conta no {{mastop_param('system.site.name')}}. Caso tenha mudado de ideia, você pode anular sua inscrição a todo o momento. Caso você não tenha feito seu cadastro, queira avisar-nos deste problema por e-mail <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> para que possamos suprimir a sua conta. 
-</span><br/>
+</span><br/>#}
 {% endblock %}

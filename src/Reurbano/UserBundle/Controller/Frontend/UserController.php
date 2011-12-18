@@ -285,12 +285,12 @@ class UserController extends BaseController {
         if ($email) { // Envia notificação administrativa de novo usuário
             $mail->to($email)
              ->subject($userStatus == 4 ? "Novo usuário aguardando aprovação" : 'Cadastro de novo usuário')
-             ->template('usuario_novo', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
+             ->template('wellcome', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
              ->send();
         } else { // Envia e-mail de boas vindas para o usuário
             $mail->to($user)
              ->subject('Seja bem vindo')
-             ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
+             ->template('wellcome', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
              ->send();
         }
     }
@@ -379,6 +379,7 @@ class UserController extends BaseController {
         $dadosPost = $request->request->get($form->getName());
         $erro = array();
         $form->bindRequest($request);
+        $mail = $this->get('mastop.mailer');
         if ($form->isValid()) {
             if ($id) {
                 $user = $this->dm()->getReference('ReurbanoUserBundle:User', $dadosPost['id']);
@@ -484,6 +485,7 @@ class UserController extends BaseController {
                 $user->setNewsletters($dadosPost['email'] == 1 ? true : false);
                 $this->dm()->persist($user);
                 $this->dm()->flush();
+                
                 if ($modoCadastro == 'email') {
                     //envio de email para confirmar user
                     $this->emailActKey($dadosPost['email'], $dadosPost['name'], $actkey);
@@ -513,6 +515,7 @@ class UserController extends BaseController {
                     }
                     // /notificação de novo usuario
                 }
+                $mail->notify('Novo usuário', 'O usuário '.$user->getName().' ('.$user->getEmail().') Foi cadastrado com sucesso no sistema.');
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('user_user_confirmation', array('username' => $user->getUsername())));
             }
