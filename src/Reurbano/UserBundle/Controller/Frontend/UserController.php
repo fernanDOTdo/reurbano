@@ -285,12 +285,12 @@ class UserController extends BaseController {
         if ($email) { // Envia notificação administrativa de novo usuário
             $mail->to($email)
              ->subject($userStatus == 4 ? "Novo usuário aguardando aprovação" : 'Cadastro de novo usuário')
-             ->template('usuario_novo', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
+             ->template('wellcome', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
              ->send();
         } else { // Envia e-mail de boas vindas para o usuário
             $mail->to($user)
              ->subject('Seja bem vindo')
-             ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
+             ->template('wellcome', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
              ->send();
         }
     }
@@ -515,11 +515,7 @@ class UserController extends BaseController {
                     }
                     // /notificação de novo usuario
                 }
-                $mail->to($user)
-                     ->subject('Bem vindo ao Reurbano')
-                     ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem vindo!'))
-                     ->send();
-                    $mail->notify('Novo usuário', 'O usuário '.$user->getName().' ('.$user->getEmail().') Foi cadastrado com sucesso no sistema.');
+                $mail->notify('Novo usuário', 'O usuário '.$user->getName().' ('.$user->getEmail().') Foi cadastrado com sucesso no sistema.');
                 $this->get('session')->setFlash('ok', $msg);
                 return $this->redirect($this->generateUrl('user_user_confirmation', array('username' => $user->getUsername())));
             }

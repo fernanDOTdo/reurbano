@@ -1,24 +1,11 @@
 {# E-mail de boas vindas de novo usuário #}
-{% extends '::mail.html.twig' %}
+{% extends '::mail2.html.twig' %}
 
 {% block content %}
-    <table width="630" border="0" cellspacing="0" cellpadding="0" align="center" style="padding-left:10px; padding-right:8px; padding-top:12px;">
-        <tr>
-            <td height="620" align="center" valign="top" >
-                <a href="{{url('_home')}}">
-                    <img src="{{url~'/images/bem-vindo.jpg'}}" width="620" height="75" />
-                </a>
-                <div style="font-family: Verdana, Geneva, sans-serif;font-size:22px;font-weight:bold;color:#666;padding-top:5px;">
-                </div>
-                <div style="font-family: Verdana, Geneva, sans-serif; font-size:14px; color:#666; margin-top:-5px;"> 
-                    nós queremos que sua única preocupação seja em curtir a experiência<br />
-                    <br />
-                </div>
-            </td>
-        </tr>
+    <table>
         <tr>
             <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
-                <div style=" font-family: Verdana, Geneva, sans-serif; font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
                     fique ligado <br/>
                     nos e-mails
                 </div>
@@ -26,8 +13,8 @@
                     <img src="{{url~'/images/icon1.jpg'}}" width="150" height="80" />
                 </a>
                 <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
-                    Sempre enviamos boas ofertas 
-                    e novidades através do e-mail. <br/>Fiquei atento para não na caixa de SPAM e você ficar de fora, ok?
+                    Sempre enviamos boas ofertas e novidades através do e-mail. <br/>
+                    Fiquei atento para não na caixa de SPAM e você ficar de fora, ok?
                 </div>
             </td>
             <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
@@ -40,21 +27,20 @@
                 </a>
                 <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
                     Mande sua sugestão, peça ajuda, queremos ouvir você!<br />
-                    E claro, teremos promoções<br />  
-                    exclusivas,fique atento!
-                </div>
+                    E claro, teremos promoções<br />
+                    exclusivas,fique atento!</div>
             </td>
             <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
                 <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
-                    não se preocupe,  <br/>
+                    não se preocupe,<br/>
                     o reurbano garante
                 </div>
                 <a href="{{url('_home')}}">
                     <img src="{{url~'/images/icon3.jpg'}}" width="150" height="80" />
                 </a>
                 <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
-                    Aqui nós garantimos que você vai receber pelo cupom que<br/> 
-                    vendeu, e vai usar o cupom<br/> 
+                    Aqui nós garantimos que você vai receber pelo cupom que<br/>
+                    vendeu, e vai usar o cupom<br/>
                     que comprou.
                 </div>
             </td>
