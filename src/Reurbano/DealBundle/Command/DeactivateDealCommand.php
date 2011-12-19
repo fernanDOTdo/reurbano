@@ -64,7 +64,6 @@ class DeactivateDealCommand extends ContainerAwareCommand {
                 ->getQuery()
                 ->execute();
         if($deals->count()){
-            $output->writeln("certinho");
             foreach($deals as $deal){
                 $output->writeln("Desativando oferta <info>".$deal->getLabel()."</info> do vendedor <info>".$deal->getUser()->getEmail()."</info> com vencimento em <comment>".$deal->getSource()->getExpiresAt()->format('d/m/Y H:i:s')."</comment>");
                 // Desativa a oferta
