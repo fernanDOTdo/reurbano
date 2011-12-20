@@ -170,6 +170,12 @@ class BlockController extends BaseController {
         <p><a href="http://www.youtube.com/watch?v=ui_Hhm0Nfks" target="_blank"><img title="Nosso Vídeo" src="/themes/reurbano/images/video.jpg" alt="Nosso Vídeo" width="217" height="132" /></a></p>
         ';
         $c++;
+        $ret[$c]['title'] = 'Garantia Reurbano';
+        $ret[$c]['content'] = '
+        <img class="floatR" title="Garantia Reurbano" src="//reurbano.s3.amazonaws.com/imagens/garantia-reurbano-home.png" alt="Garantia Reurbano" width="92" height="97" />&Eacute; uma forma de trazer seguran&ccedil;a ao COMPRADOR, garantindo que ele receber&aacute; um cupom ainda n&atilde;o utilizado, ou ter&aacute; seu dinheiro de volta.
+        <p style="text-align: right;"><a href="http://www.reurbano.com.br/pg/garantia-reurbano">Saiba +</a></p>
+        ';
+        $c++;
         $ret[$c]['title'] = 'Compras Coletivas';
         $ret[$c]['content'] = '
         <p><a href="http://www.peixeurbano.com.br/" target="_blank"><img title="Peixe Urbano" src="/themes/reurbano/images/peixe-urbano.png" alt="Peixe Urbano" width="218" height="53" /></a></p>

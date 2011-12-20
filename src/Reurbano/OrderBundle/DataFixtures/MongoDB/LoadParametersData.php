@@ -62,7 +62,7 @@ class LoadParametersData extends AbstractFixture implements OrderedFixtureInterf
         $child->setDesc('Selecione o gateway de pagamento');
         $child->setValue('MercadoPago');
         $child->setFieldtype('choice');
-        $child->setOpts(array('choices' => array('MercadoPago' => 'MercadoPago', 'Braspag' => 'Braspag')));
+        $child->setOpts(array('choices' => array('MercadoPago' => 'MercadoPago', 'Braspag' => 'Braspag', 'Moip' => 'Moip')));
         $child->setOrder(1);
         $param->addChildren($child);
         
