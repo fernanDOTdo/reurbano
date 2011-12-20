@@ -142,7 +142,7 @@ class OrderController extends BaseController
                     return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#myorders', $ret['msg'], $ret['type']);
                 }
             }else{
-                throw $this->createNotFoundException('Você não tem permissão para acessar esta página.'); 
+                return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#myorders', $ret['msg'], $ret['type']); 
             }
         }
         throw $this->createNotFoundException('Compra não encontrada'); 
