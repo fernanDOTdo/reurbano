@@ -285,9 +285,9 @@ class UserController extends BaseController {
         if ($email) { // Envia notificação administrativa de novo usuário
             $mail->to($email)
              ->subject($userStatus == 4 ? "Novo usuário aguardando aprovação" : 'Cadastro de novo usuário')
-             ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
+             ->template('usuario_novo', array('user' => $user, 'title' => 'Novo usuário: '.$user->getName()))
              ->send();
-        } else { // Envia e-mail de boas vindas para o usuário
+        } elseif($user) { // Envia e-mail de boas vindas para o usuário
             $mail->to($user)
              ->subject('Seja bem vindo')
              ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
@@ -497,6 +497,10 @@ class UserController extends BaseController {
                     // /envio de email para confirmar user
                     $msg = $this->trans('Cadastro realizado, favor verificar seu email.');
                 } elseif ($modoCadastro == 'auto') {
+                    $mail->to($user)
+                         ->subject('Seja bem vindo')
+                         ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
+                         ->send();
                     $msg = $this->trans('Cadastro realizado, bem vindo.');
                     $this->authenticateUser($user);
                     //notificação de novo usuario
