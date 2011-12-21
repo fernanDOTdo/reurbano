@@ -293,14 +293,15 @@ class SellController extends BaseController
             $price = $data['price'];
             $quantity = $data['quantity'];
             $obs = $data['obs'];
-            $price2 = str_replace(',', '.', $price);
-            if($price2 < 1.50){
+            $price = str_replace('.', '', $price);
+            $price = str_replace(',', '.', $price);
+            if($price < 1.50){
                 return $this->redirectFlash($this->generateUrl('deal_sell_index'), $this->trans('Valor minimo para uma oferta é R$ 1,50' ), 'error');
             }
             
             
             $deal->setUser($user);
-            $deal->setPrice(str_replace(",", ".", $price));
+            $deal->setPrice($price);
             $deal->setChecked(false);
             $deal->setSpecial(false);
             $deal->setQuantity($quantity);

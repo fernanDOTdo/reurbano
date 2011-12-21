@@ -74,7 +74,7 @@ class CronCommand extends ContainerAwareCommand {
                 $command = $this->getApplication()->find('reurbano:cron:cancelorders');
                 $arguments = array(
                     'command' => 'reurbano:cron:cancelorders',
-                    'days' => 1,
+                    'days' => 2,
                 );
                 $input = new ArrayInput($arguments);
                 $returnCode = $command->run($input, $output);

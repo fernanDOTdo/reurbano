@@ -1,0 +1,65 @@
+<div class='promoiPad'>
+    <div class="destaque">
+              <h1>Quer ganhar um iPad 2?</h1>
+    <h2>O reurbano vai sortear um iPad 2 16GB com wi-fi e 3g </h2>
+    
+        <div class="video">
+    <iframe width="345" height="205" src="http://www.youtube.com/embed/ui_Hhm0Nfks" frameborder="0" allowfullscreen></iframe>
+        </div>
+        
+    </div>
+
+
+<div class="content-left">
+  <img src="http://reurbano.s3.amazonaws.com/imagens/ipad/logo-reurbano.jpg" width="453" height="139" alt="">
+    <p>
+      Reurbano é um mercado de compra e venda de cupons de descontos. Estamos no inicio de nossas operações -<strong> vamos fazer parte?</strong><br/>
+      Para mostrar como estamos felizes com a sua participação, vamos  sortear um <strong>Ipad 2</strong> para nossos primeiros usuários. 
+      <br/>
+      <span class="bold-txt"><strong>Basta se cadastrar para participar, simples assim! </strong></span></p>
+</div>
+
+<div class="content-right">
+	
+    <form action="/usuario/salvarPromo" method="post" class="form" id="formPromo">
+        Nome : <input type="text" value="" name="name" id="formPromo_Name" class="field"><br/>
+      Email : <input type="text" value="" name="email" id="formPromo_Email" class="field"><br/>
+      Senha : <input type="password" name="password" id="formPromo_Password" class="field"><br/>
+      Repetir Senha : <input type="password" name="password2" id="formPromo_Password2" class="field"><br/>
+
+Sexo:
+<input name="gender" type="radio" value="m" checked> masculino
+<input name="gender" type="radio" value="f"> feminino<br/>
+<input name="Submit" type="submit" class="bt" value=" Cadastre-se " border="0"> <br/>
+
+    
+  </form>
+</div>
+</div>
+<script type="text/javascript">
+    // Validação do form iPad
+    $("#formPromo").submit(function() {
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        var nome = $('#formPromo_Name').val();
+        var email = $('#formPromo_Email').val();
+        var senha = $('#formPromo_Password').val();
+        var senha2 = $('#formPromo_Password2').val();
+        if(nome == ''){
+            alert('Digite seu nome');
+            return false;
+        }else if(email == ''){
+            alert('Digite seu e-mail');
+            return false;
+        }else if(!emailReg.test(email)) {
+            alert('Digite um e-mail VÁLIDO');
+            return false;
+        }else if(senha == ''){
+            alert('Digite uma senha');
+            return false;
+        }else if(senha != senha2){
+            alert('O campo "Senha" deve ser igual ao "Repetir Senha"');
+            return false;
+        }
+        return true;
+    });
+</script>

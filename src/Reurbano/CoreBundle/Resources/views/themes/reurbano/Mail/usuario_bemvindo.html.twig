@@ -1,79 +1,280 @@
-{# E-mail de boas vindas de novo usuário #}
-{% extends '::mail2.html.twig' %}
+{% set url = url('_home') ~ 'themes/reurbano/mail' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title title|default(mastop_param('system.site.name')) %}</title>
+<style>
+a {
+  color: #2072A5;
+  text-decoration: none;
+  font-weight: 700;
+}
+a:hover {
+  color: #D87D08;
+}
+b {color: #666;}
+body {
+  font-family: Arial, Verdana;
+  color: #666;
+}
+</style>
+</head>
+<body bgcolor="#fee8cc">
+<center>
+<table style="margin:0px auto auto auto">
+<tbody>
+    {# Novo #}
+    <tr>
+        <td>
+            <table width="658" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tr>
+                    <td align="center" height="110" valign="middle">
+                        <a href="{{url('_home')}}">
+                            <img src="{{url~'/images/logo_reurbano2.jpg'}}" width="306" height="87" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="25" background="{{url~'/images/bg_top2.jpg'}}">
+                    </td>
+                </tr>
+                <tr>
+                    <td height="620" align="center" valign="top" background="{{url~'/images/bg_middle2.jpg'}}">
+                        <a href="{{url('_home')}}">
+                            <img src="{{url~'/images/bem-vindo.jpg'}}" width="620" height="75" />
+                        </a>
+                        <div style="font-family: Verdana, Geneva, sans-serif;font-size:22px;font-weight:bold;color:#666;padding-top:5px;">
+                        </div>
+                        <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;color:#666;margin-top:-5px;">
+                            nós queremos que sua única preocupação seja em curtir a experiência
+                            <br />
+                            <br />
+                        </div>
+                        <table width="630" border="0" cellspacing="0" cellpadding="0" align="center" style="padding-left:10px; padding-right:8px; padding-top:12px;">
+                            <tr>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                        fique ligado <br/>
+                                        nos e-mails
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon1.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                        Sempre enviamos boas ofertas e novidades através do e-mail. <br/>
+                                        Fiquei atento para não na caixa de SPAM e você ficar de fora, ok?
+                                    </div>
+                                </td>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                        fale com a gente <br/>
+                                        nas redes sociais
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon2.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                        Mande sua sugestão, peça ajuda, queremos ouvir você!<br />
+                                        E claro, teremos promoções<br />
+                                        exclusivas,fique atento!</div>
+                                </td>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                        não se preocupe,<br/>
+                                        o reurbano garante
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon3.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                        Aqui nós garantimos que você vai receber pelo cupom que<br/>
+                                        vendeu, e vai usar o cupom<br/>
+                                        que comprou.
+                                    </div>
+                                </td>
+                            </tr>
+                            {#<tr>
+                                <td>
+                                    {#Conteúdo
+                                    {#{% block content null %}
+                                    {#/Conteúdo
+                                </td>
+                            </tr>#}
+                            <tr>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                        use e abuse<br/>
+                                        do nosso ranking 
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon4.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                        Destacamos as ofertas que fazem<br/> 
+                                        mais sucesso, não aquelas <br/>
+                                        pagam mais pelo espaço.<br/>
+                                        Teste o nosso ranking!
+                                    </div>
+                                </td>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                        venda <br/>
+                                        seus cupons
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon5.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                        Não perca mais dinheiro, aqui você pode vender seu cupom. 
+                                        Alias, ganhe dinheiro revendendo uma boa oferta que você encontrou.
+                                    </div>
+                                </td>
+                                <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
+                                    <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
+                                       use os cupons <br/>
+                                       na hora 
+                                    </div>
+                                    <a href="{{url('_home')}}">
+                                        <img src="{{url~'/images/icon6.jpg'}}" width="150" height="80" />
+                                    </a>
+                                    <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
+                                         Nada de ficar esperando chegar<br/>
+                                         seu cupom e a sua vez. No Reurbano você escolhe o que quer e já pode usar na hora, sem enrolação.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="font-family: Verdana, Geneva, sans-serif; font-size:26px; font-weight:bold; color:#666; padding-top:25px; padding-left:5px; padding-right:15px;">
+                            OBRIGADO
+                        </div>
+                        <div style="font-family: Verdana, Geneva, sans-serif;font-size:12px;color:#666;margin-top:-2px;">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="40" align="center" background="{{url~'/images/bg_bottom2.jpg'}}">
+                        <span style="width:630px; font-family: Verdana, Geneva, sans-serif; font-size:10px; color:#fff; padding-left:9px; padding-right:10px;">
+                            Você recebeu esse e-mail pois se cadastrou no Reurbano. Você pode cancelar a hora que quiser, aqui.
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="30" align="center">
+                        <span style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; font-size: 8px; color: #666">
+                            REURBANO SERVIÇOS DIGITAIS LTDA
+                        </span>
+                    </td>
+                </tr>
+            </table> 
+        </td>
+    </tr>
+    {# /Novo #}
+    {# Velho
+    <tr>
+        <td width="300">
+                <a href="{{url('_home')}}" name="header_logo" title="{{mastop_param('system.site.name')}} - {{mastop_param('system.site.slogan')}}">
+<img src="{{url~'/images/logo.png'}}" alt="{{mastop_param('system.site.name')}}" style="border:0px;"/></a></td>
+        <td width="360">
+                <h1 style="color:#7a9e24;font-size:18pt;padding-top:40px; margin: 0 0 30px 10px; font-family: Arial, Verdana">
+                        {{title|default(mastop_param('system.site.slogan'))}}</h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="background-color:#7A9D24">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                <td style="background-color:White; padding: 15px; color: #666">
+                                        {#Conteúdo
+                                        {% block content null %}
+                                        {#/Conteúdo
+                                </td>
+                                <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+    {%if dealSpecial is defined %}
+    <tr>
+        <td colspan="2" style="background-color:#d87d08">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                    <td colspan="4" style="height:10px; font-size:2pt;">&nbsp;
+                                            </td>
+                            </tr>
+                            <tr>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                    <td style="background-color:White; padding: 15px;">
+                                            OFERTA 1
+                                    </td>
+                                    <td style="background-color:White; padding: 15px;">
+                                            OFERTA 2
+                                    </td>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td colspan="4" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td colspan="2" style="background-color:#15567e">
+            <table width="100%" cellspacing="0" cellpadding="0">
+                    <tbody>
+                            <tr>
+                                    <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                                    <td style="background-color:White; padding: 15px; text-align: center;">
+                                            {% include 'ReurbanoDealBundle:Widget\\Mail:category.html.twig' with {'categories': reurbano_get_categories() }%}
+                                            <br />
+                                            <br />
+                                            <b style="color:#666;">Siga o {{mastop_param('system.site.name')}}</b><br /> <a target="_blank" href="http://www.facebook.com/recompracoletiva"><img src="{{url~'/images/facebook.png'}}" alt="Facebook" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                            <a target="_blank" href="http://twitter.com/ReurbanoBrasil"><img src="{{url~'/images/twitter.png'}}" alt="Twitter" height="64" border="0" width="64"></a>&nbsp;&nbsp;
+                                    </td>
+                                    <td style="width:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                    <td colspan="3" style="height:10px; font-size:2pt;">&nbsp;</td>
+                            </tr>
+                    </tbody>
+            </table>
+        </td>
+    </tr>
+    {# /Velho #}
+</tbody>
+</table>
+<br />
+<table cellpadding="0" style="border-top:1px solid #e4e4e4; text-align:center; font-family: Arial, Verdana; font-size:12px;" cellspacing="0" width="600">
+<tr>
+	<td height="2" style="border-bottom:1px solid #e4e4e4;">
+	<div style="line-height: 0px; font-size: 1px; position: absolute;">&nbsp;</div>
+	</td>
+</tr>
+<tr>
+	<td style="font-family: Arial, Verdana; font-size:12px;">
+	<br />
+        <span style="color:#666666;padding-top:10px; margin: 0 0 30px 10px; font-family: Arial, Verdana">
+                        Equipe {{mastop_param('system.site.name')}}</span>
+	<br />
+	</td>
+</tr>
+</table>
 
-{% block content %}
-    <table>
-        <tr>
-            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
-                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
-                    fique ligado <br/>
-                    nos e-mails
-                </div>
-                <a href="{{url('_home')}}">
-                    <img src="{{url~'/images/icon1.jpg'}}" width="150" height="80" />
-                </a>
-                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
-                    Sempre enviamos boas ofertas e novidades através do e-mail. <br/>
-                    Fiquei atento para não na caixa de SPAM e você ficar de fora, ok?
-                </div>
-            </td>
-            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
-                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
-                    fale com a gente <br/>
-                    nas redes sociais
-                </div>
-                <a href="{{url('_home')}}">
-                    <img src="{{url~'/images/icon2.jpg'}}" width="150" height="80" />
-                </a>
-                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
-                    Mande sua sugestão, peça ajuda, queremos ouvir você!<br />
-                    E claro, teremos promoções<br />
-                    exclusivas,fique atento!</div>
-            </td>
-            <td align="center" valign="top" background="{{url~'/images/bg_box.jpg'}}" style="width:199px" height="205" >
-                <div style="font-family: Verdana, Geneva, sans-serif;font-size:14px;font-weight:bold;line-height:14px;color:#7b9d24;text-align:center;padding-top:12px;padding-bottom:10px;">
-                    não se preocupe,<br/>
-                    o reurbano garante
-                </div>
-                <a href="{{url('_home')}}">
-                    <img src="{{url~'/images/icon3.jpg'}}" width="150" height="80" />
-                </a>
-                <div style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size:10px;line-height:12px;color:#666;margin-top:8px;padding-left:8px;padding-right:12px;">
-                    Aqui nós garantimos que você vai receber pelo cupom que<br/>
-                    vendeu, e vai usar o cupom<br/>
-                    que comprou.
-                </div>
-            </td>
-        </tr>
-    </table>
-{#<h1 style="margin:0;font-weight:bold;font-size:16px;color:#D87D08;">Obrigado por criar sua conta no {{mastop_param('system.site.name')}}!</h1><br/><br/>
-<p style="margin:0;font-size:12px;">A partir de agora você pode:</p><br/><br/>
-<ul style="margin:0;font-size:12px;">
-<li>Vender seus cupons não usados de sites de compra coletiva.</li>
-<li>Aproveitar ofertas de cupons com os maiores descontos do mercado.</li>
-<li>Encontrar aquela oferta que você viu em algum site de compra coletiva, mas não chegou a tempo.</li>
-</ul><br/><br/>
-
-<p style="margin:0;">
-O <a href="{{url('_home')}}">{{mastop_param('system.site.name')}}</a> é constantemente atualizado com as melhores ofertas dos maiores sites de compra coletiva da Internet. Boas compras!
-</p><br/><br/>
-<p style="margin:0;">
-Aproveite que você já está cadastrado para:
-</p><br/>
-<ul style="margin:0;font-size:12px;">
-    <li><a href="{{url('deal_sell_index')}}" target="_blank">Vender seus cupons de sites de compras coletivas</a></li>
-    <li><a href="{{url('user_user_bank')}}" target="_blank">Cadastrar suas informações bancárias</a></li>
-    <li><a href="{{url('_home')}}" target="_blank">Comprar cupons de compras coletivas</a></li>
-</ul><br/><br/>
-
-<h3>Seus Dados no {{mastop_param('system.site.name')}}:</h3>
-<b>Nome: </b> {{user.name}} <br /><br />
-<b>Email: </b> {{user.email}} <br /><br /><br /><br />
-<span style="margin:0;font-size:11px;">
-Para comentários, sugestões ou reclamações, favor contatar-nos no seguinte endereço: <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> 
-</span><br/><br/>
-
-<span style="margin:0;font-size:11px; color: #999">
-Enviamos-lhe este e-mail pois você criou uma conta no {{mastop_param('system.site.name')}}. Caso tenha mudado de ideia, você pode anular sua inscrição a todo o momento. Caso você não tenha feito seu cadastro, queira avisar-nos deste problema por e-mail <a href="mailto:{{mastop_param('system.site.adminmail')}}">{{mastop_param('system.site.adminmail')}}</a> para que possamos suprimir a sua conta. 
-</span><br/>#}
-{% endblock %}
+</center>
+</body>
+</html>
