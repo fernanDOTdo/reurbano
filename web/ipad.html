@@ -21,24 +21,45 @@
 
 <div class="content-right">
 	
-  <form action="" method="get" class="form">
-    	<input type="text" value="nome" class="field"><br/>
-        <input type="text" value="email" class="field"><br/>
-    	<input type="text" value="senha" class="field"><br/>
-        <input type="text" value="repetir senha" class="field"><br/>
+    <form action="/usuario/salvarPromo" method="post" class="form" id="formPromo">
+        Nome : <input type="text" value="" name="name" id="formPromo_Name" class="field"><br/>
+      Email : <input type="text" value="" name="email" id="formPromo_Email" class="field"><br/>
+      Senha : <input type="password" name="password" id="formPromo_Password" class="field"><br/>
+      Repetir Senha : <input type="password" name="password2" id="formPromo_Password2" class="field"><br/>
 
 Sexo:
-<input name="masculino" type="radio" value="masculino" checked> masculino
-<input name="feminino" type="radio" value="feminino"> feminino<br/>
-<input name="Submit" type="submit" class="bt" value=" Cadastre-se" border="0"> <br/>
+<input name="gender" type="radio" value="m" checked> masculino
+<input name="gender" type="radio" value="f"> feminino<br/>
+<input name="Submit" type="submit" class="bt" value=" Cadastre-se " border="0"> <br/>
 
     
   </form>
-
-
-
-	</div>
-
-
-
 </div>
+</div>
+<script type="text/javascript">
+    // Validação do form iPad
+    $("#formPromo").submit(function() {
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        var nome = $('#formPromo_Name').val();
+        var email = $('#formPromo_Email').val();
+        var senha = $('#formPromo_Password').val();
+        var senha2 = $('#formPromo_Password2').val();
+        if(nome == ''){
+            alert('Digite seu nome');
+            return false;
+        }else if(email == ''){
+            alert('Digite seu e-mail');
+            return false;
+        }else if(!emailReg.test(email)) {
+            alert('Digite um e-mail VÁLIDO');
+            return false;
+        }else if(senha == ''){
+            alert('Digite uma senha');
+            return false;
+        }else if(senha != senha2){
+            alert('O campo "Senha" deve ser igual ao "Repetir Senha"');
+            return false;
+        }
+        return true;
+    });
+</script>

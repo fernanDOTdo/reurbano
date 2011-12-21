@@ -534,6 +534,110 @@ class UserController extends BaseController {
             return $this->redirect($this->generateUrl('user_user_edit', array('username' => $user->getUsername())));
         }
     }
+    /**
+     * @Route("/usuario/salvarPromo", name="user_user_savePromo")
+     * @Template()
+     */
+    public function savePromoAction() {
+        $request = $this->get('request');
+        $repository = $this->mongo('ReurbanoUserBundle:User');
+        $dadosPost = $request->request->all();
+        $erro = array();
+        $mail = $this->get('mastop.mailer');
+        $modoCadastro = $this->get('mastop')->param('user.all.autoactive');
+        //validando se a senha confere com a repetição
+        if ($dadosPost['password'] != $dadosPost['password2']) {
+            $erro[] = $this->trans('A senha digitada não confere com a confirmação da senha.');
+        }
+        // /validando se a senha confere com a repetição
+        //validando se o email já não existe
+        $query = $repository->findBy(array('email' => $dadosPost['email']));
+        if ($query->count() > 0) {
+            $erro[] = $this->trans('O email <b>%email%</b> já foi utilizado por outro usuário.', array('%email%' => $dadosPost['email']));
+        }
+        // /validando se o email já não existe
+        if (count($erro) > 0) {
+            $msg = "";
+            foreach ($erro as $eItem) {
+                $msg.=$eItem . " <br />";
+            }
+            $this->get('session')->setFlash('error', $msg);
+            return $this->redirect($this->generateUrl('user_user_new'));
+        }
+        $user = new user();
+        $user->setName($dadosPost['name']);
+        $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+
+        if ($modoCadastro == 'email') {
+            $user->setActkey($actkey = uniqid());
+            $user->setMailOk(false);
+            $user->setStatus(0);
+        } elseif ($modoCadastro == 'auto') {
+            $user->setActkey('');
+            $user->setMailOk(true);
+            $user->setStatus(1);
+        } elseif ($modoCadastro == 'admin') {
+            $user->setActkey('');
+            $user->setMailOk(true);
+            $user->setStatus(4);
+        }
+        $user->setGender($dadosPost['gender']);
+        $user->setAvatar('');
+        $user->setLang('pt_BR');
+        $user->setTheme('');
+        $user->setCreated(new \DateTime());
+        $user->setRoles('ROLE_USER');
+        $cityId = $this->get('session')->get('reurbano.user.cityId');
+        $city = $this->mongo('ReurbanoCoreBundle:City')->findOneById($cityId);
+        $user->setCity($city);
+        $user->setEmail($dadosPost['email']);
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+        $user->setPassword($encoder->encodePassword($dadosPost['password'], $user->getSalt()));
+        $user->setMoneyFree(0);
+        $user->setMoneyBlock(0);
+        $user->setNewsletters(true);
+        $this->dm()->persist($user);
+        $this->dm()->flush();
+
+        if ($modoCadastro == 'email') {
+            //envio de email para confirmar user
+            $this->emailActKey($dadosPost['email'], $dadosPost['name'], $actkey);
+            // /envio de email para confirmar user
+            $msg = $this->trans('Cadastro realizado, favor verificar seu email.');
+        } elseif ($modoCadastro == 'auto') {
+            $mail->to($user)
+                    ->subject('Seja bem vindo')
+                    ->template('usuario_bemvindo', array('user' => $user, 'title' => 'Bem-vindo, '.$user->getName().'!'))
+                    ->send();
+            $msg = $this->trans('Cadastro realizado, você já está participando da promoção!');
+            $this->authenticateUser($user);
+            //notificação de novo usuario
+            $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+            if ($emailsNotify != "") {
+                $emailsNotify = explode(";", $emailsNotify);
+                foreach ($emailsNotify as $email) {
+                    $this->newUserEmail(str_replace(" ", '', $email), $user);
+                }
+            }
+            // /notificação de novo usuario
+        } elseif ($modoCadastro == 'admin') {
+            $msg = $this->trans('Cadastro realizado, aguardar aprovação');
+            //notificação de novo usuario
+            $emailsNotify = str_replace(",", ";", $this->get('mastop')->param('user.all.mailnotify'));
+            if ($emailsNotify != "") {
+                $emailsNotify = explode(";", $emailsNotify);
+                foreach ($emailsNotify as $email) {
+                    $this->newUserEmail(str_replace(" ", '', $email), $user);
+                }
+            }
+            // /notificação de novo usuario
+        }
+        $mail->notify('Novo usuário - Promoção iPad', 'O usuário '.$user->getName().' ('.$user->getEmail().') Foi cadastrado com sucesso no sistema.');
+        $this->get('session')->setFlash('ok', $msg);
+        $this->setCookie('hideiPad', 1, (time()+604800));
+        return $this->redirect($this->generateUrl('_home', array('username' => $user->getUsername())));
+        
+    }
 
     /**
      * @Route("/usuario/senha/recupera/{username}", name="user_user_recovery", defaults={"username" = null})

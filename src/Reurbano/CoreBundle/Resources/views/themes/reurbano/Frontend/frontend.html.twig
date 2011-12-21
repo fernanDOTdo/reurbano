@@ -82,7 +82,7 @@ $(function(){
             background:url(http://reurbano.s3.amazonaws.com/imagens/ipad/destaque-ipad.jpg) no-repeat;
             width:900px;
             height:430px;
-            padding-top: 20px;
+            padding-top: 17px;
             }
 
     .destaque h1 {
@@ -242,6 +242,11 @@ $(function(){
                     expires: 1, 
                     path: '/'
                 });
+            });
+            $(document).bind('reveal.facebox', function() {
+                $('html,body').animate({
+                scrollTop: $("#facebox").offset().top
+                },'slow');
             });
         </script>
 {%endif%}
