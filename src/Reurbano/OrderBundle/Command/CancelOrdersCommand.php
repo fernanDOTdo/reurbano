@@ -49,7 +49,7 @@ class CancelOrdersCommand extends ContainerAwareCommand {
         $this
             ->setName('reurbano:cron:cancelorders')
             ->setDescription('Cancela os pedidos pendentes')
-            ->addArgument('days', InputArgument::OPTIONAL, 'Quantos dias atrás?', 1)
+            ->addArgument('days', InputArgument::OPTIONAL, 'Quantos dias atrás?', 2)
             //->addOption('opcao', null, InputOption::VALUE_NONE, 'Descrição da opção')
         ;
     }
