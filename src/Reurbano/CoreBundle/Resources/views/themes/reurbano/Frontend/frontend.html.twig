@@ -59,6 +59,125 @@ $(function(){
 });
 </script>
 {% endjavascripts %}
+{# Facebox para Promo iPad#}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.css' 
+                    filter='?yui_css' 
+                    output='static/system/css/facebox.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+        <style type="text/css">
+        #facebox{
+        top:15px;    
+        }
+        #facebox .content, #facebox .close {
+        background: #F4F4F4;
+        }
+    div.promoiPad {
+	margin:auto;
+	width:900px;
+	font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif; 
+    }
+
+
+    .destaque{
+            background:url(http://reurbano.s3.amazonaws.com/imagens/ipad/destaque-ipad.jpg) no-repeat;
+            width:900px;
+            height:430px;
+            padding-top: 20px;
+            }
+
+    .destaque h1 {
+        width:900px;
+        font-size:48px;
+        font-weight:bold;
+        text-align:center;
+        color:#333333;
+        padding-top:0;
+    }
+
+    .destaque h2 {
+                    width:900px;
+                    font-size:24px;
+                            font-weight: normal;
+                            text-align:center;
+                    color:#666666;
+                margin-top:-36px;
+            }
+
+
+    .video{
+            margin-left:157px;
+            margin-top:125px;
+            }
+
+    .content-left{
+            width:453px;
+            float:left;
+            font-size:11px;
+
+            }	
+
+
+    .content-left p{
+            width:410px;
+            font-size:11px;
+            line-height:25px; 
+        color:#333333;
+            padding-left:30px;
+        padding-right:20px;
+
+            }	
+    .bold-txt{
+            font-size:15px;
+
+            }
+
+
+    .content-right{
+            width:447px;	
+            height:336px;
+            float:right;
+            background:url(http://reurbano.s3.amazonaws.com/imagens/ipad/bg-form.jpg) no-repeat;
+
+
+            }
+
+    .form{
+            margin-left:70px;
+            margin-top:75px;
+            font-size:10px;
+            line-height:25px; 
+        color: #999;
+
+            }
+
+    .field {
+            color: #999;
+            height:30px;
+            width:300px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom:10px;
+            padding-left:7px;
+
+
+            }
+
+    .bt{
+            height:50px;
+            width:319px;
+            color:#FFFFFF;
+            font-size:14px;
+            margin-top:5px;
+            background:url(http://reurbano.s3.amazonaws.com/imagens/ipad/bt-cadastre.png) no-repeat;
+            border:none
+    }
+        </style>
+    {% endstylesheets %}
+    {% javascripts output='static/system/js/facebox.js' 
+                '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}    
+{# /Facebox para Promo iPad#}
 {%endif%}
 {% block javascriptsHead null %}
 {{ mastop_param('system.script.head') }}
@@ -113,6 +232,18 @@ $(function(){
             </div>
         </div>
     </div>
+{%endif%}
+{# Promoção iPad #}
+{%if app.request.cookies.get('hideiPad') is null and is_granted('ROLE_USER') == false%}
+        <script type="text/javascript">
+            jQuery.facebox({ ajax: 'ipad.html' });
+            $(document).bind('afterClose.facebox', function() {
+                $.cookie('hideiPad', '1', {
+                    expires: 1, 
+                    path: '/'
+                });
+            });
+        </script>
 {%endif%}
 {# Main #}
 <div id="main">

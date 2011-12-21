@@ -23,7 +23,8 @@ class UserFormEdit extends AbstractType {
                         'm' => 'Masculino',
                         'f' => 'Feminino'
                     ),
-                    'label' => 'Gênero'
+                    'label' => 'Sexo',
+                    'required' => false,
                 ))
                 ->add('birth', 'birthday', array('label'=>'Data de nascimento', 'format' => 'd/M/y','required' => false))
                 ->add('city', 'document', array('label'=>'Cidade', 'class' => 'Reurbano\\CoreBundle\\Document\\City', 'property'=>'name', 'required' => false, 'empty_value' => 'Todas' ))

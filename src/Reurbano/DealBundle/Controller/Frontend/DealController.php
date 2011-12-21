@@ -209,7 +209,12 @@ class DealController extends BaseController
             return $this->redirectFlash($this->generateUrl('user_dashboard_index').'#mydeals', 'Não é possível ativar uma oferta vendida.', 'error');
         }
         $dm = $this->dm();
-        ($active) ? $deal->setActive(true) : $deal->setActive(false);
+        if($active){
+            $deal->setActive(true);
+        }else{
+            $deal->setActive(false);
+            $dm->getRepository('ReurbanoCoreBundle:Banner')->deleteByDeal($deal->getId());
+        }
         $dm->persist($deal);
         $dm->flush();
         return $this->redirect($this->generateUrl('user_dashboard_index')."#mydeals");
