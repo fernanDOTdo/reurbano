@@ -2,15 +2,12 @@
 
 {% block content %}
 <div id="siteContent">
-<div class="grid_9">
+<div class="grid_12">
     {{content.getContent|raw}}
     {%if is_granted('ROLE_ADMIN') %}
         <div class="clear"></div>
         <div class="info m10"><a href="{{path('admin_core_content_form', {'slug': content.getSlug})}}" class="button green" title="Editar {{content.getTitle}}">Editar</a></div>
     {%endif%}
-</div>
-<div class="grid_3">
-{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'content', 'opts': {'content': content}} %}
 </div>
 </div>
 {% endblock %}
