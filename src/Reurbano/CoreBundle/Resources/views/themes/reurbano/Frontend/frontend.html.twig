@@ -302,7 +302,7 @@ $(function(){
             {%if cat is defined %}
             {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': cat.getSlug }%}
             {%else%}
-            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
+            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug')|default('') }%}
             {%endif%}
         </div>
         <div class="grid_2 omega" id="sellButton">

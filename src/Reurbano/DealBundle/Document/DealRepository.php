@@ -36,11 +36,15 @@ class DealRepository extends BaseRepository
      * @return object or null
      */
     public function findRelated($deal){
+        $date = new \DateTime();
+        $date->setTimestamp(strtotime('+1 day'));
+        $date->setTime(0, 0, 0);
         return $this->createQueryBuilder()
                 ->field('id')->notEqual($deal->getId())
                 ->field('checked')->equals(true)
                 ->field('active')->equals(true)
                 ->field('quantity')->gt(0)
+                ->field('source.expiresAt')->gt($date) // Data de vencimento maior que amanhã
                 ->field('source._id')->equals(new \MongoId($deal->getSource()->getId()))
                 ->sort('special', 'desc')
                 ->sort('views', 'desc')
