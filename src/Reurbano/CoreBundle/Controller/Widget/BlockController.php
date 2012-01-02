@@ -44,18 +44,6 @@ use Reurbano\CoreBundle\Document\Banner;
 class BlockController extends BaseController {
     
     
-    public function renderSearchAction($q){
-        return $this->forward('ReurbanoCoreBundle:Widget\\Block:render', array('area' => 'search', 'opts' => array('q' => $q)));
-    }
-    
-    public function renderCatAction($cat){
-        return $this->forward('ReurbanoCoreBundle:Widget\\Block:render', array('area' => 'category', 'opts' => array('cat' => $cat)));
-    }
-    
-    public function renderDealAction($cat, $dealId){
-        return $this->forward('ReurbanoCoreBundle:Widget\\Block:render', array('area' => 'deal', 'opts' => array('cat' => $cat, 'id' => $dealId)));
-    }
-
     /**
      * Widget que renderiza o bloco lateral
      * @Template()
