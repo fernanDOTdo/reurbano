@@ -579,16 +579,32 @@ class Deal
         $count = floor($count3);
         $this->setDiscount($count);
         // Gera as tags
-        $this->generateTags();
+        //$this->generateTags();
     }
-    protected function generateTags()
+   
+    /**
+     * generateTags
+     *
+     * @param String $tagsSEO
+     */
+    public function generateTags($tagsSEO = null)
     {
-        ###  ATENÇÃO!  No código abaixo há mágica de mana preto.  ###
+        ###  ATENÇÃO!  No código abaixo há mágica de mana preto.  ###        
+        
+        //se não foi passado nenhum parâmetro
+        //o titulo da oferta será o SEO
+        if (empty($tagsSEO)) $tagsSEO = $this->getLabel();
+        
+        // remove qualquer espaço em branco e duplos
+				$tagsSEO = preg_replace('/\s(?=\s)/', '', $tagsSEO);
+				
+				// substitue qualquer espaço em branco não-espaço, com um espaço
+				$tagsSEO = preg_replace('/[\n\r\t]/', ' ', $tagsSEO);
         
         // Separa o label por espaços
-        $tags = explode(' ', $this->getLabel());
+        $tags = explode(' ',$tagsSEO);
         // Adiciona nas tags o mesmo label sem acento
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $this->getLabel());
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT',$tagsSEO);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[\/_|+ -]+/", '-', $clean);
@@ -601,6 +617,7 @@ class Deal
         $tags = array_unique($tags);
         // Remove itens nulos das tags
         $tags = array_filter($tags, 'strlen');
+        
         // Salva as tags
         $this->setTags($tags);
     }
