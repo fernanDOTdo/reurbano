@@ -43,7 +43,7 @@ class HtmlController extends BaseController {
             $mail->to($this->get('mastop')->param('system.site.adminmail'))
                     ->replyTo($cont->getMail())
                     ->subject($this->trans('Formulário de contato'))
-                    ->template('contato', array('cont' => $cont, 'date' => date('d/m/y G:i:s'), 'title' => $this->trans('Novo Formulário de contato')))
+                    ->template('contato_clean', array('cont' => $cont, 'date' => date('d/m/y G:i:s'), 'title' => $this->trans('Novo Formulário de contato')))
                     ->send();
             return $this->redirectFlash($this->generateUrl('_home'), 'Mensagem enviada com sucesso.');
         }
