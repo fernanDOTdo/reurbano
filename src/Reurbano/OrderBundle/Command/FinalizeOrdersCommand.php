@@ -106,7 +106,7 @@ EOT
                             'orderLink' => $orderLinkSeller,
                         ))
                         ->send();
-/*
+
                 // Notifica o administrador do cancelamento
                 $mail->notify('[CRON] Venda Finalizada', 'O sistema cancelou a venda Cód.  '.$order->getId().'<br /><br />
 	                Comprador: '.$order->getUser()->getName().' ('.$order->getUser()->getEmail().')<br />
@@ -115,8 +115,6 @@ EOT
 	                Oferta: <b>'.$order->getQuantity().'x - '.$order->getDeal()->getLabel().'</b><br />
 	                Total: R$ '.  number_format($order->getTotal(), 2, ',', '').'<br />
 	                Link para a venda: <a href="'.$orderLinkAdmin.'">'.$orderLinkAdmin.'</a><br />');
-*/             
-	             
             }
         }else{
             $output->writeln("<error>Nenhum Pedido Encontrado</error>");
