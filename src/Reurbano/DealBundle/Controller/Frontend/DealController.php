@@ -134,7 +134,7 @@ class DealController extends BaseController
         $dm = $this->dm();
         $title = "Editar Oferta";
         $request = $this->get('request');
-        $form = $this->createForm(new DealEditType(), $deal, array('document_manager' => 'default'));
+        $form = $this->createForm(new DealEditType(), $deal, array('em' => 'default'));
         $data = $this->get('request')->request->get($form->getName());
         $user = $this->get('security.context')->getToken()->getUser();
         if($user->getId() != $deal->getUser()->getId()){

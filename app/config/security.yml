@@ -1,7 +1,7 @@
 services:
     mastop.user:
         class: Reurbano\UserBundle\Security\DocumentUserProvider
-        arguments: [@doctrine.odm.mongodb.security.user.document_manager, Reurbano\UserBundle\Document\User]
+        arguments: [@mastop.dm, Reurbano\UserBundle\Document\User]
     mastop.user.success_handler:
         class: Reurbano\UserBundle\Security\SuccessHandler
         arguments: [@router]

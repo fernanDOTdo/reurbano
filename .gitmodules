@@ -40,21 +40,21 @@
 [submodule "vendor/doctrine-mongodb-odm"]
 	path = vendor/doctrine-mongodb-odm
 	url = git://github.com/doctrine/mongodb-odm.git
-[submodule "vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle"]
-	path = vendor/bundles/Symfony/Bundle/DoctrineMongoDBBundle
-	url = git://github.com/symfony/DoctrineMongoDBBundle.git
-[submodule "vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle"]
-	path = vendor/bundles/Symfony/Bundle/DoctrineMigrationsBundle
-	url = git://github.com/symfony/DoctrineMigrationsBundle.git
-[submodule "vendor/doctrine-migrations"]
-	path = vendor/doctrine-migrations
+[submodule "vendor/bundles/Doctrine/Bundle/MongoDBBundle"]
+	path = vendor/bundles/Doctrine/Bundle/MongoDBBundle
+	url = git://github.com/doctrine/DoctrineMongoDBBundle.git
+[submodule "vendor/bundles/Doctrine/Bundle/MigrationsBundle"]
+	path = vendor/bundles/Doctrine/Bundle/MigrationsBundle
+	url = git://github.com/doctrine/DoctrineMigrationsBundle.git
+[submodule "vendor/migrations"]
+	path = vendor/migrations
 	url = git://github.com/doctrine/migrations.git
-[submodule "vendor/doctrine-fixtures"]
-	path = vendor/doctrine-fixtures
+[submodule "vendor/data-fixtures"]
+	path = vendor/data-fixtures
 	url = http://github.com/doctrine/data-fixtures.git
-[submodule "vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle"]
-	path = vendor/bundles/Symfony/Bundle/DoctrineFixturesBundle
-	url = http://github.com/symfony/DoctrineFixturesBundle.git
+[submodule "vendor/bundles/Doctrine/Bundle/FixturesBundle"]
+	path = vendor/bundles/Doctrine/Bundle/FixturesBundle
+	url = http://github.com/doctrine/FixturesBundle.git
 [submodule "vendor/bundles/Symfony/Bundle/AsseticBundle"]
 	path = vendor/bundles/Symfony/Bundle/AsseticBundle
 	url = http://github.com/symfony/AsseticBundle.git

@@ -187,10 +187,10 @@ class SellController extends BaseController
             $deal->setSource($sourceEmbed);
             $admin = false;
             if($this->hasRole('ROLE_ADMIN') || $this->hasRole('ROLE_SUPERADMIN')){
-                $sourceForm = $this->createForm(new DealAdminType(),$deal, array('document_manager' => 'crawler'));
+                $sourceForm = $this->createForm(new DealAdminType(),$deal, array('em' => 'crawler'));
                 $admin = true;
             }else{
-                $sourceForm = $this->createForm(new DealType(),$deal, array('document_manager' => 'crawler'));
+                $sourceForm = $this->createForm(new DealType(),$deal, array('em' => 'crawler'));
             }
         }else{
             return $this->redirectFlash($this->generateUrl('deal_sell_index'), 'Selecione uma oferta', 'notice');
@@ -214,7 +214,7 @@ class SellController extends BaseController
         $dm = $this->dm();
         $crawlerDM = $this->mastop()->getDocumentManager('crawler');
         $request = $this->get('request');
-        $form = $this->createForm(new DealType(),null, array('document_manager' => 'crawler'));
+        $form = $this->createForm(new DealType(),null, array('em' => 'crawler'));
         $data = $this->get('request')->request->get($form->getName());
         if(isset($data['user'])){
             $user = $this->mongo('ReurbanoUserBundle:User')->find($data['user']);
