@@ -43,7 +43,7 @@ class DealEditType extends AbstractType {
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden')
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
-                ->add('source', new SourceEditType(), array('label'=>'', 'document_manager' => $options['document_manager']))
+                ->add('source', new SourceEditType(), array('label'=>'', 'em' => $options['em']))
                 ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
             ;
     
@@ -53,7 +53,7 @@ class DealEditType extends AbstractType {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Deal',
             'intention' => 'deal_edit',
-            'document_manager' => '',
+            'em' => '',
         );
     }
 

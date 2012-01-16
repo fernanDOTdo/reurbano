@@ -36,7 +36,7 @@ class SourceEditType extends AbstractType {
                             'label'=>'Categoria da Oferta', 
                             'class' => 'Reurbano\\DealBundle\\Document\\Category', 
                             'property'=>'name', 
-                            'document_manager' => $options['document_manager'],
+                            'em' => $options['em'],
                             'required' => false,
                             'empty_value' => "Selecione",
                         )
@@ -46,7 +46,7 @@ class SourceEditType extends AbstractType {
                             'label'=>'Site da Oferta', 
                             'class' => 'Reurbano\\DealBundle\\Document\\Site', 
                             'property'=>'name', 
-                            'document_manager' => $options['document_manager'],
+                            'em' => $options['em'],
                             'required' => false,
                             'empty_value' => "Selecione",
                         )
@@ -58,7 +58,7 @@ class SourceEditType extends AbstractType {
     public function getDefaultOptions(array $options) {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\SourceEmbed',
-            'document_manager' => 'default',
+            'em' => 'default',
         );
     }
 

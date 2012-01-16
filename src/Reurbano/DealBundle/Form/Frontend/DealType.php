@@ -44,7 +44,7 @@ class DealType extends AbstractType {
         $builder->add('id', 'hidden')
                 ->add('quantity', 'integer', array('label'=>'Quantidade disponível','attr'=> array('class' => 'small')))
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL'))
-                ->add('source', new SourceType(), array('label'=>'', 'document_manager' => $options['document_manager']))
+                ->add('source', new SourceType(), array('label'=>'', 'em' => $options['em']))
                 ->add('voucher0', 'file', array ('label' => "Voucher 1" , 'property_path' => false))
                 ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
             ;
@@ -54,7 +54,7 @@ class DealType extends AbstractType {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Deal',
             'intention' => 'deal_creation',
-            'document_manager' => '',
+            'em' => '',
         );
     }
 

@@ -113,7 +113,7 @@
     {%endif%}
 </div>
 <div class="grid_3">
-{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat, 'id': deal.getId}} %}
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'deal', 'opts': {'cat': cat.id, 'id': deal.id}} %}
 </div>
 </div>
 {% endblock %}

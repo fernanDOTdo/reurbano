@@ -106,23 +106,25 @@ class DealController extends BaseController {
 
     /**
      * Widget que renderiza uma oferta no bloco
-     * @param object $deal
+     * @param string $deal id do Deal
      */
     public function blockAction($deal) {
+        $theDeal = $this->mongo('ReurbanoDealBundle:Deal')->findOneById($deal);
         return $this->render(
                         'ReurbanoDealBundle:Widget/Deal:block.html.twig', array(
-                        'deal' => $deal,
+                        'deal' => $theDeal,
                         )
         );
     }
     /**
      * Widget que renderiza uma oferta no bloco Topo
-     * @param object $deal
+     * @param string $deal id do Deal
      */
     public function blockTopAction($deal) {
+        $theDeal = $this->mongo('ReurbanoDealBundle:Deal')->findOneById($deal);
         return $this->render(
                         'ReurbanoDealBundle:Widget/Deal:blockTop.html.twig', array(
-                        'deal' => $deal,
+                        'deal' => $theDeal,
                         )
         );
     }
