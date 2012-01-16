@@ -14,7 +14,7 @@ class DealType extends AbstractType {
                 ->add('label', 'text', array('label'=>'Título','attr'=>array('class'=>'large')))
                 ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL','attr'=>array('class'=>'small')))
                 
-              	->add('source', new SourceEditType(), array('label'=>'', 'document_manager' => $options['document_manager']))
+              	->add('source', new SourceEditType(), array('label'=>'', 'em' => $options['em']))
               
                 //->add('source', 'document', array('label'=>'Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\SourceEmbed', 'property'=>'titleFormat', 'property_path' => false, 'attr' => array('style' => 'width: 400px;') ))
                 //->add('quantity', 'integer', array('label'=>'Quantidade disponível','attr'=>array('class'=>'small')))
@@ -35,7 +35,7 @@ class DealType extends AbstractType {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Deal',
             'intention' => 'deal_creation',
-            'document_manager' => 'default',
+            'em' => 'default',
         );
     }
 
