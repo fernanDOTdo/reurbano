@@ -98,7 +98,7 @@ class CronCommand extends ContainerAwareCommand {
                 
                 // Finalizar os pedidos aprovados depois de 30 dias da venda concluída
                 $output->writeln("<question>Desativando ofertas vencidas</question>");
-                $command = $this->getApplication()->find('reurbano:cron:deactivatedeal');
+                $command = $this->getApplication()->find('reurbano:cron:finalizeorders');
                 $arguments = array(
                     'command' => 'reurbano:cron:finalizeorders',
                     'days' => 30,
