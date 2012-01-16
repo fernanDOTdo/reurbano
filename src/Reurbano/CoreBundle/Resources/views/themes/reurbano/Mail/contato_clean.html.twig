@@ -1,0 +1,30 @@
+{% set url = url('_home') ~ 'themes/reurbano/mail' %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block title title|default(mastop_param('system.site.name')) %}</title>
+</head>
+<body>
+<center>
+<table style="margin:0px auto auto auto">
+<tbody>
+<table width="100%" cellspacing="0" cellpadding="0" style="padding: 2px; color: #000000;font-size:13px;">
+  <tbody>
+    <tr>
+			<td>
+				{% block content %}
+					<b>Nome:</b> {{ cont.name }}<br />
+					<b>Telefone:</b> {{ cont.phone }}<br />
+					<b>E-mail:</b> {{ cont.mail }}<br />
+					<b>Data:</b> {{ date }}<br />
+					<b>IP:</b> {{ cont.ip }}<br /><br />
+					<b>Mensagem:</b><br />
+					{{ cont.msg }}<br />
+				{% endblock %}
+			</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

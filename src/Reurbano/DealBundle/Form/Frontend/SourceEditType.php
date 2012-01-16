@@ -41,7 +41,7 @@ class SourceEditType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
-                ->add('category', 'document', array('label'=>'Categoria da Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name', 'em' => $options['em'] ))
+                //->add('category', 'document', array('label'=>'Categoria da Oferta', 'class' => 'Reurbano\\DealBundle\\Document\\Category', 'property'=>'name', 'em' => $options['em'] ))
                 ->add('expiresAt', 'date', array('label'=>'Data de Validade', 'format'=>'dd/MM/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
             ;
     }

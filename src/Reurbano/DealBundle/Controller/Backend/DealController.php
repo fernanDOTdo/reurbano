@@ -76,6 +76,10 @@ class DealController extends BaseController {
             $expiresAt = explode('/',$formResult);
             $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
             $deal->getSource()->setExpiresAt($dataAtual);
+            
+            $tags = $dadosPost['tags'];
+            $deal->generateTags($tags);
+            
             //var_dump($city->getName());
             /* echo $deal->getPrice();
               echo "<pre>";

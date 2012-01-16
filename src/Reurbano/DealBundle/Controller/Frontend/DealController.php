@@ -151,7 +151,7 @@ class DealController extends BaseController
             //$form->bindRequest($request);
             $source = $deal->getSource();
             //$expiresAt = $data['source']['expiresAt'];
-            $category = $data['source']['category'];
+            //$category = $data['source']['category'];
             //$expiresDate = new \DateTime(substr($expiresAt, 6, 4).'-'.substr($expiresAt, 3, 2).'-'.substr($expiresAt, 0, 2));
             //if($expiresDate->getTimestamp() < time()){
             //    $mail->notify('Debug: Data inválida', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta com uma data inválida: '.$expiresAt.'.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
@@ -160,15 +160,15 @@ class DealController extends BaseController
             //if($source->getExpiresAt() == '' || $source->getExpiresAt()->format('d/m/Y') != $expiresAt){
                 // Seta a validade no Source
             //    $source->setExpiresAt($expiresDate);
-            //}
+            //}            
             // Categoria
-            $cat = $this->mongo('ReurbanoDealBundle:Category')->find($category);
-            if(!$cat){
-                $mail->notify('Erro: Categoria não encontrada', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta para a categoria ID '.$category.' e ela não foi encontrada no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
-                return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'Categoria não encontrada', 'error');
-            }
-            $source->setCategory($cat);
-            $deal->setSource($source);
+            //$cat = $this->mongo('ReurbanoDealBundle:Category')->find($category);
+            //if(!$cat){
+            //    $mail->notify('Erro: Categoria não encontrada', 'O usuário '.$user->getName().' ('.$user->getEmail().') tentou editar uma oferta para a categoria ID '.$category.' e ela não foi encontrada no DB.<br /><br />Dados técnicos do POST:<br />'.  print_r($data, true));
+            //    return $this->redirectFlash($this->generateUrl('deal_deal_edit', array('id' => $deal->getId())), 'Categoria não encontrada', 'error');
+            //}
+            //$source->setCategory($cat);
+            //$deal->setSource($source);
             $price = $data['price'];
             $obs = $data['obs'];
             $deal->setObs($obs);
