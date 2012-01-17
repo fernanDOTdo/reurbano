@@ -31,6 +31,8 @@
             <br />
             {{ "<b>Tipo: </b>"}} {{ (bankData.getType == 1) ? 'Conta Corrente' : 'Conta Poupança'}}
             <br />
+            {{ "<b>CPF do Titular: </b>"}} {{ bankData.getCpf }}
+            <br />
             {%if bankData.getObs is not null %}
             {{ "<b>Obs: </b>"}}<br />
             <div class="mB10">{{ bankData.getObs|nl2br }}</div>

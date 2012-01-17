@@ -33,6 +33,7 @@ class BankDataType extends AbstractType {
         $builder->add('name', 'text', array('label' => 'Banco'));
         $builder->add('agency', 'text', array('label' => 'Agência'));
         $builder->add('account', 'text', array('label' => 'Conta'));
+        $builder->add('cpf', 'text', array('label' => 'CPF do Titular'));
         $builder->add('type', 'choice', array('label' => 'Tipo de Conta', 'choices'   => array('1' => 'Conta Corrente', '2' => 'Conta Poupança')));
         $builder->add('obs', 'textarea', array('label' => 'Observações', 'required' => false));
     }

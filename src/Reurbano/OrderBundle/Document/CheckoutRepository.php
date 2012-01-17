@@ -50,5 +50,14 @@ class CheckoutRepository extends BaseRepository
         $checkout->setId($id);
         return $checkout;
     }
+    
+    /**
+     * Pega todos ordenado pelo status ordenado por CREATED
+     *
+     * @return Checkout ou null
+     **/
+    public function findByStatus($status) {
+        return $this->findBy(array('status' => $status), array('created' => 'desc'));
+    }
 
 }
