@@ -107,7 +107,7 @@ EOT
                         ))
                         ->send();
 
-                // Notifica o administrador do cancelamento
+                // Notifica o administrador da finalização
                 $mail->notify('[CRON] Venda Finalizada', 'O sistema cancelou a venda Cód.  '.$order->getId().'<br /><br />
 	                Comprador: '.$order->getUser()->getName().' ('.$order->getUser()->getEmail().')<br />
 	                Vendedor:  '.$order->getSeller()->getName().' ('.$order->getSeller()->getEmail().')<br />

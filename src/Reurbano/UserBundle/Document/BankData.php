@@ -63,6 +63,14 @@ class BankData {
      * @ODM\Int
      */
     protected $type = 1;
+    
+    /**
+     * CPF do Titular
+     *
+     * @var string
+     * @ODM\String
+     */
+    protected $cpf;
 
     /**
      * Observações
@@ -110,5 +118,12 @@ class BankData {
 
     public function setObs($obs) {
         $this->obs = $obs;
+    }
+    public function getCpf() {
+        return $this->cpf;
+    }
+
+    public function setCpf($cpf) {
+        $this->cpf = $cpf;
     }
 }

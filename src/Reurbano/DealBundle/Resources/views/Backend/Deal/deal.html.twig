@@ -61,9 +61,8 @@
                 
             {{ form_row(form.obs) }}
             
-            {{ form_label(form.tags) }}
-            <textarea id="deal_tags" name="deal[tags]" style="width: 100%;">{% for tags in deal.tags|reverse %}{{ tags }} {%endfor%}</textarea>
-            
+            <label style="width: 100%;">SEO da Oferta</label>
+            <textarea id="deal_tags" name="deal[tags]" style="width: 100%;">{% for tags in deal.tags %}{{ tags }} {%endfor%}</textarea>
              
             {{ form_label(form.active) }}
             {{ form_errors(form.active) }}

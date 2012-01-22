@@ -95,6 +95,17 @@ class CronCommand extends ContainerAwareCommand {
                 );
                 $input = new ArrayInput($arguments);
                 $returnCode = $command->run($input, $output);
+                
+                // Finalizar os pedidos aprovados depois de 30 dias da venda concluída
+                $output->writeln("<question>Desativando ofertas vencidas</question>");
+                $command = $this->getApplication()->find('reurbano:cron:finalizeorders');
+                $arguments = array(
+                    'command' => 'reurbano:cron:finalizeorders',
+                    'days' => 30,
+                );
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
+                $output->writeln("<question>Notificando os vendedores para efetuarem seus check-out</question>");
                 break;
         }
     }

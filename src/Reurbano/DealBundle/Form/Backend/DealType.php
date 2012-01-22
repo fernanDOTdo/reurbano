@@ -24,7 +24,7 @@ class DealType extends AbstractType {
                 //->add('expiresAt', 'date', array('label'=>'Validade', 'format'=>'dd/M/Y', 'widget'=>'single_text', 'attr'=>array('class'=>'datepicker')))
                 ->add('comission', new ComissionType(), array('label'=>'Comissão'))
                 ->add('obs', 'textarea', array('label' => 'Observação', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
-                ->add('tags', 'textarea', array('label' => 'SEO da Oferta', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
+                //->add('tags', 'collection', array('label' => 'SEO da Oferta', 'required' => false, 'attr'  => array('style' => 'width: 100%;')))
                 //->add('voucher0', 'file', array ('label' => "Voucher" , 'property_path' => false))
                 //->add('voucher', 'document', array('label'=>'Voucher', 'class' => 'Reurbano\\DealBundle\\Document\\Voucher', 'property'=>'title' ))
             ;

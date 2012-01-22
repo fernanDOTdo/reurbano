@@ -163,6 +163,7 @@ class UserController extends BaseController {
                     $user->setName($dadosPost['name']);
                     $user->setEmail($dadosPost['email']);
                     $user->setUsername(str_replace(".", "", str_replace("@", "", $dadosPost['email'])));
+                    $user->setGender($dadosPost['gender']);
                     $user->setRoles($dadosPost['roles']);
                     $user->setStatus($dadosPost['status']);
                     $this->dm()->flush();
@@ -303,10 +304,11 @@ class UserController extends BaseController {
     public function exportAction()
     {
         $user = $this->mongo('ReurbanoUserBundle:User')->findAllByCreated();
-        $data = "Nome;E-mail;Cidade;Data\n";
+        $data = "Nome;E-mail;Sexo;Cidade;Data\n";
         foreach($user as $user){
             $data .= $user->getName() .
                     ";" .$user->getEmail() .
+                    ";" .$user->getGender() .
                     ";" . $user->getCity()->getName() .
                     ";" . $user->getCreated() . "\n";
         }

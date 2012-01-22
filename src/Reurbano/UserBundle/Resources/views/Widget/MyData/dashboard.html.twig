@@ -31,6 +31,8 @@
     <br />
     {{ "<b>Conta: </b>"}} {{ bankData.getAccount }}
     <br />
+    {{ "<b>CPF do Titular: </b>"}} {{ bankData.getCpf }}
+    <br />    
     {{ "<b>Tipo: </b>"}} {{ (bankData.getType == 1) ? 'Conta Corrente' : 'Conta Poupança'}}
     <br />
     {{ "<b>Obs: </b>"}}<br />

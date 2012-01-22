@@ -28,6 +28,7 @@
             <span class="info">Banco:</span> {{ user.bankData.name }}<br />
             <span class="info">Agência:</span> {{ user.bankData.agency }}<br />
             <span class="info">Conta:</span> {{ user.bankData.account }}<br />
+            <span class="info">CPF do Titular:</span> {{ user.bankData.cpf }}<br />
             {% if user.bankData.type == 1 %}
                 <span class="info">Tipo:</span> Conta Corrente<br />
             {% else %}

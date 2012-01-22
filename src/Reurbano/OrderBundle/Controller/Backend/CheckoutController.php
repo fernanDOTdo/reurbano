@@ -5,6 +5,8 @@ use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
+
 use Reurbano\OrderBundle\Document\Checkout;
 use Reurbano\OrderBundle\Document\Comment;
 use Reurbano\OrderBundle\Document\Escrow;
@@ -198,5 +200,35 @@ class CheckoutController extends BaseController
         }
         $statusLabel = array(0 => 'cancelado', 2 => 'aprovado');
         return $this->redirectFlash($this->generateUrl('admin_order_checkout_index'), 'Resgate '.$statusLabel[$newStatus].' com sucesso!');
+    }
+    
+    /**
+     * @Route("/export", name="admin_order_checkout_export")
+     */
+    public function exportAction()
+    {
+        $checkouts = $this->mongo('ReurbanoOrderBundle:Checkout')->findAllByCreated();
+        $checkoutStatus = array(0 => "Cancelado", 1 => "Pendente", 2 => "Finalizado");
+        
+        $data = "Codigo;Cliente;Data;Total;Status;Banco;Agência;Conta;Tipo;CPF do Titular;Obs\n";
+        foreach($checkouts as $checkout){
+            $bankData = $checkout->getUser()->getBankData();
+            
+            $data .= $checkout->getId() .
+                    ";" . $checkout->getUser()->getName() .
+                    ";" . $checkout->getCreated()->format('d/m/Y') .
+                    ";" . $checkout->getTotal() .
+                    ";" . $checkoutStatus[$checkout->getStatus()] .
+                    ";" . $bankData->getName() . 
+                    ";" . $bankData->getAgency() . 
+                    ";" . $bankData->getAccount() .
+                    ";" . (($bankData->getType() == 1) ? 'Conta Corrente' : 'Conta Poupança') .
+                    ";" . $bankData->getCpf() .
+                    ";" . $bankData->getObs() . "\n";
+        }
+        return new Response(utf8_decode($data), 200, array(
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename= vendas_' . date('d_m_Y') . '.csv',
+        ));
     }
 }
