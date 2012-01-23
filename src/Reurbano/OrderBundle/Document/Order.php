@@ -124,14 +124,6 @@ class Order
      */
     protected $userData;
     
-    /**
-     * Guarda as informações de SEO
-     * 
-     * @var object
-     * @ODM\EmbedOne(targetDocument="Reurbano\CoreBundle\Document\Seo")
-     */
-    protected $seo;
-
     /** 
      * @ODM\PrePersist 
      */
@@ -436,26 +428,6 @@ class Order
         return $this->userData;
     }
 
-    /**
-     * Set seo
-     *
-     * @param Reurbano\CoreBundle\Document\Seo $seo
-     */
-    public function setSeo(\Reurbano\CoreBundle\Document\Seo $seo)
-    {
-        $this->seo = $seo;
-    }
-
-    /**
-     * Get seo
-     *
-     * @return Reurbano\CoreBundle\Document\Seo $seo
-     */
-    public function getSeo()
-    {
-        return $this->seo;
-    }
-    
     /**
      * Retorna um array com os vouchers que pertecem ao pedido com o id que foi passado.
      * 

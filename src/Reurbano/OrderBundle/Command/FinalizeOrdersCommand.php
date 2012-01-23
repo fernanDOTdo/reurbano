@@ -39,7 +39,7 @@ class FinalizeOrdersCommand extends ContainerAwareCommand {
         $this
             ->setName('reurbano:cron:finalizeorders')
             ->setDescription('Finaliza os pedidos aprovados')
-            ->addArgument('days', InputArgument::OPTIONAL, 'Quantos dias para finalizar?', 2)
+            ->addArgument('days', InputArgument::OPTIONAL, 'Quantos dias para finalizar?', 30)
             ->setHelp(<<<EOT
 O <info>reurbano:cron:finalizeorders</info> para finalizar os pedidos aprovados depois de X dias da venda concluída
 
@@ -108,7 +108,7 @@ EOT
                         ->send();
 
                 // Notifica o administrador da finalização
-                $mail->notify('[CRON] Venda Finalizada', 'O sistema cancelou a venda Cód.  '.$order->getId().'<br /><br />
+                $mail->notify('[CRON] Venda Finalizada', 'O sistema finalizou a venda Cód.  '.$order->getId().'<br /><br />
 	                Comprador: '.$order->getUser()->getName().' ('.$order->getUser()->getEmail().')<br />
 	                Vendedor:  '.$order->getSeller()->getName().' ('.$order->getSeller()->getEmail().')<br />
 	                Cód. Venda: '.$order->getId().' <br />

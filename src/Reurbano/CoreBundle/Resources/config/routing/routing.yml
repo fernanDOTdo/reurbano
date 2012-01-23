@@ -1,3 +1,6 @@
+core_xml:
+    resource: "@ReurbanoCoreBundle/Controller/Frontend/XMLController.php"
+    type: annotation
 core_frontend:
     resource: "@ReurbanoCoreBundle/Controller/Frontend/CoreController.php"
     type: annotation
