@@ -232,6 +232,15 @@ class BlockController extends BaseController {
             'banner' => $banner,
             );
         }
+        
+        
+        $banner = $this->mongo('ReurbanoCoreBundle:Banner')->findByCity($this->mastop()->param('core.banner.loadnum'), $session->get('reurbano.user.nacional'));
+        if($banner && count($banner) > 0){
+            return array(
+            'banner' => $banner,
+            );
+        }
+        
         return array();
     }
 
