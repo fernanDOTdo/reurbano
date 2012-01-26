@@ -21,7 +21,8 @@
         <div class="orderDetailsInside grid_6 alpha">
             <h4>Informações da Compra</h4>
             <p>Data da compra: <strong>{{ order.created.timestamp|date("d/m/Y H:i") }}</strong></p>
-            <p>Usuário: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
+            <p>Vendedor: <strong>{{ order.deal.user.name}} ({{order.deal.user.email}})</strong></p>
+            <p>Comprador: <strong>{{ order.user.name}} ({{order.user.email}})</strong></p>
             <p>Quantidade de Cupons: <strong>{{ order.quantity }}</strong></p>
             <p>Total: <strong>{{ order.total|money}}</strong></p>
         </div>
