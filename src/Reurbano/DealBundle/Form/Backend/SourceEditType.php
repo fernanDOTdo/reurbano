@@ -31,6 +31,8 @@ class SourceEditType extends AbstractType {
 
     public function buildForm(FormBuilder $builder, array $options) {
         $builder
+        				->add('price', 'money', array('label'=>'Preço original', 'currency' => 'BRL','attr'=>array('class'=>'small')))
+                ->add('priceOffer', 'money', array('label'=>'Preço original com desconto', 'currency' => 'BRL','attr'=>array('class'=>'small')))
                 ->add('category', 'document', 
                         array(
                             'label'=>'Categoria da Oferta', 

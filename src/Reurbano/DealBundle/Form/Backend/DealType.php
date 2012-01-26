@@ -12,7 +12,7 @@ class DealType extends AbstractType {
     public function buildForm(FormBuilder $builder, array $options) {
         $builder->add('id', 'hidden')
                 ->add('label', 'text', array('label'=>'Título','attr'=>array('class'=>'large')))
-                ->add('price', 'money', array('label'=>'Valor desejado', 'currency' => 'BRL','attr'=>array('class'=>'small')))
+                ->add('price', 'money', array('label'=>'Valor desejado pelo vendedor', 'currency' => 'BRL','attr'=>array('class'=>'small')))
                 
               	->add('source', new SourceEditType(), array('label'=>'', 'em' => $options['em']))
               
