@@ -44,6 +44,14 @@
        			 <div id="dealSource" class="mT10">
                 {{ form_row(form.source.site) }}
        			 </div>
+
+						{{ form_label(form.source.price) }}
+						{{ form_errors(form.source.price) }}
+						{{ form_widget(form.source.price) }}
+						
+						{{ form_label(form.source.priceOffer) }}
+						{{ form_errors(form.source.priceOffer) }}
+						{{ form_widget(form.source.priceOffer) }}
             
             {% if deal.id %}
                 <span style="font-weight: 700;" >Quantidade disponivel: </span><br />

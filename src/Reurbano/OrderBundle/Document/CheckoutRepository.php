@@ -13,9 +13,9 @@ class CheckoutRepository extends BaseRepository
      *
      * @return Checkout ou null
      **/
-    public function findAllByCreated()
+    public function findAllByCreated($order = 'asc')
     {
-        return $this->findBy(array(), array('created'=>'asc'));
+        return $this->findBy(array(), array('created'=> $order));
     }
     
     public function findByUser($id) {
@@ -59,5 +59,4 @@ class CheckoutRepository extends BaseRepository
     public function findByStatus($status) {
         return $this->findBy(array('status' => $status), array('created' => 'desc'));
     }
-
 }

@@ -6,7 +6,8 @@
         <thead>
             <tr>
                 <th class="nowrap center" colspan="2">{{ "Código"|trans }}</th>
-                <th class="nowrap center">{{ "Usuário"|trans }}</th>
+                <th class="nowrap center">{{ "Vendedor"|trans }}</th>
+                <th class="nowrap center">{{ "Comprador"|trans }}</th>
                 <th class="nowrap center">{{ "Oferta"|trans }}</th>
                 <th class="center">{{ "Qtd."|trans }}</th>
                 <th class="nowrap center">{{ "Data"|trans }}</th>
@@ -23,6 +24,9 @@
                 </td>
                 <td>
                     <img src='{{mastop_param('deal.all.dealurl') ~  order.deal.source.thumb }}' width='80' height='60' alt="{{ order.deal.source.title }}"/>
+                </td>
+                <td>
+                    {{ order.deal.user.name }}
                 </td>
                 <td>
                     {{ order.user.name }}

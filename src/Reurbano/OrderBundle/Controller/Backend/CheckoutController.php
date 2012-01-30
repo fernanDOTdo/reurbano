@@ -29,7 +29,7 @@ class CheckoutController extends BaseController
     public function indexAction()
     {
         $title = 'Administração Solicitações de Resgate';
-        $checkout = $this->mongo('ReurbanoOrderBundle:Checkout')->findAllByCreated();
+        $checkout = $this->mongo('ReurbanoOrderBundle:Checkout')->findAllByCreated('desc');
         return array(
             'checkout'   => $checkout,
             'title'   => $title,
