@@ -47,6 +47,21 @@ class DealController extends BaseController {
         );
     }
     
+    
+    /**
+     * @Route("/ultima-chance/{days}", name="admin_deal_deal_last_chance", defaults={"days" = 10})
+     * @Template()
+     */
+    public function lastChanceAction($days = 10) {
+        $title = 'Administração de Ofertas que vencem em menos de '.$days.' dias';
+        $ofertas = $this->mongo('ReurbanoDealBundle:Deal')->findLastChance($days);
+        return array(
+            'ofertas' => $ofertas,
+            'title' => $title,
+            'current' => 'admin_deal_deal_index',
+        );
+    }
+    
     /**
      * @Route("/novo", name="admin_deal_deal_new")
      * @Route("/editar/{id}", name="admin_deal_deal_edit")
