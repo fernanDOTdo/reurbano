@@ -145,6 +145,26 @@ class DealRepository extends BaseRepository
     }
     
     /**
+     * Pega todas que estão pra vencer conforme a opção "days"
+     *
+     * @return Deal ou null
+     **/
+    public function findLastChance($days = true)
+    {
+        $date = new \DateTime();
+        $date->setTimestamp(strtotime('+'.$days.' days'));
+        $date->setTime(0, 0, 0);
+        return $this->createQueryBuilder()
+                ->field('checked')->equals(true)
+                ->field('active')->equals(true)
+                ->field('quantity')->gt(0)
+                ->field('source.expiresAt')->lte($date) // Data de vencimento menor ou igual ao definido na opção "days"
+                ->sort('special', 'desc')
+                ->sort('views', 'desc')
+                ->getQuery();
+    }
+    
+    /**
      * Checked Ativo / Desativo
      */
     public function updateChecked($id, $checked = true){
