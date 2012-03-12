@@ -48,7 +48,7 @@ class Checkout
      * ID da Retirada
      *
      * @var string
-     * @ODM\Id(strategy="NONE")
+     * @ODM\Id(strategy="AUTO", type="int")
      */
     protected $id;
 

@@ -47,7 +47,6 @@ class Content
      * Título da Página
      *
      * @var string
-     * @Gedmo\Sluggable
      * @ODM\String
      */
     protected $title;
@@ -56,7 +55,7 @@ class Content
      * Campo Slug
      *
      * @var string
-     * @Gedmo\Slug
+     * @Gedmo\Slug(fields={"title"})
      * @ODM\UniqueIndex
      * @ODM\String
      */

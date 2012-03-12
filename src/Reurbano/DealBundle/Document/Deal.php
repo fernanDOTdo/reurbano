@@ -126,7 +126,6 @@ class Deal
      * Label da Oferta (Título)
      *
      * @var string
-     * @Gedmo\Sluggable
      * @ODM\String
      * @ODM\Index
      */
@@ -136,9 +135,9 @@ class Deal
      * Campo Slug
      *
      * @var string
-     * @Gedmo\Slug
-     * @ODM\UniqueIndex
      * @ODM\String
+     * @ODM\UniqueIndex
+     * @Gedmo\Slug(fields={"label"})
      */
     protected $slug;
     
