@@ -46,6 +46,9 @@
 [submodule "vendor/bundles/Doctrine/Bundle/MigrationsBundle"]
 	path = vendor/bundles/Doctrine/Bundle/MigrationsBundle
 	url = git://github.com/doctrine/DoctrineMigrationsBundle.git
+[submodule "vendor/bundles/Doctrine/Bundle/DoctrineBundle"]
+        path = vendor/bundles/Doctrine/Bundle/DoctrineBundle
+        url = git://github.com/doctrine/DoctrineBundle.git
 [submodule "vendor/migrations"]
 	path = vendor/migrations
 	url = git://github.com/doctrine/migrations.git

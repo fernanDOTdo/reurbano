@@ -32,7 +32,6 @@ class Category
      * Nome da Categoria
      *
      * @var string
-     * @Gedmo\Sluggable
      * @ODM\String
      */
     protected $name;
@@ -41,7 +40,7 @@ class Category
      * Campo Slug
      *
      * @var string
-     * @Gedmo\Slug
+     * @Gedmo\Slug(fields={"name"})
      * @ODM\UniqueIndex
      * @ODM\String
      */
