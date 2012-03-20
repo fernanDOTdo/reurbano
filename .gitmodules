@@ -57,7 +57,7 @@
 	url = http://github.com/doctrine/data-fixtures.git
 [submodule "vendor/bundles/Doctrine/Bundle/FixturesBundle"]
 	path = vendor/bundles/Doctrine/Bundle/FixturesBundle
-	url = http://github.com/doctrine/FixturesBundle.git
+	url = http://github.com/doctrine/DoctrineFixturesBundle.git
 [submodule "vendor/bundles/Symfony/Bundle/AsseticBundle"]
 	path = vendor/bundles/Symfony/Bundle/AsseticBundle
 	url = http://github.com/symfony/AsseticBundle.git

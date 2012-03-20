@@ -86,7 +86,6 @@ class DealController extends BaseController {
             $form->bindRequest($request);
             $formResult = $request->request->get('deal');
             $formDataResult = $request->files->get('deal');
-            $form->bindRequest($request);
             $formResult = $dadosPost['expiresAt'];
             $expiresAt = explode('/',$formResult);
             $dataAtual = new \DateTime($expiresAt[2].'-'.$expiresAt[1].'-'.$expiresAt[0]);
