@@ -33,6 +33,7 @@ $loader->registerPrefixes(array(
 ));
 $loader->registerPrefixFallbacks(array(
     __DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs',
+    __DIR__.'/../vendor/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs',
 ));
 $loader->registerNamespaceFallbacks(array(
     __DIR__.'/../src',
