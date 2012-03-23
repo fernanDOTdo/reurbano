@@ -1078,7 +1078,7 @@ class UserController extends BaseController {
     public function bankSaveAction() {
         $user = $this->get('security.context')->getToken()->getUser();
         $bankData = $user->getBankData();
-        $form = $this->createForm(new BankDataType(), $bankData);
+        $form = $this->createForm(new BankDataType(), ((empty($bankData)) ? new BankData() : $bankData));
         $request = $this->get('request');
         $dm = $this->dm();
         if ('POST' == $request->getMethod()) {
