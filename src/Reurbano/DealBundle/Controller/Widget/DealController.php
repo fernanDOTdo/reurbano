@@ -34,12 +34,19 @@ class DealController extends BaseController {
                 $sort = 'discount';
                 $order = 'desc';
                 break;
+           case 'sortAggregator':
+	           	$sort = 'price';
+                $order = 'asc';
+	           	$aggregator = $this->getDealAggregator($cat, $limit, $pg, $orderBy, $template, $showSort, $pagination, $search);
+	           	return $this->render('ReurbanoDealBundle:Widget/Deal:aggregator.html.twig',  $aggregator);
+           	break;
             case 'sortNew':
             default :
                 $sort = 'createdAt';
                 $order = 'desc';
                 break;
         }
+        
         $dealRepo = $this->mongo("ReurbanoDealBundle:Deal");
         $dealQuery = $dealRepo->createQueryBuilder();
         $dealQuery->field('checked')->equals(true);
@@ -59,9 +66,9 @@ class DealController extends BaseController {
             $dealQuery->addOr($dealQuery->expr()->field('label')->equals($regexp))->addOr($dealQuery->expr()->field('tags')->all($tags));
         }
         $total = 0;
-        if($sort != 'price'){ // Se a ordenaÃ§Ã£o escolhida nÃ£o for por preÃ§o, ordena por cidade -> ordenaÃ§Ã£o escolhida -> destaques -> preÃ§o
+        if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
             $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->sort('price', 'asc')->limit($limit);
-        }else{  // Se a ordenaÃ§Ã£o escolhida for por preÃ§o, ordena por cidade -> preÃ§o -> destaques
+        }else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
             $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->limit($limit);
         }
         if ($pg > 1) {
@@ -127,6 +134,78 @@ class DealController extends BaseController {
                         'deal' => $theDeal,
                         )
         );
+    }
+    
+    /**
+     * Widget que renderiza as ofertas do crawler para a parte do agregador
+     *
+     */
+    public function getDealAggregator($cat = null, $limit = 4, $pg = 1, $orderBy = 'createdAt', $template = 'default', $showSort = true, $pagination = true, $search = null) {
+    	$sort = 'price';
+    	$order = 'asc';
+   
+    	$sourceQuery = $this->mongo("ReurbanoDealBundle:Source", 'crawler')->createQueryBuilder();
+    	
+    	if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
+    	    $sourceQuery->field('city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
+    	} else {
+    	    $cityNacionalId = $this->get('session')->get('reurbano.user.nacional');
+    	    $sourceQuery->field('city.$id')->in(array(new \MongoId($this->get('session')->get('reurbano.user.cityId')), new \MongoId($cityNacionalId)));
+    	}
+    	
+    	if ($cat) {
+    		$sourceQuery->field('category.$id')->equals(new \MongoId($cat));
+    	}
+    	
+    	if($search){
+    		$regexp = new \MongoRegex('/' . $search . '/i');
+    		$tags = explode(' ', $search);
+    		$sourceQuery->addOr($sourceQuery->expr()->field('title')->equals($regexp));
+    	}
+    	$total = 0;
+    	if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
+    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
+    	}else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
+    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'desc')->limit($limit);
+    	}
+    	if ($pg > 1) {
+    		$pag = $pg - 1;
+    		$sourceQuery->skip($limit * $pag);
+    	}
+    	
+    	$sourcesFound = $sourceQuery->getQuery()->execute();
+    	$sources = array();
+    	$found = 0;
+    	$total = 0;
+    	if ($sourcesFound) {
+    		foreach ($sourcesFound as $k => $d) {
+    			$sources[$k] = $d;
+    		}
+    		$found = $sourcesFound->count(true);
+    		$total = $sourcesFound->count();
+    	}
+    
+    	// Pagination
+    	if ($total > $found) {
+    		$restPages = $total % $limit;
+    		$restPages > 0 ? $totalPages = intval($total / $limit) + 1 : $totalPages = intval($total / $limit);
+    	} else {
+    		$totalPages = 1;
+    	}
+    	
+    	return  array(
+    					'orderBy' => $orderBy,
+    					'found' => $found,
+    					'total' => $total,
+    					'cat' => $cat,
+    					'limit' => $limit,
+    					'pg' => $pg,
+    					'totalPages' => $totalPages,
+    					'deals' => $sources,
+    					'pagination' => $pagination,
+    					'showSort' => $showSort,
+    					'search' => $search,
+    	);
     }
 
 }
