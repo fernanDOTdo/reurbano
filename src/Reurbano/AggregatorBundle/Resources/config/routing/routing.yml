@@ -1,0 +1,6 @@
+aggregator_frontend:
+    resource: "@ReurbanoAggregatorBundle/Controller/Frontend/AggregatorController.php"
+    type: annotation
+aggregator_category_frontend:
+    resource: "@ReurbanoAggregatorBundle/Controller/Frontend/CategoryController.php"
+    type: annotation

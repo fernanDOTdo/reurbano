@@ -1,0 +1,33 @@
+{%set dealLink = path('deal_deal_show', {'city': deal.getSource.getCity.getSlug, 'category': deal.getSource.getCategory.getSlug, 'slug': deal.getSlug}) %}
+<div class="deal {{deal.getDiscountType }}">
+{#Título#}
+<div class="dealTitle">
+{#Conteúdo#}
+        <a href="{{dealLink}}" title="Compre {{deal.getLabel}}">{{deal.getLabel(175)}}</a>
+</div>
+{#Imagem#}
+<div class="dealThumb">
+<a href="{{dealLink}}" title="Compre {{deal.getLabel}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.source.thumb)}}" alt="{{deal.getLabel}}" /> <span class="discount {{deal.getDiscountType }}">{{deal.getDiscount}}% OFF</span></a>
+</div>
+<div class="dealInfos">
+    <div class="priceSource">De: <strong>{{deal.getSource.getPrice|money}}</strong></div>
+    <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+    <div class="buyNow"><a rel="nofollow" class="button big {{deal.getDiscountType }}" href="{{path('order_order_index', {'id': deal.getId})}}">Comprar</a></div>
+    <div class="dealQtd">
+       {% transchoice deal.getQuantity with {'%count%' : deal.getQuantity} %}
+            {0} Oferta vendida|{1} 1 cupom disponível|]1,Inf] %count% cupons disponíveis
+       {% endtranschoice %}
+    </div> 
+    
+</div>
+{#Preços#}
+<div class="clear"></div>
+{%if deal.getSource.getBusinessAddress is not null%}
+{#Data Validade#}
+<div class="dealExpires dp50" style="float: right;">
+            Expira em <strong>{{deal.getSource.getExpiresAt|date('d/m/Y')}}</strong>
+</div>
+<div class="clear"></div>
+{%endif%}
+</div>
+<div class="clear"></div>

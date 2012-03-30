@@ -1,3 +1,5 @@
+ReurbanoAggregatorBundle:
+    resource: "@ReurbanoAggregatorBundle/Resources/config/routing/routing.yml"
 ReurbanoCoreBundle:
     resource: "@ReurbanoCoreBundle/Resources/config/routing/routing.yml"
 ReurbanoDealBundle:
