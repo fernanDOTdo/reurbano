@@ -233,7 +233,7 @@ $(function(){
         </div>
     </div>
 {%endif%}
-{# Promoção iPad #}
+{# Promoção iPad 
 {%if app.request.cookies.get('hideiPad') is null and is_granted('ROLE_USER') == false%}
         <script type="text/javascript">
             jQuery.facebox({ ajax: 'ipad.html' });
@@ -250,6 +250,7 @@ $(function(){
             });
         </script>
 {%endif%}
+#}
 {# Main #}
 <div id="main">
     
