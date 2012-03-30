@@ -233,7 +233,7 @@ $(function(){
         </div>
     </div>
 {%endif%}
-{# Promoção iPad 
+{# Promoção iPad #}
 {%if app.request.cookies.get('hideiPad') is null and is_granted('ROLE_USER') == false%}
         <script type="text/javascript">
             jQuery.facebox({ ajax: 'ipad.html' });
@@ -250,7 +250,7 @@ $(function(){
             });
         </script>
 {%endif%}
- Main #}
+{# Main #}
 <div id="main">
     
 {# Header #}
@@ -267,47 +267,57 @@ $(function(){
         </div>
         <div class="grid_7">
             <div id="login">
-                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span> <a href="{{path('user_dashboard_index')}}" class="button small blue">Minha conta</a>{%endif%}
+                {%if is_granted('ROLE_USER') == false%}<div class="floatR"><a href="{{url('aggregator_aggregator_index')}}" class="agregadorBtn" title="Conheça o Agregador do Reurbano">Agregador</a> <a href="{{path('user_user_twitterconect')}}" class="twLoginBtn">Logar com Twitter</a> <a href="#" class="fbLoginBtn">Logar com Facebook</a></div>{%else%}<span>Olá, <strong>{{ app.user.name|default(app.user.username) }}</strong>! <small>(não é você? <a href="{{path('_logout')}}">clique aqui</a>)</small></span> <a href="{{path('user_dashboard_index')}}" class="button small blue">Minha conta</a> <a href="{{url('aggregator_aggregator_index')}}" title="Conheça o Agregador do Reurbano"  class="button small blue">Agregador</a>{%endif%}
+                
             </div>
             <div id="menuTop">
             {{mastop_menu('system-head', null, null, 0, 'list', {'id':'navTop'})}}
             </div>
+            
+            {% block search %}
             <div id="search">
                 {% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
-                    <form action="{{ path('deal_deal_search') }}" method="get" id="searchForm"> <div id="searchDiv"><button type="submit" class="button primary silver">Pega!</button><input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%endif%}" placeholder="Encontre cupons de compra coletiva"  /></div></form>
+                    <form action="{{ path('deal_deal_search') }}" method="get" id="searchForm"><div id="searchDiv"><button type="submit" class="button primary silver">Pega!</button><input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%endif%}" placeholder="Encontre cupons de compra coletiva"  /></div></form>
             </div>
+            {% endblock search %}
         </div>
-        
+        {% block menuCity %}
         {# Lista de cidades #}
-        {% set cities = reurbano_get_cities() %}
-        <div id="listCities">
-            <a href="#" id="closeCities" title="Fechar" class="floatR button primary small orange">X</a>
-            <h2>Principais cidades</h2>
-            <ul class="highCities clearfix">
-                {% for city in cities['special'] %}
-                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
-                {% endfor %}
-            </ul>
-            <br>
-            <h2>Outras cidades</h2>
-            <ul>
-                {% for city in cities['other'] %}
-                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
-                {% endfor %}
-            </ul>
-    </div>
+	        {% set cities = reurbano_get_cities() %}
+	        <div id="listCities">
+	            <a href="#" id="closeCities" title="Fechar" class="floatR button primary small orange">X</a>
+	            <h2>Principais cidades</h2>
+	            <ul class="highCities clearfix">
+	                {% for city in cities['special'] %}
+	                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+	                {% endfor %}
+	            </ul>
+	            <br>
+	            <h2>Outras cidades</h2>
+	            <ul>
+	                {% for city in cities['other'] %}
+	                  <li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+	                {% endfor %}
+	            </ul>
+	   		</div>
         {# /Lista de cidades #}
+        {% endblock menuCity %}
         
-        <div class="grid_10" id="menuMain">
-            {%if cat is defined %}
-            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': cat.getSlug }%}
-            {%else%}
-            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
-            {%endif%}
-        </div>
+        {# Lista as categorias #}
+        {% block menuMain %}
+	        <div class="grid_10" id="menuMain">
+	            {%if cat is defined %}
+	            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': cat.getSlug }%}
+	            {%else%}
+	            {% render 'ReurbanoDealBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
+	            {%endif%}
+	        </div>
+        {% endblock menuMain %}
+		{# /Lista as categorias #}
         <div class="grid_2 omega" id="sellButton">
             <a href="{{url('deal_sell_index')}}" class="button primary orange">Vender Cupom</a>
         </div>
+
         {%if breadcrumbs is defined%}
         <div class="grid_12" id="breadcrumbs">
             <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -324,9 +334,10 @@ $(function(){
         {%endfor%}
         </div>
         {%endif%}
+        
         {%if app.request.attributes.get('_route') == '_home' or app.request.attributes.get('_route') == 'core_city_index' %}
         {# Só exibe o banner se estiver na home ou na página da cidade #}
-        <div class="clear"></div>   
+        <div class="clear"></div>
         <div class="grid_12" id="bannerHome">
             {% render 'ReurbanoCoreBundle:Widget\\Block:banner'%}
         </div>
