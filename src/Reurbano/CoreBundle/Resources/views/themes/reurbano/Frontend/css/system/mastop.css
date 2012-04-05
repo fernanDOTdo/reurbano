@@ -188,11 +188,13 @@ td{padding: 3px;}
     padding: 1px 71px 1px 9px;
     background: #FFF;
 }
-.twLoginBtn, .fbLoginBtn{margin-top: 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
+.twLoginBtn, .fbLoginBtn, .agregadorBtn{margin-top: 5px; float: left; background: url('../images/sprite.png') no-repeat; width: 136px; height: 22px; text-indent: -9999em; overflow: hidden; line-height: 500px;}
 .twLoginBtn{background-position: -181px -31px;}
 .twLoginBtn:hover{background-position: -181px -4px;}
 .fbLoginBtn{background-position: -41px -31px; margin-left: 5px;}
 .fbLoginBtn:hover{background-position: -41px -4px;}
+.agregadorBtn{background-position: -41px -58px; margin-right: 5px;}
+.agregadorBtn:hover{background-position: -181px -58px;}
 
 /* Lista e Combo de Cidades */
 #cityLabel{

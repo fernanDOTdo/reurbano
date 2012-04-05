@@ -1,0 +1,51 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title %}{{cat.getName}} em {{app.session.get('reurbano.user.cityName')}}{% endblock %}
+
+{% block search %}
+	<div id="search">
+		{% set isSearch = (app.request.query.get('q') is not null) ? app.request.query.get('q') : false %}
+		<form action="{{ path('aggregator_aggregator_search') }}" method="get" id="searchForm"><div id="searchDiv"><button type="submit" class="button primary silver">Pega!</button><input type="text" name="q" id="q" class="{%if isSearch%}focusField{%else%}idleField{%endif%}" value="{%if isSearch%}{{ isSearch }}{%endif%}" placeholder="Encontre cupons de compra coletiva"  /></div></form>
+	</div>
+{% endblock search %}
+
+{% block menuCity %}
+{# Lista de cidades #}
+	{% set cities = reurbano_get_cities() %}
+	<div id="listCities">
+		<a href="#" id="closeCities" title="Fechar" class="floatR button primary small orange">X</a>
+		<h2>Principais cidades</h2>
+		<ul class="highCities clearfix">
+			{% for city in cities['special'] %}
+				<li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('aggregator_core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+			{% endfor %}
+		</ul>
+		<br>
+		<h2>Outras cidades</h2>
+		<ul>
+			{% for city in cities['other'] %}
+				<li><a title="Ofertas de {{city.getName()}}"{%if city.getSlug() == app.session.get('reurbano.user.city') %} class="selected"{%else%} href="{{ path('aggregator_core_city_index', {'slug':city.getSlug()}) }}"{%endif%}>{{city.getName()}}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+{# /Lista de cidades #}
+{% endblock menuCity %}
+
+{% block menuMain %}
+	<div class="grid_10" id="menuMain">
+		{%if cat is defined %}
+		{% render 'ReurbanoAggregatorBundle:Widget\\Category:menu' with {'selected': cat.getSlug }%}
+		{%else%}
+		{% render 'ReurbanoAggregatorBundle:Widget\\Category:menu' with {'selected': app.request.get('slug') }%}
+		{%endif%}
+	</div>
+{% endblock menuMain %}
+        
+{% block content %}
+<div class="grid_9">
+{% render 'ReurbanoAggregatorBundle:Widget\\Aggregator:render' with{'cat': cat.id, 'limit': mastop_param('deal.all.perpage'), 'orderBy': app.request.cookies.get('aggregatorsort')|default(mastop_param('deal.all.dealsort'))} %}
+</div>
+<div class="grid_3">
+{% render 'ReurbanoCoreBundle:Widget\\Block:render' with{'area': 'category', 'opts': {'cat': cat.id}} %}
+</div>
+{% endblock %} 

@@ -1,0 +1,86 @@
+{%if showSort %}
+    <form method="post" action="#" id="aggregatorActions">
+    <div class="sortPag button-group minor-group floatR">
+    <a id="sortRanking" href="#" class="aggregatorSort button{%if orderBy == 'sortRanking'%} active{%endif%}">Ranking</a>
+    <a id="sortNew" href="#" class="aggregatorSort button{%if orderBy == 'sortNew'%} active{%endif%}">Mais Novos</a>
+    <a id="sortCheap" href="#" class="aggregatorSort button{%if orderBy == 'sortCheap'%} active{%endif%}">Mais Baratos</a>
+    <a id="sortExpires" href="#" class="aggregatorSort button{%if orderBy == 'sortExpires'%} active{%endif%}">Vencimento</a>
+    <a id="sortDiscount" href="#" class="aggregatorSort button{%if orderBy == 'sortDiscount'%} active{%endif%}">Maior Desconto</a>
+    <input type="hidden" name="cat" value="{{cat|default('all')}}" />
+    <input type="hidden" name="sort" value="{{orderBy}}" />
+    <input type="hidden" name="aggregatorSearch" value="{{search}}" />
+    </div>
+</form>
+<div class="clear"></div>
+<div class="dealBox">
+{%endif%}
+    {# Encontrados: {{found}} de {{total}} #}
+{%for deal in deals%}
+<div class="deal">
+    <div class="grid_3 alpha dealThumb">
+    {#Imagem#}
+            <a href="{{deal.getUrl}}" target="_new" title="Compre {{deal.getTitle}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.thumb)}}" alt="{{deal.getTitle}}" /></a>
+    </div>
+    <div class="grid_6 omega dealContent">
+    {#Conteúdo#}
+            <div class="grid_6 dealTitle alpha omega">
+                <a href="{{deal.getUrl}}" target="_new" title="Compre {{ deal.getTitle }}">{{ deal.getTitle(100) }}</a>
+            </div>
+            <div class="grid_6 alpha omega">
+                <div class="grid_4 alpha omega">
+                    <div class="dp50">
+                        {#Preços#}
+                        <div class="priceSource">De: <strong>{{deal.getPrice|money}}</strong></div>
+                        <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+                    </div>
+                    <div class="dp50">
+                        {#Site#}
+                        <div class="dealSite">
+                            <a rel="nofollow" href="{{deal.getUrl}}" target="_new" title="Veja a página da oferta no {{deal.getSite.getName}}"><img src="{{asset('/uploads/reurbanodeal/site/'~deal.getSite.getFilename)}}" alt="Página da Oferta no {{deal.getSite.getName}}" /></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_2 alpha">
+                    <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{deal.getUrl}}" target="_blank" >detalhes da oferta</a></div>
+                </div>
+            {#Preços#}
+            </div>
+    </div>
+    <div class="clear"></div>
+    <div class="dealFoot grid_9 alpha omega">
+        <div class="grid_2 alpha">
+            <span><strong>Economize: </strong> {{deal.getPriceOffer}}%</span>
+        </div>
+        <div class="grid_2">
+            <span><strong>Cupons: </strong> 0</span>
+        </div>
+        <div class="grid_3">
+            <span><strong>Categoria: </strong> {{deal.category.name}}&nbsp;{%if deal.getCity.getSlug == 'oferta-nacional'%}<span class="brFlag floatR" title="Oferta Nacional">&nbsp;</span>{%endif%}</span>
+        </div>
+        <div class="grid_2 omega">
+            <span><strong>Validade: </strong> {{deal.getExpiresAt|date('d/m/Y')}}</span>
+        </div>
+    </div>
+    {%if orderBy == "sortRanking" and pg == 1 and loop.index <= 3%}
+         <div class="dealRank dealRank-{{loop.index}}">{{loop.index}}º Lugar</div>
+    {%endif%}
+    <div class="clear"></div>
+</div>
+{%if loop.last == false%}
+<div class="clear"></div>
+{%endif%}
+{%else%}
+Nenhuma oferta encontrada. <br />
+<a href="{{path('deal_sell_index')}}" class="button green big mT10">Venda seu cupom de compra coletiva no Reurbano</a>
+{%endfor%}
+{%if pagination and totalPages > 1 %}
+    <div class="aggregatorPagination button-group minor-group floatR">
+    {% for i in 1..totalPages %}
+    <a id="AggregatorPag_{{i}}" href="#" class="aggregatorPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+    {% endfor %}
+    </div>
+    <div class="clear"></div>
+{%endif%}
+{%if showSort %}
+</div>
+{%endif%}
