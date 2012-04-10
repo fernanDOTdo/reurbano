@@ -62,6 +62,7 @@ class AggregatorController extends BaseController {
     	$sourceQuery->field('dateRegister')->gte($date); // Data de registro maior ou igual ao "date"
     	$sourceQuery->field('price')->gt(0); // Preço normal maior que ZERO
     	$sourceQuery->field('priceOffer')->gt(0); // Preço com desconto maior que ZERO
+    	$sourceQuery->field('expiresDeal')->exists(false); // Data do fim das negociações não existe
     	
     	if($search){
     		$regexp = new \MongoRegex('/' . $search . '/i');
