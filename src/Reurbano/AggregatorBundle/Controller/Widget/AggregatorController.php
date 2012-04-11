@@ -54,6 +54,16 @@ class AggregatorController extends BaseController {
     		$sourceQuery->field('category.$id')->equals(new \MongoId($cat));
     	}
     	
+    	// Será dado o display apenas nas ofertas dos ultimos 5 dias
+    	$days = 5;
+    	$date = new \DateTime();
+    	$date->setTimestamp(strtotime('-'.$days.' days'));
+    	$date->setTime(0, 0, 0);
+    	$sourceQuery->field('dateRegister')->gte($date); // Data de registro maior ou igual ao "date"
+    	$sourceQuery->field('price')->gt(0); // Preço normal maior que ZERO
+    	$sourceQuery->field('priceOffer')->gt(0); // Preço com desconto maior que ZERO
+    	$sourceQuery->field('expiresDeal')->exists(false); // Data do fim das negociações não existe
+    	
     	if($search){
     		$regexp = new \MongoRegex('/' . $search . '/i');
     		$tags = explode(' ', $search);
