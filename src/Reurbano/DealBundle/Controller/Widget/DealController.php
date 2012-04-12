@@ -66,11 +66,14 @@ class DealController extends BaseController {
             $dealQuery->addOr($dealQuery->expr()->field('label')->equals($regexp))->addOr($dealQuery->expr()->field('tags')->all($tags));
         }
         $total = 0;
+        
+
         if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
             $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->sort('price', 'asc')->limit($limit);
         }else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
             $dealQuery->sort('source.city.$id', 'desc')->sort($sort, $order)->sort('special', 'desc')->limit($limit);
         }
+        
         if ($pg > 1) {
             $pag = $pg - 1;
             $dealQuery->skip($limit * $pag);
@@ -157,17 +160,31 @@ class DealController extends BaseController {
     		$sourceQuery->field('category.$id')->equals(new \MongoId($cat));
     	}
     	
+    	// Será dado o display apenas nas ofertas dos ultimos 5 dias
+    	$days = 5;
+    	$date = new \DateTime();
+    	$date->setTimestamp(strtotime('-'.$days.' days'));
+    	$date->setTime(0, 0, 0);
+    	
+    	$datexpiresDeal = new \DateTime();
+    	$datexpiresDeal->setTime(0, 0, 0);
+    	
+    	$sourceQuery->field('dateRegister')->gte($date); // Data de registro maior ou igual ao "date"
+    	$sourceQuery->field('price')->gt(0); // Preço normal maior que ZERO
+    	$sourceQuery->field('priceOffer')->gt(0); // Preço com desconto maior que ZERO
+    	// Data do fim das negociações não existe ou seja maior que hoje
+    	$sourceQuery->addOr($sourceQuery->expr()->field('expiresDeal')->exists(false))->addOr($sourceQuery->expr()->field('expiresDeal')->gte($datexpiresDeal)); 
+    	
     	if($search){
     		$regexp = new \MongoRegex('/' . $search . '/i');
     		$tags = explode(' ', $search);
     		$sourceQuery->addOr($sourceQuery->expr()->field('title')->equals($regexp));
     	}
     	$total = 0;
-    	if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
-    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
-    	}else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
-    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'desc')->limit($limit);
-    	}
+    	
+    	// Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
+    	$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
+    	
     	if ($pg > 1) {
     		$pag = $pg - 1;
     		$sourceQuery->skip($limit * $pag);
