@@ -49,7 +49,10 @@
     <div class="clear"></div>
     <div class="dealFoot grid_9 alpha omega">
         <div class="grid_2 alpha">
-            <span><strong>Economize: </strong> {{deal.getPriceOffer}}%</span>
+            <span><strong>Economize: </strong> {{deal.getDiscountOffer}}%</span>
+        </div>
+        <div class="grid_2">
+            <span><strong>Vendidos: </strong> {{deal.getTotalcoupons}}</span>
         </div>
         <div class="grid_3">
             <span><strong>Categoria: </strong> {{deal.category.name}}&nbsp;{%if deal.getCity.getSlug == 'oferta-nacional'%}<span class="brFlag floatR" title="Oferta Nacional">&nbsp;</span>{%endif%}</span>
