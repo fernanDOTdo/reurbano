@@ -32,7 +32,7 @@
                     <div class="dp50">
                         {#Preços#}
                         <div class="priceSource">De: <strong>{{deal.getPrice|money}}</strong></div>
-                        <div class="price">Por: <strong>{{deal.getPrice|money}}</strong></div>
+                        <div class="price">Por: <strong>{{deal.getPriceOffer|money}}</strong></div>
                     </div>
                     <div class="dp50">
                         {#Site#}
@@ -42,12 +42,7 @@
                     </div>
                 </div>
                 <div class="grid_2 alpha">
-                    {#Comprar
-                    <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{path('order_order_index', {'id': deal.getId})}}">COMPRAR</a></div>
-                    #}
                     <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{deal.getUrl}}" target="_blank" >detalhes da oferta</a></div>
-                    
-                    {# <div class="dealDetails"><a href="{{deal.getUrl}}" target="_new" title="Veja {{deal.getTitle}}">detalhes da oferta</a></div> #}
                 </div>
             {#Preços#}
             </div>
@@ -56,9 +51,6 @@
     <div class="dealFoot grid_9 alpha omega">
         <div class="grid_2 alpha">
             <span><strong>Economize: </strong> {{deal.getPriceOffer}}%</span>
-        </div>
-        <div class="grid_2">
-            <span><strong>Cupons: </strong> 0</span>
         </div>
         <div class="grid_3">
             <span><strong>Categoria: </strong> {{deal.category.name}}&nbsp;{%if deal.getCity.getSlug == 'oferta-nacional'%}<span class="brFlag floatR" title="Oferta Nacional">&nbsp;</span>{%endif%}</span>
@@ -80,10 +72,32 @@ Nenhuma oferta encontrada. <br />
 <a href="{{path('deal_sell_index')}}" class="button green big mT10">Venda seu cupom de compra coletiva no Reurbano</a>
 {%endfor%}
 {%if pagination and totalPages > 1 %}
-    <div class="dealPagination button-group minor-group floatR">
-    {% for i in 1..totalPages %}
-    <a id="DealPag_{{i}}" href="#" class="dealPag button{%if i == pg%} active{%endif%}">{{i}}</a>
-    {% endfor %}
+    <div class="dealPag button-group minor-group floatR">
+    {%if totalPages < 15 %}
+	    {% for i in 1..totalPages %}
+	    	<a id="dealPag_{{i}}" href="#" class="dealPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+	    {% endfor %}
+	{%else%}
+		{%if (pg + 5) >= totalPages %}
+			<a id="dealPag_1" href="#" class="dealPag button">1</a>
+			<a id="dealPag_{{(totalPages-10)}}" href="#" class="dealPag button"> << </a>
+		    {% for i in totalPages-5..totalPages %}
+		    	<a id="dealPag_{{i}}" href="#" class="dealPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+		    {% endfor %}
+		{%else%}
+			{%set pgend = pg + 5 %}
+			{%if pgend > totalPages %} 
+				{%set pgend = totalPages %}
+			{%endif%}
+			{%if pg > 2 %} <a id="dealPag_1" href="#" class="dealPag button">1</a>{%endif%}
+			{%if pg > 1 %} <a id="dealPag_{{(pg-1)}}" href="#" class="dealPag button"> << </a>{%endif%}
+			{% for i in pg..pgend %}
+		    	<a id="dealPag_{{i}}" href="#" class="dealPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+		    {% endfor %}
+		    <a id="dealPag_{{(pgend+1)}}" href="#" class="dealPag button{%if (pgend+1) == pg%} active{%endif%}">......</a>
+		    <a id="dealPag_{{totalPages}}" href="#" class="dealPag button{%if totalPages == pg%} active{%endif%}">{{totalPages}}</a>
+		{%endif%}
+	{%endif%}
     </div>
     <div class="clear"></div>
 {%endif%}

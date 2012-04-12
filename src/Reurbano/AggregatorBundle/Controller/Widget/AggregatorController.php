@@ -59,10 +59,16 @@ class AggregatorController extends BaseController {
     	$date = new \DateTime();
     	$date->setTimestamp(strtotime('-'.$days.' days'));
     	$date->setTime(0, 0, 0);
+    	
+    	$datexpiresDeal = new \DateTime();
+    	$datexpiresDeal->setTime(0, 0, 0);
+    	
     	$sourceQuery->field('dateRegister')->gte($date); // Data de registro maior ou igual ao "date"
     	$sourceQuery->field('price')->gt(0); // Preço normal maior que ZERO
     	$sourceQuery->field('priceOffer')->gt(0); // Preço com desconto maior que ZERO
-    	$sourceQuery->field('expiresDeal')->exists(false); // Data do fim das negociações não existe
+    	// Data do fim das negociações não existe ou seja maior que hoje
+    	$sourceQuery->addOr($sourceQuery->expr()->field('expiresDeal')->exists(false))->addOr($sourceQuery->expr()->field('expiresDeal')->gte($datexpiresDeal)); 
+    	
     	
     	if($search){
     		$regexp = new \MongoRegex('/' . $search . '/i');
@@ -74,8 +80,9 @@ class AggregatorController extends BaseController {
     	if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
     		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
     	}else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
-    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'desc')->limit($limit);
-    	}
+    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->limit($limit);
+    	}    	
+    	
     	if ($pg > 1) {
     		$pag = $pg - 1;
     		$sourceQuery->skip($limit * $pag);
