@@ -117,6 +117,14 @@ class Source
     protected $priceOffer;
     
     /**
+     * desconto da oferta
+     *
+     * @var float
+     * @ODM\Float
+     */
+    protected $discountOffer;
+    
+    /**
      * Cidade da oferta
      *
      * @ODM\ReferenceOne(targetDocument="Reurbano\CoreBundle\Document\City")
@@ -365,6 +373,26 @@ class Source
     public function getPriceOffer()
     {
             return $this->priceOffer;
+    }
+    
+    /**
+     * Set discountOffer
+     *
+     * @param float $discountOffer
+     */
+    public function setDiscountOffer($discountOffer)
+    {
+    	$this->discountOffer = $discountOffer;
+    }
+    
+    /**
+     * Get discountOffer
+     *
+     * @return float $discountOffer
+     */
+    public function getDiscountOffer()
+    {
+    	return $this->discountOffer;
     }
 
     /**
