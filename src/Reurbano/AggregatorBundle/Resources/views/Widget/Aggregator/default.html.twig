@@ -51,9 +51,6 @@
         <div class="grid_2 alpha">
             <span><strong>Economize: </strong> {{deal.getPriceOffer}}%</span>
         </div>
-        <div class="grid_2">
-            <span><strong>Cupons: </strong> 0</span>
-        </div>
         <div class="grid_3">
             <span><strong>Categoria: </strong> {{deal.category.name}}&nbsp;{%if deal.getCity.getSlug == 'oferta-nacional'%}<span class="brFlag floatR" title="Oferta Nacional">&nbsp;</span>{%endif%}</span>
         </div>
@@ -74,10 +71,32 @@ Nenhuma oferta encontrada. <br />
 <a href="{{path('deal_sell_index')}}" class="button green big mT10">Venda seu cupom de compra coletiva no Reurbano</a>
 {%endfor%}
 {%if pagination and totalPages > 1 %}
-    <div class="aggregatorPagination button-group minor-group floatR">
-    {% for i in 1..totalPages %}
-    <a id="AggregatorPag_{{i}}" href="#" class="aggregatorPag button{%if i == pg%} active{%endif%}">{{i}}</a>
-    {% endfor %}
+    <div class="aggregatorPag button-group minor-group floatR">
+    {%if totalPages < 15 %}
+	    {% for i in 1..totalPages %}
+	    	<a id="aggregatorPag_{{i}}" href="#" class="aggregatorPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+	    {% endfor %}
+	{%else%}
+		{%if (pg + 5) >= totalPages %}
+			<a id="aggregatorPag_1" href="#" class="aggregatorPag button">1</a>
+			<a id="aggregatorPag_{{(totalPages-10)}}" href="#" class="aggregatorPag button"> << </a>
+		    {% for i in totalPages-5..totalPages %}
+		    	<a id="aggregatorPag_{{i}}" href="#" class="aggregatorPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+		    {% endfor %}
+		{%else%}
+			{%set pgend = pg + 5 %}
+			{%if pgend > totalPages %} 
+				{%set pgend = totalPages %}
+			{%endif%}
+			{%if pg > 2 %} <a id="aggregatorPag_1" href="#" class="aggregatorPag button">1</a>{%endif%}
+			{%if pg > 1 %} <a id="aggregatorPag_{{(pg-1)}}" href="#" class="aggregatorPag button"> << </a>{%endif%}
+			{% for i in pg..pgend %}
+		    	<a id="aggregatorPag_{{i}}" href="#" class="aggregatorPag button{%if i == pg%} active{%endif%}">{{i}}</a>
+		    {% endfor %}
+		    <a id="aggregatorPag_{{(pgend+1)}}" href="#" class="aggregatorPag button{%if (pgend+1) == pg%} active{%endif%}">......</a>
+		    <a id="aggregatorPag_{{totalPages}}" href="#" class="aggregatorPag button{%if totalPages == pg%} active{%endif%}">{{totalPages}}</a>
+		{%endif%}
+	{%endif%}
     </div>
     <div class="clear"></div>
 {%endif%}
