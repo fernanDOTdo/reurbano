@@ -48,7 +48,7 @@ class RefundType extends AbstractType {
                     )));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\OrderBundle\Document\Refund',
             'intention' => 'refund_creation',

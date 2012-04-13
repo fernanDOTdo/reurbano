@@ -34,7 +34,7 @@
 
 [metadata]
     git=http://github.com/schmittjoh/metadata.git
-    version=1.1.0
+    version=1.1.1
 
 [SensioFrameworkExtraBundle]
     git=http://github.com/sensio/SensioFrameworkExtraBundle.git
@@ -123,6 +123,7 @@
 [DiExtraBundle]
     git=https://github.com/schmittjoh/JMSDiExtraBundle.git
     target=/bundles/JMS/DiExtraBundle
+    version=1.0.1
 
 [cg-library]
     git=https://github.com/schmittjoh/cg-library.git

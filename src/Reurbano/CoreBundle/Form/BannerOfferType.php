@@ -48,7 +48,7 @@ class BannerOfferType extends AbstractType {
         $builder->add('order', 'integer', array('label'=>'Ordem'));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\CoreBundle\Document\Banner',
             'intention' => 'banner_creation',

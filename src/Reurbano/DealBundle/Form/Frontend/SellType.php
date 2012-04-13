@@ -22,7 +22,7 @@ class SellType extends AbstractType {
                 ->add('cupomId', 'hidden');
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Deal',
             'intention' => 'deal_creation',

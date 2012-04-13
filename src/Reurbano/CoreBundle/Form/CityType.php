@@ -17,7 +17,7 @@ class CityType extends AbstractType {
         $builder->add('order', 'text', array('label'=>'Ordem', 'attr'=>array('class'=>'small')));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\CoreBundle\Document\City',
             'intention' => 'city_creation',

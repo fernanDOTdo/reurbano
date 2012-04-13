@@ -13,7 +13,7 @@ class CategoryType extends AbstractType {
         $builder->add('order', 'text',  array('label'=>'Ordem'));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Category',
             'intention' => 'category_creation',

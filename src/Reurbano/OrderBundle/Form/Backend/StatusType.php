@@ -13,7 +13,7 @@ class StatusType extends AbstractType {
         $builder->add('order', 'text',  array('label'=>'Ordem'));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\OrderBundle\Document\Status',
             'intention' => 'status_creation',
