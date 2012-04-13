@@ -34,7 +34,7 @@ class CoordinatesType extends AbstractType {
         $builder->add('longitude', 'text');
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\CoreBundle\Document\Coordinates',
             'em' => 'crawler'

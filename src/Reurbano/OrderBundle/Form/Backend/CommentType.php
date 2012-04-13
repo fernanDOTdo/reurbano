@@ -15,7 +15,7 @@ class CommentType extends AbstractType {
                     )));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\OrderBundle\Document\Comment',
             'intention' => 'comment_creation',

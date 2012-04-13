@@ -36,7 +36,7 @@ class ComissionType extends AbstractType {
         $builder->add('buyerreal', 'money', array('currency' => 'BRL','label'=>'Comissão a cobrar do comprador R$','attr'=>array('class'=>"small")));
     }
 
-    public function getDefaultOptions(array $options) {
+    public function getDefaultOptions() {
         return array(
             'data_class' => 'Reurbano\DealBundle\Document\Comission',
         );
