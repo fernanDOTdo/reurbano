@@ -35,7 +35,7 @@ class DealController extends BaseController {
                 $order = 'desc';
                 break;
            case 'sortAggregator':
-	           	$sort = 'price';
+	           	$sort = 'priceOffer';
                 $order = 'asc';
 	           	$aggregator = $this->getDealAggregator($cat, $limit, $pg, $orderBy, $template, $showSort, $pagination, $search);
 	           	return $this->render('ReurbanoDealBundle:Widget/Deal:aggregator.html.twig',  $aggregator);
@@ -144,9 +144,6 @@ class DealController extends BaseController {
      *
      */
     public function getDealAggregator($cat = null, $limit = 4, $pg = 1, $orderBy = 'createdAt', $template = 'default', $showSort = true, $pagination = true, $search = null) {
-    	$sort = 'price';
-    	$order = 'asc';
-   
     	$sourceQuery = $this->mongo("ReurbanoDealBundle:Source", 'crawler')->createQueryBuilder();
     	
     	if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
@@ -183,7 +180,7 @@ class DealController extends BaseController {
     	$total = 0;
     	
     	// Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
-    	$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
+    	$sourceQuery->sort('priceOffer', 'asc')->limit($limit);
     	
     	if ($pg > 1) {
     		$pag = $pg - 1;
