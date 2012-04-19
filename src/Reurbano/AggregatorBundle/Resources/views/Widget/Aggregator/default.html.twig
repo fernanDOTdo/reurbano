@@ -14,17 +14,24 @@
 <div class="clear"></div>
 <div class="dealBox">
 {%endif%}
-    {# Encontrados: {{found}} de {{total}} #}
+{# Encontrados: {{found}} de {{total}} #}
 {%for deal in deals%}
+	{%if deal.getSite.getId == 9 %}
+		{%set divisor = "&" %}
+	{%else%}
+		{%set divisor = "?" %}
+	{%endif%}
 <div class="deal">
     <div class="grid_3 alpha dealThumb">
     {#Imagem#}
-            <a href="{{deal.getUrl}}&utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Compre {{deal.getTitle}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.thumb)}}" alt="{{deal.getTitle}}" /></a>
+            <a href="{{deal.getUrl}}{{ divisor }}utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Compre {{deal.getTitle}}"><img src="{{asset(mastop_param('deal.all.dealurl') ~ deal.thumb)}}" alt="{{deal.getTitle}}" /></a>
     </div>
     <div class="grid_6 omega dealContent">
     {#Conteúdo#}
             <div class="grid_6 dealTitle alpha omega">
-                <a href="{{deal.getUrl}}&utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Compre {{ deal.getTitle }}">{{ deal.getTitle(100) }}</a>
+           		 
+               	 	<a href="{{deal.getUrl}}{{ divisor }}utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Compre {{ deal.getTitle }}">{{ deal.getTitle(100) }}</a>
+               	 
             </div>
             <div class="grid_6 alpha omega">
                 <div class="grid_4 alpha omega">
@@ -36,12 +43,12 @@
                     <div class="dp50">
                         {#Site#}
                         <div class="dealSite">
-                            <a rel="nofollow" href="{{deal.getUrl}}&utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Veja a página da oferta no {{deal.getSite.getName}}"><img src="{{asset('/uploads/reurbanodeal/site/'~deal.getSite.getFilename)}}" alt="Página da Oferta no {{deal.getSite.getName}}" /></a>
+                            <a rel="nofollow" href="{{deal.getUrl}}{{ divisor }}utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_new" title="Veja a página da oferta no {{deal.getSite.getName}}"><img src="{{asset('/uploads/reurbanodeal/site/'~deal.getSite.getFilename)}}" alt="Página da Oferta no {{deal.getSite.getName}}" /></a>
                         </div>
                     </div>
                 </div>
                 <div class="grid_2 alpha">
-                    <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{deal.getUrl}}&utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_blank" >detalhes da oferta</a></div>
+                    <div class="buyNow"><a rel="nofollow" class="button big orange pill buyButton" href="{{deal.getUrl}}{{ divisor }}utm_source=Reurbano&utm_medium=Agregador&utm_campaign={{deal.getCategory.getName}}" target="_blank" >detalhes da oferta</a></div>
                 </div>
             {#Preços#}
             </div>
