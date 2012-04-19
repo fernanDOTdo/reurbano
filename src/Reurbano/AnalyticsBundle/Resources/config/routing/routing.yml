@@ -1,0 +1,4 @@
+tracking_backend:
+    resource: "@ReurbanoAnalyticsBundle/Controller/Backend/TrackingController.php"
+    type: annotation
+    prefix:   admin/tracking

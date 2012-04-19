@@ -35,6 +35,15 @@ use Reurbano\OrderBundle\Document\Escrow;
 use Reurbano\DealBundle\Document\Deal;
 use Symfony\Component\HttpFoundation\Response;
 
+// Controle do Cookie Tracking
+use Reurbano\AnalyticsBundle\Document\Tracking;
+use Reurbano\AnalyticsBundle\Document\TrackingPreSell;
+use Reurbano\AnalyticsBundle\Document\TrackingSell;
+use Reurbano\AnalyticsBundle\Document\UserData;
+use Reurbano\AnalyticsBundle\Document\AssociateEmbed;
+use Reurbano\AnalyticsBundle\Document\CookieTracking;
+use Reurbano\CoreBundle\Util\IPtoCity;
+
 /**
  * Controller que cuidará das compras em Frontend
  * (fechar pedido, carrinho de compras, etc)
@@ -58,6 +67,85 @@ class OrderController extends BaseController
         if($deal->getChecked() == false){
             return $this->redirectFlash($this->generateUrl('deal_deal_show', array('city' => $deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug())), 'Não é possível comprar uma oferta que está aguardando aprovação dos administradores.', 'notice');
         }
+        
+        // Controle de Tracking
+        $cookieTracking = new CookieTracking($this->get('request'), $this->get('request')->cookies);
+        $cookieList = $cookieTracking->getListCookie();
+        
+        //print_r($cookieList);
+        
+        // Verifica se o cookie de tracking existe
+        if(is_array($cookieList)){        	
+        	$trackingSource = null; // Origem ( Parceiro ) do trafego
+        	$trackingCity = null; // cidade ( Parceiro ) do trafego
+        	$trackingCategory = null; // categoria ( Parceiro ) do trafego
+        	$trackingResult = false;
+        	
+        	foreach($cookieList as $key => $value) {
+	        	foreach($cookieList[$key]['deals'] as $chave => $list){
+	        		foreach($list as $k => $v){
+		        		if (($deal->getId() == $v) && ($trackingResult == false)) {
+		        			// Atualiza os dados que informando onde a deal se encontra no cookie
+		        			$trackingSource = $cookieList[$key]['source']; // Obtem a origem ( Parceiro ) do trafego
+		        			$trackingCity = $cookieList[$key]['city']; // Obtem a cidade ( Parceiro ) do trafego
+		        			$trackingCategory =$cookieList[$key]['category']; // Obtem a categoria ( Parceiro ) do trafego
+		        			$trackingResult = true; 
+		        			break;
+		        		}
+	        		}
+	        	}
+	        	// Registra o primeiro parceiro que o usuário visitou para caso a deal não for encontrada no cookie
+	        	// o usuário tenha um origem de trafego
+	        	$trackingSource = ($trackingSource == null) ? $cookieList[$key]['source'] : $trackingSource; // Obtem a origem ( Parceiro ) do trafego
+	        	$trackingCity = ($trackingCity == null) ? $cookieList[$key]['city'] : $trackingCity; // Obtem a cidade ( Parceiro ) do trafego
+	        	$trackingCategory = ($trackingCategory == null) ? $cookieList[$key]['category'] : $trackingCategory; // Obtem a categoria ( Parceiro ) do trafego
+        	}
+        	
+        	// Obtem o parceiro do cookie em banco
+        	$associateDB = $this->container->get('mastop')->getDocumentManager("associate")->getRepository('ReurbanoAnalyticsBundle:Associate')->hasId($trackingSource);
+        	if (sizeof($associateDB) > 0){ //Verifica a existencia do parceiro
+        		$user = $this->get('security.context')->getToken()->getUser();
+        		$ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
+        		$userData = new UserData();
+        		$userData->setIp((string)$ip2city->getIP());
+        		if ($user instanceof \Reurbano\UserBundle\Document\User) $userData->setUser($user);
+        		
+        		$dm = $this->dm();
+        		
+	        	// Registra em banco de dados que essa pré venda veio via o Parceiro
+	        	$associateEmbed = new AssociateEmbed();
+	        	$associateEmbed->populate($associateDB);
+	        	
+	        	// Localiza um tracking de pré venda desse parceiro
+	        	$tracking = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->findByTrackingByAssociate($associateDB, $deal, $deal->getSource()->getCity(), $deal->getSource()->getCategory(), $trackingResult);
+	        	if (sizeof($tracking) == 0){
+	        		$tracking = new Tracking();
+	        		$tracking->setAssociate($associateEmbed);
+	        		$tracking->setCategory($deal->getSource()->getCategory());
+	        		$tracking->setCity($deal->getSource()->getCity());
+	        		$tracking->setDeal($deal);	        		
+	        		$tracking->addUserData($userData);
+	        		$tracking->setInCookie($trackingResult);  	// essa deal estava no Cookie ou não
+	        		$tracking->setClick($tracking->getClick()+1);
+	        		
+	        		$dm->persist($tracking);
+	        		$dm->flush();
+	        	}
+	        	
+	        	//Localiza a pré venda
+	        	$trackingPreSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingPreSell')->findByTracking($associateDB, $tracking, $trackingResult);
+	        	if (sizeof($trackingPreSell) == 0) $trackingPreSell = new TrackingPreSell();
+	    		
+	    		$trackingPreSell->setTracking($tracking);
+	    		$trackingPreSell->addUserData($userData);
+	    		$trackingPreSell->setInCookie($trackingResult);  	// essa deal estava no Cookie ou não
+	    		$trackingPreSell->setClick($trackingPreSell->getClick()+1);
+	    		
+	        	$dm->persist($trackingPreSell);
+	        	$dm->flush();
+        	}
+        }
+        
         return array('deal'=>$deal);
     }
     /**
@@ -353,6 +441,103 @@ class OrderController extends BaseController
         $escrow->setObs("Venda #".$order->getId());
         $dm->persist($escrow);
         $dm->flush();
+        
+        
+        
+        
+        // Controle de Tracking
+        $cookieTracking = new CookieTracking($this->get('request'), $this->get('request')->cookies);
+        $cookieList = $cookieTracking->getListCookie();
+
+        // Verifica se o cookie de tracking existe
+        if(is_array($cookieList)){
+        	 
+        	$trackingSource = null; // Origem ( Parceiro ) do trafego
+        	$trackingCity = null; // cidade ( Parceiro ) do trafego
+        	$trackingCategory = null; // categoria ( Parceiro ) do trafego
+        	$trackingResult = false;
+        	 
+        	foreach($cookieList as $key => $value) {
+        		foreach($cookieList[$key]['deals'] as $chave => $list){
+        			foreach($list as $k => $v){
+        				if (($deal->getId() == $v) && ($trackingResult == false)) {
+        					// Atualiza os dados que informando onde a deal se encontra no cookie
+        					$trackingSource = $cookieList[$key]['source']; // Obtem a origem ( Parceiro ) do trafego
+        					$trackingCity = $cookieList[$key]['city']; // Obtem a cidade ( Parceiro ) do trafego
+        					$trackingCategory =$cookieList[$key]['category']; // Obtem a categoria ( Parceiro ) do trafego
+        					$trackingResult = true;
+        					break;
+        				}
+        			}
+        		}
+        		// Registra o primeiro parceiro que o usuário visitou para caso a deal não for encontrada no cookie
+        		// o usuário tenha um origem de trafego
+        		$trackingSource = ($trackingSource == null) ? $cookieList[$key]['source'] : $trackingSource; // Obtem a origem ( Parceiro ) do trafego
+        		$trackingCity = ($trackingCity == null) ? $cookieList[$key]['city'] : $trackingCity; // Obtem a cidade ( Parceiro ) do trafego
+        		$trackingCategory = ($trackingCategory == null) ? $cookieList[$key]['category'] : $trackingCategory; // Obtem a categoria ( Parceiro ) do trafego
+        	}
+        	 
+        	// Obtem o parceiro do cookie em banco
+        	$associateDB = $this->container->get('mastop')->getDocumentManager("associate")->getRepository('ReurbanoAnalyticsBundle:Associate')->hasId($trackingSource);
+        	if (sizeof($associateDB) > 0){ //Verifica a existencia do parceiro
+        		$ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
+        		$userData = new UserData();
+        		$userData->setIp((string)$ip2city->getIP());
+        		if ($user instanceof \Reurbano\UserBundle\Document\User)$userData->setUser($user);
+        
+        		// Registra em banco de dados que essa pré venda veio via o Parceiro
+        		$associateEmbed = new AssociateEmbed();
+        		$associateEmbed->populate($associateDB);
+        		
+        		
+        		// Localiza um tracking visualização desse parceiro
+        		$tracking = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->findByTrackingByAssociate($associateDB, $deal, $deal->getSource()->getCity(), $deal->getSource()->getCategory(), $trackingResult);
+        		if (sizeof($tracking) == 0){
+        			$tracking = new Tracking();
+        			$tracking->setAssociate($associateEmbed);
+        			$tracking->setCategory($deal->getSource()->getCategory());
+        			$tracking->setCity($deal->getSource()->getCity());
+        			$tracking->setDeal($deal);
+        			$tracking->addUserData($userData);
+        			$tracking->setInCookie($trackingResult);  	// essa deal estava no Cookie ou não
+        			$tracking->setClick($tracking->getClick()+1);
+        			 
+        			$dm->persist($tracking);
+        			$dm->flush();
+        		}
+        		
+        		//Localiza a pré venda desse parceiro
+        		$trackingPreSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingPreSell')->findByTracking($associateDB, $tracking, $trackingResult);
+        		if (sizeof($trackingPreSell) == 0){
+        			$trackingPreSell = new TrackingPreSell();
+        			$trackingPreSell->setTracking($tracking);
+        			$trackingPreSell->addUserData($userData);
+        			$trackingPreSell->setInCookie($trackingResult);  	// essa deal estava no Cookie ou não
+        			$trackingPreSell->setClick($trackingPreSell->getClick()+1);
+        			 
+        			$dm->persist($trackingPreSell);
+        			$dm->flush();
+        		}
+        		
+        
+        		// Localiza um tracking de venda desse parceiro
+        		$trackingSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingSell')->findByTracking($associateDB, $trackingPreSell, $trackingResult);
+        		if (sizeof($trackingSell) == 0){
+        			$trackingSell = new TrackingSell();
+        			$trackingSell->setTrackingPreSell($trackingPreSell);
+        		}
+        		 
+        		$trackingSell->addUserData($userData);
+        		$trackingSell->addOrder($order);
+        		$trackingSell->setInCookie($trackingResult);  	// essa deal estava no Cookie ou não
+        		$trackingSell->setClick($trackingSell->getClick()+1);
+
+        		$dm->persist($trackingSell);
+        		$dm->flush();
+        	}
+        }
+        
+        
         // Enviar e-mails para comprador, vendedor e notificação administrativa de criação de pedido
         $orderLinkBuyer = $this->generateUrl('order_myorders_view', array('id'=>$order->getId()), true);
         $orderLinkSeller = $this->generateUrl('order_mysales_view', array('id'=>$order->getId()), true);

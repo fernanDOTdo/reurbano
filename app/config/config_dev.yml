@@ -33,6 +33,10 @@ doctrine_mongodb:
             server: %mongo_server%
             options:
                 connect: true
+        associate:
+            server: %mongo_server%
+            options:
+                connect: true
     default_database: %mongo_database%_%kernel.environment%
     document_managers:
         default:
@@ -42,14 +46,20 @@ doctrine_mongodb:
             metadata_cache_driver: array # array, apc, xcache, memcache
         crawler:
             connection: crawler
-            database: %mongo_database%_prod
+            database: %mongo_database_crawler%_dev
             auto_mapping: true
             mappings:
                 StofDoctrineExtensionsBundle: false
             metadata_cache_driver: array # array, apc, xcache, memcache
-
+        associate:
+            connection: associate
+            database: %mongo_database_associate%_dev
+            auto_mapping: true
+            mappings:
+                StofDoctrineExtensionsBundle: false
+            metadata_cache_driver: array # array, apc, xcache, memcache
 swiftmailer:
-    delivery_address:  symfony@mastop.com.br
+    delivery_address:  saulo@gubn.com.br
     
 mastop_system:
     themes_dir: %themes_dir%

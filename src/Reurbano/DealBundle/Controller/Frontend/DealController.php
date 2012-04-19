@@ -38,10 +38,19 @@ use Reurbano\DealBundle\Form\Frontend\DealEditType;
 
 use Reurbano\DealBundle\Util\Upload;
 
+// Controle do Cookie Tracking
+use Reurbano\AnalyticsBundle\Document\Tracking;
+use Reurbano\AnalyticsBundle\Document\UserData;
+use Reurbano\AnalyticsBundle\Document\AssociateEmbed;
+use Reurbano\AnalyticsBundle\Document\CookieTracking;
+use Reurbano\CoreBundle\Util\IPtoCity;
+
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
+
 class DealController extends BaseController
 {
-    
-    
     /**
      * Action que lista as ofertas via ajax
      * 
@@ -104,11 +113,16 @@ class DealController extends BaseController
             }
             $ret['dontBuy'] = true;
         }
+        
+        // Controle dos cliques dos parceiros
+        $this->cntCookieTracking($deal);
+        
         // Incrementa views se o user não for admin e se for o primeiro acesso do user à oferta
         if(!$this->hasRole('ROLE_ADMIN') && !$this->get('session')->has('offer_'.$deal->getId())){
             $this->mongo('ReurbanoDealBundle:Deal')->incViews($deal->getId());
             $this->get('session')->set('offer_'.$deal->getId(), 1);
         }
+        
         $title = $deal->getLabel();
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCity()->getName(), 'url' => $this->generateUrl('core_city_index', array('slug' => $deal->getSource()->getCity()->getSlug())));
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCategory()->getName(), 'url' => $this->generateUrl('deal_category_index', array('city' => $deal->getSource()->getCity()->getSlug(), 'slug'=>$deal->getSource()->getCategory()->getSlug())));
@@ -120,7 +134,7 @@ class DealController extends BaseController
         $ret['rules'] = ($deal->getSource()->getRules() != '') ? preg_split( '/\r\n|\r|\n/', $deal->getSource()->getRules()) : array();
         $ret['breadcrumbs'] = $breadcrumbs;
         $ret['keywords'] = implode(', ', explode(' ', $deal->getLabel()));
-        return $ret;
+		return $ret;
     }
     
     /**
@@ -218,5 +232,136 @@ class DealController extends BaseController
         $dm->persist($deal);
         $dm->flush();
         return $this->redirect($this->generateUrl('user_dashboard_index')."#mydeals");
+    }
+    
+    /**
+     * 
+     * Controla o Cookie de Tracking
+     *
+     */
+    public function cntCookieTracking(Deal $deal)
+    {
+    	// Obtem os Request via URL
+    	$request = $this->get('request');
+    	$utm_source = $request->query->get('utm_source');
+    	$utm_medium = $request->query->get('utm_medium');
+    	$utm_campaign = $request->query->get('utm_campaign');
+    	
+    	// Verifica se foi passado algum dado esperado via URL
+    	// Significa que veio de um parceiro
+    	if (isset($utm_source)){
+    		// Busca os dados no banco de dados
+    		$associateDB = $this->container->get('mastop')->getDocumentManager("associate")->getRepository('ReurbanoAnalyticsBundle:Associate')->findBySlug($utm_source);
+
+    		// Check de seguranço para ver se foi encontrado algo
+    		$associate = (sizeof($associateDB) > 0) ? $associateDB->getId() : null;
+    		$city = $deal->getSource()->getCity()->getId();
+    		$category = $deal->getSource()->getCategory()->getId();
+    		$oferta = $deal->getId();
+  
+    		// Verifica se todos os dados existem
+    		if (!( (empty($associate) || (empty($city)) || (empty($category)) || (empty($oferta)) ))){
+    			$dm = $this->dm();
+    			
+    			// Ckeck do Cookie de Tracking
+    			$cookies = new CookieTracking($this->get('request'), $this->get('request')->cookies);
+    			$result = $cookies->recordsAccessCookie($associate, $city, $category, $oferta);
+    	
+    			// Registra o Cookie de Tracking
+    			$cookie = new Cookie($result[0], $result[1], (time() + 3600 * 48), '/');
+    			$response = new Response();
+    			$response->headers->setCookie($cookie);
+    			$response->sendHeaders();
+    			
+    			//Registra em banco de dados
+    			$user = $this->get('security.context')->getToken()->getUser();
+    			$ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
+    			$userData = new UserData();
+    			$userData->setIp((string)$ip2city->getIP());
+    			if ($user instanceof \Reurbano\UserBundle\Document\User) $userData->setUser($user);
+    			
+    			$tracking = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->findByTracking($deal, $deal->getSource()->getCity(), $deal->getSource()->getCategory(), true);
+    			if (sizeof($tracking) == 0){
+    				//Não encontrou a DEAL em banco
+    				$associateEmbed = new AssociateEmbed();
+    				$associateEmbed->populate($associateDB);
+    				
+	    			$tracking = new Tracking();
+	    			$tracking->setAssociate($associateEmbed);
+	    			$tracking->setCategory($deal->getSource()->getCategory());
+	    			$tracking->setCity($deal->getSource()->getCity());
+	    			$tracking->setDeal($deal);
+    			}
+    			$tracking->setInCookie(true);
+    			$tracking->addUserData($userData);
+    			$tracking->setClick($tracking->getClick()+1);
+    			
+    			$dm->persist($tracking);
+    			$dm->flush();
+    		}
+    	}else{
+    		// Controle de Tracking
+    		$cookieTracking = new CookieTracking($this->get('request'), $this->get('request')->cookies);
+    		$cookieList = $cookieTracking->getListCookie();
+    		    		
+    		// Verifica se o cookie de tracking existe
+    		if(is_array($cookieList)){
+    			$trackingSource = null; 	// Origem ( Parceiro ) do trafego
+    			$trackingCity = null; 		// cidade ( Parceiro ) do trafego
+    			$trackingCategory = null; 	// categoria ( Parceiro ) do trafego
+    			$trackingResult = false;
+    			 
+    			foreach($cookieList as $key => $value) {
+    				foreach($cookieList[$key]['deals'] as $chave => $list){
+    					foreach($list as $k => $v){
+    						if (($deal->getId() == $v) && ($trackingResult == false)) {
+    							// Atualiza os dados que informando onde a deal se encontra no cookie
+    							$trackingSource = $cookieList[$key]['source']; // Obtem a origem ( Parceiro ) do trafego
+    							$trackingCity = $cookieList[$key]['city']; // Obtem a cidade ( Parceiro ) do trafego
+    							$trackingCategory =$cookieList[$key]['category']; // Obtem a categoria ( Parceiro ) do trafego
+    							$trackingResult = true;
+    							break;
+    						}
+    					}
+    				}
+
+    				// Registra o primeiro parceiro que o usuário visitou para caso a deal não for encontrada no cookie
+    				// o usuário tenha um origem de trafego
+    				$trackingSource = ($trackingSource == null) ? $cookieList[$key]['source'] : $trackingSource; // Obtem a origem ( Parceiro ) do trafego
+    				$trackingCity = ($trackingCity == null) ? $cookieList[$key]['city'] : $trackingCity; // Obtem a cidade ( Parceiro ) do trafego
+    				$trackingCategory = ($trackingCategory == null) ? $cookieList[$key]['category'] : $trackingCategory; // Obtem a categoria ( Parceiro ) do trafego
+    			}
+    			
+    			// Busca os dados no banco de dados
+    			$associateDB = $this->container->get('mastop')->getDocumentManager("associate")->getRepository('ReurbanoAnalyticsBundle:Associate')->hasId($trackingSource);
+    			
+    			//Registra em banco de dados
+    			$user = $this->get('security.context')->getToken()->getUser();    			
+    			$ip2city = new IPtoCity($this->container, $_SERVER['REMOTE_ADDR']);
+    			$userData = new UserData();
+    			$userData->setIp((string)$ip2city->getIP());
+    			if ($user instanceof \Reurbano\UserBundle\Document\User) $userData->setUser($user);
+    			
+    			$tracking = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->findByTracking($deal, $deal->getSource()->getCity(), $deal->getSource()->getCategory(), $trackingResult);
+    			if (sizeof($tracking) == 0){
+    				//Não encontrou a DEAL em banco
+    				$associateEmbed = new AssociateEmbed();
+    				$associateEmbed->populate($associateDB);
+    			
+    				$tracking = new Tracking();
+    				$tracking->setAssociate($associateEmbed);
+    				$tracking->setCategory($deal->getSource()->getCategory());
+    				$tracking->setCity($deal->getSource()->getCity());
+    				$tracking->setDeal($deal);
+    			}
+    			$tracking->setInCookie($trackingResult);
+    			$tracking->addUserData($userData);
+    			$tracking->setClick($tracking->getClick()+1);
+    			
+    			$dm = $this->dm();
+    			$dm->persist($tracking);
+    			$dm->flush();
+    		}
+    	}
     }
 }

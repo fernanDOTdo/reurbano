@@ -23,7 +23,7 @@ class AggregatorController extends BaseController {
                 $order = 'desc';
                 break;
             case 'sortCheap':
-                $sort = 'price';
+                $sort = 'priceOffer';
                 $order = 'asc';
                 break;
             case 'sortExpires':
@@ -31,18 +31,18 @@ class AggregatorController extends BaseController {
                 $order = 'asc';
                 break;
             case 'sortDiscount':
-                $sort = 'discount';
+                $sort = 'discountOffer';
                 $order = 'desc';
                 break;
             case 'sortNew':
             default :
-                $sort = 'createdAt';
+                $sort = 'dateRegister';
                 $order = 'desc';
                 break;
         }
         
-    	$sourceQuery = $this->mongo("ReurbanoDealBundle:Source", 'crawler')->createQueryBuilder();
-
+    	$sourceQuery = $this->mongo("ReurbanoDealBundle:Source", 'crawler')->createQueryBuilder();    	
+    	
     	if ($this->get('session')->get('reurbano.user.city') == 'oferta-nacional') {
     	    $sourceQuery->field('city.$id')->equals(new \MongoId($this->get('session')->get('reurbano.user.cityId')));
     	} else {
@@ -58,40 +58,40 @@ class AggregatorController extends BaseController {
     	$days = 5;
     	$date = new \DateTime();
     	$date->setTimestamp(strtotime('-'.$days.' days'));
-    	$date->setTime(0, 0, 0);
-    	
+    	$date->setTime(0, 0, 0);    	
     	$datexpiresDeal = new \DateTime();
     	$datexpiresDeal->setTime(0, 0, 0);
-    	
+    	    	
     	$sourceQuery->field('dateRegister')->gte($date); // Data de registro maior ou igual ao "date"
     	$sourceQuery->field('price')->gt(0); // Preço normal maior que ZERO
     	$sourceQuery->field('priceOffer')->gt(0); // Preço com desconto maior que ZERO
     	// Data do fim das negociações não existe ou seja maior que hoje
     	$sourceQuery->addOr($sourceQuery->expr()->field('expiresDeal')->exists(false))->addOr($sourceQuery->expr()->field('expiresDeal')->gte($datexpiresDeal)); 
-    	
-    	
-    	if($search){
+
+  		if($search){
     		$regexp = new \MongoRegex('/' . $search . '/i');
     		$tags = explode(' ', $search);
-    		$sourceQuery->addOr($sourceQuery->expr()->field('title')->equals($regexp));
+    		$sourceQuery->addAnd($sourceQuery->expr()->field('title')->equals($regexp));
     	}
     	
     	$total = 0;
+    	
+    	$sourceQuery->sort($sort, $order);
     	if($sort != 'price'){ // Se a ordenação escolhida não for por preço, ordena por cidade -> ordenação escolhida -> destaques -> preço
-    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->sort('price', 'asc')->limit($limit);
-    	}else{  // Se a ordenação escolhida for por preço, ordena por cidade -> preço -> destaques
-    		$sourceQuery->sort('city.$id', 'desc')->sort($sort, $order)->limit($limit);
-    	}    	
+    		$sourceQuery->sort('priceOffer', 'asc')->limit($limit);
+    	}
     	
     	if ($pg > 1) {
     		$pag = $pg - 1;
     		$sourceQuery->skip($limit * $pag);
-    	}
-    	
+    	}    	
+    	 
     	$sourcesFound = $sourceQuery->getQuery()->execute();
     	$sources = array();
+    	$sourcesTitle = array();
     	$found = 0;
     	$total = 0;
+    	
     	if ($sourcesFound) {
     		foreach ($sourcesFound as $k => $d) {
     			$sources[$k] = $d;
@@ -99,7 +99,7 @@ class AggregatorController extends BaseController {
     		$found = $sourcesFound->count(true);
     		$total = $sourcesFound->count();
     	}
-    
+    	
     	// Pagination
     	if ($total > $found) {
     		$restPages = $total % $limit;
@@ -107,6 +107,7 @@ class AggregatorController extends BaseController {
     	} else {
     		$totalPages = 1;
     	}
+    	
         return $this->render(
                         'ReurbanoAggregatorBundle:Widget/Aggregator:' . $template . '.html.twig', array(
                     'orderBy' => $orderBy,

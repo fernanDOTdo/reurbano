@@ -1,0 +1,44 @@
+{% extends '::backend.html.twig' %}
+{% block content %}
+<div class="content box grid_12 round_all" style="padding:0">
+    <table class="display datatable"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Parceiro"|trans }}</th> 
+                <th colspan="2">{{ "Oferta"|trans }}</th> 
+                <th class="center">{{ "Cat."|trans }}</th> 
+                <th class="center">{{ "Cidade"|trans }}</th>
+                <th class="nowrap">{{ "Clicks"|trans }}</th>
+                <th class="center" title="Se a oferta estava ou não no Cookie do usuário">{{ "Cookie"|trans }}</th> 
+                <th class="center">{{ "Atualização"|trans }}</th>
+            </tr> 
+        </thead> 
+        <tbody> 
+            {% for trace in traces %}
+            <tr>
+               	<td>{{ trace.getAssociate().getFancyName() }}</td>
+               	<td class='center'>
+                    <a target="_blank" href="{{ path( 'deal_deal_show', {'city': trace.getCity().getSlug(),'category':trace.getCategory().getSlug(),'slug':trace.getDeal().getSlug() } ) }}">
+                        <img width="80" height="60" src="{{ mastop_param('deal.all.dealurl') ~ trace.getDeal().source.thumb }}" title="{{ trace.getDeal().getLabel(40) }}" alt="{{ trace.getDeal().getLabel(40) }}" />
+                    </a>
+                </td>
+                <td>{{ trace.getDeal().getLabel(40) }}</td>
+                <td>{{ trace.getCategory().getName() }}</td>
+                <td>{{ trace.getCity().getName() }}</td>
+                <td align="right">{{ trace.getClick() }}</td>
+                <td align="center">{{ trace.isInCookie() }}</td>
+                <td align="right">{{ trace.getUpdatedAt()|date('d/m/Y h:i:s') }}</td>
+            </tr>
+  {% else %}
+            <tr><td colspan='9'>{{"Nenhum rastreamento encontrado"|trans}}</td></tr>
+  {% endfor %} 
+        </tbody> 
+    </table>
+    
+    <button onclick="window.location='{{path('admin_analytics_tracking_export')}}'" title="{{ "Exportar rastreamentos"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-tag-green"></span> {{ "Exportar Tracking"|trans }}</button>
+</div>
+{% endblock %} 
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
+{% endblock %}

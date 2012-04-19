@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Reurbano\DealBundle\ReurbanoDealBundle(),
             new Reurbano\OrderBundle\ReurbanoOrderBundle(),
         	new Reurbano\AggregatorBundle\ReurbanoAggregatorBundle(),
+        	new Reurbano\AnalyticsBundle\ReurbanoAnalyticsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

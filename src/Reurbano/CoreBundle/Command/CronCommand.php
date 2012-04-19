@@ -107,7 +107,7 @@ class CronCommand extends ContainerAwareCommand {
                 $returnCode = $command->run($input, $output);
                 
                 // avisar o comprador depois de X dias que a negociação foi aprovada, 
- 								// que ele tem mais X dias na garantia se o cupom ainda for válido
+ 				// que ele tem mais X dias na garantia se o cupom ainda for válido
                 $output->writeln("<question>Notificando os compradores sobre sua garantia</question>");
                 $command = $this->getApplication()->find('reurbano:cron:finalizeorders');
                 $arguments = array(
@@ -115,7 +115,16 @@ class CronCommand extends ContainerAwareCommand {
                     'days' => 20,
                 );
                 $input = new ArrayInput($arguments);
-                $returnCode = $command->run($input, $output);                
+                $returnCode = $command->run($input, $output);
+                
+                // cria o feed de ofertas do Reurbano para os agregadores parceiros
+                $output->writeln("<question>Criando feed das ofertas do Reurbano para os agregadores parceiros</question>");
+                $command = $this->getApplication()->find('reurbano:cron:feedDeal');
+                $arguments = array(
+                		'command' => 'reurbano:cron:feedDeal',
+                );
+                $input = new ArrayInput($arguments);
+                $returnCode = $command->run($input, $output);
                 
                 break;
         }

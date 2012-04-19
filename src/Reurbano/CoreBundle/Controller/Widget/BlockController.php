@@ -52,6 +52,20 @@ class BlockController extends BaseController {
         $session = $this->get('session');
         $ret = array();
         $c = 0;
+        
+        //$ret[$c]['title'] = 'Quer mais ofertas?';
+        $ret[$c]['content'] = '
+        <p><a href="http://reurbano.com.br/agregador" target="_blank"><img title="Quer mais ofertas? Conheça nosso Agregador" src="https://s3.amazonaws.com/reurbano/imagens/banner/mini_banner_mais_ofertas_agregador.jpg" alt="Quer mais ofertas? Conheça nosso Agregador" width="217" height="87" /></a></p>
+        ';
+        $c++;
+        //$ret[$c]['title'] = 'Quer suas ofertas aqui também?';
+        $ret[$c]['content'] = '
+        <p><a href="http://parceiros.reurbano.com.br" target="_blank"><img title="Quer suas ofertas aqui também? Veja como ser nosso parceiro" src="https://s3.amazonaws.com/reurbano/imagens/banner/mini_banner_parceiro.jpg" alt="Quer suas ofertas aqui também? Veja como ser nosso parceiro" width="217" height="87" /></a></p>
+        ';
+        $c++;
+        
+        //Retirada as ofertas laterais do site
+        /*
         switch ($area) {
             case 'city': // Home de cada cidade
                 if ($session->get('reurbano.user.city') != 'oferta-nacional') {
@@ -168,6 +182,7 @@ class BlockController extends BaseController {
                 //$c++;
                 break;
         }
+        */
         $ret[$c]['title'] = 'Nosso Vídeo';
         $ret[$c]['content'] = '
         <p><a href="http://www.youtube.com/watch?v=ui_Hhm0Nfks" target="_blank"><img title="Nosso Vídeo" src="/themes/reurbano/images/video.jpg" alt="Nosso Vídeo" width="217" height="132" /></a></p>
