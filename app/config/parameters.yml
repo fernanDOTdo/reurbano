@@ -3,7 +3,8 @@ parameters:
   mongo_server_prod: mongodb://10.76.197.134:27017
   mongo_database: reurbano
   mongo_database_crawler: bancooferta
-
+  mongo_database_associate: associate
+  
   mailer_transport: gmail
   mailer_host: localhost
   mailer_user: contato@reurbano.com.br

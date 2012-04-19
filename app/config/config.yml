@@ -71,6 +71,10 @@ doctrine_mongodb:
             server: %mongo_server_prod%
             options:
                 connect: true
+        associate:
+            server: %mongo_server_prod%
+            options:
+                connect: true
     default_database: %mongo_database%_%kernel.environment%
     document_managers:
         default:
@@ -85,6 +89,13 @@ doctrine_mongodb:
             mappings:
                 StofDoctrineExtensionsBundle: false
             metadata_cache_driver: apc # array, apc, xcache, memcache
+        associate:
+            connection: associate
+            database: %mongo_database_associate%_prod
+            auto_mapping: true
+            mappings:
+                StofDoctrineExtensionsBundle: false
+            metadata_cache_driver: array # array, apc, xcache, memcache
 
 stof_doctrine_extensions:
     default_locale: pt_BR
@@ -135,4 +146,4 @@ services:
   text.twig.extension:
     class: Twig_Extensions_Extension_Text
     tags:
-      -  { name: twig.extension } 
+      -  { name: twig.extension }
