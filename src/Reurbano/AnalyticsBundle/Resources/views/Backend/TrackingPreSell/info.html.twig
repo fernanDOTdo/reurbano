@@ -1,0 +1,52 @@
+<div class="box">
+    <h2>{{ title }}</h2>
+    <div class="info">
+        <span class="info">Oferta:</span> {{ tracking.getDeal().getLabel(100) }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Cidade:</span> {{ tracking.city.name }}<br />
+    </div>
+     <div class="info">
+        <span class="info">Categoria:</span> {{ tracking.category.name }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Visualizações:</span> {{ tracking.getClick() }}<br />
+    </div>
+    <div class="info">
+        <span class="info">Pré-venda:</span> {{ prevendas }} ( <i>{{ taxaPrevendas|number_format(2, ',', '.') }}% de conversão</i> )<br />
+    </div>
+    <div class="info">
+        <span class="info">Venda:</span> {{ vendas }} ( <i>{{ taxaVendas|number_format(2, ',', '.') }}% de conversão</i> )<br />
+    </div>
+    <br />
+    {% if trackingPreSell.getUserData() %}
+	    <h3 class="box_head">Clicks discriminados</h3>
+	    <table class="display dataTableUser"> 
+	        <thead> 
+	            <tr> 
+	                <th align="center">{{ "IP"|trans }}</th> 
+	                <th align="center">{{ "Data/Hora"|trans }}</th> 
+	                <th align="center">{{ "Usuário"|trans }}</th>
+	                <th align="center">{{ "Email"|trans }}</th>
+	            </tr> 
+	        </thead> 
+	        <tbody> 
+	        {% for key in trackingPreSell.getUserData() %}
+				<tr>
+	               	<td>{{ key.ip }}</td>
+					<td>{{ key.createdAt|date('d/m/Y h:i:s') }}</td>
+					<td>{% if key.user %} {{ key.user.getName() }} {% else %} indefinido {% endif %}</td>
+		            <td>{% if key.user %} {{ key.user.getEmail() }} {% else %} indefinido {% endif %}</td>
+				</tr>
+			{% endfor %}
+	        </tbody> 
+	    </table>
+	 {% endif %}
+</div>
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    {% javascripts output='static/system/js/tracking.datatables.js' 
+                '@ReurbanoAnalyticsBundle/Resources/public/js/tracking.datatables.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

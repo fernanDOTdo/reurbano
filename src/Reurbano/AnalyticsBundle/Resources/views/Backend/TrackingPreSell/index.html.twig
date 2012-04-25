@@ -1,0 +1,61 @@
+{% extends '::backend.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock title %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.css' 
+                    filter='?yui_css' 
+                    output='static/system/css/facebox.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+{% block content %}
+<div class="content box grid_12 round_all" style="padding:0">
+    <table class="display datatable"> 
+        <thead> 
+            <tr> 
+                <th>{{ "Parceiro"|trans }}</th> 
+                <th colspan="2">{{ "Oferta"|trans }}</th> 
+                <th align="center">{{ "Cat."|trans }}</th> 
+                <th align="center">{{ "Cidade"|trans }}</th>
+                <th align="center" class="nowrap">{{ "Clicks"|trans }}</th>
+                <th align="center" class="nowrap">{{ "Pré-venda"|trans }}</th>
+                <th align="center" title="Se a oferta está ou não no Cookie do Usuário">{{ "Cookie"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
+            </tr> 
+        </thead> 
+        <tbody> 
+            {% for trace in traces %}
+	              <tr>
+	               	<td>{{ trace.getTracking().getAssociate().getFancyName() }}</td>
+	               	<td class='center'>
+	                    <a target="_blank" href="{{ path( 'deal_deal_show', {'city': trace.getTracking().getCity().getSlug(),'category':trace.getTracking().getCategory().getSlug(),'slug':trace.getTracking().getDeal().getSlug() } ) }}">
+	                        <img width="80" height="60" src="{{ mastop_param('deal.all.dealurl') ~ trace.getTracking().getDeal().source.thumb }}" title="{{ trace.getTracking().getDeal().getLabel(40) }}" alt="{{ trace.getTracking().getDeal().getLabel(40) }}" />
+	                    </a>
+	                </td>
+	                <td>{{ trace.getTracking().getDeal().getLabel(40) }}</td>
+	                <td>{{ trace.getTracking().getCategory().getName() }}</td>
+	                <td>{{ trace.getTracking().getCity().getName() }}</td>
+	                <td align="right">{{ trace.getTracking().getClick() }}</td>
+	                <td align="right">{{ trace.getClick() }}</td>
+	                <td align="center">{{ trace.isInCookie() }}</td>
+	                <td class="center nowrap"><a class="button button-set small white facebox" rel="facebox" title="{{ "Informações"|trans }}" href="{{ url('admin_analytics_tracking_pre_sell_info', {'id': trace.getId() }) }}"><span class="ui-silk ui-silk-application">{{ "Informações"|trans }}</span></a></td>
+	            </tr>
+		  {% else %}
+		            <tr><td colspan='9'>{{"Nenhuma pré-venda encontrada"|trans}}</td></tr>
+		  {% endfor %} 
+        </tbody> 
+    </table>
+    
+    <button onclick="window.location='{{path('admin_analytics_tracking_pre_sell_export')}}'" title="{{ "Exportar rastreamentos"|trans }}" class="button white newItem m10"><span class="ui-silk ui-silk-tag-green"></span> {{ "Exportar Tracking"|trans }}</button>
+</div>
+{% endblock %} 
+{% block javascripts %}
+	{% javascripts output='static/system/js/tracking.js' 
+                '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.js' 
+                '@ReurbanoAnalyticsBundle/Resources/public/js/tracking.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
+{% endblock %}
