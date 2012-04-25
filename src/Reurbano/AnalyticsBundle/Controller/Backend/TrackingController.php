@@ -5,6 +5,7 @@ use Mastop\SystemBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Reurbano\AnalyticsBundle\Document\Tracking;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller para administrar (CRUD) os tracking do parceiros.
@@ -26,67 +27,83 @@ class TrackingController extends BaseController
     }
     
     /**
-     * Lista todas os tracking de venda
+     * Action de view das informações do Tracking
      *
-     * @Route("/venda", name="admin_analytics_tracking_sell")
+     * @Route("/informacoes/{id}", name="admin_analytics_tracking_info")
      * @Template()
      */
-    public function sellAction()
-    {
-    	$traces = $this->mongo('ReurbanoAnalyticsBundle:TrackingSell')->findAllByOrder();
-    
-    	return array('traces' => $traces,'title'=>$this->trans("Listagem de Tracking de vendas"));
+    public function infoAction(Tracking $tracking){
+    	$title = $this->trans("Informações do Tracking");
+    	$taxaPrevendas = 0;
+    	$taxaVendas = 0;
+    	
+    	
+    	$traces = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->hasId($tracking->getId());
+    	$trackingPreSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingPreSell')->getByFindSingleResult('tracking.$id', new \MongoId($tracking->getId()) );
+    	$trackingSell = array();
+    	if (sizeof($trackingPreSell) > 0) $trackingSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingSell')->getByFindSingleResult('trackingPreSell.$id', new \MongoId($trackingPreSell->getId()) );
+    	
+    	$prevendas = (sizeof($trackingPreSell) > 0) ? $trackingPreSell->getClick() : 0;
+    	$vendas = (sizeof($trackingSell) > 0) ? $trackingSell->getClick() : 0;
+
+    	if ($tracking->getClick() > 0){
+	    	$taxaPrevendas = ( $prevendas / $tracking->getClick()) * 100.00;
+	    	$taxaVendas = ( $vendas / $tracking->getClick()) * 100.00;
+    	}
+    	
+    	return array(
+    			'title' => $title,
+    			'tracking' => $traces,
+    			'prevendas' => $prevendas,
+    			'vendas' => $vendas,
+    			'taxaPrevendas' => $taxaPrevendas,
+    			'taxaVendas' => $taxaVendas,
+    	);
     }
-    
-    /**
-     * Lista todas os tracking de pré-venda
-     *
-     * @Route("/pre-venda", name="admin_analytics_tracking_presell")
-     * @Template()
-     */
-    public function presellAction()
-    {
-    	$traces = $this->mongo('ReurbanoAnalyticsBundle:TrackingPreSell')->findAllByOrder();
-    
-    	return array('traces' => $traces,'title'=>$this->trans("Listagem de Tracking de pré-venda"));
-    }
-    
-    
+        
     /**
      * @Route("/export", name="admin_analytics_tracking_export")
      */
-    public function exportAction()
+	public function exportAction()
     {
     	$traces = $this->mongo('ReurbanoAnalyticsBundle:Tracking')->findAllByOrder();
-    	/*$data = "Cidade;Site de origem;Categoria;Oferta;URL;Nome Vendedor;E-mail Vendedor;No estabelecimento;Na compra coletiva;No Reurbano;Data;Expirado;Data Vencimento;Conferido;Destaque;Ativo;Cupons DisponÃ­veis;VisualizaÃ§Ãµes\n";
-    	foreach($deal as $deal){
-    		$label = $deal->getLabel();
+    	
+    	$data = "Parceiro;Oferta;Categoria;Cidade;URL;Visualizações;Pré-venda;Venda;Em Cookie;Criação;Atualização;\n";
+    	
+    	foreach($traces as $tracking){
+    		$clickPreSell = 0;
+    		$clickSell = 0;
+    		$trackingPreSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingPreSell')->getByFindSingleResult('trackingPreSell.$id', new \MongoId($tracking->getId()) );
+    		if (sizeof($trackingPreSell) > 0){
+    			$clickPreSell = $trackingPreSell->getClick();
+    			$trackingSell = $this->mongo('ReurbanoAnalyticsBundle:TrackingSell')->getByFindSingleResult('trackingPreSell.$id', new \MongoId($trackingPreSell->getId()) );
+    			if (sizeof($trackingSell) > 0) { $clickSell = $trackingSell->getClick();}
+    		}
+    		
+    		$label = $tracking->getDeal()->getLabel();
     		$label = preg_replace("'\s+'", ' ', $label);
     		$label = trim($label, ' -');
-    		$data .= $deal->getSource()->getCity()->getName() .
-    		";" .$deal->getSource()->getSite()->getName() .
-    		";" . $deal->getSource()->getCategory()->getName() .
+    		
+    		$associate = $tracking->getAssociate()->getFancyName();
+    		$associate = preg_replace("'\s+'", ' ', $associate);
+    		$associate = trim($associate, ' -');
+    		
+    		$data .= $associate .
     		";" . $label .
-    		";" . $this->generateUrl('deal_deal_show', array('city' => $deal->getSource()->getCity()->getSlug(), 'category' => $deal->getSource()->getCategory()->getSlug(), 'slug' => $deal->getSlug())) .
-    		";" . $deal->getUser()->getName() .
-    		";" . $deal->getUser()->getEmail() .
-    		";" . $deal->getSource()->getPrice() .
-    		";" . $deal->getSource()->getPriceOffer() .
-    		";" . $deal->getPrice() .
-    		";" . $deal->getCreatedAt()->format('d/m/Y') .
-    		";" . (($deal->getSource()->getExpiresAt()->getTimestamp() < time()) ? "Sim" : "NÃ£o") .
-    		";" . $deal->getSource()->getExpiresAt()->format('d/m/Y') .
-    		";" . (($deal->getChecked()) ? "Sim" : "NÃ£o") .
-    		";" . (($deal->getSpecial()) ? "Sim" : "NÃ£o") .
-    		";" . (($deal->getActive()) ? "Sim" : "NÃ£o") .
-    		";" . $deal->getQuantity() .
-    		";" . $deal->getViews() . "\n";
+    		";" . $tracking->getDeal()->getSource()->getCategory()->getName() .
+    		";" . $tracking->getDeal()->getSource()->getCity()->getName() .
+    		";" . $this->generateUrl('deal_deal_show', array('city' => $tracking->getDeal()->getSource()->getCity()->getSlug(), 'category' => $tracking->getDeal()->getSource()->getCategory()->getSlug(), 'slug' => $tracking->getDeal()->getSlug())) .
+    		";" . $tracking->getClick() .
+    		";" . $clickPreSell .
+    		";" . $clickSell  .
+    		";" . $tracking->isInCookie() .
+    		";" . $tracking->getCreatedAt()->format('d/m/Y') .
+    		";" . $tracking->getUpdatedAt()->format('d/m/Y H:i:s') . "\n";
     	}
-    	*/
-    	return new Response($data, 200, array(
-    			'Content-Type'        => 'text/csv',
-    			'Content-Disposition' => 'attachment; filename=parceiros-tracking_' . date('d_m_Y') . '.csv',
+    	
+    	return new Response(utf8_decode($data), 200, array(
+    			'Content-Type'        => 'text/csv; charset=UTF-8',
+    			'Content-Disposition' => 'attachment; filename=rastreamento-visualizacoes_' . date('d_m_Y') . '.csv',
     	));
-    }
-    
+    }    
 }
