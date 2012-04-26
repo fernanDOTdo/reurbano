@@ -39,7 +39,7 @@ class TrackingPreSellRepository extends BaseRepository
      **/
     public function findAllByOrder()
     {
-        return $this->findBy(array(), array('createdAt'=>'asc'));
+        return $this->findBy(array(), array('updatedAt'=>'desc', 'createdAt'=>'desc'));
     }
     
     /**
@@ -116,5 +116,19 @@ class TrackingPreSellRepository extends BaseRepository
     	->sort('updatedAt', 'asc')  // Ultima atualização que teve nesse registro
     	->getQuery()
     	->getSingleResult();
+    }
+    
+    /**
+     * Retorna um tracker conforme os parâmetros de busca passados
+     *
+     * @param string $document, qual documento que será buscado na coleção de dados
+     * @param string $value, qual valor documento que será buscado na coleção de dados
+     * @return bool
+     */
+    public function getByFindSingleResult($document, $value)
+    {
+    	return $this->createQueryBuilder()
+    	->field($document)->equals($value)
+    	->getQuery()->getSingleResult();
     }
 }

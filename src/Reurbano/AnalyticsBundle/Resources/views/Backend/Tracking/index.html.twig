@@ -1,4 +1,14 @@
 {% extends '::backend.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock title %}
+{% block stylesheets %}
+    {% stylesheets '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.css' 
+                    filter='?yui_css' 
+                    output='static/system/css/facebox.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
 {% block content %}
 <div class="content box grid_12 round_all" style="padding:0">
     <table class="display datatable"> 
@@ -11,6 +21,7 @@
                 <th class="nowrap">{{ "Clicks"|trans }}</th>
                 <th class="center" title="Se a oferta estava ou não no Cookie do usuário">{{ "Cookie"|trans }}</th> 
                 <th class="center">{{ "Atualização"|trans }}</th>
+                <th class="last nowrap center">{{ "Ações"|trans }}</th>
             </tr> 
         </thead> 
         <tbody> 
@@ -28,6 +39,7 @@
                 <td align="right">{{ trace.getClick() }}</td>
                 <td align="center">{{ trace.isInCookie() }}</td>
                 <td align="right">{{ trace.getUpdatedAt()|date('d/m/Y h:i:s') }}</td>
+                <td class="center nowrap"><a class="button button-set small white facebox" rel="facebox" title="{{ "Informações"|trans }}" href="{{ url('admin_analytics_tracking_info', {'id': trace.getId}) }}"><span class="ui-silk ui-silk-application">{{ "Informações"|trans }}</span></a></td>
             </tr>
   {% else %}
             <tr><td colspan='9'>{{"Nenhum rastreamento encontrado"|trans}}</td></tr>
@@ -39,6 +51,11 @@
 </div>
 {% endblock %} 
 {% block javascripts %}
+    {% javascripts output='static/system/js/tracking.js' 
+                '@ReurbanoCoreBundle/Resources/public/js/facebox/facebox.js' 
+                '@ReurbanoAnalyticsBundle/Resources/public/js/tracking.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/DataTables/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('themes/'~mastop_theme_name()~'/admin/js/adminica/adminica_datatables.js') }}"></script>
 {% endblock %}
