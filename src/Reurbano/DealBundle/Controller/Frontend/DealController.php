@@ -124,7 +124,7 @@ class DealController extends BaseController
         }
         
         
-        $associateDB = $this->mongo->getRepository('ReurbanoAnalyticsBundle:Associate','associate')->getByFind('url', $deal->getSource()->getSite()->getUrl());
+        $associateDB = $this->mongo('ReurbanoAnalyticsBundle:Associate','associate')->getByFind('url', $deal->getSource()->getSite()->getUrl());
         $associate = (sizeof($associateDB) > 0) ? $associateDB->getXml() : null;
         
         $title = $deal->getLabel();
