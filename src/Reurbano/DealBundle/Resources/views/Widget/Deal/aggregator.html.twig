@@ -50,7 +50,7 @@
     <div class="clear"></div>
     <div class="dealFoot grid_9 alpha omega">
         <div class="grid_2 alpha">
-            <span><strong>Economize: </strong> {{deal.getDiscountOffer}}%</span>
+            <span><strong>Economize: </strong> {{ deal.getDiscountOffer|number_format(2, ',', '.') }}%</span>
         </div>
         <div class="grid_2">
             <span><strong>Vendidos: </strong> {{deal.getTotalcoupons}}</span>
