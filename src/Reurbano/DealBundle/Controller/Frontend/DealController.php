@@ -123,6 +123,10 @@ class DealController extends BaseController
             $this->get('session')->set('offer_'.$deal->getId(), 1);
         }
         
+        
+        $associateDB = $this->mongo->getRepository('ReurbanoAnalyticsBundle:Associate','associate')->getByFind('url', $deal->getSource()->getSite()->getUrl());
+        $associate = (sizeof($associateDB) > 0) ? $associateDB->getXml() : null;
+        
         $title = $deal->getLabel();
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCity()->getName(), 'url' => $this->generateUrl('core_city_index', array('slug' => $deal->getSource()->getCity()->getSlug())));
         $breadcrumbs[] = array('title'=>$deal->getSource()->getCategory()->getName(), 'url' => $this->generateUrl('deal_category_index', array('city' => $deal->getSource()->getCity()->getSlug(), 'slug'=>$deal->getSource()->getCategory()->getSlug())));
@@ -133,6 +137,7 @@ class DealController extends BaseController
         $ret['title'] = $deal->getLabel();
         $ret['rules'] = ($deal->getSource()->getRules() != '') ? preg_split( '/\r\n|\r|\n/', $deal->getSource()->getRules()) : array();
         $ret['breadcrumbs'] = $breadcrumbs;
+        $ret['associate'] = $associate;
         $ret['keywords'] = implode(', ', explode(' ', $deal->getLabel()));
 		return $ret;
     }
