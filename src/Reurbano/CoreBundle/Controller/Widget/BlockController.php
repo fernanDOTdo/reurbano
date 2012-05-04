@@ -200,7 +200,8 @@ class BlockController extends BaseController {
 <p><a href="http://www.groupon.com.br/" target="_blank"><img title="Groupon" src="/themes/reurbano/images/groupon.png" alt="Groupon" width="218" height="53" /></a></p>
 <p><a href="http://br.groupalia.com/" target="_blank"><img title="Groupalia" src="/themes/reurbano/images/groupalia.png" alt="Groupalia" width="218" height="53" /></a></p>
 <p><a href="http://www.clubedodesconto.com.br/" target="_blank"><img title="Clube do Desconto" src="/themes/reurbano/images/clube-do-desconto.png" alt="Clube do Desconto" width="218" height="53" /></a></p>
-<p><a href="http://www.clickon.com.br/" target="_blank"><img title="ClickOn" src="/themes/reurbano/images/clickon.png" alt="ClickOn" width="218" height="53" /></a></p>    
+<p><a href="http://www.clickon.com.br/" target="_blank"><img title="ClickOn" src="/themes/reurbano/images/clickon.png" alt="ClickOn" width="218" height="53" /></a></p>
+<p style="text-align: right;"><a href="http://www.reurbano.com.br/pg/os-sites">Veja +</a></p>    
         ';
         $c++;
         //$ret[$c]['content'] = '<a id="twitterBlock" href="http://twitter.com/ReurbanoBrasil" target="_blank" title="Siga o Reurbano no Twitter!">Siga o Reurbano no Twitter!</a>';
