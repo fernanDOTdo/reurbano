@@ -11,7 +11,7 @@ use Reurbano\CoreBundle\Document\City;
 class CategoryController extends BaseController {
 
     /**
-     * @Route("/ofertas-em-{city}/{slug}", name="deal_category_index", requirements={"_scheme" = "http"})
+     * @Route("/ofertas-em-{city}/{slug}", name="deal_category_index", requirements={"_scheme" = "http", "city" = "[^\/]+"})
      * @Template()
      */
     public function indexAction($city, Category $cat)

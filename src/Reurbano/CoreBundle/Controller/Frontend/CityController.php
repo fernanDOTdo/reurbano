@@ -13,7 +13,7 @@ use Reurbano\CoreBundle\Document\City;
 class CityController extends BaseController
 {
     /**
-     * @Route("/ofertas-em-{slug}", name="core_city_index", requirements={"_scheme" = "http"})
+     * @Route("/ofertas-em-{slug}", name="core_city_index", requirements={"_scheme" = "http", "slug" = "[^\/]+"})
      * @Template()
      */
     public function indexAction(City $city)
@@ -26,7 +26,7 @@ class CityController extends BaseController
     }
     
     /**
-     * @Route("/agregador/ofertas-em-{slug}", name="aggregator_core_city_index", requirements={"_scheme" = "http"})
+     * @Route("/agregador/ofertas-em-{slug}", name="aggregator_core_city_index", requirements={"_scheme" = "http", "slug" = "[^\/]+"})
      * @Template()
      */
     public function agregadorAction(City $city)
